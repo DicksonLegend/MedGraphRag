@@ -1,0 +1,476 @@
+MedGraphRAG Data Normalization Pipeline
+
+## 0. Base path & filesystem reality (read first — do not assume)
+
+Your accessible filesystem root is the **`MedGraphRag` project folder** (the folder that *contains* `Datasets/`). Every raw dataset folder listed in §1 actually lives **inside `Datasets/`** — e.g. the entry `BioASQ` below is really `Datasets/BioASQ`. Therefore:
+
+- **READ** all inputs from `Datasets/<folder>/...`
+- **WRITE** all outputs to `Datasets/normalized/...` and `Datasets/normalized/_logs/...`
+
+Wherever this prompt writes a bare `/<folder>/` or `/normalized/`, prepend `Datasets/`. **In Step 0 you must explicitly confirm you can see these folders under `Datasets/`** before processing anything. If a listed name does not exist on disk, or a folder exists on disk that is NOT in the list, do not guess — report the difference in the Step 0 reconciliation table and wait for me. The on-disk directory tree is the single source of truth; the list in §1 is only a hint.
+
+## 1. Context
+
+I have a medical knowledge-base project. My raw datasets live as folders under `Datasets/` (each top-level folder = one dataset source; each may contain **many nested subfolders, 4–6 levels deep**, and files in mixed formats). The folders I currently expect (treat as hints, verify on disk):
+
+```
+BioASQ
+clinical_manuals
+Clinical_practice_guidlines
+Dataset_Obtained by scripts
+datasets--openlifescienceai--medmcqa
+Disease_knowledge
+Drug_database
+Lab_rev_data
+Medical_books
+Medical_ontologies
+MedQA-USMLE
+PubMedQA
+Research_papers
+```
+
+Build a Python pipeline that converts every individual **leaf data file** found anywhere inside these folders (at any nesting depth, including inside archives) into one clean, standardized JSON file each — ready for a later chunking + embedding step (which is NOT part of this task).
+
+## 2. Architecture — modular & plugin-based
+
+Build one parser module per file format under a `parsers/` package (e.g. `pdf_parser.py`, `xml_parser.py`, `tabular_parser.py`, `json_parser.py`, `html_parser.py`, `text_parser.py`, `archive_parser.py`, `rrf_parser.py`), each exposing the same contract `parse(path) -> dict` returning an object that matches the schema in §6. The main pipeline contains **no format-specific logic** — it only does: recursive discovery, dispatch-by-extension, orchestration, logging, and checkpointing. Adding a new format later must require only adding/editing one parser module, never touching the core.
+
+## 3. Step 0 — DEEP recursive inventory & structure understanding (mandatory, no processing yet)
+
+Before writing any conversion logic, you must **actually traverse and inspect** the real tree — not just stat file counts. Do all of the following and present the report, then **stop and wait for my confirmation**:
+
+1. **Full recursive walk** of every top-level folder to arbitrary depth. For each top-level folder, print its **subfolder tree** (so I can see the 4–6 level nesting) and the file-format breakdown (extension → count → total bytes) **at each level**, not just aggregated.
+2. **Reconciliation table**: for every top-level folder, show (a) the name I listed in §1, (b) the name actually on disk, (c) whether they match. Any folder on disk that is NOT in §1 (e.g. `Research_papers`) or any §1 name missing on disk must be listed here with a **proposed category tag** and placed in a **CONFIRM list** — do not assign it silently.
+3. **Read, don't just count.** For every distinct file format found, **open and inspect 2 representative files** (first ~300–500 chars, and for structured formats parse the actual schema/keys/columns/tags) so you genuinely understand each format's internal layout before you write its parser. Quote what you saw.
+4. **HuggingFace / git scaffolding detection.** For folders that are HF `datasets` downloads (e.g. `datasets--openlifescienceai--medmcqa`), detect the `.cache/huggingface/{blobs,snapshots,refs}` layout. Plan to read the **resolved `snapshots/<hash>/` tree only**, and mark `blobs/`, `refs/`, `*.lock`, `.gitattributes`, `.cache/huggingface/download/` for the SKIP list so nothing is double-counted. Report which layout you found.
+5. **Container detection.** List every archive (`.zip/.tar/.gz/.tgz`) and every huge file. Any single file **> 2 GB** (e.g. the UMLS zip in `Medical_ontologies`) goes into a **PAUSE list** — you will not unpack or process it without my explicit go-ahead. Any single **XML > 500 MB** (e.g. DrugBank) goes into a **STREAMING list** (must use `iterparse`, never full load).
+6. **Boilerplate SKIP list** (auto-skip at every level, never parse, never count as failed): directories named `.cache`, `.git`, `.huggingface`, `__pycache__`, `blobs`, `refs`; files named (case-insensitive) `README*`, `LICENSE*`, `LICENCE*`, `CITATION*`, `.gitattributes`, `.gitignore`, `.DS_Store`, `Thumbs.db`, `dataset_info.json`, `dataset_dict.json`, `config.json`, `*.cff`; and extensions `.py .pyc .sh .bat .cmd .exe .dll .so .dylib .o .a .ipynb .sfv .crc .md5 .sha1 .sha256 .sha512 .sig .asc .lock .toml .cfg .ini .yml .yaml .css .js .ts .map .svg .png .jpg .jpeg .gif .ico .webp .woff .woff2 .ttf .eot .mp3 .mp4 .wav .avi .mov`. (Embedded figures *inside* PDFs are still extracted by Docling — this only skips standalone asset files.)
+7. **REVIEW list**: any small text/json/jsonl/md/html file (e.g. < 50 KB) or any file whose name looks like documentation rather than data (names containing `readme, instruction, description, about, howto, how_to, guide, meta, info, schema, example, sample, preview, demo, changelog, notice`), each with a 200-char preview. Do not process the REVIEW list until I say which to skip and which to keep.
+8. **Proposed category + subcategory map**: show, per top-level folder, the category tag you will use (from §7 or inferred), and for nested subfolders whose names look like a specific medical concept (a disease/test/drug), show the `subcategory` you would assign — all subject to my confirmation.
+
+Only after I confirm this report may you proceed to build and run the pipeline. Apply the same SKIP/REVIEW/container rules recursively to files unpacked from archives.
+
+## 4. Critical rule — one JSON per leaf source file, never merged, nested structure mirrored
+
+Every individual **leaf data file** produces exactly one output JSON. Never combine multiple source files into one JSON. A container (a `.zip`, a HF cache dir) is **not** a source file — unpack it and treat each inner file as its own source file. If a folder (at any depth) has 50 leaf files, produce 50 JSONs. **Preserve the full nested path**: a file at `Datasets/Research_papers/PubMed/2024/abc.json` must produce a JSON whose location and metadata remember `Research_papers` (source) **and** `PubMed/2024` (subpath), so provenance is traceable through every nesting level.
+
+## 5. Output structure
+
+```
+Datasets/normalized/{source}/{subpath}/{original_stem}.json     # subpath empty ⇒ Datasets/normalized/{source}/{original_stem}.json
+Datasets/normalized/_logs/processing_log.csv
+Datasets/normalized/_logs/failed_files.jsonl
+Datasets/normalized/_logs/summary_report.json
+Datasets/normalized/_logs/duplicate_map.json
+```
+
+## 6. Required JSON schema — every output file must match this exactly (schema_version 1.2)
+
+```json
+{
+  "schema_version": "1.2",
+  "document_id": "string = slug(source)__slug(subpath or 'root')__slug(stem)__sha256[:8]; slug = lowercase, non-alnum→_, collapsed",
+  "source": "exact top-level folder name as on disk, e.g. Research_papers or datasets--openlifescienceai--medmcqa",
+  "subpath": "relative directory path between the top folder and this file, e.g. 'PubMed/2024'; empty string if file sits at top level",
+  "subcategory": "optional finer tag inferred from the deepest meaningful subfolder if it is an obvious disease/test/drug name, else null",
+  "dataset_version": "e.g. DrugBank 5.1, LOINC 2.82, BioASQ 13b — extract if available, else null",
+  "title": "extracted title if available, else filename without extension",
+  "author": "extracted author/organization if available in file metadata, else null",
+  "language": "detected or assumed language code, default en",
+  "format": "original file extension, e.g. pdf, xml, tsv, rrf",
+  "category": "tag from §7 (mapped or, for unmapped top folders, inferred AND confirmed in Step 0)",
+  "text": {
+    "title": "duplicate of top-level title, kept for sources with natural sectioning",
+    "abstract": "extracted abstract if the source has one (PubMed, PMC, research papers), else null — do not fabricate one",
+    "body": "full extracted body text, untruncated, untranslated, unsummarized. For sources with no natural title/abstract/body split (guidelines, books, ontologies, tables), put all extracted text here and leave abstract null"
+  },
+  "structured_data": ["array of row-level records for tabular/relational sources (RxNorm, DrugBank, LOINC, LabQAR, SIDER, ICD-10, UMLS RRF). Empty array for narrative-only sources. This is what the Graph Builder consumes directly"],
+  "figures": ["array of {caption, ocr_text, page_number} for embedded images/figures with extractable text. Empty array if none"],
+  "page_count": "integer if applicable (pdf/docx), else null",
+  "processed_at": "ISO 8601 timestamp of processing",
+  "metadata": {
+    "original_path": "full relative path to the source file (from Datasets/)",
+    "file_size_bytes": "integer",
+    "file_hash_sha256": "hash of the original file, for dedup and change detection",
+    "encoding_detected": "e.g. utf-8, utf-16, latin1, windows-1252 — auto-detected before reading",
+    "publication_date": "if extractable, else null",
+    "url": "if extractable from file or filename convention, else null",
+    "extraction_tool": "docling | pandas | pandas_xlsx | xmltodict | custom_streaming | json_native | html_parser | text_parser | archive_unpack | rrf",
+    "ocr_used": "boolean",
+    "ocr_confidence": "float 0-1 if ocr_used is true, else null",
+    "extraction_warnings": ["low-confidence / partial-extraction flags; empty list if none"]
+  },
+  "source_metadata": {
+    "note": "preserve EVERY metadata field found in the raw file's own headers/properties/JSON keys verbatim, even fields not mapped above — never discard original metadata"
+  }
+}
+```
+
+Do not omit fields — use `null` or empty values explicitly rather than dropping keys. When you change this schema later, bump `schema_version` (1.2 → 1.3 …) rather than silently changing structure.
+
+## 7. Category mapping — DEFAULT only; infer + confirm for anything unmapped
+
+Use these as the **default** tag for a top-level folder **only if the on-disk name matches**. For any top-level folder NOT in this map (e.g. `Research_papers`), infer a tag from the folder name (e.g. `research_paper`), put it in the Step 0 CONFIRM list, and do not finalize until I approve.
+
+```
+BioASQ -> evidence_qa
+clinical_manuals -> clinical_reference
+Clinical_practice_guidlines -> guideline
+Dataset_Obtained by scripts -> research_paper
+datasets--openlifescienceai--medmcqa -> qa_benchmark
+Disease_knowledge -> disease
+Drug_database -> drug
+Lab_rev_data -> lab_reference
+Medical_books -> textbook
+Medical_ontologies -> ontology
+MedQA-USMLE -> qa_benchmark
+PubMedQA -> qa_benchmark
+Research_papers -> research_paper   # inferred; confirm in Step 0
+```
+
+`subcategory` (optional) is inferred from the deepest subfolder name when it is an obvious medical concept; otherwise `null`. All non-null `subcategory` assignments must appear in the Step 0 report for confirmation.
+
+## 8. Format-specific routing
+
+- **PDF, DOCX, PPTX, images → IBM Docling.** GPU on (RTX 3050, 6 GB VRAM). Initialize the model **once**, stream files **sequentially** — never multiprocess GPU workers (will OOM at 6 GB). Call `torch.cuda.empty_cache()` and `gc.collect()` every 100 files. If a page is scanned/image-based, let Docling fall through to OCR; record `metadata.ocr_used: true` and `metadata.ocr_confidence` = Docling's reported confidence (not just a boolean). For embedded figures with text, extract caption + run OCR on the figure; store each as `{"caption","ocr_text","page_number"}` in `figures`.
+- **XLSX / XLS → Pandas (`openpyxl`), NOT Docling.** Rows → `structured_data`; a serialized text render → `text.body`. `extraction_tool = pandas_xlsx`.
+- **CSV, TSV, Parquet → Pandas** (CPU). `orient='records'`. For files of many independent rows (drug DBs, lab tables), keep **one JSON per source file**: serialized rows in `text.body`, the actual records in top-level `structured_data`. **Ask me to confirm this interpretation for `Drug_database` and `Lab_rev_data` before proceeding.**
+- **JSON / JSONL → native json.** Map fields onto the schema; keep the original object verbatim in `source_metadata`. For `.jsonl`, each line = one record into `structured_data` (serialized render into `text.body`); a single-object `.json` = one document. `extraction_tool = json_native`.
+- **HTML → BeautifulSoup** → main content into `text.body`. `extraction_tool = html_parser`.
+- **TXT / Markdown → auto-detected encoding** into `text.body`. `extraction_tool = text_parser`.
+- **Archives (.zip/.tar/.gz/.tgz) → unpack into a staging dir, then recursively run each inner file through this same dispatcher** (apply SKIP/REVIEW rules to inner files too). For `.gz` wrapping one text file (e.g. `.tsv.gz`), read transparently via gzip and route by the inner extension. Log the unpack step. `extraction_tool = archive_unpack`. **Do not auto-unpack any archive flagged > 2 GB in Step 0 without my go-ahead.**
+- **RRF / pipe-delimited (UMLS, RxNorm) → `csv` reader with `delimiter='|'`, `quoting=NONE`**; rows → `structured_data`, text render → `text.body`. `extraction_tool = rrf`.
+- **XML → xmltodict.** Convert nested tags to dicts, map to the schema: narrative text → `text.body` (there is **no** `content` field — do not invent one), raw tag hierarchy verbatim → `source_metadata`. **Exception:** any single XML > 500 MB (e.g. DrugBank) must use a streaming `iterparse` parser, never full load — these are in the Step 0 STREAMING list.
+- **Encoding:** auto-detect before reading any text-based file (`charset-normalizer` or `chardet`); record in `metadata.encoding_detected`.
+- **Whitespace normalization (after extraction, all formats):** collapse duplicate blank lines, trim trailing whitespace per line, preserve headings and table structure. Never alter, correct, or rephrase wording — formatting cleanup only.
+- **Large-file safety:** any single file > 2 GB pauses and asks me before processing.
+
+## 9. Duplicate detection
+
+Before processing, compute SHA-256 of every candidate file across all folders (after archive unpack). If two or more share an identical hash, process only the first and skip the rest. Record every relationship in `_logs/duplicate_map.json` as `{"hash","original_file","duplicate_files":[...]}` so nothing is silently lost.
+
+## 10. Idempotency & crash-resume
+
+Before processing a file, check whether its output JSON exists. If it exists and the source hash matches `metadata.file_hash_sha256`, skip it; if the hash differs, reprocess and overwrite. Log skips separately. The pipeline must be **fully resumable**: after any interruption (power loss, crash, Ctrl+C), the next run resumes by skipping every output JSON that already exists with a matching hash — no full rescan, no reprocessing of completed files.
+
+## 11. Error handling — never let one bad file kill the run
+
+Wrap every file's processing in try/except. On failure, log filename, folder, subpath, error, and full traceback to `_logs/failed_files.jsonl`, then continue. At the end print a summary: total, succeeded, skipped (already processed), skipped (duplicate), failed, with the failure list.
+
+## 12. Logging
+
+- `processing_log.csv` — one row per file: `filename, folder, subpath, format, status (success/skipped/duplicate/failed), processing_time_seconds, timestamp`.
+- `summary_report.json` — aggregate counts per folder and per format (and per nesting level), total processing time, and the list of files with non-empty `extraction_warnings`.
+
+## 13. Final validation
+
+After the full run, randomly sample 10 output JSONs across different folders/formats/nesting depths and print them so I can verify schema correctness and content quality before the chunking step.
+
+## 14. What NOT to do
+
+- Do not chunk `text.body` here — full text stays whole; chunking is a later step.
+- Do not summarize, translate, or rephrase wording — whitespace normalization only.
+- Do not fabricate an `abstract` for sources without one — leave it null.
+- Do not skip files silently — always log.
+- Do not guess fields you can't extract — use `null`.
+- Do not run the full pipeline without showing and getting confirmation on the Step 0 report.
+- Do not silently drop duplicates — log them in `duplicate_map.json`.
+- Do not put format-specific logic in the main pipeline — it belongs only in `parsers/`.
+- **Do not discard any information** from the source — if a value fits no schema field, store it in `source_metadata`. The pipeline must be **lossless**.
+- Do not trust the §1 folder list as exact — the on-disk tree wins; reconcile and confirm mismatches.
+- Do not double-count HuggingFace `blobs/refs` or container scaffolding as source files.
+
+
+## CONTEXT — READ THIS FIRST
+
+I am building a medical knowledge-base normalization pipeline for my MedGraphRAG project. You previously generated most of the pipeline code, but during testing **my system crashed** because Docling was consuming too much GPU VRAM and system RAM simultaneously.
+
+**My hardware:**
+- RTX 3050 Laptop GPU — **6 GB VRAM only**
+- 16 GB system RAM
+- Windows OS
+- No dedicated server — this is a consumer laptop
+
+**The crash happened because:**
+- Docling loads heavy vision models (TableFormer, layout detection, OCR) into GPU VRAM
+- Processing many PDFs sequentially without proper memory cleanup caused VRAM overflow
+- The system ran out of memory and crashed
+
+**DO NOT regenerate the entire project from scratch.** The existing code structure is mostly correct. I need you to **fix, verify, and optimize** what already exists.
+
+---
+
+## STEP 1 — ASSESS CURRENT STATE (Do this FIRST, before writing any code)
+
+Before changing anything:
+
+1. Scan the entire project directory and list every file that exists.
+2. Check which modules are complete and which are incomplete or broken.
+3. Identify any syntax errors, import errors, or incomplete functions.
+4. Check if any partial output was written to `/normalized/` before the crash.
+5. Report back to me with:
+   - Complete file inventory
+   - List of broken/incomplete modules
+   - Any corrupted output files from the crash
+   - Your recommended fix plan
+
+**Do NOT proceed to Step 2 until I confirm your assessment.**
+
+---
+
+## STEP 2 — THE CRITICAL FIX: Hybrid PDF Parsing Strategy
+
+This is the most important change. **Do NOT use Docling for every PDF.**
+
+Instead, implement a **two-stage PDF parsing strategy:**
+
+### Stage 1: PyMuPDF (fast, CPU-only, no GPU)
+
+For every PDF, **first try PyMuPDF (`fitz`)**:
+
+```
+Open PDF with fitz
+    → Extract text from each page
+    → Check: does the extracted text have meaningful content?
+       (more than 50 characters per page on average)
+    → YES → Use this text. Done. No GPU needed.
+    → NO  → Fall through to Stage 2
+```
+
+PyMuPDF handles **80–90% of PDFs** (text-based PDFs, digital PDFs, most guidelines, most research papers) using **zero GPU memory**. It is extremely fast.
+
+### Stage 2: Docling (GPU, only when needed)
+
+Only if PyMuPDF extraction fails or returns near-empty text (scanned PDFs, image-heavy PDFs, complex table layouts):
+
+```
+Load Docling models ONCE (lazy loading — only when first needed)
+    → Process ONLY the problematic PDF
+    → Extract text + tables + figures
+    → Immediately after processing:
+        torch.cuda.empty_cache()
+        gc.collect()
+    → Unload Docling models from GPU if no more scanned PDFs remain
+```
+
+### Implementation rules for this strategy:
+
+- **PyMuPDF is the DEFAULT parser for all PDFs.** Docling is the FALLBACK.
+- Docling models must be **lazy-loaded** — do NOT load them at pipeline startup. Load them only when the first scanned PDF is detected.
+- After every Docling-processed file, call `torch.cuda.empty_cache()` and `gc.collect()`.
+- After every **10** Docling-processed files (not 100 — my VRAM is only 6 GB), do a full cleanup cycle.
+- If Docling itself crashes or runs out of VRAM, **catch the exception**, log it, skip that file, and continue with the next file. **Never let one file crash the entire pipeline.**
+- Add a `--no-docling` CLI flag that forces PyMuPDF-only mode (useful for testing or if GPU is unavailable).
+- Log which parsing method was used for each file in `metadata.extraction_tool`: either `"pymupdf"` or `"docling"`.
+
+### Why this matters:
+My dataset is mostly:
+- Research papers (PubMed/PMC) → **text-based PDFs** → PyMuPDF handles these perfectly
+- Clinical guidelines (WHO, NICE, CDC) → **mostly text-based** → PyMuPDF handles these
+- Medical books → **text-based** → PyMuPDF
+- Lab reports / clinical manuals → **may contain scanned pages or complex tables** → Docling fallback
+
+So realistically, **less than 10–15% of my PDFs will need Docling.** This eliminates the crash problem entirely.
+
+---
+
+## STEP 3 — Memory Safety Guards (Prevent Future Crashes)
+
+Add these safeguards throughout the pipeline:
+
+### 3a. GPU Memory Guard
+Before loading Docling, check available VRAM:
+```python
+if torch.cuda.is_available():
+    free_vram = torch.cuda.mem_get_info()[0] / (1024**3)  # in GB
+    if free_vram < 2.0:
+        # Not enough VRAM — skip Docling, use PyMuPDF only for this file
+        log warning and fall back
+```
+
+### 3b. System RAM Guard
+Before processing any file, check available system RAM using `psutil`:
+```python
+import psutil
+available_ram = psutil.virtual_memory().available / (1024**3)
+if available_ram < 1.5:  # less than 1.5 GB free
+    gc.collect()
+    # If still low, pause and log warning
+```
+
+### 3c. Process files ONE AT A TIME
+- No multiprocessing for GPU tasks.
+- No concurrent Docling instances.
+- Sequential processing only.
+- For Pandas/XML parsing (CPU-only), you may use a small thread pool (max 2 workers), but **never** for GPU tasks.
+
+### 3d. Graceful Shutdown
+- Register a signal handler for `SIGINT` (Ctrl+C) and `SIGTERM`.
+- On interrupt: save current progress to `resume_state.json`, flush logs, and exit cleanly.
+- The next run must resume from where it stopped.
+
+### 3e. Per-file timeout
+- If any single file takes more than **120 seconds** to process, kill that file's processing, log it as a timeout failure, and move to the next file.
+- This prevents one corrupted/huge file from hanging the entire pipeline.
+
+---
+
+## STEP 4 — Verify and Fix the Existing Schema
+
+The output JSON schema must remain exactly as previously defined. Verify that every module produces this schema:
+
+```json
+{
+   "schema_version": "1.1",
+   "document_id": "{dataset}_{slugified_filename}_{short_hash}",
+   "source": "dataset folder name",
+   "dataset_version": "extract if available, else null",
+   "title": "extracted title or filename",
+   "author": "extracted or null",
+   "language": "detected, default en",
+   "format": "original file extension",
+   "category": "from folder mapping",
+   "text": {
+     "title": "...",
+     "abstract": "null if source has no abstract — do NOT fabricate",
+     "body": "full extracted text"
+   },
+   "structured_data": [],
+   "figures": [],
+   "page_count": "integer or null",
+   "processed_at": "ISO 8601",
+   "metadata": {
+     "original_path": "...",
+     "file_size_bytes": 0,
+     "file_hash_sha256": "...",
+     "encoding_detected": "utf-8",
+     "publication_date": "or null",
+     "url": "or null",
+     "extraction_tool": "pymupdf | docling | pandas | xmltodict | custom_streaming",
+     "ocr_used": false,
+     "ocr_confidence": null,
+     "extraction_warnings": []
+   },
+   "source_metadata": {}
+}
+```
+
+Check every parser module and confirm it outputs **exactly** this schema. Fix any deviations.
+
+---
+
+## STEP 5 — Verify the Folder Mapping
+
+Confirm this mapping is correctly implemented:
+
+| Raw Folder | Category Tag |
+|---|---|
+| BioASQ | evidence_qa |
+| clinical_manuals | clinical_reference |
+| Clinical_practice_guidlines | guideline |
+| Dataset_Obtained by scripts | research_paper |
+| datasets--openlifescienceai--medmcqa | qa_benchmark |
+| Disease_knowledge | disease |
+| Drug_database | drug |
+| Lab_rev_data | lab_reference |
+| Medical_books | textbook |
+| Medical_ontologies | ontology |
+| MedQA-USMLE | qa_benchmark |
+| PubMedQA | qa_benchmark |
+
+---
+
+## STEP 6 — Verify All Non-PDF Parsers Still Work
+
+These should NOT have caused the crash, but verify them:
+
+- **CSV / TSV / Parquet** → Pandas (CPU only) → `structured_data` field populated
+- **XML** → `xmltodict` (CPU only) → text into `text.body`, structure into `source_metadata`
+- **XML over 500 MB** (e.g., DrugBank) → custom streaming parser using `iterparse`, never load fully into memory
+- **JSON** → native `json` module
+- **Any file over 2 GB** → pause and ask for confirmation before processing
+
+---
+
+## STEP 7 — Idempotency and Resume (Verify These Work)
+
+- Before processing any file, check if output JSON already exists AND source hash matches → skip.
+- If source hash differs → reprocess and overwrite.
+- Maintain `resume_state.json` with:
+  - Set of processed file paths
+  - Set of processed file hashes
+  - Last processed folder
+  - Timestamp
+- On restart, load this state and skip already-processed files.
+- Duplicate detection via SHA256: if two files have identical hashes, process only the first, log duplicates in `duplicate_map.json`.
+
+---
+
+## STEP 8 — Logging (Verify These Exist)
+
+- `processing_log.csv` — one row per file: `filename, folder, format, extraction_tool, status, processing_time_seconds, timestamp`
+- `failed_files.jsonl` — filename, folder, error message, full traceback
+- `summary_report.json` — aggregate counts per folder, per format, per extraction_tool, total time, list of files with warnings
+- `duplicate_map.json` — hash → original file + duplicate files
+
+---
+
+## STEP 9 — Run a SMALL Validation Test
+
+After all fixes:
+
+1. Run the pipeline on **only 5 files** (one from each major format: one text PDF, one scanned PDF if available, one CSV/TSV, one XML, one JSON).
+2. Use `--max-files 5` flag (add this flag if it doesn't exist).
+3. Print the full output JSON for each of the 5 files to console.
+4. Verify:
+   - Schema is correct
+   - `text.body` is not empty
+   - `extraction_tool` shows `pymupdf` for text PDFs (NOT docling)
+   - No GPU memory errors
+   - Logs are written correctly
+5. Show me the results before running the full pipeline.
+
+**Do NOT run the full pipeline until I confirm the 5-file test passes.**
+
+---
+
+## STEP 10 — Final Full Run (Only After My Confirmation)
+
+When I confirm:
+- Run the full pipeline.
+- Use `--no-docling` flag for the first full pass (PyMuPDF only, fastest, safest).
+- After the first pass completes, run a **second pass** with Docling enabled ONLY on files where `text.body` is empty or near-empty (the scanned PDFs that PyMuPDF couldn't handle).
+- This two-pass approach is safer than mixing GPU and CPU processing in a single run.
+
+---
+
+## WHAT NOT TO DO
+
+- Do NOT regenerate the entire project from scratch.
+- Do NOT use Docling as the default PDF parser.
+- Do NOT load Docling models at startup.
+- Do NOT use multiprocessing for GPU tasks.
+- Do NOT process more than one file at a time on GPU.
+- Do NOT alter, summarize, or translate extracted text.
+- Do NOT fabricate abstracts for sources that don't have them.
+- Do NOT skip files silently — always log failures.
+- Do NOT run the full pipeline without showing me the 5-file test first.
+- Do NOT ignore VRAM limits — 6 GB is the hard ceiling.
+
+---
+
+## DELIVERABLES
+
+After completing all steps, provide:
+1. Assessment report (Step 1)
+2. List of all changes made
+3. 5-file test output (Step 9)
+4. Updated `requirements.txt`
+5. A `README.md` explaining how to run the pipeline with all CLI flags
+6. Confirmation that the pipeline is ready for the full run
+
+---
+
+**Start with Step 1 now. Show me the assessment before writing any code.**
+
+

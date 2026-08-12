@@ -1,0 +1,382 @@
+{
+  "step": 6,
+  "description": "Hybrid Retrieval Engine Fix Evaluation (Dedup + Entity Seeding)",
+  "p01_pmid_38823454_count": 1,
+  "entities_reached_probes_count": 6,
+  "chunks_from_graph_probes_count": 6,
+  "p01_pass": true,
+  "entities_pass": true,
+  "graph_chunks_pass": true,
+  "all_passed": true,
+  "probes": [
+    {
+      "id": "P01",
+      "query": "warfarin INR monitoring guidelines atrial fibrillation",
+      "n_items": 10,
+      "categories": {
+        "research_paper": 7,
+        "guideline": 2,
+        "lab_reference": 1
+      },
+      "source_mix": {
+        "faiss": 5,
+        "graph": 4,
+        "both": 1
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 3,
+        "chunks_from_graph": 4,
+        "edges_traversed": [
+          "DOCUMENT_MENTIONS",
+          "DRUG_TREATS",
+          "HAS_CHUNK"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 24.60780800174689,
+        "faiss_ms": 4.644409000320593,
+        "graph_ms": 230.87582800144446,
+        "fuse_ms": 0.10024800212704577,
+        "text_load_ms": 0.8606199990026653,
+        "total_ms": 261.6132340008335
+      },
+      "top_chunks": [
+        "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+        "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c16",
+        "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207__c13"
+      ]
+    },
+    {
+      "id": "P02",
+      "query": "ACE inhibitor hypertension treatment first line",
+      "n_items": 10,
+      "categories": {
+        "research_paper": 4,
+        "guideline": 4,
+        "textbook": 2
+      },
+      "source_mix": {
+        "faiss": 7,
+        "graph": 0,
+        "both": 3
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 22.133359001600184,
+        "faiss_ms": 4.081136001332197,
+        "graph_ms": 144.17826800126932,
+        "fuse_ms": 0.11266000001342036,
+        "text_load_ms": 0.7501129985030275,
+        "total_ms": 171.65590500007966
+      },
+      "top_chunks": [
+        "Research_papers/PMC/PDFs/PMC9363242/article__c5",
+        "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c1",
+        "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c5"
+      ]
+    },
+    {
+      "id": "P03",
+      "query": "critical hemoglobin levels anemia transfusion threshold",
+      "n_items": 10,
+      "categories": {
+        "research_paper": 7,
+        "lab_reference": 1,
+        "guideline": 2
+      },
+      "source_mix": {
+        "faiss": 6,
+        "graph": 3,
+        "both": 1
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 2,
+        "chunks_from_graph": 3,
+        "edges_traversed": [
+          "DOCUMENT_MENTIONS",
+          "HAS_CHUNK",
+          "LABTEST_RELATED_TO"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 24.227587000495987,
+        "faiss_ms": 5.149935001099948,
+        "graph_ms": 112.84881499886978,
+        "fuse_ms": 0.0877839993336238,
+        "text_load_ms": 14.085111000895267,
+        "total_ms": 156.9326099997852
+      },
+      "top_chunks": [
+        "Research_papers/PMC/PDFs/PMC7071168/article__c1",
+        "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3",
+        "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c24"
+      ]
+    },
+    {
+      "id": "P04",
+      "query": "troponin elevation myocardial infarction diagnosis",
+      "n_items": 9,
+      "categories": {
+        "research_paper": 4,
+        "lab_reference": 1,
+        "textbook": 3,
+        "drug": 1
+      },
+      "source_mix": {
+        "faiss": 5,
+        "graph": 3,
+        "both": 1
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 1,
+        "chunks_from_graph": 3,
+        "edges_traversed": [
+          "DOCUMENT_MENTIONS",
+          "HAS_CHUNK"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 21.83845699983067,
+        "faiss_ms": 4.56717500128434,
+        "graph_ms": 124.22460800007684,
+        "fuse_ms": 0.13697600297746249,
+        "text_load_ms": 0.7468180010619108,
+        "total_ms": 152.05578599852743
+      },
+      "top_chunks": [
+        "Research_papers/PMC/PDFs/PMC6855329/article__c1",
+        "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row98",
+        "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5902"
+      ]
+    },
+    {
+      "id": "P05",
+      "query": "metformin type 2 diabetes contraindications renal failure",
+      "n_items": 10,
+      "categories": {
+        "guideline": 2,
+        "research_paper": 6,
+        "textbook": 2
+      },
+      "source_mix": {
+        "faiss": 8,
+        "graph": 2,
+        "both": 0
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 3,
+        "chunks_from_graph": 2,
+        "edges_traversed": [
+          "DOCUMENT_MENTIONS",
+          "DRUG_TREATS",
+          "HAS_CHUNK"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 23.825784999644384,
+        "faiss_ms": 5.741992998082424,
+        "graph_ms": 217.54266300195013,
+        "fuse_ms": 0.1042949988914188,
+        "text_load_ms": 0.6932670003152452,
+        "total_ms": 248.38669800010393
+      },
+      "top_chunks": [
+        "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c46",
+        "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c12",
+        "Research_papers/PMC/XML/PMC9461695/article__c13"
+      ]
+    },
+    {
+      "id": "P06",
+      "query": "aspirin side effects gastrointestinal bleeding risk",
+      "n_items": 10,
+      "categories": {
+        "research_paper": 5,
+        "textbook": 3,
+        "lab_reference": 1,
+        "drug": 1
+      },
+      "source_mix": {
+        "faiss": 8,
+        "graph": 0,
+        "both": 2
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 23.396521999529796,
+        "faiss_ms": 4.432693000126164,
+        "graph_ms": 121.2634280018392,
+        "fuse_ms": 0.1971279998542741,
+        "text_load_ms": 0.38917799975024536,
+        "total_ms": 150.17532799902256
+      },
+      "top_chunks": [
+        "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_39327242__abs",
+        "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_37516507__abs",
+        "Research_papers/PMC/PDFs/PMC8005399/article__c30"
+      ]
+    },
+    {
+      "id": "P07",
+      "query": "deep vein thrombosis DVT diagnosis treatment anticoagulation",
+      "n_items": 10,
+      "categories": {
+        "research_paper": 8,
+        "textbook": 2
+      },
+      "source_mix": {
+        "faiss": 5,
+        "graph": 1,
+        "both": 4
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 1,
+        "chunks_from_graph": 1,
+        "edges_traversed": [
+          "DOCUMENT_MENTIONS",
+          "HAS_CHUNK"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 22.91686500029755,
+        "faiss_ms": 4.278404001524905,
+        "graph_ms": 208.26615899932222,
+        "fuse_ms": 0.07658300091861747,
+        "text_load_ms": 0.13200700050219893,
+        "total_ms": 236.07712900047773
+      },
+      "top_chunks": [
+        "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__abs",
+        "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__abs",
+        "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_35089599__abs"
+      ]
+    },
+    {
+      "id": "P08",
+      "query": "sepsis SOFA score organ dysfunction criteria",
+      "n_items": 10,
+      "categories": {
+        "research_paper": 6,
+        "guideline": 4
+      },
+      "source_mix": {
+        "faiss": 8,
+        "graph": 0,
+        "both": 2
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 23.68483000100241,
+        "faiss_ms": 5.163720001291949,
+        "graph_ms": 92.01427700099885,
+        "fuse_ms": 0.15895700198598206,
+        "text_load_ms": 0.6294779996096622,
+        "total_ms": 122.13574999987031
+      },
+      "top_chunks": [
+        "Research_papers/PMC/XML/PMC9310818/article__abs",
+        "Research_papers/PMC/Metadata/articles/PMC9310818__abs",
+        "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655__abs"
+      ]
+    },
+    {
+      "id": "P09",
+      "query": "mechanism of action beta blocker cardiac output heart rate",
+      "n_items": 7,
+      "categories": {
+        "textbook": 3,
+        "guideline": 2,
+        "research_paper": 2
+      },
+      "source_mix": {
+        "faiss": 7,
+        "graph": 0,
+        "both": 0
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": []
+      },
+      "latency_breakdown": {
+        "embed_ms": 26.759222997498,
+        "faiss_ms": 4.670357000577496,
+        "graph_ms": 168.27005100276438,
+        "fuse_ms": 0.1636769993638154,
+        "text_load_ms": 0.12157700257375836,
+        "total_ms": 200.42651199764805
+      },
+      "top_chunks": [
+        "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung__c309",
+        "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5874",
+        "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c14"
+      ]
+    },
+    {
+      "id": "P10",
+      "query": "potassium hyperkalemia ECG changes peaked T waves treatment",
+      "n_items": 10,
+      "categories": {
+        "research_paper": 5,
+        "textbook": 3,
+        "lab_reference": 1,
+        "guideline": 1
+      },
+      "source_mix": {
+        "faiss": 5,
+        "graph": 2,
+        "both": 3
+      },
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 2,
+        "chunks_from_graph": 2,
+        "edges_traversed": [
+          "DOCUMENT_MENTIONS",
+          "HAS_CHUNK",
+          "LABTEST_RELATED_TO"
+        ]
+      },
+      "latency_breakdown": {
+        "embed_ms": 25.176040999213,
+        "faiss_ms": 4.761096999573056,
+        "graph_ms": 126.44763700154726,
+        "fuse_ms": 0.09394600056111813,
+        "text_load_ms": 1.1057979972974863,
+        "total_ms": 157.97546099929605
+      },
+      "top_chunks": [
+        "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639__abs",
+        "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894__abs",
+        "Research_papers/PMC/XML/PMC12568891/article__c1"
+      ]
+    }
+  ]
+}

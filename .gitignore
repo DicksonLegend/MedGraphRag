@@ -1,0 +1,41 @@
+# Python / Bytecode Caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Heavy Datasets & Normalized Documents (Offline Data)
+Datasets/
+
+# Built Vector Indexes & Graph Database (FAISS, Kùzu, Parquet, JSONL)
+index/
+
+# Quantized LLM Model Weights (GGUF)
+models/
+
+# Codebase Graph Analysis Outputs
+graphify-out/
+
+# Environment Variables & Credentials
+.env
+.env.*
+*.pem
+*.key
+
+# IDE / Editor Caches
+.vscode/
+.idea/
+.claude/
+.gemini/
+
+# Temporary / Log files
+*.log
+_logs/
+tmp/
+scratch/

@@ -1,0 +1,38 @@
+# MedGraphRAG Data Normalization — Python Dependencies
+# Install: uv pip install -r requirements.txt
+
+# Core
+torch>=2.6.0
+torchvision
+torchaudio
+
+# Document parsing (GPU-accelerated)
+docling
+
+# Tabular data
+pandas
+openpyxl
+pyarrow
+fastparquet
+xlrd
+
+# XML
+xmltodict
+lxml
+
+# Web
+beautifulsoup4
+
+# Images
+Pillow
+
+# PDF fallback
+pymupdf>=1.25.0
+pdfplumber
+tabula-py
+
+# Encoding detection
+chardet
+
+# Parallel processing
+# concurrent.futures is in the Python 3 stdlib — no extra package needed

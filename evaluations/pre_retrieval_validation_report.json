@@ -1,0 +1,433 @@
+{
+  "verdict": "GO",
+  "timestamp": "2026-08-08T23:59:47Z",
+  "hardware_config": {
+    "environment": "Fedora Linux",
+    "cpu_only_execution": true,
+    "gpu_devices_touched": [],
+    "peak_process_ram_gb": 3.41,
+    "peak_vram_mb": 0.0,
+    "index_load_time_s": 5.78
+  },
+  "go_criteria": {
+    "checks_1_to_7_pass": true,
+    "disease_mapped_pct": 72.0,
+    "disease_mapped_threshold_pct": 70.0,
+    "disease_mapped_pass": true,
+    "probe_queries_relevant_count": 10,
+    "probe_queries_relevant_total": 10,
+    "probe_queries_pass": true,
+    "peak_ram_pass": true,
+    "peak_vram_pass": true,
+    "latency_pass": true
+  },
+  "check_status": {
+    "check1_faiss_sidecar_kuzu_count": "PASS",
+    "check2_faiss_id_range_unique": "PASS",
+    "check3_sidecar_completeness": "PASS",
+    "check4_duplicate_content_hash": "PASS",
+    "check5_routing_correctness": "PASS",
+    "check6_graph_table_counts": "PASS",
+    "check7_orphans": "PASS"
+  },
+  "coverage_stats": {
+    "document_mentions_pct": 49.78,
+    "labtest_related_pct": 64.69,
+    "disease_mapped_pct": 72.0
+  },
+  "graph_node_counts": {
+    "OntologyTerm": 178942,
+    "Disease": 5072,
+    "Drug": 4365,
+    "LabTest": 1586,
+    "Document": 15525,
+    "Chunk": 2294038
+  },
+  "graph_edge_counts": {
+    "IS_A": 926132,
+    "RELATED_TO": 1003540,
+    "DRUG_TREATS": 21813,
+    "DRUG_CAUSES": 80530,
+    "DRUG_CAUSES_SE": 79103,
+    "HAS_CHUNK": 2294038,
+    "DISEASE_MAPPED_TO": 3652,
+    "DOCUMENT_MENTIONS": 8479,
+    "LABTEST_RELATED_TO": 1833
+  },
+  "probe_query_evaluations": [
+    {
+      "query_num": 1,
+      "query": "What are the symptoms of type 2 diabetes?",
+      "latency_ms": {
+        "embedding": 31.9,
+        "faiss": 6.2,
+        "graph": 22.1,
+        "total": 63.2
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 1779699,
+          "chunk_id": "Research_papers/PMC/XML/PMC12098035/article__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Type 2 diabetes mellitus(T2DM) as a common chronic disease with an increasing prevalence worldwide that poses a great threat to individual health, and is characterized by chronic h..."
+        },
+        {
+          "faiss_id": 1726046,
+          "chunk_id": "Research_papers/PMC/Metadata/articles/PMC12098035__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Type 2 diabetes mellitus(T2DM) as a common chronic disease with an increasing prevalence worldwide that poses a great threat to individual health, and is characterized by chronic h..."
+        },
+        {
+          "faiss_id": 1770824,
+          "chunk_id": "Research_papers/PMC/XML/PMC5154306/article__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Type 2 diabetes mellitus is a complex, chronic metabolic disease, presents a heterogeneous etiology, with risk factors at the social level and behavioral, environmental, and geneti..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    },
+    {
+      "query_num": 2,
+      "query": "Which drugs treat hypertension?",
+      "latency_ms": {
+        "embedding": 104.2,
+        "faiss": 0.5,
+        "graph": 10.6,
+        "total": 117.7
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 1768919,
+          "chunk_id": "Research_papers/PMC/XML/PMC7873715/article__c5",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "years of follow-up (n=104). table 1 A total of 280 638 participants were included in the primary analyses from 58 unique randomised controlled trials. Forty eight studies compared..."
+        },
+        {
+          "faiss_id": 2061320,
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c14",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "5 GUIDELINE FOR THE PHARMACOLOGICAL TREATMENT OF HYPERTENSION IN ADULTS 2.6 Deciding upon recommendations The GDG met virtually for four sessions in February 2021. Systematic revie..."
+        },
+        {
+          "faiss_id": 1798272,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "IMPORTANCE: Uncontrolled hypertension remains a global health concern and dysregulated aldosterone production is a central mechanism. Lorundrostat, a novel aldosterone synthase inh..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    },
+    {
+      "query_num": 3,
+      "query": "What does a high creatinine level indicate?",
+      "latency_ms": {
+        "embedding": 23.3,
+        "faiss": 0.4,
+        "graph": 12.3,
+        "total": 38.5
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 147,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row171",
+          "category": "lab_reference",
+          "source": "Lab_rev_data",
+          "text_snippet": "Creatinine (KFT): critical high 354 \u00b5mol/L. Urgency A; 200 if <16 yrs; 800 CKD patients; 35 (lower) for CKD patients..."
+        },
+        {
+          "faiss_id": 2061973,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c21",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "[2021] For a short explanation of why the committee made the 2021 recommendations and how they might affect practice, see the rationale and impact section on pharmacotherapy for pr..."
+        },
+        {
+          "faiss_id": 1777094,
+          "chunk_id": "Research_papers/PMC/XML/PMC7448835/article__c5",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "a careful evaluation of the patient\u2019s history and medications, screening for hemolysis, assessment of kidney function, and, if applicable, investigation of the cause of AKI. Manage..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    },
+    {
+      "query_num": 4,
+      "query": "Normal range for hemoglobin",
+      "latency_ms": {
+        "embedding": 22.3,
+        "faiss": 0.5,
+        "graph": 9.9,
+        "total": 33.5
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 1731221,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC5028806/article__c2",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "restore normal hemoglobin levels, red cell indices and iron status. Intravenous administration is the preferred iron treatment in patients with chronic GI bleeding, patients being..."
+        },
+        {
+          "faiss_id": 1777618,
+          "chunk_id": "Research_papers/PMC/XML/PMC7071168/article__c0",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "1. Introduction 1 2 3 4 2 3 4 5 6 7 8 9 Anemia with a hemoglobin (Hb) concentration no lower than 10 g/dL at term, occurs in nearly all pregnancies, and in the majority of cases re..."
+        },
+        {
+          "faiss_id": 1746659,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC7071168/article__c13",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Mother \u2193Frequency of anemia at term (11) Frequency of maternal infection (1) \u2193Frequency of IDA at term (6) Frequency of maternal mortality (2) \u2193Frequency of ID at term (7) Frequenc..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    },
+    {
+      "query_num": 5,
+      "query": "First-line treatment for asthma",
+      "latency_ms": {
+        "embedding": 26.5,
+        "faiss": 0.5,
+        "graph": 12.4,
+        "total": 40.0
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 2062267,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/asthma-diagnosis-monitoring-and-chronic-asthma-management-bts-nice-sign-pdf-66143958279109__c14",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "of an LTRA and a LAMA. (See the Accelerated Access Collaborative consensus pathway on the management of uncontrolled asthma in adults.) [BTS/NICE/SIGN 2024] For a short explanation..."
+        },
+        {
+          "faiss_id": 1793919,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Asthma/PMID_31558662__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "This document provides clinical recommendations for the management of severe asthma. Comprehensive evidence syntheses, including meta-analyses, were performed to summarise all avai..."
+        },
+        {
+          "faiss_id": 2062254,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/asthma-diagnosis-monitoring-and-chronic-asthma-management-bts-nice-sign-pdf-66143958279109__c1",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "16 with a history suggestive of asthma .................................................................................................... 9 1.3 Diagnosing asthma in children unde..."
+        }
+      ],
+      "retrieved_edges": [
+        "Drug(Ketorolac) -[DRUG_TREATS]-> Disease(Asthma)",
+        "Drug(Ketorolac) -[DRUG_TREATS]-> Disease(Asthma)",
+        "Drug(Ticagrelor) -[DRUG_TREATS]-> Disease(Asthma)"
+      ]
+    },
+    {
+      "query_num": 6,
+      "query": "Side effects of metformin",
+      "latency_ms": {
+        "embedding": 22.8,
+        "faiss": 0.5,
+        "graph": 11.6,
+        "total": 35.2
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 2062386,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c59",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "sudden unexpected weight loss). Therefore, the committee highlighted guidance regarding type 1 diabetes and revisiting other diagnoses. People already on standard-release metformin..."
+        },
+        {
+          "faiss_id": 2062381,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c54",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "response to medicines suggests that type 2 diabetes might not be the correct diagnosis, see the recommendations on initial diagnosis and revisiting initial diagnosis in NICE's guid..."
+        },
+        {
+          "faiss_id": 2062377,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c50",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "for this group based on: \u2022 their own expertise \u2022 common medicine contraindications in this group \u2022 their knowledge of which medicines were likely to have the most manageable side e..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    },
+    {
+      "query_num": 7,
+      "query": "What does elevated TSH mean?",
+      "latency_ms": {
+        "embedding": 23.6,
+        "faiss": 0.5,
+        "graph": 11.0,
+        "total": 35.5
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 1795206,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Thyroid_Storm/PMID_35235281__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Hyperthyroidism is an excess in thyroid hormone production caused by such conditions as Graves disease, toxic multinodular goiter, and toxic adenoma. Overt hyperthyroidism is defin..."
+        },
+        {
+          "faiss_id": 1768075,
+          "chunk_id": "Research_papers/PMC/XML/PMC12769996/article__c5",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Table 1 Baseline characteristics of hyperthyroid patients and healthy controls Variables Healthy subjects Hyperthyroid subjects p-Value n 56 166 Age (years) 58.5 (49\u201363) 53 (49\u201360)..."
+        },
+        {
+          "faiss_id": 1799657,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypothyroidism/PMID_36632720__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Subclinical hypothyroidism (SCH) is diagnosed when serum thyroid stimulation hormone (thyrotropin; TSH) levels are above the reference range, accompanied by levels of free thyroxin..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    },
+    {
+      "query_num": 8,
+      "query": "Risk factors for chronic kidney disease",
+      "latency_ms": {
+        "embedding": 27.0,
+        "faiss": 0.5,
+        "graph": 11.0,
+        "total": 38.9
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 1798587,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Metabolic_Acidosis/PMID_34576247__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Chronic kidney disease (CKD), defined as the presence of irreversible structural or functional kidney damages, increases the risk of poor outcomes due to its association with multi..."
+        },
+        {
+          "faiss_id": 1798621,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Metabolic_Acidosis/PMID_39885176__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Chronic kidney disease (CKD) is defined by persistent abnormalities of kidney function or structure that have consequences for the health. A progressive decline of excretory kidney..."
+        },
+        {
+          "faiss_id": 1797544,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_38389223__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "BACKGROUND: Chronic kidney disease (CKD) is a significant contributor to global morbidity and mortality. This study investigated disparities in age, sex and socio-economic status i..."
+        }
+      ],
+      "retrieved_edges": [
+        "Drug(Dasatinib) -[DRUG_TREATS]-> Disease(Heart Diseases)",
+        "Drug(Dasatinib) -[DRUG_TREATS]-> Disease(Heart Diseases)",
+        "Drug(Tibolone) -[DRUG_TREATS]-> Disease(Cardiovascular Diseases)"
+      ]
+    },
+    {
+      "query_num": 9,
+      "query": "How is tuberculosis diagnosed?",
+      "latency_ms": {
+        "embedding": 23.2,
+        "faiss": 0.5,
+        "graph": 8.9,
+        "total": 33.5
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 1798424,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Tuberculosis/PMID_36966795__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Stages of tuberculosis disease can be delineated by radiology, microbiology, and symptoms, but transitions between these stages remain unclear. In a systematic review and meta-anal..."
+        },
+        {
+          "faiss_id": 1962935,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7409-H__c6",
+          "category": "guideline",
+          "source": "Clinical_practice_guidlines",
+          "text_snippet": "worker; HHC = household contact; TB = tuberculosis; TPT = TB preventive treatment. Morbidity and Mortality Weekly Report 148 U.S. Department of Health and Human Services | Centers..."
+        },
+        {
+          "faiss_id": 1788546,
+          "chunk_id": "Research_papers/PMC/XML/PMC5736911/article__abs",
+          "category": "research_paper",
+          "source": "Research_papers",
+          "text_snippet": "Tuberculosis is responsible for more deaths worldwide than any other infectious disease. For anyone looking to learn more about this persistent public health threat, this conversat..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    },
+    {
+      "query_num": 10,
+      "query": "Interpret a low platelet count",
+      "latency_ms": {
+        "embedding": 22.7,
+        "faiss": 0.4,
+        "graph": 11.2,
+        "total": 34.6
+      },
+      "top_1_relevant": true,
+      "top_chunks": [
+        {
+          "faiss_id": 761,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row802",
+          "category": "lab_reference",
+          "source": "Lab_rev_data",
+          "text_snippet": "Platelets (CBC, Venous Blood): normal range 140.0\u2013450 x 10*9/L; for 0 Years - 115 Years, Female. Panel: DIC Screen; effective 04/04/2014..."
+        },
+        {
+          "faiss_id": 762,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row803",
+          "category": "lab_reference",
+          "source": "Lab_rev_data",
+          "text_snippet": "Platelets (CBC, Venous Blood): normal range 140.0\u2013450 x 10*9/L; for 0 Years - 115 Years, Male. Panel: DIC Screen; effective 04/04/2014..."
+        },
+        {
+          "faiss_id": 143,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row164",
+          "category": "lab_reference",
+          "source": "Lab_rev_data",
+          "text_snippet": "Platelets (PLT) (CBC): critical low 31-50 x10(9)/L. Category B..."
+        }
+      ],
+      "retrieved_edges": [
+        "None (direct document match)"
+      ]
+    }
+  ]
+}

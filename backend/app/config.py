@@ -1,0 +1,474 @@
+"""
+MedGraphRAG Backend — Configuration
+=====================================
+All paths and retrieval hyper-parameters are driven from environment variables
+(.env file or shell exports). No magic numbers in the retrieval or generation code.
+
+Environment variables can be set in a .env file at the project root or in the
+backend/ directory. Pydantic-settings auto-discovers them.
+
+Step 6: Retrieval settings (FAISS + Kùzu + RRF fusion)
+Step 7: LLM settings (llama-cpp-python, Qwen2.5-7B-Instruct Q4_K_M, GPU offload)
+"""
+
+from __future__ import annotations
+
+import logging
+from pathlib import Path
+from typing import Dict, List, Optional
+
+from pydantic import BaseModel, Field, field_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
+
+
+# ---------------------------------------------------------------------------
+# LLM configuration sub-model (Step 7)
+# Nested inside Settings so all values are env-var driven with prefix MEDGRAPH_LLM_
+# ---------------------------------------------------------------------------
+
+class LLMSettings(BaseModel):
+    """
+    Configuration for the GGUF language model loaded via llama-cpp-python.
+
+    Default: Qwen2.5-7B-Instruct-Q4_K_M (bartowski/Qwen2.5-7B-Instruct-GGUF)
+    Documented fallback: bartowski/Mistral-7B-Instruct-v0.3-GGUF
+                         Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+
+    To swap models: change repo + gguf_file, download the file to models/,
+    and update model_path accordingly — no code changes required.
+
+    Qwen2.5 notes:
+    - No thinking mode (not a Qwen3 variant — do NOT set thinking=True).
+    - ChatML template is embedded in the GGUF; always use create_chat_completion().
+
+    VRAM budget (RTX 3050, 6 GB):
+    - Q4_K_M weights: ~4.4–4.7 GB
+    - Quantized KV cache (Q8_0, 6144 ctx): ~0.2–0.6 GB
+    - CUDA overhead: ~0.1 GB
+    - Total: ~4.7–5.4 GB → headroom ~0.6–1.4 GB
+    """
+
+    # ── Model identity ────────────────────────────────────────────────────────
+    repo: str = Field(
+        default="bartowski/Qwen2.5-7B-Instruct-GGUF",
+        description="HuggingFace repo for documentation and `hf download` reference.",
+    )
+    gguf_file: str = Field(
+        default="Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+        description="GGUF filename inside the repo and under models/.",
+    )
+    model_path: Path = Field(
+        default=Path("models/Qwen2.5-7B-Instruct-Q4_K_M.gguf"),
+        description=(
+            "Local path to the GGUF file, relative to project root. "
+            "Override with an absolute path if needed."
+        ),
+    )
+
+    # ── Documented fallback (Mistral-7B-Instruct-v0.3) ───────────────────────
+    # fallback_repo: bartowski/Mistral-7B-Instruct-v0.3-GGUF
+    # fallback_gguf: Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+    # Download: hf download bartowski/Mistral-7B-Instruct-v0.3-GGUF \
+    #           Mistral-7B-Instruct-v0.3-Q4_K_M.gguf --local-dir models/
+    # Then set: model_path = models/Mistral-7B-Instruct-v0.3-Q4_K_M.gguf
+
+    # ── GPU offload ───────────────────────────────────────────────────────────
+    n_gpu_layers: int = Field(
+        default=-1,
+        description=(
+            "Number of layers to offload to GPU. "
+            "-1 = all layers (full GPU offload). "
+            "28 = partial offload fallback. "
+            "0 = CPU-only fallback."
+        ),
+    )
+    offload_kqv: bool = Field(
+        default=True,
+        description="Offload K/V/Q tensors to GPU (requires n_gpu_layers > 0).",
+    )
+    flash_attn: bool = Field(
+        default=True,
+        description="Enable Flash Attention 2 (RTX 3050 Ampere supports FA2 via CUDA 12.x).",
+    )
+
+    # ── KV cache quantization ─────────────────────────────────────────────────
+    type_k: str = Field(
+        default="q8_0",
+        description="K-cache quantization type. Q8_0 ≈ 0.25–0.5 GB at 6k ctx.",
+    )
+    type_v: str = Field(
+        default="q8_0",
+        description="V-cache quantization type.",
+    )
+
+    # ── Context window ────────────────────────────────────────────────────────
+    n_ctx: int = Field(
+        default=6144,
+        description=(
+            "Context window size in tokens. "
+            "Keep total prompt + output ≤ 6144 to stay within KV-cache budget."
+        ),
+    )
+
+    # ── Generation ────────────────────────────────────────────────────────────
+    temperature: float = Field(
+        default=0.2,
+        description="Sampling temperature. 0.2 for near-deterministic medical answers.",
+    )
+    max_tokens: int = Field(
+        default=800,
+        description="Maximum output tokens per generation call.",
+    )
+    top_p: float = Field(
+        default=0.9,
+        description="Top-p nucleus sampling parameter.",
+    )
+    repeat_penalty: float = Field(
+        default=1.1,
+        description="Repetition penalty to reduce citation loops.",
+    )
+
+    # ── Context builder budget ────────────────────────────────────────────────
+    context_max_tokens: int = Field(
+        default=2500,
+        description=(
+            "Maximum tokens allocated to evidence blocks in the prompt. "
+            "Leaves room for system prompt (~200t) + user query (~100t) + output (~800t) "
+            "within the 6144 ctx window."
+        ),
+    )
+    evidence_max_per_prompt: int = Field(
+        default=8,
+        description="Maximum number of EvidenceItems included in each prompt.",
+    )
+
+    # ── Evidence confidence weights ───────────────────────────────────────────
+    confidence_score_weight: float = Field(
+        default=0.6,
+        description="Weight given to mean fused_score in confidence calculation.",
+    )
+    confidence_diversity_weight: float = Field(
+        default=0.4,
+        description="Weight given to source/category diversity in confidence calculation.",
+    )
+
+    # ── Prompt template ───────────────────────────────────────────────────────
+    system_prompt: str = Field(
+        default=(
+            "You are a medical assistant. Answer ONLY from the provided evidence. "
+            "Cite every claim as [E#]. If evidence is insufficient, say so. "
+            "Do NOT diagnose or prescribe. "
+            "End with: This is information, not medical advice — consult your physician."
+        ),
+        description="System prompt sent to the model on every generation call.",
+    )
+
+    # ── Verbosity ─────────────────────────────────────────────────────────────
+    verbose: bool = Field(
+        default=False,
+        description="Enable verbose llama.cpp logging (chatty — disable in production).",
+    )
+
+
+# ---------------------------------------------------------------------------
+# Project root resolved relative to this file's location
+# ---------------------------------------------------------------------------
+_BACKEND_DIR = Path(__file__).parent.parent        # backend/
+_PROJECT_ROOT = _BACKEND_DIR.parent               # MedGraphRag/
+
+
+class Settings(BaseSettings):
+    """
+    All tunable knobs for the MedGraphRAG retrieval backend.
+
+    Defaults are production-ready for the global CPU-only index.
+    Override any value via environment variable or .env file.
+    """
+
+    model_config = SettingsConfigDict(
+        env_prefix="MEDGRAPH_",
+        env_file=[str(_PROJECT_ROOT / ".env"), str(_BACKEND_DIR / ".env")],
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore",
+    )
+
+    # ── Index paths ──────────────────────────────────────────────────────────
+    project_root: Path = Field(
+        default=_PROJECT_ROOT,
+        description="Absolute path to the MedGraphRag project root.",
+    )
+    index_dir: Path = Field(
+        default=_PROJECT_ROOT / "index" / "global",
+        description="Read-only index artifact directory.",
+    )
+    faiss_index_path: Path = Field(
+        default=_PROJECT_ROOT / "index" / "global" / "faiss.index",
+        description="Path to the IVFpq FAISS index file.",
+    )
+    sidecar_parquet_path: Path = Field(
+        default=_PROJECT_ROOT / "index" / "global" / "id_mapping.parquet",
+        description="Path to the chunk-id sidecar Parquet file.",
+    )
+    chunks_jsonl_path: Path = Field(
+        default=_PROJECT_ROOT / "index" / "global" / "chunks.jsonl",
+        description="Path to the chunks JSONL text file.",
+    )
+    chunk_offsets_npy_path: Path = Field(
+        default=_PROJECT_ROOT / "index" / "global" / "chunk_line_offsets.npy",
+        description="Path to the precomputed byte-offset index for chunks.jsonl.",
+    )
+    kuzu_db_path: Path = Field(
+        default=_PROJECT_ROOT / "index" / "global" / "kuzu_db_v5",
+        description="Path to the Kùzu single-file graph database.",
+    )
+
+    # ── Embedding model ───────────────────────────────────────────────────────
+    embed_model_name: str = Field(
+        default="ncbi/MedCPT-Query-Encoder",
+        description="HuggingFace model name for query encoding (CPU-only).",
+    )
+    embed_device: str = Field(
+        default="cpu",
+        description="Torch device for embedding. Must remain 'cpu' to reserve GPU for LLM.",
+    )
+    embed_max_length: int = Field(
+        default=512,
+        description="Max token length for the query encoder.",
+    )
+    embed_batch_size: int = Field(
+        default=1,
+        description="Batch size for query encoding (1 is fine; queries arrive one at a time).",
+    )
+
+    # ── FAISS search ─────────────────────────────────────────────────────────
+    faiss_top_k_raw: int = Field(
+        default=80,
+        description=(
+            "Number of raw candidates to fetch from FAISS before category filtering. "
+            "Larger value compensates for lab_reference dominance (71% of index)."
+        ),
+    )
+    faiss_nprobe: int = Field(
+        default=64,
+        description=(
+            "IVFpq nprobe — number of Voronoi cells to inspect. "
+            "Higher = better recall, lower latency cost. 64 is a good balance."
+        ),
+    )
+
+    # ── Category balancing / caps ─────────────────────────────────────────────
+    # lab_reference is 71.70% of the index; without a cap it floods every result.
+    # These caps apply AFTER FAISS retrieval and BEFORE fusion.
+    category_max_chunks: Dict[str, int] = Field(
+        default={
+            "lab_reference":      5,   # hard cap — lab templates dominate (71% of index)
+            "guideline":         10,
+            "drug":               8,
+            "textbook":          10,
+            "research_paper":    10,
+            "disease":            6,
+            "clinical_reference": 5,
+        },
+        description=(
+            "Per-category hard cap on number of FAISS chunks included in fusion. "
+            "Prevents lab_reference (71% of index) from flooding non-lab queries."
+        ),
+    )
+    faiss_final_k: int = Field(
+        default=30,
+        description="Total candidate pool size after category balancing, fed into fusion.",
+    )
+
+    # ── Graph traversal ───────────────────────────────────────────────────────
+    graph_seed_docs: int = Field(
+        default=5,
+        description="Number of top FAISS document_ids used as graph traversal seeds.",
+    )
+    graph_max_hops: int = Field(
+        default=2,
+        description="Maximum graph traversal depth from seed nodes.",
+    )
+    graph_entity_chunk_limit: int = Field(
+        default=6,
+        description=(
+            "Max chunks to pull back per graph-reached entity "
+            "(via DOCUMENT_MENTIONS or HAS_CHUNK pivot)."
+        ),
+    )
+    graph_max_results: int = Field(
+        default=20,
+        description="Max number of graph-sourced EvidenceItems returned.",
+    )
+
+    # ── Edge trust tiers ─────────────────────────────────────────────────────
+    # High-trust: ontological / diagnostic / structural linkage.
+    # Low-trust: drug–disease edges — known noisy (Ketorolac→Asthma, etc.)
+    high_trust_edges: List[str] = Field(
+        default=["LABTEST_RELATED_TO", "DISEASE_MAPPED_TO", "DOCUMENT_MENTIONS",
+                 "IS_A", "RELATED_TO"],
+        description="Edge types treated as high-trust; their evidence gets a graph boost.",
+    )
+    low_trust_edges: List[str] = Field(
+        default=["DRUG_TREATS", "DRUG_CAUSES", "DRUG_CAUSES_SE"],
+        description=(
+            "Edge types treated as low-trust (noisy drug–disease edges). "
+            "Graph results reached exclusively via these edges are down-weighted."
+        ),
+    )
+    low_trust_score_penalty: float = Field(
+        default=0.5,
+        description="Multiplicative penalty applied to graph_score for low-trust-only paths.",
+    )
+
+    # ── Reciprocal Rank Fusion (RRF) ─────────────────────────────────────────
+    rrf_k: int = Field(
+        default=60,
+        description="RRF smoothing constant k. Standard value: 60.",
+    )
+    rrf_faiss_weight: float = Field(
+        default=1.0,
+        description="Weight for the FAISS ranking list in RRF fusion.",
+    )
+    rrf_graph_weight: float = Field(
+        default=0.8,
+        description="Weight for the graph ranking list in RRF fusion.",
+    )
+    graph_boost: float = Field(
+        default=0.15,
+        description=(
+            "Additive bonus to fused_score for chunks supported by ≥1 high-trust edge. "
+            "Rewards evidence corroborated by the knowledge graph."
+        ),
+    )
+
+    # ── Kùzu database ────────────────────────────────────────────────────────
+    kuzu_buffer_pool_mb: int = Field(
+        default=384,
+        description="Kùzu buffer pool size in MB. Kept low to stay within 12 GB RAM budget.",
+    )
+    kuzu_max_db_size_gb: int = Field(
+        default=4,
+        description="Kùzu max virtual DB size cap in GB.",
+    )
+    kuzu_max_threads: int = Field(
+        default=2,
+        description="Kùzu max worker threads.",
+    )
+
+    # ── Final output ─────────────────────────────────────────────────────────
+    retrieval_top_n: int = Field(
+        default=10,
+        description="Number of EvidenceItems returned in the final RetrievalResult.",
+    )
+    text_snippet_max_chars: int = Field(
+        default=400,
+        description="Max characters in the text snippet stored on each EvidenceItem.",
+    )
+
+    # ── LLM & Generation settings (Step 7) ───────────────────────────────────
+    llm_repo: str = Field(
+        default="bartowski/Qwen2.5-7B-Instruct-GGUF",
+        description="HuggingFace GGUF repository for the generation LLM.",
+    )
+    llm_gguf_file: str = Field(
+        default="Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+        description="GGUF filename to download/load.",
+    )
+    llm_model_path: Path = Field(
+        default=_PROJECT_ROOT / "models" / "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+        description="Local filesystem path to the GGUF model weights.",
+    )
+
+    # Documented fallback model info (for reference/swapping):
+    # llm_repo="bartowski/Mistral-7B-Instruct-v0.3-GGUF"
+    # llm_gguf_file="Mistral-7B-Instruct-v0.3-Q4_K_M.gguf"
+
+    llm_n_gpu_layers: int = Field(
+        default=-1,
+        description="Number of layers to offload to GPU (-1 = full offload).",
+    )
+    llm_n_ctx: int = Field(
+        default=6144,
+        description="Context window size in tokens (6144 keeps VRAM usage ≤ 5.5 GB).",
+    )
+    llm_flash_attn: bool = Field(
+        default=True,
+        description="Enable Flash Attention in llama.cpp.",
+    )
+    llm_offload_kqv: bool = Field(
+        default=True,
+        description="Offload KV cache to GPU memory.",
+    )
+    llm_type_k: str = Field(
+        default="q8_0",
+        description="Quantization type for key cache (q8_0 saves VRAM).",
+    )
+    llm_type_v: str = Field(
+        default="q8_0",
+        description="Quantization type for value cache (q8_0 saves VRAM).",
+    )
+    llm_temperature: float = Field(
+        default=0.2,
+        description="Sampling temperature for deterministic medical grounding.",
+    )
+    llm_max_tokens: int = Field(
+        default=800,
+        description="Maximum generation tokens per answer.",
+    )
+
+    # Context builder limits
+    context_max_tokens: int = Field(
+        default=2500,
+        description="Maximum estimated tokens for evidence context prompt payload.",
+    )
+    evidence_max_per_prompt: int = Field(
+        default=8,
+        description="Max number of top evidence items formatted into system context.",
+    )
+
+    # System prompt
+    system_prompt: str = Field(
+        default=(
+            "You are a medical assistant. Answer ONLY from the provided evidence. "
+            "Cite every claim as [E#]. If evidence is insufficient, say so. "
+            "Do NOT diagnose or prescribe. End with: This is information, not medical advice — consult your physician."
+        ),
+        description="Strict medical grounding system prompt.",
+    )
+
+    # Evidence confidence weights
+    confidence_weight_fused: float = Field(
+        default=0.6,
+        description="Weight of mean fused score in evidence confidence.",
+    )
+    confidence_weight_agreement: float = Field(
+        default=0.4,
+        description="Weight of distinct category/source agreement in evidence confidence.",
+    )
+
+    # ── Logging ──────────────────────────────────────────────────────────────
+    log_level: str = Field(
+        default="INFO",
+        description="Python logging level for the backend.",
+    )
+
+    @field_validator("embed_device")
+    @classmethod
+    def _enforce_cpu(cls, v: str) -> str:
+        """GPU must remain reserved for the future LLM (Step 7+)."""
+        if v.lower().startswith("cuda"):
+            raise ValueError(
+                "embed_device must be 'cpu'. GPU is reserved for the LLM. "
+                "Set MEDGRAPH_EMBED_DEVICE=cpu or omit the variable."
+            )
+        return v.lower()
+
+
+# ---------------------------------------------------------------------------
+# Module-level singleton — import this everywhere
+# ---------------------------------------------------------------------------
+settings = Settings()
+

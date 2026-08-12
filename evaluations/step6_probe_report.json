@@ -1,0 +1,353 @@
+{
+  "step": 6,
+  "description": "Hybrid Retrieval Engine Probe Evaluation",
+  "probe_count": 10,
+  "passes": 10,
+  "avg_latency_ms": 47.84176090033725,
+  "avg_steady_latency_ms": 45.234185778099345,
+  "peak_ram_gb": 3.271036928,
+  "vram_mb": 0.0,
+  "probes": [
+    {
+      "id": "P01",
+      "query": "warfarin INR monitoring guidelines atrial fibrillation",
+      "latency_ms": 71.30993700047839,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 8,
+        "guideline": 2
+      },
+      "source_mix": {
+        "faiss": 5,
+        "graph": 0,
+        "both": 5
+      },
+      "lab_pct": 0.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 24.30425800048397,
+        "faiss_ms": 4.735976002848474,
+        "graph_ms": 39.533325001684716,
+        "fuse_ms": 0.07999000081326813,
+        "text_load_ms": 1.9746420002775267,
+        "total_ms": 71.30993700047839
+      },
+      "pass": true,
+      "expected_cats_present": true
+    },
+    {
+      "id": "P02",
+      "query": "ACE inhibitor hypertension treatment first line",
+      "latency_ms": 53.5229450033512,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 5,
+        "guideline": 5
+      },
+      "source_mix": {
+        "faiss": 5,
+        "graph": 0,
+        "both": 5
+      },
+      "lab_pct": 0.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 32.57589599888888,
+        "faiss_ms": 5.948533002083423,
+        "graph_ms": 12.871949998952914,
+        "fuse_ms": 0.07185399954323657,
+        "text_load_ms": 1.5742439973109867,
+        "total_ms": 53.5229450033512
+      },
+      "pass": true,
+      "expected_cats_present": false
+    },
+    {
+      "id": "P03",
+      "query": "critical hemoglobin levels anemia transfusion threshold",
+      "latency_ms": 45.8910540000943,
+      "n_items": 10,
+      "categories": {
+        "lab_reference": 5,
+        "research_paper": 4,
+        "guideline": 1
+      },
+      "source_mix": {
+        "faiss": 7,
+        "graph": 0,
+        "both": 3
+      },
+      "lab_pct": 50.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 23.39126099832356,
+        "faiss_ms": 4.2647650006983895,
+        "graph_ms": 16.517597003257833,
+        "fuse_ms": 0.07051200009300373,
+        "text_load_ms": 1.1809880015789531,
+        "total_ms": 45.8910540000943
+      },
+      "pass": true,
+      "expected_cats_present": true
+    },
+    {
+      "id": "P04",
+      "query": "troponin elevation myocardial infarction diagnosis",
+      "latency_ms": 43.80704800132662,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 5,
+        "lab_reference": 1,
+        "textbook": 2,
+        "drug": 2
+      },
+      "source_mix": {
+        "faiss": 9,
+        "graph": 0,
+        "both": 1
+      },
+      "lab_pct": 10.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 24.874343998817494,
+        "faiss_ms": 4.882399000052828,
+        "graph_ms": 11.960756000917172,
+        "fuse_ms": 0.08580999929108657,
+        "text_load_ms": 1.53080299787689,
+        "total_ms": 43.80704800132662
+      },
+      "pass": true,
+      "expected_cats_present": false
+    },
+    {
+      "id": "P05",
+      "query": "metformin type 2 diabetes contraindications renal failure",
+      "latency_ms": 42.81111499949475,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 2,
+        "guideline": 8
+      },
+      "source_mix": {
+        "faiss": 8,
+        "graph": 0,
+        "both": 2
+      },
+      "lab_pct": 0.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 27.141252998262644,
+        "faiss_ms": 4.829972000152338,
+        "graph_ms": 9.380770999996457,
+        "fuse_ms": 0.08210400119423866,
+        "text_load_ms": 0.9190279997710604,
+        "total_ms": 42.81111499949475
+      },
+      "pass": true,
+      "expected_cats_present": false
+    },
+    {
+      "id": "P06",
+      "query": "aspirin side effects gastrointestinal bleeding risk",
+      "latency_ms": 45.50756699973135,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 5,
+        "textbook": 4,
+        "lab_reference": 1
+      },
+      "source_mix": {
+        "faiss": 8,
+        "graph": 0,
+        "both": 2
+      },
+      "lab_pct": 10.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 23.33697900030529,
+        "faiss_ms": 4.25040799746057,
+        "graph_ms": 15.79229100025259,
+        "fuse_ms": 0.07209500108729117,
+        "text_load_ms": 1.6390550008509308,
+        "total_ms": 45.50756699973135
+      },
+      "pass": true,
+      "expected_cats_present": false
+    },
+    {
+      "id": "P07",
+      "query": "deep vein thrombosis DVT diagnosis treatment anticoagulation",
+      "latency_ms": 40.80685699955211,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 10
+      },
+      "source_mix": {
+        "faiss": 4,
+        "graph": 0,
+        "both": 6
+      },
+      "lab_pct": 0.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 23.312393001106102,
+        "faiss_ms": 3.9942600014910568,
+        "graph_ms": 11.718803998519434,
+        "fuse_ms": 0.04355200144345872,
+        "text_load_ms": 1.3576900018961169,
+        "total_ms": 40.80685699955211
+      },
+      "pass": true,
+      "expected_cats_present": false
+    },
+    {
+      "id": "P08",
+      "query": "sepsis SOFA score organ dysfunction criteria",
+      "latency_ms": 53.08806199900573,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 9,
+        "guideline": 1
+      },
+      "source_mix": {
+        "faiss": 5,
+        "graph": 0,
+        "both": 5
+      },
+      "lab_pct": 0.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 22.05361000233097,
+        "faiss_ms": 4.697132997534936,
+        "graph_ms": 24.389557998802047,
+        "fuse_ms": 0.06045299960533157,
+        "text_load_ms": 1.4320279988169204,
+        "total_ms": 53.08806199900573
+      },
+      "pass": true,
+      "expected_cats_present": true
+    },
+    {
+      "id": "P09",
+      "query": "mechanism of action beta blocker cardiac output heart rate",
+      "latency_ms": 41.737686999113066,
+      "n_items": 10,
+      "categories": {
+        "textbook": 9,
+        "guideline": 1
+      },
+      "source_mix": {
+        "faiss": 10,
+        "graph": 0,
+        "both": 0
+      },
+      "lab_pct": 0.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": []
+      },
+      "breakdown_ms": {
+        "embed_ms": 26.75461000035284,
+        "faiss_ms": 4.667557997890981,
+        "graph_ms": 8.600361998105654,
+        "fuse_ms": 0.08771400098339655,
+        "text_load_ms": 1.1613120004767552,
+        "total_ms": 41.737686999113066
+      },
+      "pass": true,
+      "expected_cats_present": true
+    },
+    {
+      "id": "P10",
+      "query": "potassium hyperkalemia ECG changes peaked T waves treatment",
+      "latency_ms": 39.93533700122498,
+      "n_items": 10,
+      "categories": {
+        "research_paper": 9,
+        "textbook": 1
+      },
+      "source_mix": {
+        "faiss": 7,
+        "graph": 0,
+        "both": 3
+      },
+      "lab_pct": 0.0,
+      "graph_stats": {
+        "seeds_used": 5,
+        "entities_reached": 0,
+        "chunks_from_graph": 0,
+        "edges_traversed": [
+          "HAS_CHUNK"
+        ]
+      },
+      "breakdown_ms": {
+        "embed_ms": 23.060892999637872,
+        "faiss_ms": 4.225912001857068,
+        "graph_ms": 10.707763998652808,
+        "fuse_ms": 0.09365500227431767,
+        "text_load_ms": 1.3455860025715083,
+        "total_ms": 39.93533700122498
+      },
+      "pass": true,
+      "expected_cats_present": false
+    }
+  ]
+}
