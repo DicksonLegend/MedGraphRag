@@ -81,14 +81,57 @@ def apply_category_caps(
     return capped
 
 
+import re
+
 # ---------------------------------------------------------------------------
-# Document-Level Deduplication
+# Evidence Hygiene & Blocklist Filtering
+# ---------------------------------------------------------------------------
+
+def is_blocklisted(item: Dict[str, Any]) -> bool:
+    """Check if document_id or chunk_id matches blocklist rules."""
+    doc_id = str(item.get("document_id", "") or item.get("source_doc", ""))
+    chunk_id = str(item.get("chunk_id", ""))
+
+    blocklist = settings.evidence_blocklist
+    for kw in blocklist:
+        if kw in doc_id or kw in chunk_id:
+            return True
+    if doc_id.endswith("Metadata/summary") or chunk_id.endswith("Metadata/summary"):
+        return True
+    return False
+
+
+def filter_blocklisted_candidates(candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Filter out candidate dicts matching evidence blocklist."""
+    filtered = [item for item in candidates if not is_blocklisted(item)]
+    dropped = len(candidates) - len(filtered)
+    if dropped > 0:
+        logger.info("Evidence hygiene: dropped %d blocklisted candidate(s).", dropped)
+    return filtered
+
+
+# ---------------------------------------------------------------------------
+# Document-Level Deduplication & PMC Canonicalization
 # ---------------------------------------------------------------------------
 
 def get_canonical_doc_id(doc_id: str) -> str:
-    """Extract canonical document identifier (e.g. PMID_38823454 from subfolder paths)."""
+    """
+    Extract canonical document identifier.
+    Treats PMC XML/PDF/Metadata twins (e.g. PMC9310818) and PMID documents as same document.
+    """
     if not doc_id:
         return ""
+
+    # Check for PMC ID match (e.g. PMC9310818)
+    pmc_match = re.search(r"PMC\d+", doc_id)
+    if pmc_match:
+        return pmc_match.group(0)
+
+    # Check for PMID match (e.g. PMID_38823454)
+    pmid_match = re.search(r"PMID_\d+", doc_id)
+    if pmid_match:
+        return pmid_match.group(0)
+
     return doc_id.split("/")[-1]
 
 
@@ -162,6 +205,10 @@ def rrf_fuse(
     w_graph = settings.rrf_graph_weight
     boost = settings.graph_boost
     penalty = settings.low_trust_score_penalty
+
+    # ── Filter blocklisted candidates ─────────────────────────────────────────
+    faiss_candidates = filter_blocklisted_candidates(faiss_candidates)
+    graph_candidates = filter_blocklisted_candidates(graph_candidates)
 
     # ── Build lookup by chunk_id ─────────────────────────────────────────────
     merged: Dict[str, Dict[str, Any]] = {}
@@ -245,6 +292,14 @@ def rrf_fuse(
 
     # ── Sort by fused_score ─────────────────────────────────────────────────
     ranked = sorted(merged.values(), key=lambda x: x["fused_score"], reverse=True)
+
+    # ── Category boost for clinical guidelines ────────────────────────────────
+    for item in ranked:
+        cat = str(item.get("category", "")).lower()
+        if "guideline" in cat:
+            item["fused_score"] = round(item["fused_score"] * 1.05, 4)
+
+    ranked = sorted(ranked, key=lambda x: x["fused_score"], reverse=True)
 
     # ── Document-level deduplication ─────────────────────────────────────────
     deduped = apply_document_dedup(ranked)

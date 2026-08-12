@@ -1,0 +1,1847 @@
+{
+  "step": 8,
+  "description": "Verification Agent Evaluation (Self-Verifying RAG Layer)",
+  "model_gguf": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+  "probe_count": 10,
+  "passes": 10,
+  "status_breakdown": {
+    "caution": 4,
+    "refusal": 4,
+    "verified": 1,
+    "uncertain": 1
+  },
+  "avg_latency_ms": 21049.931044800906,
+  "peak_ram_gb": 3.623796736,
+  "peak_vram_mb": 4784.0,
+  "probes": [
+    {
+      "id": "P01",
+      "query": "warfarin INR monitoring guidelines atrial fibrillation",
+      "description": "Anticoagulation guideline \u2014 should produce cited guidance on INR monitoring",
+      "answer_status": "caution",
+      "final_confidence": 0.601,
+      "confidence_tier": "medium",
+      "evidence_confidence": 0.503,
+      "faithfulness_score": 0.667,
+      "n_claims": 3,
+      "n_supported": 2,
+      "n_contradicted": 0,
+      "n_not_mentioned": 1,
+      "n_refusal_valid": 0,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.601
+      ],
+      "latency_total_ms": 20311.681630002568,
+      "latency_breakdown": {
+        "retrieval_ms": 251.18529699830106,
+        "retrieval_embed_ms": 25.653995995526202,
+        "retrieval_faiss_ms": 4.956078999384772,
+        "retrieval_graph_ms": 219.8359440008062,
+        "retrieval_fuse_ms": 0.0955199939198792,
+        "retrieval_text_load_ms": 0.12582600174937397,
+        "retrieval_total_ms": 251.10503700125264,
+        "context_ms": 0.053449999541044235,
+        "llm_ms": 6470.133255999826,
+        "total_ms": 20014.492664995487,
+        "verification_ms": 13272.74545099499
+      },
+      "ram_gb": 3.47736064,
+      "vram_mb": 4782.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "The provided evidence does not directly address specific INR monitoring guidelines for atrial fibrillation and warfarin use. However, [E4] mentions a prognostic model for bleeding risk assessment in patients with atrial fibrillation (AF), which includes monitoring for conditions that might affect INR, such as liver function tests and age. Additionally, [E6] provides a critical INR value of >5.0, which might be relevant for understanding the upper limit of INR values that are considered safe.\n\nFor more detailed INR monitoring guidelines, you would need to refer to specific clinical practice guidelines or consensus statements, such as the 2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation [E5], which is not included in the provided evidence but is a relevant source for such guidelines.\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "The provided evidence does not directly address specific INR monitoring guidelines for atrial fibrillation and warfarin use.",
+            "cited_labels": [
+              "[E4]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The cited evidence does not mention specific INR monitoring guidelines for atrial fibrillation and warfarin use. It discusses a prognostic model for bleeding risk assessment and recommends reconsidering anticoagulation in high-risk individuals, but does not provide specific guidelines for INR monitoring.",
+          "cited_snippets": [
+            "[E4]: normal with AST/ALT/AP >3\u00d7 normal, stroke, bleeding or predisposition to bleeding, labile INR, age >65, medications predisposing to bleeding, alcohol use) is a widely used prognostic model for bleeding risk assessment of patients with AF (, ). A score \u22653 indicates a high bleeding risk; hence, the initiation of anticoagulation should be reconsidered in high-risk individuals (, ). These recommendati"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "E4 mentions a prognostic model for bleeding risk assessment in patients with atrial fibrillation (AF), which includes monitoring for conditions that might affect INR, such as liver function tests and age.",
+            "cited_labels": [
+              "[E4]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence mentions that the prognostic model for bleeding risk assessment in patients with atrial fibrillation (AF) includes conditions such as liver function tests (indicated by AST/ALT/AP >3\u00d7 normal) and age >65, which aligns with the claim. The claim accurately states that the model includes monitoring for conditions that might affect INR and mentions liver function tests and age as relevant factors.",
+          "cited_snippets": [
+            "[E4]: normal with AST/ALT/AP >3\u00d7 normal, stroke, bleeding or predisposition to bleeding, labile INR, age >65, medications predisposing to bleeding, alcohol use) is a widely used prognostic model for bleeding risk assessment of patients with AF (, ). A score \u22653 indicates a high bleeding risk; hence, the initiation of anticoagulation should be reconsidered in high-risk individuals (, ). These recommendati"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "E6 provides a critical INR value of >5.0, which might be relevant for understanding the upper limit of INR values that are considered safe.",
+            "cited_labels": [
+              "[E6]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that the critical high INR value is >5.0, which aligns with the claim that E6 provides a critical INR value of >5.0. This supports the claim that this value is relevant for understanding the upper limit of INR values that are considered safe.",
+          "cited_snippets": [
+            "[E6]: INR (Coagulation): critical high >5.0."
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+          "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Anticoagulation for stroke prevention in atrial fibrillation and treatment of venous thromboembolism and portal vein thrombosis in cirrhosis: guidance from the SSC of the ISTH.",
+          "snippet": "[ \"anticoagulation\", \"atrial fibrillation\", \"liver cirrhosis\", \"portal vein\", \"venous thrombosis\" ], \"mesh_terms\": [ \"Humans\", \"Atrial Fibrillation\", \"Liver Cirrhosis\", \"Portal Vein\", \"Anticoagulants\", \"Risk Factors\", \"Venous Thromboembolism\", \"Venous Thrombosis\", \"Stroke\", \"Treatment Outcome\", \"Hemorrhage\", \"Blood Coagulation\", \"Risk Assessment\", \"Heparin, Low-Molecular-Weight\" ], \"publication_ty",
+          "fused_score": 0.1770601092896175,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c16",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Chronic heart failure in adults: diagnosis and management",
+          "snippet": "2, consider measuring N-terminal pro-B-type natriuretic peptide as part of optimising treatment. [2018] Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 21 of 39 1.9 Other treatments and advice for all types of \nheart failure \nDiuretics \n1.9.1 \nUse d",
+          "fused_score": 0.015151515151515152,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207__c13",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "MM5207.p65",
+          "snippet": "take a pulse for themselves or their family members. The findings in this report are subject to at least two limita- tions. First, data are subject to misclassification of race/ ethnicity both in the population census and on death certifi- cates, possibly resulting in overreporting among blacks and whites and underreporting among other racial/ethnic groups (9). Second, it was not possible to deter",
+          "fused_score": 0.014925373134328358,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Research_papers/PMC/XML/PMC11046323/article__c20",
+          "document_id": "Research_papers/PMC/XML/PMC11046323/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Epidemiology, prognosis, and challenges in the management of hyperthyroidism-related atrial fibrillation",
+          "snippet": "normal with AST/ALT/AP >3\u00d7 normal, stroke, bleeding or predisposition to bleeding, labile INR, age >65, medications predisposing to bleeding, alcohol use) is a widely used prognostic model for bleeding risk assessment of patients with AF (, ). A score \u22653 indicates a high bleeding risk; hence, the initiation of anticoagulation should be reconsidered in high-risk individuals (, ). These recommendati",
+          "fused_score": 0.014705882352941176,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Research_papers/PubMed/Metadata/download_log__row125",
+          "document_id": "Research_papers/PubMed/Metadata/download_log",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "structured_row",
+          "title": null,
+          "snippet": "pmid: 38033089; disease: Stroke; category: Cardiovascular Diseases; title: 2023 ACC/AHA/ACCP/HRS Guideline for the Diagnosis and Management of Atrial Fibrillation: A Report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines.; timestamp: 2026-07-20T13:15:13+00:00.",
+          "fused_score": 0.014492753623188406,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row167",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "source": "Lab_rev_data",
+          "category": "lab_reference",
+          "chunk_type": "structured_row",
+          "title": null,
+          "snippet": "INR (Coagulation): critical high >5.0.",
+          "fused_score": 0.0136986301369863,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656",
+          "source": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Pacing-induced cardiomyopathy is a potential complication of right ventricular pacing. Definition varies between studies and the optimal management approach is uncertain. We aimed to characterize definition, prevalence, risk factors, and treatment strategies of pacing-induced cardiomyopathy (PiCM). We performed a systematic review and meta-analysis of studies that evaluated PiCM after pacemaker im",
+          "fused_score": 0.013114754098360656,
+          "source_type": "graph"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908",
+          "source": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Atrial fibrillation (AF) is a complex disease requiring a multidomain and (usually) long-term management, thus posing a significant burden to patients with AF, practitioners, and health care system. Unlike cardiovascular conditions with a narrow referral pathway (e.g., acute coronary syndrome), AF may be first detected by a wide range of specialties (often noncardiology) or a general practitioner.",
+          "fused_score": 0.012698412698412698,
+          "source_type": "graph"
+        }
+      ]
+    },
+    {
+      "id": "P02",
+      "query": "ACE inhibitor hypertension treatment first line",
+      "description": "Hypertension treatment \u2014 first-line ACE inhibitor recommendations",
+      "answer_status": "refusal",
+      "final_confidence": 0.85,
+      "confidence_tier": "high",
+      "evidence_confidence": 0.624,
+      "faithfulness_score": 1.0,
+      "n_claims": 1,
+      "n_supported": 0,
+      "n_contradicted": 0,
+      "n_not_mentioned": 0,
+      "n_refusal_valid": 1,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.85
+      ],
+      "latency_total_ms": 3559.245443000691,
+      "latency_breakdown": {
+        "retrieval_ms": 177.1128280015546,
+        "retrieval_embed_ms": 24.42025799973635,
+        "retrieval_faiss_ms": 4.95204099570401,
+        "retrieval_graph_ms": 146.95598399703158,
+        "retrieval_fuse_ms": 0.11698000162141398,
+        "retrieval_text_load_ms": 0.16171400056919083,
+        "retrieval_total_ms": 177.01625699555734,
+        "context_ms": 0.03920399467460811,
+        "llm_ms": 3164.365426004224,
+        "total_ms": 3363.083144002303,
+        "verification_ms": 0.09829500049818307
+      },
+      "ram_gb": 3.48903424,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "The provided evidence does not specifically mention ACE inhibitors as first-line treatment for hypertension. Therefore, based on the given evidence, I cannot provide a definitive answer regarding ACE inhibitors being first-line treatment for hypertension [E1][E2][E3][E4][E5][E6][E7][E8]. \n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "The provided evidence does not specifically mention ACE inhibitors as first-line treatment for hypertension. Therefore, based on the given evidence, I cannot provide a definitive answer regarding ACE inhibitors being first-line treatment for hypertension [E1][E2][E3][E4][E5][E6][E7][E8]. \n\nThis is i",
+            "cited_labels": [
+              "[E1]",
+              "[E2]",
+              "[E3]",
+              "[E4]",
+              "[E5]",
+              "[E6]",
+              "[E7]",
+              "[E8]"
+            ],
+            "claim_type": "refusal"
+          },
+          "verdict": "refusal_valid",
+          "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
+          "cited_snippets": [
+            "Outcome 52: Antihypertensive medication use........................................................................................................................................................ 248 Analysis 1.53. Comparison 1: Low-sodium salt substitutes versus regular salt or no active intervention in adults, Outcome 53: Antihypertensive medication use; subgroup study duration..................",
+            "and monitoring hypertension .......................................................................................... 10 1.5 Identifying who to refer for same-day specialist review ............................................................. 24 Terms used in this guideline ................................................................................................................. 25 Recomme",
+            "key questions and rated outcomes to identify those critical for the development of the guideline. Conflicts of interest were handled in line with the current Compliance, Risk Management and Ethics (CRE) policy and all members of the GDG were asked to fill in the standard WHO Declaration of Interest (DOI) forms, which were reviewed. An overview of systematic reviews of the evidence was used to buil"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PMC/PDFs/PMC9363242/article__c5",
+          "document_id": "Research_papers/PMC/PDFs/PMC9363242/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Cochrane Database of Systematic Reviews",
+          "snippet": "Outcome 52: Antihypertensive medication use........................................................................................................................................................ 248 Analysis 1.53. Comparison 1: Low-sodium salt substitutes versus regular salt or no active intervention in adults, Outcome 53: Antihypertensive medication use; subgroup study duration..................",
+          "fused_score": 0.17851465474416295,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c1",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Hypertension in adults: diagnosis and management",
+          "snippet": "and monitoring hypertension .......................................................................................... 10 1.5 Identifying who to refer for same-day specialist review ............................................................. 24 Terms used in this guideline ................................................................................................................. 25 Recomme",
+          "fused_score": 0.1753846153846154,
+          "source_type": "both"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c5",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "pharmacological",
+          "snippet": "key questions and rated outcomes to identify those critical for the development of the guideline. Conflicts of interest were handled in line with the current Compliance, Risk Management and Ethics (CRE) policy and all members of the GDG were asked to fill in the standard WHO Declaration of Interest (DOI) forms, which were reviewed. An overview of systematic reviews of the evidence was used to buil",
+          "fused_score": 0.17341430499325236,
+          "source_type": "both"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Lorundrostat in Participants With Uncontrolled Hypertension and Treatment-Resistant Hypertension: The Launch-HTN Randomized Clinical Trial.",
+          "snippet": "IMPORTANCE: Uncontrolled hypertension remains a global health concern and dysregulated aldosterone production is a central mechanism. Lorundrostat, a novel aldosterone synthase inhibitor that reduces aldosterone production, demonstrated efficacy in participants with uncontrolled hypertension, including those with treatment-resistant hypertension. OBJECTIVE: To evaluate the efficacy and safety of l",
+          "fused_score": 0.014925373134328358,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c28",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Chronic heart failure in adults: diagnosis and management",
+          "snippet": "NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 36 of 39 In people with heart failure with reduced ejection fraction there will be a need to change the ethos of stepwise introduction of medicines and allow early initiation of multiple medicines before optimising the doses of each. The reason for the different approa",
+          "fused_score": 0.014492753623188406,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Prevention, Detection, Evaluation, and Management of High Blood Pressure in Adults: Synopsis of the 2017 American College of Cardiology/American Heart Association Hypertension Guideline.",
+          "snippet": "DESCRIPTION: In November 2017, the American College of Cardiology (ACC) and the American Heart Association (AHA) released a clinical practice guideline for the prevention, detection, evaluation, and treatment of high blood pressure (BP) in adults. This article summarizes the major recommendations. METHODS: In 2014, the ACC and the AHA appointed a multidisciplinary committee to update previous repo",
+          "fused_score": 0.014285714285714285,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c19",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Chronic kidney disease: assessment and management",
+          "snippet": "the 50th percentile for height. [2021] For a short explanation of why the committee made these recommendations and how they might affect practice, see the rationale and impact section on pharmacotherapy for blood pressure control. Full details of the evidence and the committee's discussion are in evidence review G: optimal blood pressure targets. Treating hypertension \n1.6.4 \nFollow the recommenda",
+          "fused_score": 0.01282051282051282,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Research_papers/PubMed/Metadata/download_log__row93",
+          "document_id": "Research_papers/PubMed/Metadata/download_log",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "structured_row",
+          "title": null,
+          "snippet": "pmid: 40419299; disease: Hypertension; category: Cardiovascular Diseases; title: Hypertension Canada guideline for the diagnosis and treatment of hypertension in adults in primary care.; timestamp: 2026-07-20T13:15:09+00:00.",
+          "fused_score": 0.0125,
+          "source_type": "faiss"
+        }
+      ]
+    },
+    {
+      "id": "P03",
+      "query": "critical hemoglobin levels anemia transfusion threshold",
+      "description": "Critical lab values \u2014 transfusion thresholds and critical levels",
+      "answer_status": "verified",
+      "final_confidence": 0.801,
+      "confidence_tier": "high",
+      "evidence_confidence": 0.502,
+      "faithfulness_score": 1.0,
+      "n_claims": 3,
+      "n_supported": 3,
+      "n_contradicted": 0,
+      "n_not_mentioned": 0,
+      "n_refusal_valid": 0,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.801
+      ],
+      "latency_total_ms": 18773.57784599735,
+      "latency_breakdown": {
+        "retrieval_ms": 145.91429800202604,
+        "retrieval_embed_ms": 24.43267199851107,
+        "retrieval_faiss_ms": 5.174539001018275,
+        "retrieval_graph_ms": 115.5731190010556,
+        "retrieval_fuse_ms": 0.1039749986375682,
+        "retrieval_text_load_ms": 0.1403639980708249,
+        "retrieval_total_ms": 145.831793997786,
+        "context_ms": 0.04018599429400638,
+        "llm_ms": 7178.195188003883,
+        "total_ms": 18606.59815100371,
+        "verification_ms": 11260.825625999132
+      },
+      "ram_gb": 3.49648896,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "Based on the provided evidence, the critical hemoglobin levels for anemia are defined as follows:\n\n- Hemoglobin concentration less than 6.0 g/dL is considered a critical low level [E2].\n- Hemoglobin concentration greater than 20.0 g/dL is considered a critical high level [E2].\n- In pregnancy, a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester (depending on the guideline used) is considered anemia [E4].\n\nFor the transfusion threshold, the evidence does not provide specific hemoglobin levels at which a transfusion is indicated. However, it is implied that hemoglobin levels significantly below the normal range, particularly in the context of pregnancy or other conditions like chronic kidney disease, may warrant further investigation and intervention, including possible transfusion [E1, E3].\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "Hemoglobin concentration less than 6.0 g/dL is considered a critical low level",
+            "cited_labels": [
+              "[E2]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that a hemoglobin concentration of \u22646.0 g/dL is considered a critical low level, which supports the claim.",
+          "cited_snippets": [
+            "[E2]: Hemoglobin (CBC): critical low \u22646.0 g/dL; critical high \u226520.0 g/dL; for >7 weeks."
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Hemoglobin concentration greater than 20.0 g/dL is considered a critical high level",
+            "cited_labels": [
+              "[E2]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that a hemoglobin concentration of \u226520.0 g/dL is considered a critical high level, which supports the claim.",
+          "cited_snippets": [
+            "[E2]: Hemoglobin (CBC): critical low \u22646.0 g/dL; critical high \u226520.0 g/dL; for >7 weeks."
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "In pregnancy, a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester (depending on the guideline used) is considered anemia",
+            "cited_labels": [
+              "[E4]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that in pregnancy, a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester (depending on the guideline used) is considered anemia, which directly supports the claim.",
+          "cited_snippets": [
+            "[E4]: {\n  \"pmid\": \"34623079\",\n  \"title\": \"Iron Deficiency Anemia in Pregnancy.\",\n  \"abstract\": \"Anemia is defined as a low red blood cell count, a low hematocrit, or a low hemoglobin concentration. In pregnancy, a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester (depending on the guideline used) is considered anemia."
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PMC/PDFs/PMC7071168/article__c1",
+          "document_id": "Research_papers/PMC/PDFs/PMC7071168/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Iron De\ufb01ciency and Iron De\ufb01ciency Anemia:",
+          "snippet": "causes of anemia in pregnancy, anemia due to iron de\ufb01ciency (IDA) is the most common, particularly in more developed countries, where contributions from other anemia-producing disorders such as malaria or hemoglobinopathies are less signi\ufb01cant [7\u20139]. Anemia in pregnancy, and particularly IDA, is both a long-standing scholarly interest and an element of my practice as a hematologist. In preparing f",
+          "fused_score": 0.1745094409477971,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "source": "Lab_rev_data",
+          "category": "lab_reference",
+          "chunk_type": "structured_row",
+          "title": null,
+          "snippet": "Hemoglobin (CBC): critical low \u22646.0 g/dL; critical high \u226520.0 g/dL; for >7 weeks.",
+          "fused_score": 0.016129032258064516,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c24",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Chronic kidney disease: assessment and management",
+          "snippet": "evidence and the committee's discussion are in evidence review I: eGFR threshold for the investigation of anaemia due to CKD. Chronic kidney disease: assessment and management (NG203) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 29 of 78 Diagnostic tests to determine iron status and predict response to \niron th",
+          "fused_score": 0.014492753623188406,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34623079__c0",
+          "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34623079",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Iron Deficiency Anemia in Pregnancy.",
+          "snippet": "{\n  \"pmid\": \"34623079\",\n  \"title\": \"Iron Deficiency Anemia in Pregnancy.\",\n  \"abstract\": \"Anemia is defined as a low red blood cell count, a low hematocrit, or a low hemoglobin concentration. In pregnancy, a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester (depending on the guideline used) is considered anemia.",
+          "fused_score": 0.014084507042253521,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Thalassemia/PMID_37531552__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Thalassemia/PMID_37531552",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Transfusion management in thalassemia.",
+          "snippet": "This review describes the current challenges and recommendations in the transfusion management of thalassemia patients. In addition, it reviews the components of blood safety and blood product modification in special populations. Adverse transfusion reactions are described as are some of the newer technologies being utilized to reduce potential transfusion-associated pathogens. Lastly, research in",
+          "fused_score": 0.013333333333333334,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263",
+          "source": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Inflammatory bowel disease (IBD), which includes Crohn's disease and ulcerative colitis, is characterized by chronic inflammation of the gastrointestinal tract. IBD has been associated with numerous symptoms and complications, with the most common being iron deficiency anemia (IDA). Iron deficiency in IBD is caused by inadequate intake, malabsorption (including duodenal involvement and surgical re",
+          "fused_score": 0.013114754098360656,
+          "source_type": "graph"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_39145520__c0",
+          "document_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_39145520",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Daily oral iron supplementation during pregnancy.",
+          "snippet": "{\n  \"pmid\": \"39145520\",\n  \"title\": \"Daily oral iron supplementation during pregnancy.\",\n  \"abstract\": \"BACKGROUND: Iron and folic acid supplementation have been recommended in pregnancy for anaemia prevention, and may improve other maternal, pregnancy, and infant outcomes. OBJECTIVES: To examine the effects of daily oral iron supplementation during pregnancy, either alone or in combination with fo",
+          "fused_score": 0.012987012987012988,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6936-H__c87",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6936-H",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "MMWR, Volume 69, Issue 36 \u2014 September 11, 2020",
+          "snippet": "hemoglobin; Hb H = hemoglobin H; MCH = mean corpuscular hemoglobin; MCV = mean corpuscular volume; pg = picogram (10\u221212 gram); RBC = red blood cell. * Higgs DR, Bowden DK. Clinical and laboratory features of the alpha-thalassemia syndromes. In: Steinberg MH, Forget PG, Higgs DR, Nagel RL, eds. Disorders of hemoglobin: genetics, pathophysiology, and clinical management. Cambridge, United Kingdom: C",
+          "fused_score": 0.01282051282051282,
+          "source_type": "faiss"
+        }
+      ]
+    },
+    {
+      "id": "P04",
+      "query": "troponin elevation myocardial infarction diagnosis",
+      "description": "Cardiac biomarker \u2014 troponin elevation in MI diagnosis",
+      "answer_status": "caution",
+      "final_confidence": 0.652,
+      "confidence_tier": "medium",
+      "evidence_confidence": 0.504,
+      "faithfulness_score": 0.75,
+      "n_claims": 4,
+      "n_supported": 3,
+      "n_contradicted": 0,
+      "n_not_mentioned": 1,
+      "n_refusal_valid": 0,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.652
+      ],
+      "latency_total_ms": 20772.685576004733,
+      "latency_breakdown": {
+        "retrieval_ms": 149.3965690024197,
+        "retrieval_embed_ms": 22.93747299700044,
+        "retrieval_faiss_ms": 4.669711001042742,
+        "retrieval_graph_ms": 121.06138799572363,
+        "retrieval_fuse_ms": 0.130134001665283,
+        "retrieval_text_load_ms": 0.11467599688330665,
+        "retrieval_total_ms": 149.31450499716448,
+        "context_ms": 0.04253999941283837,
+        "llm_ms": 4912.872378001339,
+        "total_ms": 20616.446876003465,
+        "verification_ms": 15534.01384499739
+      },
+      "ram_gb": 3.521417216,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "Troponin elevation is a critical marker for the diagnosis of myocardial infarction (MI) [E2]. Specifically, a high-sensitivity troponin T level of \u226552 ng/L is considered critical and is measured once every 24 hours [E2]. This elevation, along with other clinical signs and symptoms, is used to diagnose MI [E3, E5]. The presence of new ischemic ECG changes, development of pathological Q waves, imaging evidence of new loss of viable myocardium, or new regional wall motion abnormalities can also support the diagnosis [E1]. This is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "Troponin elevation is a critical marker for the diagnosis of myocardial infarction (MI)",
+            "cited_labels": [
+              "[E2]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence mentions a critical threshold for Troponin T elevation (\u226552 ng/L), which supports the claim that Troponin elevation is a critical marker for the diagnosis of myocardial infarction (MI).",
+          "cited_snippets": [
+            "[E2]: High-Sensitivity Troponin T (Cardiac): critical high \u226552 ng/L. Called once every 24 hours"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "a high-sensitivity troponin T level of \u226552 ng/L is considered critical and is measured once every 24 hours",
+            "cited_labels": [
+              "[E2]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that a high-sensitivity troponin T level of \u226552 ng/L is considered critical and is measured once every 24 hours, which exactly matches the claim.",
+          "cited_snippets": [
+            "[E2]: High-Sensitivity Troponin T (Cardiac): critical high \u226552 ng/L. Called once every 24 hours"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "This elevation, along with other clinical signs and symptoms, is used to diagnose MI",
+            "cited_labels": [
+              "[E3]",
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided does not mention the use of elevation in diagnosing MI. It discusses the 1-year mortality rate, the higher mortality in elderly patients, the clinical diagnosis of acute coronary syndrome, and the electrocardiogram findings for diagnosing MI. There is no direct reference to elevation being used in the diagnosis of MI.",
+          "cited_snippets": [
+            "[E3]: about 6% over the past decade. The 1-year mortality rate after AMI is about 15%. Mortality is approximately fourfold higher in elderly patients (over age 75) as compared with younger patients. When patients with prolonged ischemic discomfort at rest are first seen, the working clinical diagnosis is that they are suffering from an acute coronary syndrome (Fig. 295-1). The 12-lead electrocardiogram",
+            "[E5]: for the diagnosis of MI; these include Q waves, ST segment changes, and T wave inversions (the latter two representing abnormalities in myocardial repolarization). Arrhythmias caused by electrical abnormalities in the ischemic myocardium and conduction system are common; indeed, sudden cardiac death from a lethal arrhythmia accounts for the vast majority of MI-related deaths occurring before hospi"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "The presence of new ischemic ECG changes, development of pathological Q waves, imaging evidence of new loss of viable myocardium, or new regional wall motion abnormalities can also support the diagnosis",
+            "cited_labels": [
+              "[E1]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly lists 'new ischemic ECG changes', 'development of pathological Q waves', 'imaging evidence of new loss of viable myocardium', and 'new regional wall motion abnormalities' as criteria that can support the diagnosis of myocardial infarction (MI). This directly supports the claim.",
+          "cited_snippets": [
+            "[E1]: occlusion/thrombus, disruption of collateral flow, or distal embolization. \u2022 New ischemic ECG changes \u2022 Development of pathological Q waves \u2022 Imaging evidence of new loss of viable myocardium or new regional wall motion abnormality in a pattern consistent with an ischemic etiology Type 4b MI MI secondary to stent/scaffold thrombosis documented by angiography or autopsy Type 4c MI \nMI secondary to"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PMC/PDFs/PMC6855329/article__c1",
+          "document_id": "Research_papers/PMC/PDFs/PMC6855329/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "SUPPLEMENTAL MATERIAL",
+          "snippet": "occlusion/thrombus, disruption of collateral flow, or distal embolization. \u2022 New ischemic ECG changes \u2022 Development of pathological Q waves \u2022 Imaging evidence of new loss of viable myocardium or new regional wall motion abnormality in a pattern consistent with an ischemic etiology Type 4b MI MI secondary to stent/scaffold thrombosis documented by angiography or autopsy Type 4c MI \nMI secondary to",
+          "fused_score": 0.17693984306887534,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row98",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "source": "Lab_rev_data",
+          "category": "lab_reference",
+          "chunk_type": "structured_row",
+          "title": null,
+          "snippet": "High-Sensitivity Troponin T (Cardiac): critical high \u226552 ng/L. Called once every 24 hours",
+          "fused_score": 0.01639344262295082,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5902",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "xxxviii its related products in new formats. Kim Davis, as Associate Managing We are privileged to have compiled this 19th edition and areEditor, has adeptly ensured that the complex production of thi",
+          "snippet": "about 6% over the past decade. The 1-year mortality rate after AMI is about 15%. Mortality is approximately fourfold higher in elderly patients (over age 75) as compared with younger patients. When patients with prolonged ischemic discomfort at rest are first seen, the working clinical diagnosis is that they are suffering from an acute coronary syndrome (Fig. 295-1). The 12-lead electrocardiogram",
+          "fused_score": 0.015873015873015872,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Drug_database/meddra_freq__row51168",
+          "document_id": "Drug_database/meddra_freq",
+          "source": "Drug_database",
+          "category": "drug",
+          "chunk_type": "structured_row",
+          "title": "CID100000085  CID000010917  C0000737 Unnamed: 3  21%  0.21  0.21.1  LLT C0000737.1               Abdominal pain",
+          "snippet": "C0000737: C0027051; 21%: very rare; 0.21: 0.0; 0.21.1: 0.0001; LLT: PT; C0000737.1: C0027051; Abdominal pain: Myocardial infarction.",
+          "fused_score": 0.014925373134328358,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c708",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "Plasma Membrane: Protection and Nutrient Acquisition",
+          "snippet": "for the diagnosis of MI; these include Q waves, ST segment changes, and T wave inversions (the latter two representing abnormalities in myocardial repolarization). Arrhythmias caused by electrical abnormalities in the ischemic myocardium and conduction system are common; indeed, sudden cardiac death from a lethal arrhythmia accounts for the vast majority of MI-related deaths occurring before hospi",
+          "fused_score": 0.014285714285714285,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+          "source": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Pacing-induced cardiomyopathy is a potential complication of right ventricular pacing. Definition varies between studies and the optimal management approach is uncertain. We aimed to characterize definition, prevalence, risk factors, and treatment strategies of pacing-induced cardiomyopathy (PiCM). We performed a systematic review and meta-analysis of studies that evaluated PiCM after pacemaker im",
+          "fused_score": 0.013114754098360656,
+          "source_type": "graph"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879",
+          "source": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "AIM: This clinical practice guideline for the evaluation and diagnosis of chest pain provides recommendations and algorithms for clinicians to assess and diagnose chest pain in adult patients. METHODS: A comprehensive literature search was conducted from November 11, 2017, to May 1, 2020, encompassing randomized and nonrandomized trials, observational studies, registries, reviews, and other eviden",
+          "fused_score": 0.012698412698412698,
+          "source_type": "graph"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_39302533__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_39302533",
+          "source": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_39302533",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Primary Percutaneous Coronary Intervention (PCI) has significantly contributed to reducing the mortality of patients with ST-segment elevation myocardial infarction (STEMI) even in cardiogenic shock and is now the standard of care in most of Japanese institutions. The Task Force on Primary PCI of the Japanese Association of Cardiovascular Intervention and Therapeutics (CVIT) proposed an expert con",
+          "fused_score": 0.012307692307692308,
+          "source_type": "graph"
+        }
+      ]
+    },
+    {
+      "id": "P05",
+      "query": "metformin type 2 diabetes contraindications renal failure",
+      "description": "Drug contraindications \u2014 metformin in renal impairment",
+      "answer_status": "refusal",
+      "final_confidence": 0.777,
+      "confidence_tier": "high",
+      "evidence_confidence": 0.442,
+      "faithfulness_score": 1.0,
+      "n_claims": 1,
+      "n_supported": 0,
+      "n_contradicted": 0,
+      "n_not_mentioned": 0,
+      "n_refusal_valid": 1,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.777
+      ],
+      "latency_total_ms": 4894.2466439984855,
+      "latency_breakdown": {
+        "retrieval_ms": 250.2305240050191,
+        "retrieval_embed_ms": 28.045367005688604,
+        "retrieval_faiss_ms": 5.129764998855535,
+        "retrieval_graph_ms": 216.24263499688823,
+        "retrieval_fuse_ms": 0.1380689936922863,
+        "retrieval_text_load_ms": 0.14411099982680753,
+        "retrieval_total_ms": 250.13083700468997,
+        "context_ms": 0.045195003622211516,
+        "llm_ms": 4347.26377500192,
+        "total_ms": 4619.213082994975,
+        "verification_ms": 0.08073199569480494
+      },
+      "ram_gb": 3.55342336,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "The evidence provided does not explicitly state contraindications for metformin in patients with renal failure for type 2 diabetes. However, it is important to note that metformin is generally contraindicated in patients with significant renal impairment [E3]. This is because metformin is primarily cleared by the kidneys, and its use in patients with reduced renal function can lead to accumulation of the drug and lactic acidosis [E3, E4]. \n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "The evidence provided does not explicitly state contraindications for metformin in patients with renal failure for type 2 diabetes. However, it is important to note that metformin is generally contraindicated in patients with significant renal impairment [E3]. This is because metformin is primarily",
+            "cited_labels": [
+              "[E1]",
+              "[E2]",
+              "[E3]",
+              "[E4]",
+              "[E5]",
+              "[E6]",
+              "[E7]",
+              "[E8]"
+            ],
+            "claim_type": "refusal"
+          },
+          "verdict": "refusal_valid",
+          "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
+          "cited_snippets": [
+            "plan for starting medicines sequentially \u2022 the cardiovascular and renal benefits of SGLT-2 inhibitors will reduce the number of appointments needed to treat atherosclerotic cardiovascular disease, established heart failure and chronic kidney disease. Type 2 diabetes in adults: management (NG28) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- condit",
+            "type 1 diabetes or severe chronic kidney disease. [2019, amended 2022] 1.4.21 For adults with hypertension aged 80 and over, reduce clinic blood pressure to below 150/90 mmHg and ensure that it is maintained below that level. Use clinical judgement for people with frailty or multimorbidity (see NICE's guideline on multimorbidity). See also table 2 for guidance on clinic blood pressure targets for",
+            "management of CKD patients with diabetes. Recent guidelines strongly support the use of SGLT2-inhibitors after multiple studies have shown benefit in glycemic control along with reduction in CVD risk and CKD progression. These medications remain underutilized\u2014as low as 32% in eligible patients with CKD and type 2 diabetics\u2014largely due to cost and patient or physician preference. A collaborative ap"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c46",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Type 2 diabetes in adults: management",
+          "snippet": "plan for starting medicines sequentially \u2022 the cardiovascular and renal benefits of SGLT-2 inhibitors will reduce the number of appointments needed to treat atherosclerotic cardiovascular disease, established heart failure and chronic kidney disease. Type 2 diabetes in adults: management (NG28) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- condit",
+          "fused_score": 0.01639344262295082,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c12",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Hypertension in adults: diagnosis and management",
+          "snippet": "type 1 diabetes or severe chronic kidney disease. [2019, amended 2022] 1.4.21 For adults with hypertension aged 80 and over, reduce clinic blood pressure to below 150/90 mmHg and ensure that it is maintained below that level. Use clinical judgement for people with frailty or multimorbidity (see NICE's guideline on multimorbidity). See also table 2 for guidance on clinic blood pressure targets for",
+          "fused_score": 0.014492753623188406,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Research_papers/PMC/XML/PMC9461695/article__c13",
+          "document_id": "Research_papers/PMC/XML/PMC9461695/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Cardiovascular Disease Assessment Prior to Kidney Transplantation",
+          "snippet": "management of CKD patients with diabetes. Recent guidelines strongly support the use of SGLT2-inhibitors after multiple studies have shown benefit in glycemic control along with reduction in CVD risk and CKD progression. These medications remain underutilized\u2014as low as 32% in eligible patients with CKD and type 2 diabetics\u2014largely due to cost and patient or physician preference. A collaborative ap",
+          "fused_score": 0.014084507042253521,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_40813129__c0",
+          "document_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_40813129",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Cardiovascular, kidney related, and weight loss effects of therapeutics for type 2 diabetes: a living clinical practice guideline.",
+          "snippet": "{\n  \"pmid\": \"40813129\",\n  \"title\": \"Cardiovascular, kidney related, and weight loss effects of therapeutics for type 2 diabetes: a living clinical practice guideline.\",\n  \"abstract\": \"CLINICAL QUESTION: What are the benefits and harms of medications for adults with type 2 diabetes at varied risks of cardiovascular and kidney related complications? CONTEXT: Emerging clinical trials of novel medicat",
+          "fused_score": 0.013888888888888888,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787__c0",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Management of diabetic ketoacidosis.",
+          "snippet": "{\n  \"pmid\": \"37419787\",\n  \"title\": \"Management of diabetic ketoacidosis.\",\n  \"abstract\": \"Diabetic ketoacidosis (DKA) is an acute life-threatening emergency in patients with diabetes, it can result in serious morbidity and mortality. Management of DKA requires reversing metabolic derangements, correcting volume depletion, electrolyte imbalances and acidosis while concurrently treating the precipit",
+          "fused_score": 0.013513513513513514,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c2796",
+          "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "Part IBasic ConsiderationsBrunicardi_Ch01_p0001-p0026.indd   129/01/19   10:58 AM",
+          "snippet": "the Look AHEAD trial. Arch Intern Med. 2010;170(17): 1566-1575. 38. Look ARG, Wing RR, Bolin P, et al. Cardiovascular effects of intensive lifestyle intervention in type 2 diabetes. N England J Med. 2013;369(2):145-154. 39. Knowler WC, Barrett-Connor E, Fowler SE, et al. Reduction in the incidence of type 2 diabetes with lifestyle intervention or metformin. N England J Med. 2002;346(6):393-403. 40",
+          "fused_score": 0.013157894736842105,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+          "source": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Pacing-induced cardiomyopathy is a potential complication of right ventricular pacing. Definition varies between studies and the optimal management approach is uncertain. We aimed to characterize definition, prevalence, risk factors, and treatment strategies of pacing-induced cardiomyopathy (PiCM). We performed a systematic review and meta-analysis of studies that evaluated PiCM after pacemaker im",
+          "fused_score": 0.013114754098360656,
+          "source_type": "graph"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+          "source": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Diabetes mellitus (DM) has emerged as an international health epidemic due to its rapid rise in prevalence. Consequently, scientists and or researchers will continue to find novel, safe, effective, and affordable anti-diabetic medications. The goal of this review is to provide a thorough overview of the role that lifestyle changes play in managing diabetes, as well as the standard medications that",
+          "fused_score": 0.012698412698412698,
+          "source_type": "graph"
+        }
+      ]
+    },
+    {
+      "id": "P06",
+      "query": "aspirin side effects gastrointestinal bleeding risk",
+      "description": "Drug safety \u2014 aspirin GI bleeding risk",
+      "answer_status": "caution",
+      "final_confidence": 0.678,
+      "confidence_tier": "medium",
+      "evidence_confidence": 0.569,
+      "faithfulness_score": 0.75,
+      "n_claims": 4,
+      "n_supported": 3,
+      "n_contradicted": 0,
+      "n_not_mentioned": 1,
+      "n_refusal_valid": 0,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.678
+      ],
+      "latency_total_ms": 21335.33181600069,
+      "latency_breakdown": {
+        "retrieval_ms": 148.5537859989563,
+        "retrieval_embed_ms": 24.184144000173546,
+        "retrieval_faiss_ms": 5.018045005272143,
+        "retrieval_graph_ms": 118.61044399847742,
+        "retrieval_fuse_ms": 0.1341519964626059,
+        "retrieval_text_load_ms": 0.11605799954850227,
+        "retrieval_total_ms": 148.47536900197156,
+        "context_ms": 0.061885999457444996,
+        "llm_ms": 4905.736264998268,
+        "total_ms": 21167.31728699233,
+        "verification_ms": 16092.181922998861
+      },
+      "ram_gb": 3.562369024,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "Based on the provided evidence, aspirin use is associated with an increased risk of gastrointestinal bleeding. This is supported by the following points:\n\n1. Aspirin use can lead to peptic ulcers, which can result in gastrointestinal bleeding [E5].\n2. Aspirin use is linked to the development of peptic ulceration in 10-20% of people who take it frequently [E5].\n3. Ulcer-related complications, including bleeding, can develop in 1-2% of persons per year when taking aspirin or other NSAIDs [E5].\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "Aspirin use is associated with an increased risk of gastrointestinal bleeding.",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence discusses the use of PPIs in promoting ulcer healing and reducing the incidence of ulcers and ulcer complications in patients taking aspirin or other NSAIDs. It does not directly mention an increased risk of gastrointestinal bleeding associated with aspirin use.",
+          "cited_snippets": [
+            "[E5]: treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year. PPIs taken once daily are effective in reducing the incidence of ulcers and ulcer complications in patients taking aspirin or other NSAIDs. c. Prevention of rebleed"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Aspirin use can lead to peptic ulcers, which can result in gastrointestinal bleeding.",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence states that 'Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year.' This directly supports the claim that aspirin use can lead to peptic ulcers, which can result in gastrointestinal bleeding.",
+          "cited_snippets": [
+            "[E5]: treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year. PPIs taken once daily are effective in reducing the incidence of ulcers and ulcer complications in patients taking aspirin or other NSAIDs. c. Prevention of rebleed"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Aspirin use is linked to the development of peptic ulceration in 10-20% of people who take it frequently.",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence states that 'asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs,' which directly supports the claim that aspirin use is linked to the development of peptic ulceration in 10-20% of people who take it frequently.",
+          "cited_snippets": [
+            "[E5]: treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year. PPIs taken once daily are effective in reducing the incidence of ulcers and ulcer complications in patients taking aspirin or other NSAIDs. c. Prevention of rebleed"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Ulcer-related complications, including bleeding, can develop in 1-2% of persons per year when taking aspirin or other NSAIDs.",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that ulcer-related complications, including bleeding, develop in 1\u20132% of persons per year when taking aspirin or other NSAIDs, which directly supports the claim.",
+          "cited_snippets": [
+            "[E5]: treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year. PPIs taken once daily are effective in reducing the incidence of ulcers and ulcer complications in patients taking aspirin or other NSAIDs. c. Prevention of rebleed"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_39327242__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_39327242",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "NSAID-induced Gastric Ulcer Disease: A Deleterious Connection.",
+          "snippet": "Gastric ulcers induced by non-steroidal anti-inflammatory drug (NSAID) usage have become a common public health problem, and several studies have established chronic NSAID usage to be one of the risk factors for the pathogenesis of peptic ulcers in patients. This review includes numerous articles that link NSAID usage with peptic mucosal erosion, especially among patients under anticoagulant thera",
+          "fused_score": 0.17950819672131146,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_37516507__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_37516507",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Peptic Ulcer Disease.",
+          "snippet": "Peptic ulcer disease is a common cause of epigastric pain typically related to Helicobacter pylori infection or NSAID use that can lead to serious consequences including upper GI bleed or perforation if undiagnosed. Diagnostic strategies vary depending on age and treatment is dependent on etiology.",
+          "fused_score": 0.1788274449564772,
+          "source_type": "both"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Research_papers/PMC/PDFs/PMC8005399/article__c30",
+          "document_id": "Research_papers/PMC/PDFs/PMC8005399/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Evidence-based clinical practice guidelines for peptic ulcer disease 2020",
+          "snippet": "et al. Esomeprazole alone compared with esomeprazole plus aspirin for the treatment of aspirin-re- lated peptic ulcers. Am J Gastroenterol. 2012;107:1022\u20139. 65. Tricco AC, Alateeq A, Tashkandi M, et al. Histamine H2 receptor antagonists for decreasing gastrointestinal harms in adults using acetylsalicylic acid: systematic review and meta- analysis. Open Med. 2012;6:e109\u201317. 66. Mo C, Sun G, Lu ML,",
+          "fused_score": 0.015873015873015872,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c2618",
+          "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "Part IBasic ConsiderationsBrunicardi_Ch01_p0001-p0026.indd   129/01/19   10:58 AM",
+          "snippet": "pancreatic, gastric, or duodenal malignancy.Medical Treatment of Peptic Ulcer DiseasePPIs are the mainstay of medical therapy for PUD, but high-dose H2RAs and sucralfate are also quite effective. Patients hospitalized for ulcer complications should receive high-dose intravenous PPI and, when discharged, should be considered for lifelong PPIs unless the definitive cause is eliminated or a definitiv",
+          "fused_score": 0.015625,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung__c2107",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "(All nonresearch use illegal under federal law.)",
+          "snippet": "treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year. PPIs taken once daily are effective in reducing the incidence of ulcers and ulcer complications in patients taking aspirin or other NSAIDs. c. Prevention of rebleed",
+          "fused_score": 0.015384615384615385,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_40090948__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_40090948",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Management of perforated peptic ulcer: What you need to know.",
+          "snippet": "Despite therapeutic advancements and the significant efficacy of medical management, peptic ulcer disease still affects millions of people. Elective surgical treatment, once a common intervention in General Surgery departments, is now nearly obsolete. Surgical treatment is reserved solely for complications, which occur in approximately 10% to 20% of cases. Perforation is the most common indication",
+          "fused_score": 0.015151515151515152,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c2868",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "xxxviii its related products in new formats. Kim Davis, as Associate Managing We are privileged to have compiled this 19th edition and areEditor, has adeptly ensured that the complex production of thi",
+          "snippet": "antithrombotic effect by irreversibly acetylating and inhibiting platelet cyclooxygenase (COX)-1 (Fig. 143-3), a critical enzyme in the biosynthesis of thromboxane A2. At high doses (~1 g/d), aspirin also inhibits COX-2, an inducible COX isoform found in endothelial cells and inflammatory cells. In endothelial cells, COX-2 initiates the synthesis of prostacyclin, a potent vasodilator and inhibitor",
+          "fused_score": 0.014705882352941176,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row151",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "source": "Lab_rev_data",
+          "category": "lab_reference",
+          "chunk_type": "structured_row",
+          "title": null,
+          "snippet": "Salicylate (Toxicology, Serum/Blood): critical high >40.0 mg/dL.",
+          "fused_score": 0.014492753623188406,
+          "source_type": "faiss"
+        }
+      ]
+    },
+    {
+      "id": "P07",
+      "query": "deep vein thrombosis DVT diagnosis treatment anticoagulation",
+      "description": "DVT guidelines \u2014 diagnosis and anticoagulation therapy",
+      "answer_status": "caution",
+      "final_confidence": 0.65,
+      "confidence_tier": "medium",
+      "evidence_confidence": 0.687,
+      "faithfulness_score": 0.625,
+      "n_claims": 8,
+      "n_supported": 5,
+      "n_contradicted": 0,
+      "n_not_mentioned": 3,
+      "n_refusal_valid": 0,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.65
+      ],
+      "latency_total_ms": 39137.136363002355,
+      "latency_breakdown": {
+        "retrieval_ms": 243.59968999488046,
+        "retrieval_embed_ms": 23.414208997564856,
+        "retrieval_faiss_ms": 4.3648979990393855,
+        "retrieval_graph_ms": 215.07245799875818,
+        "retrieval_fuse_ms": 0.08543099829694256,
+        "retrieval_text_load_ms": 0.1420560001861304,
+        "retrieval_total_ms": 243.51020099857124,
+        "context_ms": 0.04206899757264182,
+        "llm_ms": 7948.600357005489,
+        "total_ms": 38866.597304004245,
+        "verification_ms": 30654.156490003516
+      },
+      "ram_gb": 3.575468032,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "Deep vein thrombosis (DVT) is a condition where a clot forms in the deep veins, most commonly in the legs [E1]. Diagnosis and treatment of DVT often involve anticoagulation therapy to prevent the clot from growing and to reduce the risk of pulmonary embolism (PE) [E1]. \n\nFor the diagnosis of DVT, imaging tests such as ultrasound are commonly used [E6]. Anticoagulation therapy can be initiated based on the severity of symptoms and risk factors. For patients without severe symptoms or risk factors for clot extension, serial imaging over anticoagulation may be suggested [E5]. For patients with severe symptoms or risk factors for clot extension, anticoagulation is generally recommended over serial imaging [E5].\n\nLong-term anticoagulation therapy options include non-vitamin K antagonists such as dabigatran and rivaroxaban [E4]. The choice of anticoagulant may depend on the specific clinical scenario and the patient's risk profile [E4].\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "Deep vein thrombosis (DVT) is a condition where a clot forms in the deep veins, most commonly in the legs.",
+            "cited_labels": [
+              "[E1]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg, which directly supports the claim.",
+          "cited_snippets": [
+            "[E1]: BACKGROUND: Deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg. It occurs in approximately one in 1000 people. If left untreated, the clot can travel up to the lungs and cause a potentially life-threatening pulmonary embolism (PE). Previously, a DVT was treated with the anticoagulants heparin and vitamin K antagonists. However, two forms of"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Diagnosis and treatment of DVT often involve anticoagulation therapy to prevent the clot from growing and to reduce the risk of pulmonary embolism (PE).",
+            "cited_labels": [
+              "[E1]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence mentions that DVT is treated with anticoagulants such as heparin and vitamin K antagonists, which directly supports the claim that diagnosis and treatment of DVT often involve anticoagulation therapy to prevent the clot from growing and to reduce the risk of pulmonary embolism (PE).",
+          "cited_snippets": [
+            "[E1]: BACKGROUND: Deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg. It occurs in approximately one in 1000 people. If left untreated, the clot can travel up to the lungs and cause a potentially life-threatening pulmonary embolism (PE). Previously, a DVT was treated with the anticoagulants heparin and vitamin K antagonists. However, two forms of"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "For the diagnosis of DVT, imaging tests such as ultrasound are commonly used.",
+            "cited_labels": [
+              "[E6]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided in [E6] does not mention the use of imaging tests such as ultrasound for the diagnosis of DVT. It only discusses updates and new data on deep vein thrombosis management, including extended anticoagulation, management of patients with cancer, and prevention and management of post-thrombotic syndrome.",
+          "cited_snippets": [
+            "[E6]: This consensus document is proposed to clinicians to provide the whole spectrum of deep vein thrombosis management as an update to the 2017 consensus document. New data guiding clinicians in indicating extended anticoagulation, management of patients with cancer, and prevention and management of post-thrombotic syndrome are presented. More data on benefit and safety of non-vitamin K antagonists or"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Anticoagulation therapy can be initiated based on the severity of symptoms and risk factors.",
+            "cited_labels": [],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided does not mention the initiation of anticoagulation therapy based on the severity of symptoms and risk factors. The evidence discusses the background of DVT and PE, the objectives of a systematic review, and the general assumption about combined modalities in preventing VTE. There is no direct or implied reference to the claim.",
+          "cited_snippets": [
+            "[E1]: BACKGROUND: Deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg. It occurs in approximately one in 1000 people. If left untreated, the clot can travel up to the lungs and cause a potentially life-threatening pulmonary embolism (PE). Previously, a DVT was treated with the anticoagulants heparin and vitamin K antagonists. However, two forms of",
+            "[E2]: OBJECTIVES: To determine the rate of a first recurrent venous thromboembolism (VTE) event after discontinuation of anticoagulant treatment in patients with a first episode of unprovoked VTE, and the cumulative incidence for recurrent VTE up to 10 years. DESIGN: Systematic review and meta-analysis. DATA SOURCES: Medline, Embase, and the Cochrane Central Register of Controlled Trials (from inception",
+            "[E3]: BACKGROUND: It is generally assumed by practitioners and guideline authors that combined modalities (methods of treatment) are more effective than single modalities in preventing venous thromboembolism (VTE), defined as deep vein thrombosis (DVT) or pulmonary embolism (PE), or both. This is the second update of the review first published in 2008. OBJECTIVES: The aim of this review was to assess th"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "For patients without severe symptoms or risk factors for clot extension, serial imaging over anticoagulation may be suggested.",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly supports the claim by stating that for patients without severe symptoms or risk factors for clot extension, serial imaging over anticoagulation may be suggested. This is explicitly mentioned in the evidence text.",
+          "cited_snippets": [
+            "[E5]: (i) without severe symptoms or risk factors for extension, we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommendation, moderate-certainty evidence) or (ii) with severe symptoms or risk factors for extension, we suggest anticoagulation over serial imaging of the deep veins (weak recommendation, low-certainty evidence) 2. In patients with acute isolated distal"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "For patients with severe symptoms or risk factors for clot extension, anticoagulation is generally recommended over serial imaging.",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence directly states that for patients with severe symptoms or risk factors for extension, anticoagulation is suggested over serial imaging. This aligns with the claim that anticoagulation is generally recommended over serial imaging for such patients.",
+          "cited_snippets": [
+            "[E5]: (i) without severe symptoms or risk factors for extension, we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommendation, moderate-certainty evidence) or (ii) with severe symptoms or risk factors for extension, we suggest anticoagulation over serial imaging of the deep veins (weak recommendation, low-certainty evidence) 2. In patients with acute isolated distal"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Long-term anticoagulation therapy options include non-vitamin K antagonists such as dabigatran and rivaroxaban.",
+            "cited_labels": [
+              "[E4]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "The evidence mentions dabigatran and rivaroxaban as long-term anticoagulant therapy options, which directly supports the claim.",
+          "cited_snippets": [
+            "[E4]: BACKGROUND: We update recommendations on 12 topics that were in the 9th edition of these guidelines, and address 3 new topics. METHODS: We generate strong (Grade 1) and weak (Grade 2) recommendations based on high- (Grade A), moderate- (Grade B), and low- (Grade C) quality evidence. RESULTS: For VTE and no cancer, as long-term anticoagulant therapy, we suggest dabigatran (Grade 2B), rivaroxaban (G"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "The choice of anticoagulant may depend on the specific clinical scenario and the patient's risk profile.",
+            "cited_labels": [
+              "[E4]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided does not mention the specific clinical scenario or patient risk profile in relation to the choice of anticoagulant. It only discusses the recommendation for VTE and no cancer, suggesting dabigatran and rivaroxaban, but does not elaborate on the factors influencing the choice of anticoagulant.",
+          "cited_snippets": [
+            "[E4]: BACKGROUND: We update recommendations on 12 topics that were in the 9th edition of these guidelines, and address 3 new topics. METHODS: We generate strong (Grade 1) and weak (Grade 2) recommendations based on high- (Grade A), moderate- (Grade B), and low- (Grade C) quality evidence. RESULTS: For VTE and no cancer, as long-term anticoagulant therapy, we suggest dabigatran (Grade 2B), rivaroxaban (G"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Oral direct thrombin inhibitors or oral factor Xa inhibitors versus conventional anticoagulants for the treatment of deep vein thrombosis.",
+          "snippet": "BACKGROUND: Deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg. It occurs in approximately one in 1000 people. If left untreated, the clot can travel up to the lungs and cause a potentially life-threatening pulmonary embolism (PE). Previously, a DVT was treated with the anticoagulants heparin and vitamin K antagonists. However, two forms of",
+          "fused_score": 0.1783337411304135,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Long term risk of symptomatic recurrent venous thromboembolism after discontinuation of anticoagulant treatment for first unprovoked venous thromboembolism event: systematic review and meta-analysis.",
+          "snippet": "OBJECTIVES: To determine the rate of a first recurrent venous thromboembolism (VTE) event after discontinuation of anticoagulant treatment in patients with a first episode of unprovoked VTE, and the cumulative incidence for recurrent VTE up to 10 years. DESIGN: Systematic review and meta-analysis. DATA SOURCES: Medline, Embase, and the Cochrane Central Register of Controlled Trials (from inception",
+          "fused_score": 0.17739663789186733,
+          "source_type": "both"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_35089599__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_35089599",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Combined intermittent pneumatic leg compression and pharmacological prophylaxis for prevention of venous thromboembolism.",
+          "snippet": "BACKGROUND: It is generally assumed by practitioners and guideline authors that combined modalities (methods of treatment) are more effective than single modalities in preventing venous thromboembolism (VTE), defined as deep vein thrombosis (DVT) or pulmonary embolism (PE), or both. This is the second update of the review first published in 2008. OBJECTIVES: The aim of this review was to assess th",
+          "fused_score": 0.17629166666666665,
+          "source_type": "both"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_26867832__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_26867832",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Antithrombotic Therapy for VTE Disease: CHEST Guideline and Expert Panel Report.",
+          "snippet": "BACKGROUND: We update recommendations on 12 topics that were in the 9th edition of these guidelines, and address 3 new topics. METHODS: We generate strong (Grade 1) and weak (Grade 2) recommendations based on high- (Grade A), moderate- (Grade B), and low- (Grade C) quality evidence. RESULTS: For VTE and no cancer, as long-term anticoagulant therapy, we suggest dabigatran (Grade 2B), rivaroxaban (G",
+          "fused_score": 0.1755111976630964,
+          "source_type": "both"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Research_papers/PMC/PDFs/PMC12441256/article__c10",
+          "document_id": "Research_papers/PMC/PDFs/PMC12441256/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "SCI1364934 1..25",
+          "snippet": "(i) without severe symptoms or risk factors for extension, we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommendation, moderate-certainty evidence) or (ii) with severe symptoms or risk factors for extension, we suggest anticoagulation over serial imaging of the deep veins (weak recommendation, low-certainty evidence) 2. In patients with acute isolated distal",
+          "fused_score": 0.015151515151515152,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Second consensus document on diagnosis and management of acute deep vein thrombosis: updated document elaborated by the ESC Working Group on aorta and peripheral vascular diseases and the ESC Working Group on pulmonary circulation and right ventricular function.",
+          "snippet": "This consensus document is proposed to clinicians to provide the whole spectrum of deep vein thrombosis management as an update to the 2017 consensus document. New data guiding clinicians in indicating extended anticoagulation, management of patients with cancer, and prevention and management of post-thrombotic syndrome are presented. More data on benefit and safety of non-vitamin K antagonists or",
+          "fused_score": 0.014925373134328358,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_33779986__c1",
+          "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_33779986",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Venous thromboembolism prophylaxis for women at risk during pregnancy and the early postnatal period.",
+          "snippet": "have very low-certainty evidence, downgraded mainly for study limitations and imprecise effect estimates. Maternal death was not reported in most studies. Antenatal (\u00b1 postnatal) prophylaxis For the primary outcomes symptomatic thromboembolic events pulmonary embolism (PE) and/or deep vein thrombosis (DVT), and the critical outcome of adverse effects sufficient to stop treatment, the evidence was",
+          "fused_score": 0.014285714285714285,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c6038",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "xxxviii its related products in new formats. Kim Davis, as Associate Managing We are privileged to have compiled this 19th edition and areEditor, has adeptly ensured that the complex production of thi",
+          "snippet": "FIGURE 300-6 Imaging tests to diagnose DVT and PE. ECHO, echocardiography. due to RV microinfarction portend a high risk of an adverse clinical outcome. When RV function remains normal in a hemodynamically stable patient, a good clinical outcome is highly likely with anticoagulation alone (Fig. 300-7). Effective anticoagulation is the foundation for successful treatment of DVT and PE. There are th",
+          "fused_score": 0.014084507042253521,
+          "source_type": "faiss"
+        }
+      ]
+    },
+    {
+      "id": "P08",
+      "query": "sepsis SOFA score organ dysfunction criteria",
+      "description": "Critical care \u2014 Sepsis-3 criteria and SOFA score",
+      "answer_status": "refusal",
+      "final_confidence": 0.826,
+      "confidence_tier": "high",
+      "evidence_confidence": 0.566,
+      "faithfulness_score": 1.0,
+      "n_claims": 1,
+      "n_supported": 0,
+      "n_contradicted": 0,
+      "n_not_mentioned": 0,
+      "n_refusal_valid": 1,
+      "retry_count": 0,
+      "retry_confidence_trajectory": [
+        0.826
+      ],
+      "latency_total_ms": 5901.795977006259,
+      "latency_breakdown": {
+        "retrieval_ms": 128.11202100419905,
+        "retrieval_embed_ms": 23.234210995724425,
+        "retrieval_faiss_ms": 4.4500389994936995,
+        "retrieval_graph_ms": 99.52921399963088,
+        "retrieval_fuse_ms": 0.13116599438944831,
+        "retrieval_text_load_ms": 0.17693299741949886,
+        "retrieval_total_ms": 127.97045500337845,
+        "context_ms": 0.05089600017527118,
+        "llm_ms": 5623.523683003441,
+        "total_ms": 5772.617775000981,
+        "verification_ms": 0.08855700434651226
+      },
+      "ram_gb": 3.59395328,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "The provided evidence does not contain specific information about the SOFA (Sequential Organ Failure Assessment) score or the organ dysfunction criteria used in the context of sepsis. The evidence primarily discusses the endorsement of the Surviving Sepsis Campaign guidelines by the Scandinavian Society of Anaesthesiology and Intensive Care Medicine and mentions the importance of recognizing sepsis and managing it promptly, but it does not detail the SOFA score or organ dysfunction criteria. Therefore, based on the given information, I cannot provide specific details about the SOFA score or organ dysfunction criteria for sepsis. [E1], [E2], [E3], [E4], [E5], [E6], [E7], [E8]\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "The provided evidence does not contain specific information about the SOFA (Sequential Organ Failure Assessment) score or the organ dysfunction criteria used in the context of sepsis. The evidence primarily discusses the endorsement of the Surviving Sepsis Campaign guidelines by the Scandinavian Soc",
+            "cited_labels": [
+              "[E1]",
+              "[E2]",
+              "[E3]",
+              "[E4]",
+              "[E5]",
+              "[E6]",
+              "[E7]",
+              "[E8]"
+            ],
+            "claim_type": "refusal"
+          },
+          "verdict": "refusal_valid",
+          "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
+          "cited_snippets": [
+            "The Clinical Practice Committee of the Scandinavian Society of Anaesthesiology and Intensive Care Medicine endorses the clinical practice guideline : . The guideline serves as a useful bedside decision aid for clinicians managing adults with suspected and confirmed septic shock and sepsis\u2010associated organ dysfunction.",
+            "AbstractThe Clinical Practice Committee of the Scandinavian Society of Anaesthesiology and Intensive Care Medicine endorses the clinical practice guideline Surviving sepsis campaign: international guidelines for management of sepsis and septic shock 2021. The guideline serves as a useful bedside decision aid for clinicians managing adults with suspected and confirmed septic shock and sepsis\u2010associ",
+            "Sepsis is a life-threatening organ dysfunction that results from the body's response to infection. It requires prompt recognition, appropriate antibiotics, careful hemodynamic support, and control of the source of infection. With the trend in management moving away from protocolized care in favor of appropriate usual care, an understanding of sepsis physiology and best practice guidelines is criti"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PMC/XML/PMC9310818/article__abs",
+          "document_id": "Research_papers/PMC/XML/PMC9310818/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Surviving sepsis campaign: International guidelines for management of sepsis and septic shock in adults 2021 \u2010 endorsement by the Scandinavian society of anaesthesiology and intensive care medicine",
+          "snippet": "The Clinical Practice Committee of the Scandinavian Society of Anaesthesiology and Intensive Care Medicine endorses the clinical practice guideline : . The guideline serves as a useful bedside decision aid for clinicians managing adults with suspected and confirmed septic shock and sepsis\u2010associated organ dysfunction.",
+          "fused_score": 0.17735234673253986,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Research_papers/PMC/Metadata/articles/PMC9310818__abs",
+          "document_id": "Research_papers/PMC/Metadata/articles/PMC9310818",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Surviving sepsis campaign: International guidelines for management of sepsis and septic shock in adults 2021 \u2010 endorsement by the Scandinavian society of anaesthesiology and intensive care medicine",
+          "snippet": "AbstractThe Clinical Practice Committee of the Scandinavian Society of Anaesthesiology and Intensive Care Medicine endorses the clinical practice guideline Surviving sepsis campaign: international guidelines for management of sepsis and septic shock 2021. The guideline serves as a useful bedside decision aid for clinicians managing adults with suspected and confirmed septic shock and sepsis\u2010associ",
+          "fused_score": 0.17679569892473118,
+          "source_type": "both"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Sepsis and septic shock: Guideline-based management.",
+          "snippet": "Sepsis is a life-threatening organ dysfunction that results from the body's response to infection. It requires prompt recognition, appropriate antibiotics, careful hemodynamic support, and control of the source of infection. With the trend in management moving away from protocolized care in favor of appropriate usual care, an understanding of sepsis physiology and best practice guidelines is criti",
+          "fused_score": 0.015384615384615385,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789275124871_eng__c184",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/9789275124871_eng",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "GUIDELINES FOR THE CLINICAL",
+          "snippet": "the specialized literature evaluated the efficacy and safety of corticosteroid use in patients with sepsis.6 The review authors included clinical trials conducted in adults and children diagnosed with sepsis, severe sepsis, or septic shock, according to definitions established by expert consensus. For interventions, the review included the use of any corticosteroid administered at any dosage. It e",
+          "fused_score": 0.014925373134328358,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_32396142__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_32396142",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Sepsis, a 2020 review for the internist.",
+          "snippet": "Sepsis is an overwhelming reaction to infection that comes with high morbidity and mortality, which requires urgent interventions in order to improve outcomes. Surviving Sepsis is an international campaign that aims to improve sepsis outcomes. The 2016 guideline modifies the previous definition of sepsis and proposes some specific diagnostic and therapeutic measures, such as the protocolized use o",
+          "fused_score": 0.014705882352941176,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_32430052__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_32430052",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Mortality in sepsis and septic shock in Europe, North America and Australia between 2009 and 2019- results from a systematic review and meta-analysis.",
+          "snippet": "BACKGROUND: Sepsis and septic shock remain drivers for mortality in critically ill patients. The heterogeneity of the syndrome hinders the generation of reproducible numbers on mortality risks. Consequently, mortality rates range from 15 to 56%. We aimed to update and extend the existing knowledge from meta-analyses and estimate 30- and 90-day mortality rates for sepsis and septic shock separately",
+          "fused_score": 0.014492753623188406,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Management of sepsis and septic shock in the emergency department.",
+          "snippet": "Early management of sepsis and septic shock is crucial for patients' prognosis. As the Emergency Department (ED) is the place where the first medical contact for septic patients is likely to occur, emergency physicians play an essential role in the early phases of patient management, which consists of accurate initial diagnosis, resuscitation, and early antibiotic treatment. Since the issuing of t",
+          "fused_score": 0.014084507042253521,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H__c36",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Hospital Sepsis Program Core Elements: 2023",
+          "snippet": "al. Surviving Sepsis Campaign: International Guidelines for Management of Sepsis and Septic Shock 2021. Crit Care Med. Nov 1 2021;49(11):e1063-e1143. doi:10.1097/CCM.0000000000005337 19. Evans L, Rhodes A, Alhazzani W, et al. Surviving sepsis campaign: international guidelines for management of sepsis and septic shock 2021. Intensive Care Med. Oct 2 2021;doi:10.1007/s00134-021-06506-y 20. Ferrer R",
+          "fused_score": 0.013888888888888888,
+          "source_type": "faiss"
+        }
+      ]
+    },
+    {
+      "id": "P09",
+      "query": "mechanism of action beta blocker cardiac output heart rate",
+      "description": "Pharmacology \u2014 beta blocker mechanism of action",
+      "answer_status": "uncertain",
+      "final_confidence": 0.178,
+      "confidence_tier": "low",
+      "evidence_confidence": 0.444,
+      "faithfulness_score": 0.0,
+      "n_claims": 4,
+      "n_supported": 0,
+      "n_contradicted": 0,
+      "n_not_mentioned": 4,
+      "n_refusal_valid": 0,
+      "retry_count": 3,
+      "retry_confidence_trajectory": [
+        0.178,
+        0.178,
+        0.178,
+        0.178
+      ],
+      "latency_total_ms": 55021.546284995566,
+      "latency_breakdown": {
+        "retrieval_ms": 207.75723699625814,
+        "retrieval_embed_ms": 26.283017003152054,
+        "retrieval_faiss_ms": 4.266493997420184,
+        "retrieval_graph_ms": 176.53277899808018,
+        "retrieval_fuse_ms": 0.11227000504732132,
+        "retrieval_text_load_ms": 0.1014299996313639,
+        "retrieval_total_ms": 207.67951099696802,
+        "context_ms": 0.036918994737789035,
+        "llm_ms": 4622.224118000304,
+        "total_ms": 4852.966227001161
+      },
+      "ram_gb": 3.594878976,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "\u26a0\ufe0f I found limited or conflicting evidence for this topic. The information below may be incomplete or uncertain. Please consult a healthcare professional for definitive guidance.\n\nThe mechanism of action of beta-blockers in relation to cardiac output and heart rate is not directly detailed in the provided evidence. However, based on general knowledge and the context provided, beta-blockers reduce heart rate and myocardial contractility, which can lead to a decrease in cardiac output [E3]. This effect is due to beta-blockers blocking beta-adrenergic receptors, which reduces the stimulation of the sympathetic nervous system on the heart. This results in a lower heart rate and reduced force of contraction, thereby lowering cardiac output. \n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "beta-blockers reduce heart rate and myocardial contractility, which can lead to a decrease in cardiac output",
+            "cited_labels": [
+              "[E3]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided does not mention beta-blockers reducing heart rate or myocardial contractility, nor does it discuss their effect on cardiac output. The evidence only refers to beta-blockers in the context of heart failure management and does not provide the specific details required to support the claim.",
+          "cited_snippets": [
+            "[E3]: medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 19 of 39 Beta-blockers \n1.7.9 \nDo not withhold treatment with a beta-blo"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "beta-blockers block beta-adrenergic receptors",
+            "cited_labels": [],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided does not directly mention or state that beta-blockers block beta-adrenergic receptors. The evidence discusses beta-blockers in the context of heart failure and other conditions, but does not provide the specific mechanism of action described in the claim.",
+          "cited_snippets": [
+            "[E1]: beta-blockade. Surg Clin North Am 2005;85:1091. McVary KT: Alfuzosin for symptomatic benign prostatic hyperplasia: Long-term experience. J Urol 2006;175:35. Nickel JC, Sander S, Moon TD: A meta-analysis of the vascular-related safety profile and efficacy of alpha-adrenergic blockers for symptoms related to benign prostatic hyperplasia. Int J Clin Pract 2008;62:1547. Nickerson M: The pharmacology o",
+            "[E2]: Long-Acting Nitrates None of the long-acting nitrates are as effective as sublingual nitroglycerin for the acute relief of angina. These organic nitrate preparations can be swallowed, chewed, or administered as a patch or paste by the transdermal route (Table 293-4). They can provide effective plasma levels for up to 24 h, but the therapeutic response is highly variable. Different preparations and",
+            "[E3]: medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 19 of 39 Beta-blockers \n1.7.9 \nDo not withhold treatment with a beta-blo"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "blocking beta-adrenergic receptors reduces the stimulation of the sympathetic nervous system on the heart",
+            "cited_labels": [],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided does not mention or discuss beta-adrenergic receptors or their effect on the sympathetic nervous system of the heart. The evidence is related to beta-blockers and their use in conditions such as benign prostatic hyperplasia and heart failure, but it does not provide the necessary information to support or contradict the claim.",
+          "cited_snippets": [
+            "[E1]: beta-blockade. Surg Clin North Am 2005;85:1091. McVary KT: Alfuzosin for symptomatic benign prostatic hyperplasia: Long-term experience. J Urol 2006;175:35. Nickel JC, Sander S, Moon TD: A meta-analysis of the vascular-related safety profile and efficacy of alpha-adrenergic blockers for symptoms related to benign prostatic hyperplasia. Int J Clin Pract 2008;62:1547. Nickerson M: The pharmacology o",
+            "[E2]: Long-Acting Nitrates None of the long-acting nitrates are as effective as sublingual nitroglycerin for the acute relief of angina. These organic nitrate preparations can be swallowed, chewed, or administered as a patch or paste by the transdermal route (Table 293-4). They can provide effective plasma levels for up to 24 h, but the therapeutic response is highly variable. Different preparations and",
+            "[E3]: medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 19 of 39 Beta-blockers \n1.7.9 \nDo not withhold treatment with a beta-blo"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "this results in a lower heart rate and reduced force of contraction",
+            "cited_labels": [],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "The evidence provided does not mention beta-blockade or its effects on heart rate or the force of contraction. The evidence discusses long-acting nitrates, heart failure treatments, and beta-blockers in general terms, but does not provide specific information about their effects on heart rate or contractility.",
+          "cited_snippets": [
+            "[E1]: beta-blockade. Surg Clin North Am 2005;85:1091. McVary KT: Alfuzosin for symptomatic benign prostatic hyperplasia: Long-term experience. J Urol 2006;175:35. Nickel JC, Sander S, Moon TD: A meta-analysis of the vascular-related safety profile and efficacy of alpha-adrenergic blockers for symptoms related to benign prostatic hyperplasia. Int J Clin Pract 2008;62:1547. Nickerson M: The pharmacology o",
+            "[E2]: Long-Acting Nitrates None of the long-acting nitrates are as effective as sublingual nitroglycerin for the acute relief of angina. These organic nitrate preparations can be swallowed, chewed, or administered as a patch or paste by the transdermal route (Table 293-4). They can provide effective plasma levels for up to 24 h, but the therapeutic response is highly variable. Different preparations and",
+            "[E3]: medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 19 of 39 Beta-blockers \n1.7.9 \nDo not withhold treatment with a beta-blo"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung__c309",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "(All nonresearch use illegal under federal law.)",
+          "snippet": "beta-blockade. Surg Clin North Am 2005;85:1091. McVary KT: Alfuzosin for symptomatic benign prostatic hyperplasia: Long-term experience. J Urol 2006;175:35. Nickel JC, Sander S, Moon TD: A meta-analysis of the vascular-related safety profile and efficacy of alpha-adrenergic blockers for symptoms related to benign prostatic hyperplasia. Int J Clin Pract 2008;62:1547. Nickerson M: The pharmacology o",
+          "fused_score": 0.01639344262295082,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5874",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "xxxviii its related products in new formats. Kim Davis, as Associate Managing We are privileged to have compiled this 19th edition and areEditor, has adeptly ensured that the complex production of thi",
+          "snippet": "Long-Acting Nitrates None of the long-acting nitrates are as effective as sublingual nitroglycerin for the acute relief of angina. These organic nitrate preparations can be swallowed, chewed, or administered as a patch or paste by the transdermal route (Table 293-4). They can provide effective plasma levels for up to 24 h, but the therapeutic response is highly variable. Different preparations and",
+          "fused_score": 0.015873015873015872,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c14",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "Chronic heart failure in adults: diagnosis and management",
+          "snippet": "medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 19 of 39 Beta-blockers \n1.7.9 \nDo not withhold treatment with a beta-blo",
+          "fused_score": 0.015625,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Physiology_Levy__c514",
+          "document_id": "Medical_books/MedQA/textbooks/en/Physiology_Levy",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "We are pleased that the following section authors have continued as members of the seventh edition team: Drs. Kalman Rubinson and Eric Lang (nervous system), Dr. James Watras (muscle), Dr. Achilles Pa",
+          "snippet": "ventricle under these conditions is the maximal isometric force that the ventricle is capable of generating at a given preload. At preloads below the optimal filling volume, an increase in preload can yield greater maximal isometric force (see Fig. 16.36 Preload and afterload depend on certain characteristics of the vascular system and the behavior of the heart. With regard to the vasculature, the",
+          "fused_score": 0.014492753623188406,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c198",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+          "source": "Clinical_practice_guidlines",
+          "category": "guideline",
+          "chunk_type": "body",
+          "title": "06 April_21191_SARI Toolkit_2021 update",
+          "snippet": "of fluid overload are absent, administer fluid bolus, 10-20 mL/kg. \u2022 Assess hemodynamic response to fluid and repeat fluid boluses, 10-20 mL/kg, until hypotension resolves or signs of fluid overload develop. \u2022 Assess cardiac function (if available) \u2022 Consider epinephrine/ norepinephrine if hypotension persists after 40 mL/kg or sooner if signs of fluid overload develop. Abnormal Perfusion with \nor",
+          "fused_score": 0.013888888888888888,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Research_papers/PMC/XML/PMC7873715/article__c5",
+          "document_id": "Research_papers/PMC/XML/PMC7873715/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Association between antihypertensive treatment and adverse events: systematic review and meta-analysis",
+          "snippet": "years of follow-up (n=104). table 1 A total of 280 638 participants were included in the primary analyses from 58 unique randomised controlled trials. Forty eight studies compared a single drug treatment with placebo and 10 studies compared a high blood pressure target with a lower blood pressure target in the intervention and control groups (). The remaining five studies either compared treatment",
+          "fused_score": 0.0136986301369863,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Metabolic_Alkalosis/PMID_32829662__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Metabolic_Alkalosis/PMID_32829662",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Pathophysiology of Diuretic Resistance and Its Implications for the Management of Chronic Heart Failure.",
+          "snippet": "Diuretic resistance implies a failure to increase fluid and sodium (Na",
+          "fused_score": 0.013333333333333334,
+          "source_type": "faiss"
+        }
+      ]
+    },
+    {
+      "id": "P10",
+      "query": "potassium hyperkalemia ECG changes peaked T waves treatment",
+      "description": "Emergency medicine \u2014 hyperkalemia ECG changes & treatment",
+      "answer_status": "refusal",
+      "final_confidence": 0.85,
+      "confidence_tier": "high",
+      "evidence_confidence": 0.624,
+      "faithfulness_score": 1.0,
+      "n_claims": 1,
+      "n_supported": 0,
+      "n_contradicted": 0,
+      "n_not_mentioned": 0,
+      "n_refusal_valid": 1,
+      "retry_count": 2,
+      "retry_confidence_trajectory": [
+        0.25,
+        0.25,
+        0.85
+      ],
+      "latency_total_ms": 20792.062868000357,
+      "latency_breakdown": {
+        "retrieval_ms": 168.00831999717047,
+        "retrieval_embed_ms": 24.465558999509085,
+        "retrieval_faiss_ms": 4.519439993600827,
+        "retrieval_graph_ms": 138.26794199849246,
+        "retrieval_fuse_ms": 0.10027799726231024,
+        "retrieval_text_load_ms": 0.14667500363430008,
+        "retrieval_total_ms": 167.92254900065018,
+        "context_ms": 0.044713997340295464,
+        "llm_ms": 4679.1769769988605,
+        "total_ms": 4870.2444349983125
+      },
+      "ram_gb": 3.623796736,
+      "vram_mb": 4784.0,
+      "has_disclaimer": true,
+      "pass": true,
+      "answer_text": "[E4] mentions that intravenous calcium serves to protect the heart in the immediate stages of hyperkalemia, as it antagonizes the cardiac effects of hyperkalemia by raising the action potential threshold and reducing excitability, which helps in reversing the depolarization [E4]. However, the evidence provided does not specifically detail the ECG changes associated with hyperkalemia or the peak T waves. The treatment for hyperkalemia, as mentioned, includes immediate administration of intravenous calcium to protect the heart [E4].\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "claims": [
+        {
+          "claim": {
+            "claim_text": "[E4] mentions that intravenous calcium serves to protect the heart in the immediate stages of hyperkalemia, as it antagonizes the cardiac effects of hyperkalemia by raising the action potential threshold and reducing excitability, which helps in reversing the depolarization [E4]. However, the eviden",
+            "cited_labels": [
+              "[E1]",
+              "[E2]",
+              "[E3]",
+              "[E4]",
+              "[E5]",
+              "[E6]",
+              "[E7]",
+              "[E8]"
+            ],
+            "claim_type": "refusal"
+          },
+          "verdict": "refusal_valid",
+          "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
+          "cited_snippets": [
+            "Hyperkalemia is an electrolyte abnormality with potentially life-threatening consequences. Despite various guidelines, no universally accepted consensus exists on best practices for hyperkalemia monitoring, with variations in precise potassium (K",
+            "Hyperkalemia represents a widespread and potentially lethal condition that affects millions of people across their lives. Despite the prevalence and severity of the condition, there are no consensus guidelines on the treatment of hyperkalemia or even a standard definition. Herein, we provide a succinct review of what we believe to be the most significant misconceptions encountered in the emergency",
+            "a significantly increased risk of mortality (hazard ratio [HR]: 7.6). Furthermore, potassium levels between 5.5 and 5.9 mEq/L were associated with an even higher mortality risk (HR: 10.6). Moreover, this study demonstrated a U-shaped relationship between potassium abnormalities and 1-year mortality risk. This trend has been confirmed by a meta-analysis of global cohort studies. Compared with a ref"
+          ]
+        }
+      ],
+      "citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Clinical Management of Hyperkalemia.",
+          "snippet": "Hyperkalemia is an electrolyte abnormality with potentially life-threatening consequences. Despite various guidelines, no universally accepted consensus exists on best practices for hyperkalemia monitoring, with variations in precise potassium (K",
+          "fused_score": 0.17735234673253986,
+          "source_type": "both"
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": "Dispelling myths and misconceptions about the treatment of acute hyperkalemia.",
+          "snippet": "Hyperkalemia represents a widespread and potentially lethal condition that affects millions of people across their lives. Despite the prevalence and severity of the condition, there are no consensus guidelines on the treatment of hyperkalemia or even a standard definition. Herein, we provide a succinct review of what we believe to be the most significant misconceptions encountered in the emergency",
+          "fused_score": 0.17679569892473118,
+          "source_type": "both"
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Research_papers/PMC/XML/PMC12568891/article__c1",
+          "document_id": "Research_papers/PMC/XML/PMC12568891/article",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "chunk_type": "body",
+          "title": "Pathophysiology and causes of hyperkalemia: unraveling causes beyond kidney dysfunction",
+          "snippet": "a significantly increased risk of mortality (hazard ratio [HR]: 7.6). Furthermore, potassium levels between 5.5 and 5.9 mEq/L were associated with an even higher mortality risk (HR: 10.6). Moreover, this study demonstrated a U-shaped relationship between potassium abnormalities and 1-year mortality risk. This trend has been confirmed by a meta-analysis of global cohort studies. Compared with a ref",
+          "fused_score": 0.17599959815149688,
+          "source_type": "both"
+        },
+        {
+          "label": "[E4]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c1111",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "xxxviii its related products in new formats. Kim Davis, as Associate Managing We are privileged to have compiled this 19th edition and areEditor, has adeptly ensured that the complex production of thi",
+          "snippet": "stages: 1. Immediate antagonism of the cardiac effects of hyperkalemia. Intravenous calcium serves to protect the heart, whereas other measures are taken to correct hyperkalemia. Calcium raises the action potential threshold and reduces excitability, without changing the resting membrane potential. By restoring the difference between resting and threshold potentials, calcium reverses the depolariz",
+          "fused_score": 0.014285714285714285,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E5]",
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row36",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "source": "Lab_rev_data",
+          "category": "lab_reference",
+          "chunk_type": "structured_row",
+          "title": null,
+          "snippet": "Sodium (Electrolytes): critical low \u2264120 mmol/L; critical high \u2265160 mmol/L.",
+          "fused_score": 0.013888888888888888,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E6]",
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c715",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "Plasma Membrane: Protection and Nutrient Acquisition",
+          "snippet": "In younger victims of SCD, nonatherosclerotic causes are more common, including the following: Hereditary (channelopathies) or acquired abnormalities of the cardiac conduction system Myocardial hypertrophy. Increased cardiac mass is an independent risk factor for SCD; thus, in some young individuals who die suddenly, including athletes, hypertensive hypertrophy or unexplained increased cardiac mas",
+          "fused_score": 0.0136986301369863,
+          "source_type": "faiss"
+        },
+        {
+          "label": "[E7]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypokalemia/PMID_34278747__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hypokalemia/PMID_34278747",
+          "source": "Research_papers/PubMed/Abstracts/Hypokalemia/PMID_34278747",
+          "category": "research_paper",
+          "chunk_type": "abstract",
+          "title": null,
+          "snippet": "Magnesium (Mg) is commonly addressed as the \"forgotten ion\" in medicine. Nonetheless, hypomagnesemia should be suspected in clinical practice in patients with relevant symptomatology and also be considered a predisposing factor for the development of other electrolyte disturbances. Furthermore, chronic hypomagnesemia has been associated with diabetes mellitus and cardiovascular disease. Hypomagnes",
+          "fused_score": 0.013114754098360656,
+          "source_type": "graph"
+        },
+        {
+          "label": "[E8]",
+          "chunk_id": "Medical_books/MedQA/questions/US/US_qbank__c4655",
+          "document_id": "Medical_books/MedQA/questions/US/US_qbank",
+          "source": "Medical_books",
+          "category": "textbook",
+          "chunk_type": "body",
+          "title": "{",
+          "snippet": "morbidity and mortality among patients with acute myocardial infarction complicated by left ventricular dysfunction and heart failure.\\nMethods: Patients were randomly assigned to eplerenone (25 mg per day initially, titrated to a maximum of 50 mg per day; 3,319 patients) or placebo (3,313 patients) in addition to optimal medical therapy. The study continued until 1,012 deaths occurred. The primar",
+          "fused_score": 0.01282051282051282,
+          "source_type": "faiss"
+        }
+      ]
+    }
+  ]
+}

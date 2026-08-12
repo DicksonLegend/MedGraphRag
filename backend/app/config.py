@@ -415,17 +415,17 @@ class Settings(BaseSettings):
         description="Sampling temperature for deterministic medical grounding.",
     )
     llm_max_tokens: int = Field(
-        default=800,
-        description="Maximum generation tokens per answer.",
+        default=250,
+        description="Maximum generation tokens per answer (keeps generation latency ≤ 3.5 s).",
     )
 
     # Context builder limits
     context_max_tokens: int = Field(
-        default=2500,
+        default=3000,
         description="Maximum estimated tokens for evidence context prompt payload.",
     )
     evidence_max_per_prompt: int = Field(
-        default=8,
+        default=10,
         description="Max number of top evidence items formatted into system context.",
     )
 
@@ -434,9 +434,19 @@ class Settings(BaseSettings):
         default=(
             "You are a medical assistant. Answer ONLY from the provided evidence. "
             "Cite every claim as [E#]. If evidence is insufficient, say so. "
+            "Recognize initial treatment recommendations in clinical guidelines (e.g. 'offer an ACE inhibitor as initial therapy for adults under 55') as first-line treatment recommendations. "
             "Do NOT diagnose or prescribe. End with: This is information, not medical advice — consult your physician."
         ),
         description="Strict medical grounding system prompt.",
+    )
+
+    # Stricter system prompt for faithfulness retry
+    strict_system_prompt: str = Field(
+        default=(
+            "Answer ONLY from the evidence below; if a fact is not stated, say it is not provided; "
+            "do not use general knowledge. Cite every claim as [E#]. End with: This is information, not medical advice — consult your physician."
+        ),
+        description="Stricter system prompt used when regenerating for low faithfulness.",
     )
 
     # Evidence confidence weights
@@ -447,6 +457,80 @@ class Settings(BaseSettings):
     confidence_weight_agreement: float = Field(
         default=0.4,
         description="Weight of distinct category/source agreement in evidence confidence.",
+    )
+
+    # ── Evidence Hygiene (Step 8.1) ──────────────────────────────────────────
+    evidence_blocklist: List[str] = Field(
+        default=["download_log", "download_failed", "download_success", "Metadata/summary"],
+        description="Blocklisted document/chunk ID substrings dropped at retrieval time.",
+    )
+
+    # ── Verification Agent settings (Step 8.1) ───────────────────────────────
+    verification_enabled: bool = Field(
+        default=True,
+        description="Enable VerificationAgent self-verifying post-processing.",
+    )
+    query_latency_budget_ms: int = Field(
+        default=12000,
+        description="Hard latency budget in ms per query.",
+    )
+    verification_w_evidence: float = Field(
+        default=0.4,
+        description="Weight of evidence_confidence in final_confidence score.",
+    )
+    verification_w_faithfulness: float = Field(
+        default=0.6,
+        description="Weight of faithfulness_score in final_confidence score.",
+    )
+    verification_threshold_high: float = Field(
+        default=0.75,
+        description="Threshold for HIGH confidence tier.",
+    )
+    verification_threshold_medium: float = Field(
+        default=0.50,
+        description="Threshold for MEDIUM confidence tier.",
+    )
+    verification_threshold_low: float = Field(
+        default=0.50,
+        description="Threshold for LOW confidence tier (triggers retry).",
+    )
+    verification_max_retries: int = Field(
+        default=2,
+        description="Maximum bounded retries (2 retries = 3 attempts total).",
+    )
+    early_stop_delta: float = Field(
+        default=0.05,
+        description="Early stopping confidence change threshold between retries.",
+    )
+    verification_single_pass_prompt: str = Field(
+        default=(
+            "You are a medical fact-checker. You will be given an ANSWER and the CITED EVIDENCE.\n"
+            "Your task:\n"
+            "1. Split the ANSWER into at most 6 atomic factual claims (most important first).\n"
+            "2. For each claim, determine if the CITED EVIDENCE SUPPORTS, CONTRADICTS, or DOES NOT MENTION the claim.\n"
+            "   Use 'refusal_valid' ONLY if the claim states evidence is insufficient/missing and the evidence indeed lacks the info.\n"
+            "3. Return ONLY a valid JSON array of objects with keys:\n"
+            '   - "claim_text": string\n'
+            '   - "cited_labels": array of string (e.g. [\"[E1]\"])\n'
+            '   - "claim_type": "factual" | "recommendation" | "value" | "refusal"\n'
+            '   - "verdict": "supported" | "contradicted" | "not_mentioned" | "refusal_valid"\n'
+            '   - "explanation": ONE-SENTENCE explanation string\n\n'
+            "CITED EVIDENCE:\n{evidence_text}\n\n"
+            "ANSWER:\n{answer_text}"
+        ),
+        description="Single-pass prompt template combining claim extraction and faithfulness check.",
+    )
+    uncertainty_disclosure: str = Field(
+        default=(
+            "⚠️ I found limited or conflicting evidence for this topic. "
+            "The information below may be incomplete or uncertain. "
+            "Please consult a healthcare professional for definitive guidance.\n\n"
+        ),
+        description="Prepend header for uncertain answers after retries.",
+    )
+    contradiction_warning: str = Field(
+        default="Note: Some statements could not be fully verified against the retrieved evidence.",
+        description="Warning note when contradictions are detected.",
     )
 
     # ── Logging ──────────────────────────────────────────────────────────────
