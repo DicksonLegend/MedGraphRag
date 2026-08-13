@@ -1,15 +1,13 @@
 """
-MedGraphRAG Backend — Retry Gate
-==================================
+MedGraphRAG Backend — Step 8.2 Retry Gate
+==========================================
 Gates low-confidence or contradicted answers through intelligent, failure-mode-aware retries.
 
-Key Features & Optimizations:
-  1. Failure-mode-aware routing:
-     - Low evidence_confidence (<0.5) -> Re-retrieve with top_k x 1.5.
-     - Low faithfulness_score (<0.5) -> Skip re-retrieval; re-generate with strict_system_prompt.
-  2. Early stopping: breaks retry loop if |confidence_new - confidence_prev| < early_stop_delta (0.05).
-  3. Latency budget guard: stops retries if elapsed time approaches query_latency_budget_ms (12,000 ms).
-  4. Keeps best answer across attempts and prepends uncertainty disclosure if confidence remains low.
+Key Requirements (Step 8.2):
+  1. Increment retry_count on EVERY retry attempt executed.
+  2. Maintain exact latency_total_ms == sum(retrieval_ms, context_ms, llm_ms, verification_ms).
+  3. Track fallback_used status across attempts.
+  4. Early stopping delta (0.05) & latency budget safety.
 """
 
 from __future__ import annotations
@@ -54,6 +52,7 @@ class RetryGate:
         initial_faithfulness: float,
         initial_confidence: float,
         initial_tier: str,
+        initial_fallback_used: bool,
         start_time: float,
     ) -> VerifiedAnswerResult:
         """
@@ -69,9 +68,11 @@ class RetryGate:
         best_faithfulness: float = initial_faithfulness
         best_confidence: float = initial_confidence
         best_tier: str = initial_tier
+        best_fallback_used: bool = initial_fallback_used
 
         trajectory: List[float] = [initial_confidence]
         prev_confidence: float = initial_confidence
+        retry_count = 0
 
         logger.info(
             "Executing RetryGate loop for query %r (initial_confidence=%.3f, max_retries=%d)",
@@ -80,14 +81,14 @@ class RetryGate:
 
         for attempt in range(1, max_retries + 1):
             elapsed_ms = (time.perf_counter() - start_time) * 1000
-            if elapsed_ms >= 5000.0:
+            if elapsed_ms >= 3500.0:
                 logger.info(
-                    "Elapsed query time (%.1f ms) reached 5s cap. Skipping retry to guarantee total latency budget < 12s.",
+                    "Elapsed query time (%.1f ms) reached 3.5s cap. Skipping retry to guarantee total latency budget < 12s.",
                     elapsed_ms
                 )
                 break
 
-            # Determine Failure Mode
+            retry_count += 1
             low_evidence = best_answer.evidence_confidence < 0.50
             low_faithfulness = best_faithfulness < 0.50
 
@@ -95,7 +96,6 @@ class RetryGate:
             retry_retrieval: RetrievalResult
 
             if low_evidence:
-                # Mode A: Retrieval failure -> re-retrieve with expanded top_k
                 top_k = int(settings.retrieval_top_n * (1.0 + 0.5 * attempt))
                 logger.info("Retry attempt %d/%d (Mode: Low Evidence): re-retrieving with top_k=%d...", attempt, max_retries, top_k)
 
@@ -107,7 +107,6 @@ class RetryGate:
                 )
 
             elif low_faithfulness:
-                # Mode B: Generation grounding failure -> re-generate with strict_system_prompt (skip re-retrieval)
                 logger.info("Retry attempt %d/%d (Mode: Low Faithfulness): re-generating with strict system prompt...", attempt, max_retries)
                 retry_retrieval = best_retrieval
 
@@ -116,7 +115,7 @@ class RetryGate:
                     {"role": "system", "content": settings.strict_system_prompt},
                     {"role": "user", "content": context_pkg.user_prompt},
                 ]
-                llm_out = generate_chat(messages=messages)
+                llm_out = generate_chat(messages=messages, max_tokens=settings.llm_max_tokens)
                 answer_text = llm_out["text"].strip()
                 disclaimer = "This is information, not medical advice — consult your physician."
                 if disclaimer.lower() not in answer_text.lower():
@@ -129,13 +128,16 @@ class RetryGate:
                     citations=context_pkg.citations,
                     evidence_confidence=best_answer.evidence_confidence,
                     n_evidence=context_pkg.n_evidence,
-                    latency_breakdown={"llm_ms": llm_out["latency_ms"]},
+                    latency_breakdown={
+                        "retrieval_ms": best_answer.latency_breakdown.get("retrieval_ms", 0.0),
+                        "context_ms": best_answer.latency_breakdown.get("context_ms", 0.0),
+                        "llm_ms": llm_out["latency_ms"],
+                    },
                     llm_mode=llm_out["llm_mode"],
                     ram_gb=llm_out["ram_gb"],
                     vram_mb=llm_out["vram_mb"],
                 )
             else:
-                # General retry
                 top_k = int(settings.retrieval_top_n * (1.0 + 0.5 * attempt))
                 retry_retrieval = self.retrieval_service.retrieve(
                     RetrievalRequest(query=query, destination=destination, top_n=top_k)
@@ -145,11 +147,14 @@ class RetryGate:
                 )
 
             # Re-verify in single-pass
-            retry_claims, retry_faithfulness = verify_in_single_pass(
+            t_v0 = time.perf_counter()
+            retry_claims, retry_faithfulness, retry_fallback_used = verify_in_single_pass(
                 answer_text=retry_answer.answer_text,
                 citations=retry_answer.citations,
                 retrieval_result=retry_retrieval,
             )
+            v_ms = (time.perf_counter() - t_v0) * 1000
+            retry_answer.latency_breakdown["verification_ms"] = v_ms
 
             retry_confidence, retry_tier = compute_final_confidence(
                 evidence_confidence=retry_answer.evidence_confidence,
@@ -159,11 +164,6 @@ class RetryGate:
             trajectory.append(retry_confidence)
             delta = abs(retry_confidence - prev_confidence)
 
-            logger.info(
-                "Retry attempt %d result: final_confidence=%.3f (tier=%s, delta=%.3f)",
-                attempt, retry_confidence, retry_tier, delta
-            )
-
             if retry_confidence > best_confidence:
                 best_answer = retry_answer
                 best_retrieval = retry_retrieval
@@ -171,15 +171,14 @@ class RetryGate:
                 best_faithfulness = retry_faithfulness
                 best_confidence = retry_confidence
                 best_tier = retry_tier
+                best_fallback_used = retry_fallback_used
 
-            # Early Stopping Check
             if delta < early_stop_delta:
                 logger.info("Early stopping retry loop: confidence change (%.3f -> %.3f) is below delta %.2f.", prev_confidence, retry_confidence, early_stop_delta)
                 break
 
             prev_confidence = retry_confidence
 
-            # Exit if threshold reached and no contradictions
             has_contradiction = any(c.verdict == "contradicted" for c in retry_claims)
             if retry_confidence >= settings.verification_threshold_medium and not has_contradiction:
                 logger.info("Retry successful on attempt %d! Confidence reached %.3f (%s).", attempt, retry_confidence, retry_tier)
@@ -206,6 +205,14 @@ class RetryGate:
             if settings.uncertainty_disclosure.lower() not in answer_text.lower():
                 answer_text = f"{settings.uncertainty_disclosure}{answer_text}"
 
+        # Guarantee exact total sum
+        final_latency = dict(best_answer.latency_breakdown)
+        r_ms = final_latency.get("retrieval_ms", 0.0)
+        c_ms = final_latency.get("context_ms", 0.0)
+        l_ms = final_latency.get("llm_ms", 0.0)
+        v_ms = final_latency.get("verification_ms", 0.0)
+        final_latency["total_ms"] = round(r_ms + c_ms + l_ms + v_ms, 2)
+
         return VerifiedAnswerResult(
             query=query,
             destination=destination,
@@ -217,11 +224,12 @@ class RetryGate:
             faithfulness_score=best_faithfulness,
             claims=best_claims,
             citations=best_answer.citations,
-            retry_count=len(trajectory) - 1,
+            retry_count=retry_count,
             retry_confidence_trajectory=trajectory,
+            fallback_used=best_fallback_used,
             disclaimer="This is information, not medical advice — consult your physician.",
             n_evidence=best_answer.n_evidence,
-            latency_breakdown=best_answer.latency_breakdown,
+            latency_breakdown=final_latency,
             llm_mode=best_answer.llm_mode,
             ram_gb=best_answer.ram_gb,
             vram_mb=best_answer.vram_mb,

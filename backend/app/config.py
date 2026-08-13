@@ -415,8 +415,12 @@ class Settings(BaseSettings):
         description="Sampling temperature for deterministic medical grounding.",
     )
     llm_max_tokens: int = Field(
+        default=500,
+        description="Maximum generation tokens per answer (Step 8.2 cap).",
+    )
+    verification_max_tokens: int = Field(
         default=250,
-        description="Maximum generation tokens per answer (keeps generation latency ≤ 3.5 s).",
+        description="Maximum verification output tokens (Step 8.2 cap).",
     )
 
     # Context builder limits
@@ -465,7 +469,7 @@ class Settings(BaseSettings):
         description="Blocklisted document/chunk ID substrings dropped at retrieval time.",
     )
 
-    # ── Verification Agent settings (Step 8.1) ───────────────────────────────
+    # ── Verification Agent settings (Step 8.2) ───────────────────────────────
     verification_enabled: bool = Field(
         default=True,
         description="Enable VerificationAgent self-verifying post-processing.",
@@ -504,17 +508,15 @@ class Settings(BaseSettings):
     )
     verification_single_pass_prompt: str = Field(
         default=(
-            "You are a medical fact-checker. You will be given an ANSWER and the CITED EVIDENCE.\n"
+            "You are a medical fact-checker. You will be given an ANSWER and CITED EVIDENCE.\n"
             "Your task:\n"
-            "1. Split the ANSWER into at most 6 atomic factual claims (most important first).\n"
+            "1. Evaluate up to 4 atomic factual claims in the ANSWER against the CITED EVIDENCE.\n"
             "2. For each claim, determine if the CITED EVIDENCE SUPPORTS, CONTRADICTS, or DOES NOT MENTION the claim.\n"
             "   Use 'refusal_valid' ONLY if the claim states evidence is insufficient/missing and the evidence indeed lacks the info.\n"
-            "3. Return ONLY a valid JSON array of objects with keys:\n"
-            '   - "claim_text": string\n'
-            '   - "cited_labels": array of string (e.g. [\"[E1]\"])\n'
-            '   - "claim_type": "factual" | "recommendation" | "value" | "refusal"\n'
+            "3. Return ONLY a valid JSON array of objects. Do NOT echo claim text or evidence snippets in the output.\n"
+            "   Keys for each object MUST be:\n"
             '   - "verdict": "supported" | "contradicted" | "not_mentioned" | "refusal_valid"\n'
-            '   - "explanation": ONE-SENTENCE explanation string\n\n'
+            '   - "explanation": ONE-SENTENCE string (<= 15 words)\n\n'
             "CITED EVIDENCE:\n{evidence_text}\n\n"
             "ANSWER:\n{answer_text}"
         ),

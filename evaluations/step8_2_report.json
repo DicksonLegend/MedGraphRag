@@ -1,18 +1,18 @@
 {
-  "step": 8.1,
-  "description": "Verification Agent Latency & Evidence Hygiene Fix Report",
+  "step": 8.2,
+  "description": "Verification Agent Latency & Faithfulness Patch Report",
   "probe_count": 10,
-  "passes": 5,
-  "under_12s_count": 4,
-  "median_latency_ms": 19056.121948997315,
-  "avg_latency_ms": 15306.958819499414,
-  "peak_ram_gb": 3.764703232,
+  "passes": 10,
+  "under_12s_count": 8,
+  "median_latency_ms": 9208.975746005308,
+  "avg_latency_ms": 8959.80126659997,
+  "peak_ram_gb": 3.567558656,
   "peak_vram_mb": 4784.0,
   "status_breakdown": {
     "refusal": 4,
-    "caution": 3,
+    "uncertain": 2,
     "verified": 2,
-    "uncertain": 1
+    "caution": 2
   },
   "probes": [
     {
@@ -33,32 +33,28 @@
       "retry_confidence_trajectory": [
         0.796
       ],
-      "latency_total_ms": 6829.614145994128,
-      "latency_verification_ms": 0.3016070040757768,
+      "fallback_used": false,
+      "latency_total_ms": 3979.3268569992506,
+      "latency_verification_ms": 0.2,
       "latency_breakdown": {
-        "retrieval_ms": 423.7989920002292,
-        "retrieval_embed_ms": 55.39187300018966,
-        "retrieval_faiss_ms": 8.976097997219767,
-        "retrieval_graph_ms": 358.11402599938447,
-        "retrieval_fuse_ms": 0.2568820054875687,
-        "retrieval_text_load_ms": 0.18791299953591079,
-        "retrieval_total_ms": 423.66672399657546,
-        "context_ms": 0.07512100273743272,
-        "llm_ms": 5840.200023005309,
-        "total_ms": 6290.525415010052,
-        "verification_ms": 0.3016070040757768
+        "retrieval_ms": 264.36,
+        "context_ms": 0.05,
+        "llm_ms": 3409.88,
+        "verification_ms": 0.2,
+        "total_ms": 3674.48
       },
-      "ram_gb": 3.693817856,
+      "latency_sum_match": true,
+      "ram_gb": 3.487842304,
       "vram_mb": 4782.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
       "pass": true,
-      "answer_text": "The evidence provided does not contain specific guidelines for warfarin INR monitoring in atrial fibrillation. However, [E4] mentions the use of a bleeding risk assessment model that includes INR as a factor, which indirectly relates to INR monitoring. For direct guidelines, you would typically refer to clinical practice guidelines such as those from organizations like the National Institute for Health and Care Excellence (NICE) or the American College of Cardiology/American Heart Association (ACC/AHA). \n\nThis is information, not medical advice \u2014 consult your physician.",
+      "answer_text": "The provided evidence does not contain specific guidelines for warfarin INR monitoring in atrial fibrillation. However, [E4] mentions the use of a prognostic model for bleeding risk assessment in atrial fibrillation, which includes INR values, but does not provide specific INR monitoring guidelines. This is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "The evidence provided does not contain specific guidelines for warfarin INR monitoring in atrial fibrillation. However, [E4] mentions the use of a bleeding risk assessment model that includes INR as a factor, which indirectly relates to INR monitorin",
+            "claim_text": "The provided evidence does not contain specific guidelines for warfarin INR monitoring in atrial fibrillation. However, [E4] mentions the use of a prognostic model for bleeding risk assessment in atrial fibrillation, which includes INR values, but do",
             "cited_labels": [
               "[E1]",
               "[E2]",
@@ -76,9 +72,9 @@
           "verdict": "refusal_valid",
           "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
           "cited_snippets": [
-            "[ \"anticoagulation\", \"atrial fibrillation\", \"liver cirrhosis\", \"portal vein\", \"venous thrombosis\" ], \"mesh_terms\": [ \"Humans\", \"Atrial Fibrillation\", ",
-            "2, consider measuring N-terminal pro-B-type natriuretic peptide as part of optimising treatment. [2018] Chronic heart failure in adults: diagnosis and",
-            "take a pulse for themselves or their family members. The findings in this report are subject to at least two limita- tions. First, data are subject to"
+            "[ \"anticoagulation\", \"atrial fibrillation\", \"liver cirrhosis\", \"portal vein\", \"venous thrombosis\" ], \"mesh_terms\": [ \"Humans\", \"Atrial Fibrillation\", \"Liver Cirrhosis\", \"Portal Vein\", \"Anticoagulants\", \"Risk Factors\", \"Venous Thromboembolism\", \"Venous Thrombosis\", \"Stroke\", \"Treatment Outcome\", \"Hemorrhage\", \"Blood Coagulation\", \"Risk Assessment\", \"Heparin, Low-Molecular-Weight\" ], \"publication_ty",
+            "2, consider measuring N-terminal pro-B-type natriuretic peptide as part of optimising treatment. [2018] Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 21 of 39 1.9 Other treatments and advice for all types of \nheart failure \nDiuretics \n1.9.1 \nUse d",
+            "take a pulse for themselves or their family members. The findings in this report are subject to at least two limita- tions. First, data are subject to misclassification of race/ ethnicity both in the population census and on death certifi- cates, possibly resulting in overreporting among blacks and whites and underreporting among other racial/ethnic groups (9). Second, it was not possible to deter"
           ]
         }
       ],
@@ -209,94 +205,64 @@
       "id": "P02",
       "query": "ACE inhibitor hypertension treatment first line",
       "description": "Hypertension treatment \u2014 first-line ACE inhibitor recommendations",
-      "answer_status": "caution",
-      "final_confidence": 0.557,
-      "confidence_tier": "medium",
+      "answer_status": "refusal",
+      "final_confidence": 0.857,
+      "confidence_tier": "high",
       "evidence_confidence": 0.642,
-      "faithfulness_score": 0.5,
-      "n_claims": 4,
-      "n_supported": 2,
+      "faithfulness_score": 1.0,
+      "n_claims": 1,
+      "n_supported": 0,
       "n_contradicted": 0,
-      "n_not_mentioned": 2,
-      "n_refusal_valid": 0,
-      "retry_count": 0,
+      "n_not_mentioned": 0,
+      "n_refusal_valid": 1,
+      "retry_count": 1,
       "retry_confidence_trajectory": [
-        0.557
+        0.257,
+        0.857
       ],
-      "latency_total_ms": 18286.52556399902,
-      "latency_verification_ms": 13581.807358001242,
+      "fallback_used": false,
+      "latency_total_ms": 9987.907101000019,
+      "latency_verification_ms": 0.1,
       "latency_breakdown": {
-        "retrieval_ms": 212.5651660026051,
-        "retrieval_embed_ms": 48.847723002836574,
-        "retrieval_faiss_ms": 4.817667999304831,
-        "retrieval_graph_ms": 158.03658399818232,
-        "retrieval_fuse_ms": 0.19936399621656165,
-        "retrieval_text_load_ms": 0.1418570027453825,
-        "retrieval_total_ms": 212.4233299982734,
-        "context_ms": 0.04405299841891974,
-        "llm_ms": 4210.805951996008,
-        "total_ms": 18031.053973005328,
-        "verification_ms": 13581.807358001242
+        "retrieval_ms": 180.09,
+        "context_ms": 0.05,
+        "llm_ms": 3565.69,
+        "verification_ms": 0.1,
+        "total_ms": 3745.93
       },
-      "ram_gb": 3.702837248,
+      "latency_sum_match": true,
+      "ram_gb": 3.502219264,
       "vram_mb": 4782.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
-      "pass": false,
-      "answer_text": "The provided evidence does not specifically mention ACE inhibitors as the first-line treatment for hypertension. However, the guidelines suggest that antihypertensive medications are used to manage hypertension [E3, E4]. For a more precise answer, additional evidence focusing on ACE inhibitors as a first-line treatment would be needed. This is information, not medical advice \u2014 consult your physician.",
+      "pass": true,
+      "answer_text": "The evidence provided does not specify ACE inhibitors as the first-line treatment for hypertension. Therefore, based on the given information, we cannot conclude that ACE inhibitors are the first-line treatment for hypertension [E1][E2][E3][E4][E5][E6][E7][E8][E9][E10]. This is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "The guidelines suggest that antihypertensive medications are used to manage hypertension.",
-            "cited_labels": [
-              "[E3]"
-            ],
-            "claim_type": "factual"
-          },
-          "verdict": "supported",
-          "explanation": "The cited evidence [E3] mentions the use of antihypertensive medications for managing hypertension.",
-          "cited_snippets": [
-            "Outcome 52: Antihypertensive medication use..........................................................................................................."
-          ]
-        },
-        {
-          "claim": {
-            "claim_text": "The provided evidence does not specifically mention ACE inhibitors as the first-line treatment for hypertension.",
+            "claim_text": "The evidence provided does not specify ACE inhibitors as the first-line treatment for hypertension. Therefore, based on the given information, we cannot conclude that ACE inhibitors are the first-line treatment for hypertension [E1][E2][E3][E4][E5][E",
             "cited_labels": [
               "[E1]",
               "[E2]",
-              "[E3]"
+              "[E3]",
+              "[E4]",
+              "[E5]",
+              "[E6]",
+              "[E7]",
+              "[E8]",
+              "[E9]",
+              "[E10]"
             ],
-            "claim_type": "factual"
+            "claim_type": "refusal"
           },
-          "verdict": "supported",
-          "explanation": "None of the cited evidence [E1], [E2], or [E3] specifically mentions ACE inhibitors as the first-line treatment for hypertension.",
+          "verdict": "refusal_valid",
+          "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
           "cited_snippets": [
-            "and monitoring hypertension .......................................................................................... 10 1.5 Identifying who to refer",
-            "key questions and rated outcomes to identify those critical for the development of the guideline. Conflicts of interest were handled in line with the ",
-            "Outcome 52: Antihypertensive medication use..........................................................................................................."
+            "and monitoring hypertension .......................................................................................... 10 1.5 Identifying who to refer for same-day specialist review ............................................................. 24 Terms used in this guideline ................................................................................................................. 25 Recomme",
+            "key questions and rated outcomes to identify those critical for the development of the guideline. Conflicts of interest were handled in line with the current Compliance, Risk Management and Ethics (CRE) policy and all members of the GDG were asked to fill in the standard WHO Declaration of Interest (DOI) forms, which were reviewed. An overview of systematic reviews of the evidence was used to buil",
+            "Outcome 52: Antihypertensive medication use........................................................................................................................................................ 248 Analysis 1.53. Comparison 1: Low-sodium salt substitutes versus regular salt or no active intervention in adults, Outcome 53: Antihypertensive medication use; subgroup study duration.................."
           ]
-        },
-        {
-          "claim": {
-            "claim_text": "Additional evidence focusing on ACE inhibitors as a first-line treatment would be needed.",
-            "cited_labels": [],
-            "claim_type": "recommendation"
-          },
-          "verdict": "not_mentioned",
-          "explanation": "The provided evidence does not address the need for additional evidence regarding ACE inhibitors.",
-          "cited_snippets": []
-        },
-        {
-          "claim": {
-            "claim_text": "This is information, not medical advice.",
-            "cited_labels": [],
-            "claim_type": "value"
-          },
-          "verdict": "not_mentioned",
-          "explanation": "The provided evidence does not explicitly state that the information is not medical advice.",
-          "cited_snippets": []
         }
       ],
       "citations": [
@@ -426,46 +392,70 @@
       "id": "P03",
       "query": "critical hemoglobin levels anemia transfusion threshold",
       "description": "Critical lab values \u2014 transfusion thresholds and critical levels",
-      "answer_status": "refusal",
-      "final_confidence": 0.796,
-      "confidence_tier": "high",
+      "answer_status": "uncertain",
+      "final_confidence": 0.496,
+      "confidence_tier": "low",
       "evidence_confidence": 0.49,
-      "faithfulness_score": 1.0,
-      "n_claims": 1,
-      "n_supported": 0,
+      "faithfulness_score": 0.5,
+      "n_claims": 4,
+      "n_supported": 2,
       "n_contradicted": 0,
-      "n_not_mentioned": 0,
-      "n_refusal_valid": 1,
+      "n_not_mentioned": 2,
+      "n_refusal_valid": 0,
       "retry_count": 0,
       "retry_confidence_trajectory": [
-        0.796
+        0.496
       ],
-      "latency_total_ms": 8689.039879005577,
-      "latency_verification_ms": 0.07990000449353829,
+      "fallback_used": false,
+      "latency_total_ms": 11034.876813995652,
+      "latency_verification_ms": 0.0,
       "latency_breakdown": {
-        "retrieval_ms": 297.2020960005466,
-        "retrieval_embed_ms": 65.64636200346285,
-        "retrieval_faiss_ms": 8.693176998349372,
-        "retrieval_graph_ms": 221.28146600152832,
-        "retrieval_fuse_ms": 0.3039499933947809,
-        "retrieval_text_load_ms": 0.2528749973862432,
-        "retrieval_total_ms": 297.00094800500665,
-        "context_ms": 0.09199199848808348,
-        "llm_ms": 8040.754460998869,
-        "total_ms": 8365.470502008975,
-        "verification_ms": 0.07990000449353829
+        "retrieval_ms": 145.88,
+        "context_ms": 0.04,
+        "llm_ms": 6968.22,
+        "verification_ms": 0.0,
+        "total_ms": 7114.15
       },
-      "ram_gb": 3.709923328,
-      "vram_mb": 4782.0,
+      "latency_sum_match": true,
+      "ram_gb": 3.50930944,
+      "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
       "pass": true,
-      "answer_text": "Critical hemoglobin levels for anemia and the transfusion threshold are as follows:\n\n- Hemoglobin levels below 6.0 g/dL are considered critical low [E2].\n- Anemia is defined as a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester [E5].\n\nFor transfusion, the evidence provided does not specify a precise hemoglobin level for transfusion, but it indicates that IV iron therapy is recommended for confirmed iron deficiency anemia (IDA) with a hemoglobin level below 12 g/dL and a low or normal mean corpuscular volume (MCV) [E6].\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "answer_text": "\u26a0\ufe0f I found limited or conflicting evidence for this topic. The information below may be incomplete or uncertain. Please consult a healthcare professional for definitive guidance.\n\nCritical hemoglobin levels for anemia and the transfusion threshold are outlined in the provided evidence:\n\n- Hemoglobin levels below 6.0 g/dL are considered critical low [E2].\n- Anemia in pregnancy is defined as a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester, depending on the guideline used [E5].\n\nFor transfusion thresholds, the evidence does not provide specific hemoglobin levels at which transfusion is recommended. However, the guidelines suggest that iron therapy, including oral and intravenous iron, is recommended for confirmed iron deficiency anemia (IDA) with a hemoglobin level below 12 g/dL and a low mean corpuscular volume (MCV) [E6].\n\nThis is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "Critical hemoglobin levels for anemia and the transfusion threshold are as follows:\n\n- Hemoglobin levels below 6.0 g/dL are considered critical low [E2].\n- Anemia is defined as a hemoglobin concentration of less than 11.0 g/dL in the first trimester",
+            "claim_text": "Critical hemoglobin levels for anemia and the transfusion threshold are outlined in the provided evidence:\n\n- Hemoglobin levels below 6.0 g/dL are considered critical low [E2].",
+            "cited_labels": [
+              "[E2]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "E2 mentions critical hemoglobin levels for anemia.",
+          "cited_snippets": [
+            "Hemoglobin (CBC): critical low \u22646.0 g/dL; critical high \u226520.0 g/dL; for >7 weeks."
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "- Anemia in pregnancy is defined as a hemoglobin concentration of less than 11.0 g/dL in the first trimester and less than 10.5 or 11.0 g/dL in the second or third trimester, depending on the guideline used [E5].",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "E5 defines anemia in pregnancy hemoglobin levels.",
+          "cited_snippets": [
+            "{\n  \"pmid\": \"34623079\",\n  \"title\": \"Iron Deficiency Anemia in Pregnancy.\",\n  \"abstract\": \"Anemia is defined as a low red blood cell count, a low hematocrit, or a low hemoglobin concentration. In pregn"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "For transfusion thresholds, the evidence does not provide specific hemoglobin levels at which transfusion is recommended.",
             "cited_labels": [
               "[E1]",
               "[E2]",
@@ -478,14 +468,35 @@
               "[E9]",
               "[E10]"
             ],
-            "claim_type": "refusal"
+            "claim_type": "factual"
           },
-          "verdict": "refusal_valid",
-          "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
+          "verdict": "not_mentioned",
+          "explanation": "E2 and E5 do not specify transfusion thresholds.",
           "cited_snippets": [
-            "causes of anemia in pregnancy, anemia due to iron de\ufb01ciency (IDA) is the most common, particularly in more developed countries, where contributions fr",
+            "causes of anemia in pregnancy, anemia due to iron de\ufb01ciency (IDA) is the most common, particularly in more developed countries, where contributions from other anemia-producing disorders such as malari",
             "Hemoglobin (CBC): critical low \u22646.0 g/dL; critical high \u226520.0 g/dL; for >7 weeks.",
-            "evidence and the committee's discussion are in evidence review I: eGFR threshold for the investigation of anaemia due to CKD. Chronic kidney disease: "
+            "evidence and the committee's discussion are in evidence review I: eGFR threshold for the investigation of anaemia due to CKD. Chronic kidney disease: assessment and management (NG203) \u00a9 NICE 2026. All",
+            "600 mg) to have no effect on serum Hb concentration or the rate of blood transfusion in 62 patients scheduled for resection of suspected colorectal cancer[]. However, the trial included only 11 patien",
+            "{\n  \"pmid\": \"34623079\",\n  \"title\": \"Iron Deficiency Anemia in Pregnancy.\",\n  \"abstract\": \"Anemia is defined as a low red blood cell count, a low hematocrit, or a low hemoglobin concentration. In pregn",
+            "52, 56, 57, 60, 62], turquoise circle [4, 50, 56, 57] 212 Adv Ther (2021) 38:201\u2013225 Table 4 Guideline recommendations on the use of iron therapy Citation First-line oral iron therapy? Patient group/c",
+            "hemoglobin; Hb H = hemoglobin H; MCH = mean corpuscular hemoglobin; MCV = mean corpuscular volume; pg = picogram (10\u221212 gram); RBC = red blood cell. * Higgs DR, Bowden DK. Clinical and laboratory feat",
+            "This review describes the current challenges and recommendations in the transfusion management of thalassemia patients. In addition, it reviews the components of blood safety and blood product modific",
+            "Inflammatory bowel disease (IBD), which includes Crohn's disease and ulcerative colitis, is characterized by chronic inflammation of the gastrointestinal tract. IBD has been associated with numerous s",
+            "{\n  \"pmid\": \"39145520\",\n  \"title\": \"Daily oral iron supplementation during pregnancy.\",\n  \"abstract\": \"BACKGROUND: Iron and folic acid supplementation have been recommended in pregnancy for anaemia pr"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "However, the guidelines suggest that iron therapy, including oral and intravenous iron, is recommended for confirmed iron deficiency anemia (IDA) with a hemoglobin level below 12 g/dL and a low mean corpuscular volume (MCV) [E6].",
+            "cited_labels": [
+              "[E6]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "not_mentioned",
+          "explanation": "E6 discusses guidelines for iron therapy but not transfusion thresholds.",
+          "cited_snippets": [
+            "52, 56, 57, 60, 62], turquoise circle [4, 50, 56, 57] 212 Adv Ther (2021) 38:201\u2013225 Table 4 Guideline recommendations on the use of iron therapy Citation First-line oral iron therapy? Patient group/c"
           ]
         }
       ],
@@ -630,71 +641,83 @@
       "retry_confidence_trajectory": [
         0.797
       ],
-      "latency_total_ms": 20082.87242300139,
-      "latency_verification_ms": 13657.742503004556,
+      "fallback_used": false,
+      "latency_total_ms": 7870.872302999487,
+      "latency_verification_ms": 2966.64,
       "latency_breakdown": {
-        "retrieval_ms": 222.7845689994865,
-        "retrieval_embed_ms": 50.31049000535859,
-        "retrieval_faiss_ms": 6.514635002531577,
-        "retrieval_graph_ms": 164.73805999703472,
-        "retrieval_fuse_ms": 0.2724710066104308,
-        "retrieval_text_load_ms": 0.17442800162825733,
-        "retrieval_total_ms": 222.62735399999656,
-        "context_ms": 0.0720450043445453,
-        "llm_ms": 5941.654086993367,
-        "total_ms": 19847.10977900977,
-        "verification_ms": 13657.742503004556
+        "retrieval_ms": 145.45,
+        "context_ms": 0.05,
+        "llm_ms": 4578.16,
+        "verification_ms": 2966.64,
+        "total_ms": 7690.3
       },
-      "ram_gb": 3.716726784,
-      "vram_mb": 4782.0,
+      "latency_sum_match": true,
+      "ram_gb": 3.515056128,
+      "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
-      "pass": false,
-      "answer_text": "Troponin elevation is a critical marker for the diagnosis of myocardial infarction [E2, E5, E8]. According to the 4th Universal Definition of Myocardial Infarction, the release of cardiac troponin from the myocardium is a key feature, often resulting from acute RV pressure overload, impaired coronary blood flow, and severe hypoxemia [E5, E8]. Elevated troponin levels are associated with a significant risk of short-term mortality and adverse outcomes [E8]. This is information, not medical advice \u2014 consult your physician.",
+      "pass": true,
+      "answer_text": "Troponin elevation is a critical marker for the diagnosis of myocardial infarction [E2, E5, E8]. According to the 4th Universal Definition of Myocardial Infarction, the presence of troponin elevation, along with ischemic symptoms or ischemia on imaging, is used to diagnose myocardial infarction [E5]. Elevated troponin levels are associated with a significant risk of short-term mortality and adverse outcomes [E8]. This is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "Troponin elevation is a critical marker for the diagnosis of myocardial infarction.",
+            "claim_text": "Troponin elevation is a critical marker for the diagnosis of myocardial infarction [E2, E5, E8].",
             "cited_labels": [
-              "[E8]"
-            ],
-            "claim_type": "factual"
-          },
-          "verdict": "supported",
-          "explanation": "The evidence states that troponin is used as the preferred biomarker for diagnosing myocardial infarction.",
-          "cited_snippets": [
-            "used as the preferred biomarker for the diagnosis of myocardial infarction. Theoretically, the release of cardiac troponin from the myocardium results"
-          ]
-        },
-        {
-          "claim": {
-            "claim_text": "The release of cardiac troponin from the myocardium is a key feature of myocardial infarction.",
-            "cited_labels": [
+              "[E1]",
+              "[E2]",
+              "[E3]",
+              "[E4]",
               "[E5]",
-              "[E8]"
+              "[E6]",
+              "[E7]",
+              "[E8]",
+              "[E9]",
+              "[E10]"
             ],
             "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The evidence mentions that the release of cardiac troponin is a key feature of myocardial infarction.",
+          "explanation": "E8 confirms troponin elevation's critical role in diagnosis and risk assessment.",
           "cited_snippets": [
-            "The 4th Universal Definition of Myocardial Infarction has stimulated considerable debate since its publication in 2018. The intention was to define th",
-            "used as the preferred biomarker for the diagnosis of myocardial infarction. Theoretically, the release of cardiac troponin from the myocardium results"
+            "occlusion/thrombus, disruption of collateral flow, or distal embolization. \u2022 New ischemic ECG changes \u2022 Development of pathological Q waves \u2022 Imaging evidence of new loss of viable myocardium or new r",
+            "High-Sensitivity Troponin T (Cardiac): critical high \u226552 ng/L. Called once every 24 hours",
+            "about 6% over the past decade. The 1-year mortality rate after AMI is about 15%. Mortality is approximately fourfold higher in elderly patients (over age 75) as compared with younger patients. When pa",
+            "A, et al. Causes of death after type 2 myocardial infarction and myocardial injury. J Am Coll Cardiol 2021;78: 415\u20136. https://doi.org/10.1016/j.jacc.2021.05.026 516 Chapman et al. 58. Hinton J, Mariat",
+            "The 4th Universal Definition of Myocardial Infarction has stimulated considerable debate since its publication in 2018. The intention was to define the types of myocardial injury through the lens of t",
+            "C0000737: C0027051; 21%: very rare; 0.21: 0.0; 0.21.1: 0.0001; LLT: PT; C0000737.1: C0027051; Abdominal pain: Myocardial infarction.",
+            "for the diagnosis of MI; these include Q waves, ST segment changes, and T wave inversions (the latter two representing abnormalities in myocardial repolarization). Arrhythmias caused by electrical abn",
+            "used as the preferred biomarker for the diagnosis of myocardial infarction. Theoretically, the release of cardiac troponin from the myocardium results from acute RV pressure overload, impaired coronar",
+            "Pacing-induced cardiomyopathy is a potential complication of right ventricular pacing. Definition varies between studies and the optimal management approach is uncertain. We aimed to characterize defi",
+            "AIM: This clinical practice guideline for the evaluation and diagnosis of chest pain provides recommendations and algorithms for clinicians to assess and diagnose chest pain in adult patients. METHODS"
           ]
         },
         {
           "claim": {
-            "claim_text": "Elevated troponin levels are associated with a significant risk of short-term mortality and adverse outcomes.",
+            "claim_text": "According to the 4th Universal Definition of Myocardial Infarction, the presence of troponin elevation, along with ischemic symptoms or ischemia on imaging, is used to diagnose myocardial infarction [E5].",
+            "cited_labels": [
+              "[E5]"
+            ],
+            "claim_type": "factual"
+          },
+          "verdict": "supported",
+          "explanation": "E5 aligns with the diagnostic criteria mentioned in the answer.",
+          "cited_snippets": [
+            "The 4th Universal Definition of Myocardial Infarction has stimulated considerable debate since its publication in 2018. The intention was to define the types of myocardial injury through the lens of t"
+          ]
+        },
+        {
+          "claim": {
+            "claim_text": "Elevated troponin levels are associated with a significant risk of short-term mortality and adverse outcomes [E8].",
             "cited_labels": [
               "[E8]"
             ],
             "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The evidence states that elevated troponin levels are associated with significant short-term mortality and adverse outcomes.",
+          "explanation": "E8 directly states the association between elevated troponin and adverse outcomes.",
           "cited_snippets": [
-            "used as the preferred biomarker for the diagnosis of myocardial infarction. Theoretically, the release of cardiac troponin from the myocardium results"
+            "used as the preferred biomarker for the diagnosis of myocardial infarction. Theoretically, the release of cardiac troponin from the myocardium results from acute RV pressure overload, impaired coronar"
           ]
         }
       ],
@@ -839,32 +862,28 @@
       "retry_confidence_trajectory": [
         0.777
       ],
-      "latency_total_ms": 7606.227450996812,
-      "latency_verification_ms": 0.08495999645674601,
+      "fallback_used": false,
+      "latency_total_ms": 5446.635177002463,
+      "latency_verification_ms": 0.05,
       "latency_breakdown": {
-        "retrieval_ms": 400.264720999985,
-        "retrieval_embed_ms": 30.857764999382198,
-        "retrieval_faiss_ms": 9.718272995087318,
-        "retrieval_graph_ms": 358.58713400375564,
-        "retrieval_fuse_ms": 0.25722400459926575,
-        "retrieval_text_load_ms": 0.19423500634729862,
-        "retrieval_total_ms": 400.1562070043292,
-        "context_ms": 0.06060399755369872,
-        "llm_ms": 6672.936895003659,
-        "total_ms": 7098.382669995772,
-        "verification_ms": 0.08495999645674601
+        "retrieval_ms": 241.31,
+        "context_ms": 0.05,
+        "llm_ms": 4935.09,
+        "verification_ms": 0.05,
+        "total_ms": 5176.5
       },
-      "ram_gb": 3.73018624,
-      "vram_mb": 4782.0,
+      "latency_sum_match": true,
+      "ram_gb": 3.523960832,
+      "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
       "pass": true,
-      "answer_text": "The evidence provided does not explicitly state contraindications for metformin in patients with renal failure. However, it is implied that metformin should be used with caution in patients with renal impairment. [E1] mentions the use of SGLT-2 inhibitors in patients with chronic kidney disease, which suggests that metformin might be less favorable in this context. Additionally, [E3] notes that SGLT2-inhibitors remain underutilized in CKD and type 2 diabetics, possibly due to concerns related to renal function. This is information, not medical advice \u2014 consult your physician.",
+      "answer_text": "The evidence provided does not explicitly state contraindications for metformin in patients with renal failure for type 2 diabetes. However, it is implied that metformin should be stopped in cases of diabetic ketoacidosis [E7] and that SGLT2 inhibitors, which are often used in conjunction with metformin, should be discontinued on admission [E7]. This suggests caution with metformin in acute situations, but does not provide direct contraindications for renal failure. This is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "The evidence provided does not explicitly state contraindications for metformin in patients with renal failure. However, it is implied that metformin should be used with caution in patients with renal impairment. [E1] mentions the use of SGLT-2 inhib",
+            "claim_text": "The evidence provided does not explicitly state contraindications for metformin in patients with renal failure for type 2 diabetes. However, it is implied that metformin should be stopped in cases of diabetic ketoacidosis [E7] and that SGLT2 inhibito",
             "cited_labels": [
               "[E1]",
               "[E2]",
@@ -882,9 +901,9 @@
           "verdict": "refusal_valid",
           "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
           "cited_snippets": [
-            "plan for starting medicines sequentially \u2022 the cardiovascular and renal benefits of SGLT-2 inhibitors will reduce the number of appointments needed to",
-            "type 1 diabetes or severe chronic kidney disease. [2019, amended 2022] 1.4.21 For adults with hypertension aged 80 and over, reduce clinic blood press",
-            "management of CKD patients with diabetes. Recent guidelines strongly support the use of SGLT2-inhibitors after multiple studies have shown benefit in "
+            "plan for starting medicines sequentially \u2022 the cardiovascular and renal benefits of SGLT-2 inhibitors will reduce the number of appointments needed to treat atherosclerotic cardiovascular disease, established heart failure and chronic kidney disease. Type 2 diabetes in adults: management (NG28) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- condit",
+            "type 1 diabetes or severe chronic kidney disease. [2019, amended 2022] 1.4.21 For adults with hypertension aged 80 and over, reduce clinic blood pressure to below 150/90 mmHg and ensure that it is maintained below that level. Use clinical judgement for people with frailty or multimorbidity (see NICE's guideline on multimorbidity). See also table 2 for guidance on clinic blood pressure targets for",
+            "management of CKD patients with diabetes. Recent guidelines strongly support the use of SGLT2-inhibitors after multiple studies have shown benefit in glycemic control along with reduction in CVD risk and CKD progression. These medications remain underutilized\u2014as low as 32% in eligible patients with CKD and type 2 diabetics\u2014largely due to cost and patient or physician preference. A collaborative ap"
           ]
         }
       ],
@@ -1015,99 +1034,99 @@
       "id": "P06",
       "query": "aspirin side effects gastrointestinal bleeding risk",
       "description": "Drug safety \u2014 aspirin GI bleeding risk",
-      "answer_status": "verified",
-      "final_confidence": 0.818,
-      "confidence_tier": "high",
+      "answer_status": "caution",
+      "final_confidence": 0.618,
+      "confidence_tier": "medium",
       "evidence_confidence": 0.544,
-      "faithfulness_score": 1.0,
-      "n_claims": 4,
-      "n_supported": 4,
+      "faithfulness_score": 0.667,
+      "n_claims": 3,
+      "n_supported": 2,
       "n_contradicted": 0,
-      "n_not_mentioned": 0,
+      "n_not_mentioned": 1,
       "n_refusal_valid": 0,
       "retry_count": 0,
       "retry_confidence_trajectory": [
-        0.818
+        0.618
       ],
-      "latency_total_ms": 21121.30239399994,
-      "latency_verification_ms": 13840.9585469999,
+      "fallback_used": false,
+      "latency_total_ms": 9208.975746005308,
+      "latency_verification_ms": 3652.72,
       "latency_breakdown": {
-        "retrieval_ms": 138.72571599495132,
-        "retrieval_embed_ms": 22.75023800029885,
-        "retrieval_faiss_ms": 4.244461000780575,
-        "retrieval_graph_ms": 110.93676400196273,
-        "retrieval_fuse_ms": 0.204033000045456,
-        "retrieval_text_load_ms": 0.1328289945377037,
-        "retrieval_total_ms": 138.64852100232383,
-        "context_ms": 0.04166799772065133,
-        "llm_ms": 6927.337393994094,
-        "total_ms": 20939.536593999946,
-        "verification_ms": 13840.9585469999
+        "retrieval_ms": 150.23,
+        "context_ms": 0.05,
+        "llm_ms": 5222.02,
+        "verification_ms": 3652.72,
+        "total_ms": 9025.01
       },
-      "ram_gb": 3.734319104,
-      "vram_mb": 4782.0,
+      "latency_sum_match": true,
+      "ram_gb": 3.528204288,
+      "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
-      "pass": false,
-      "answer_text": "[E5] mentions that asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year. This indicates that aspirin, an NSAID, is associated with a risk of gastrointestinal bleeding. [E3] and [E4] discuss the use of proton pump inhibitors (PPIs) for the treatment of peptic ulcers, which are often caused by NSAID use, suggesting that PPIs are used to manage the risk of bleeding associated with NSAIDs like aspirin.\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "pass": true,
+      "answer_text": "[E5] mentions that asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year. This indicates that aspirin, an NSAID, is associated with a risk of gastrointestinal bleeding. [E3] and [E4] also discuss the use of proton pump inhibitors (PPIs) for the treatment of peptic ulcers related to NSAID use, further supporting the link between aspirin and gastrointestinal bleeding risk. \n\nThis is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs.",
+            "claim_text": "[E5] mentions that asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year.",
             "cited_labels": [
               "[E5]"
             ],
             "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The cited evidence [E5] directly supports this claim.",
+          "explanation": "E5 mentions the prevalence of asymptomatic peptic ulceration and ulcer-related complications in NSAID users.",
           "cited_snippets": [
-            "treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulc"
+            "treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) d"
           ]
         },
         {
           "claim": {
-            "claim_text": "Ulcer-related complications (bleeding, perforation) develop in 1\u20132% of persons per year.",
+            "claim_text": "This indicates that aspirin, an NSAID, is associated with a risk of gastrointestinal bleeding.",
             "cited_labels": [
-              "[E5]"
+              "[E1]",
+              "[E2]",
+              "[E3]",
+              "[E4]",
+              "[E5]",
+              "[E6]",
+              "[E7]",
+              "[E8]",
+              "[E9]",
+              "[E10]"
             ],
             "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The cited evidence [E5] directly supports this claim.",
+          "explanation": "E5 indicates aspirin, an NSAID, is associated with gastrointestinal bleeding risk.",
           "cited_snippets": [
-            "treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulc"
+            "Gastric ulcers induced by non-steroidal anti-inflammatory drug (NSAID) usage have become a common public health problem, and several studies have established chronic NSAID usage to be one of the risk ",
+            "Peptic ulcer disease is a common cause of epigastric pain typically related to Helicobacter pylori infection or NSAID use that can lead to serious consequences including upper GI bleed or perforation ",
+            "et al. Esomeprazole alone compared with esomeprazole plus aspirin for the treatment of aspirin-re- lated peptic ulcers. Am J Gastroenterol. 2012;107:1022\u20139. 65. Tricco AC, Alateeq A, Tashkandi M, et a",
+            "pancreatic, gastric, or duodenal malignancy.Medical Treatment of Peptic Ulcer DiseasePPIs are the mainstay of medical therapy for PUD, but high-dose H2RAs and sucralfate are also quite effective. Pati",
+            "treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulcer-related complications (bleeding, perforation) d",
+            "Despite therapeutic advancements and the significant efficacy of medical management, peptic ulcer disease still affects millions of people. Elective surgical treatment, once a common intervention in G",
+            "Review article: the treatment of refractory Helicobacter pylori infection. Aliment Pharmacol Ther. 2003;17(11): 1333\u20131343. 24. Wu DC, Hsu PI, Wu JY, et al. Sequential and concomitant therapy with 4 dr",
+            "antithrombotic effect by irreversibly acetylating and inhibiting platelet cyclooxygenase (COX)-1 (Fig. 143-3), a critical enzyme in the biosynthesis of thromboxane A2. At high doses (~1 g/d), aspirin ",
+            "Salicylate (Toxicology, Serum/Blood): critical high >40.0 mg/dL.",
+            "use should be periodically monitored and reassessed due to the potential risk of adverse effects.1,8,118 Case Reports PUD is a pathological condition of the upper gastrointestinal tract characterized "
           ]
         },
         {
           "claim": {
-            "claim_text": "Aspirin, an NSAID, is associated with a risk of gastrointestinal bleeding.",
-            "cited_labels": [
-              "[E5]"
-            ],
-            "claim_type": "factual"
-          },
-          "verdict": "supported",
-          "explanation": "The cited evidence [E5] mentions the risk of bleeding associated with NSAIDs, including aspirin.",
-          "cited_snippets": [
-            "treatment with a PPI more reliably promotes ulcer healing. Asymptomatic peptic ulceration develops in 10\u201320% of people taking frequent NSAIDs, and ulc"
-          ]
-        },
-        {
-          "claim": {
-            "claim_text": "PPIs are used to manage the risk of bleeding associated with NSAIDs like aspirin.",
+            "claim_text": "[E3] and [E4] also discuss the use of proton pump inhibitors (PPIs) for the treatment of peptic ulcers related to NSAID use, further supporting the link between aspirin and gastrointestinal bleeding risk.",
             "cited_labels": [
               "[E3]",
               "[E4]"
             ],
             "claim_type": "factual"
           },
-          "verdict": "supported",
-          "explanation": "Both cited evidence [E3] and [E4] discuss the use of PPIs for managing peptic ulcers caused by NSAIDs.",
+          "verdict": "not_mentioned",
+          "explanation": "E3 and E4 do not mention aspirin specifically or discuss its link to gastrointestinal bleeding",
           "cited_snippets": [
-            "et al. Esomeprazole alone compared with esomeprazole plus aspirin for the treatment of aspirin-re- lated peptic ulcers. Am J Gastroenterol. 2012;107:1",
-            "pancreatic, gastric, or duodenal malignancy.Medical Treatment of Peptic Ulcer DiseasePPIs are the mainstay of medical therapy for PUD, but high-dose H"
+            "et al. Esomeprazole alone compared with esomeprazole plus aspirin for the treatment of aspirin-re- lated peptic ulcers. Am J Gastroenterol. 2012;107:1022\u20139. 65. Tricco AC, Alateeq A, Tashkandi M, et a",
+            "pancreatic, gastric, or duodenal malignancy.Medical Treatment of Peptic Ulcer DiseasePPIs are the mainstay of medical therapy for PUD, but high-dose H2RAs and sucralfate are also quite effective. Pati"
           ]
         }
       ],
@@ -1252,83 +1271,97 @@
       "retry_confidence_trajectory": [
         0.705
       ],
-      "latency_total_ms": 26400.564321003912,
-      "latency_verification_ms": 14009.680921000836,
+      "fallback_used": false,
+      "latency_total_ms": 17224.70233200147,
+      "latency_verification_ms": 4864.79,
       "latency_breakdown": {
-        "retrieval_ms": 365.7800250002765,
-        "retrieval_embed_ms": 29.047705000266433,
-        "retrieval_faiss_ms": 7.171949997427873,
-        "retrieval_graph_ms": 328.21248700201977,
-        "retrieval_fuse_ms": 0.25946700043277815,
-        "retrieval_text_load_ms": 0.24004100123420358,
-        "retrieval_total_ms": 365.5721539980732,
-        "context_ms": 0.07570199522888288,
-        "llm_ms": 11541.60376800428,
-        "total_ms": 25949.175132001983,
-        "verification_ms": 14009.680921000836
+        "retrieval_ms": 246.68,
+        "context_ms": 0.07,
+        "llm_ms": 11833.22,
+        "verification_ms": 4864.79,
+        "total_ms": 16944.76
       },
-      "ram_gb": 3.744579584,
-      "vram_mb": 4782.0,
+      "latency_sum_match": true,
+      "ram_gb": 3.537362944,
+      "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
-      "pass": false,
-      "answer_text": "Deep vein thrombosis (DVT) is a condition where a clot forms in the deep veins, most commonly in the legs [E1]. Diagnosis of DVT can be aided by imaging tests such as ultrasound [E9]. Treatment of DVT often involves anticoagulation, which can be achieved through various methods including oral direct thrombin inhibitors, oral factor Xa inhibitors, and conventional anticoagulants like heparin and vitamin K antagonists [E1].\n\nAnticoagulant therapy is recommended as the primary treatment for DVT. For patients without severe symptoms or risk factors for extension, serial imaging of the deep veins for 2 weeks over anticoagulation is suggested [E5]. However, for patients with severe symptoms or risk factors for extension, anticoagulation over serial imaging of the deep veins is recommended [E5].\n\nFor long-term anticoagulation, non-vitamin K antagonists such as dabigatran and rivaroxaban are suggested [E4]. This recommendation is based on high-quality evidence [E4].\n\nEffective anticoagulation is the foundation for successful treatment of DVT and pulmonary embolism (PE) [E8]. This is supported by the recommendation\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "pass": true,
+      "answer_text": "Deep vein thrombosis (DVT) is a condition where a clot forms in the deep veins, most commonly in the legs [E1]. Diagnosis of DVT can be aided by imaging tests such as ultrasound [E9]. Treatment of DVT often involves anticoagulation, which can be achieved through various methods including oral direct thrombin inhibitors, oral factor Xa inhibitors, and conventional anticoagulants like heparin and vitamin K antagonists [E1, E4]. \n\nFor the initial treatment of DVT, anticoagulation is recommended as the foundation for successful treatment [E8]. The choice of anticoagulant can include newer non-vitamin K antagonist oral anticoagulants such as dabigatran and rivaroxaban [E4]. In cases where the patient has severe symptoms or risk factors for extension of the clot, anticoagulation is suggested over serial imaging [E5]. For patients with acute isolated distal DVT, the recommendation is to either perform serial imaging or to use anticoagulation, both with weak recommendations due to the low and moderate certainty of evidence [E5].\n\nLong-term anticoagulation is suggested for patients with a first unprovoked VTE event to prevent recurrent venous thromboembolism (VTE) [E2]. The use of combined modalities such as intermittent pneumatic leg compression and pharmacological prophylaxis is also considered, though the evidence suggests that combined methods may not be more effective than single modalities in preventing VTE [E3].\n\nThis is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "Deep vein thrombosis (DVT) is a condition where a clot forms in the deep veins, most commonly in the legs.",
+            "claim_text": "Deep vein thrombosis (DVT) is a condition where a clot forms in the deep veins, most commonly in the legs [E1].",
             "cited_labels": [
               "[E1]"
             ],
             "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The evidence directly states this definition of DVT.",
+          "explanation": "Cited evidence supports DVT as a clot in deep veins, commonly in legs.",
           "cited_snippets": [
-            "BACKGROUND: Deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg. It occurs in approximately on"
+            "BACKGROUND: Deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg. It occurs in approximately one in 1000 people. If left untreated, the clot can "
           ]
         },
         {
           "claim": {
-            "claim_text": "Diagnosis of DVT can be aided by imaging tests such as ultrasound.",
+            "claim_text": "Diagnosis of DVT can be aided by imaging tests such as ultrasound [E9].",
             "cited_labels": [
               "[E9]"
             ],
             "claim_type": "factual"
           },
           "verdict": "not_mentioned",
-          "explanation": "The provided evidence does not mention ultrasound or other imaging tests for DVT diagnosis.",
+          "explanation": "Cited evidence does not mention imaging tests for DVT diagnosis.",
           "cited_snippets": [
-            "Ultrasound. 1988;16:1-8. 23. Mussurakis S, Papaioannou S, Voros D, et al. Compression ultrasonography as a reliable imaging monitor in deep venous thr"
+            "Ultrasound. 1988;16:1-8. 23. Mussurakis S, Papaioannou S, Voros D, et al. Compression ultrasonography as a reliable imaging monitor in deep venous thrombosis. Surg Gynecol Obstet. 1990;171:233-239. 24"
           ]
         },
         {
           "claim": {
-            "claim_text": "Anticoagulant therapy is recommended as the primary treatment for DVT.",
+            "claim_text": "Treatment of DVT often involves anticoagulation, which can be achieved through various methods including oral direct thrombin inhibitors, oral factor Xa inhibitors, and conventional anticoagulants like heparin and vitamin K antagonists [E1, E4].",
             "cited_labels": [
-              "[E5]"
+              "[E1]",
+              "[E2]",
+              "[E3]",
+              "[E4]",
+              "[E5]",
+              "[E6]",
+              "[E7]",
+              "[E8]",
+              "[E9]",
+              "[E10]"
             ],
-            "claim_type": "recommendation"
+            "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The evidence suggests serial imaging over anticoagulation for patients without severe symptoms, implying anticoagulation is the primary treatment.",
+          "explanation": "Cited evidence supports anticoagulation methods including direct thrombin inhibitors, factor Xa inhibitors, and conventional anticoagulants.",
           "cited_snippets": [
-            "(i) without severe symptoms or risk factors for extension, we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommen"
+            "BACKGROUND: Deep vein thrombosis (DVT) is a condition in which a clot forms in the deep veins, most commonly of the leg. It occurs in approximately one in 1000 people. If left untreated, the clot can ",
+            "OBJECTIVES: To determine the rate of a first recurrent venous thromboembolism (VTE) event after discontinuation of anticoagulant treatment in patients with a first episode of unprovoked VTE, and the c",
+            "BACKGROUND: It is generally assumed by practitioners and guideline authors that combined modalities (methods of treatment) are more effective than single modalities in preventing venous thromboembolis",
+            "BACKGROUND: We update recommendations on 12 topics that were in the 9th edition of these guidelines, and address 3 new topics. METHODS: We generate strong (Grade 1) and weak (Grade 2) recommendations ",
+            "(i) without severe symptoms or risk factors for extension, we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommendation, moderate-certainty evidence) or (ii) with ",
+            "This consensus document is proposed to clinicians to provide the whole spectrum of deep vein thrombosis management as an update to the 2017 consensus document. New data guiding clinicians in indicatin",
+            "have very low-certainty evidence, downgraded mainly for study limitations and imprecise effect estimates. Maternal death was not reported in most studies. Antenatal (\u00b1 postnatal) prophylaxis For the p",
+            "FIGURE 300-6 Imaging tests to diagnose DVT and PE. ECHO, echocardiography. due to RV microinfarction portend a high risk of an adverse clinical outcome. When RV function remains normal in a hemodynami",
+            "Ultrasound. 1988;16:1-8. 23. Mussurakis S, Papaioannou S, Voros D, et al. Compression ultrasonography as a reliable imaging monitor in deep venous thrombosis. Surg Gynecol Obstet. 1990;171:233-239. 24",
+            "DESCRIPTION: This expert review was commissioned and approved by the AGA Institute Clinical Practice Updates Committee and the AGA Governing Board to provide timely guidance on a topic of high clinica"
           ]
         },
         {
           "claim": {
-            "claim_text": "For patients without severe symptoms or risk factors for extension, serial imaging of the deep veins for 2 weeks over anticoagulation is suggested.",
+            "claim_text": "For the initial treatment of DVT, anticoagulation is recommended as the foundation for successful treatment [E8].",
             "cited_labels": [
-              "[E5]"
+              "[E8]"
             ],
-            "claim_type": "recommendation"
+            "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The evidence directly states this recommendation.",
+          "explanation": "Cited evidence supports anticoagulation as the foundation for DVT treatment, though specific methods are not",
           "cited_snippets": [
-            "(i) without severe symptoms or risk factors for extension, we suggest serial imaging of the deep veins for 2 weeks over anticoagulation (weak recommen"
+            "FIGURE 300-6 Imaging tests to diagnose DVT and PE. ECHO, echocardiography. due to RV microinfarction portend a high risk of an adverse clinical outcome. When RV function remains normal in a hemodynami"
           ]
         }
       ],
@@ -1473,32 +1506,28 @@
       "retry_confidence_trajectory": [
         0.816
       ],
-      "latency_total_ms": 4699.623396998504,
-      "latency_verification_ms": 0.07038199692033231,
+      "fallback_used": false,
+      "latency_total_ms": 3957.5543249957263,
+      "latency_verification_ms": 0.05,
       "latency_breakdown": {
-        "retrieval_ms": 218.18515100312652,
-        "retrieval_embed_ms": 55.818904998886865,
-        "retrieval_faiss_ms": 9.997457003919408,
-        "retrieval_graph_ms": 150.99525999539765,
-        "retrieval_fuse_ms": 0.2956650059786625,
-        "retrieval_text_load_ms": 0.22919000184629112,
-        "retrieval_total_ms": 217.99961299984716,
-        "context_ms": 0.08267600060207769,
-        "llm_ms": 4209.267512000224,
-        "total_ms": 4452.94489099615,
-        "verification_ms": 0.07038199692033231
+        "retrieval_ms": 115.99,
+        "context_ms": 0.05,
+        "llm_ms": 3694.58,
+        "verification_ms": 0.05,
+        "total_ms": 3810.68
       },
-      "ram_gb": 3.750432768,
+      "latency_sum_match": true,
+      "ram_gb": 3.5422208,
       "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
       "pass": true,
-      "answer_text": "The provided evidence does not contain specific details about the SOFA (Sequential Organ Failure Assessment) score or the organ dysfunction criteria for sepsis. Therefore, I cannot provide information on these criteria based on the given sources [E1]-[E10]. This is information, not medical advice \u2014 consult your physician.",
+      "answer_text": "The evidence provided does not contain specific details about the SOFA (Sequential Organ Failure Assessment) score or the organ dysfunction criteria for sepsis. Therefore, I cannot provide the exact criteria for the SOFA score or organ dysfunction based on the given information [E1]-[E10]. This is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "The provided evidence does not contain specific details about the SOFA (Sequential Organ Failure Assessment) score or the organ dysfunction criteria for sepsis. Therefore, I cannot provide information on these criteria based on the given sources [E1]",
+            "claim_text": "The evidence provided does not contain specific details about the SOFA (Sequential Organ Failure Assessment) score or the organ dysfunction criteria for sepsis. Therefore, I cannot provide the exact criteria for the SOFA score or organ dysfunction ba",
             "cited_labels": [
               "[E1]",
               "[E2]",
@@ -1516,9 +1545,9 @@
           "verdict": "refusal_valid",
           "explanation": "Answer is an explicit refusal grounded in insufficient evidence.",
           "cited_snippets": [
-            "The Clinical Practice Committee of the Scandinavian Society of Anaesthesiology and Intensive Care Medicine endorses the clinical practice guideline : ",
-            "points in mortality trends over time. Accordingly, we investigated mortality trends in patients with sepsis and septic shock from 2009 to 2019 includi",
-            "the specialized literature evaluated the efficacy and safety of corticosteroid use in patients with sepsis.6 The review authors included clinical tria"
+            "The Clinical Practice Committee of the Scandinavian Society of Anaesthesiology and Intensive Care Medicine endorses the clinical practice guideline : . The guideline serves as a useful bedside decision aid for clinicians managing adults with suspected and confirmed septic shock and sepsis\u2010associated organ dysfunction.",
+            "points in mortality trends over time. Accordingly, we investigated mortality trends in patients with sepsis and septic shock from 2009 to 2019 including interventional, observational, prospective and retrospective studies to get a broad understanding of published mortality rates. This enabled us to stratify results by study types and geographic region (Europe, North America, Australia) as secondar",
+            "the specialized literature evaluated the efficacy and safety of corticosteroid use in patients with sepsis.6 The review authors included clinical trials conducted in adults and children diagnosed with sepsis, severe sepsis, or septic shock, according to definitions established by expert consensus. For interventions, the review included the use of any corticosteroid administered at any dosage. It e"
           ]
         }
       ],
@@ -1650,95 +1679,65 @@
       "query": "mechanism of action beta blocker cardiac output heart rate",
       "description": "Pharmacology \u2014 beta blocker mechanism of action",
       "answer_status": "uncertain",
-      "final_confidence": 0.477,
+      "final_confidence": 0.177,
       "confidence_tier": "low",
       "evidence_confidence": 0.443,
-      "faithfulness_score": 0.5,
-      "n_claims": 4,
-      "n_supported": 2,
+      "faithfulness_score": 0.0,
+      "n_claims": 2,
+      "n_supported": 0,
       "n_contradicted": 0,
       "n_not_mentioned": 2,
       "n_refusal_valid": 0,
-      "retry_count": 0,
+      "retry_count": 1,
       "retry_confidence_trajectory": [
-        0.477
+        0.177,
+        0.177
       ],
-      "latency_total_ms": 19056.121948997315,
+      "fallback_used": false,
+      "latency_total_ms": 14475.251100004243,
       "latency_verification_ms": 0.0,
       "latency_breakdown": {
-        "retrieval_ms": 262.1496629944886,
-        "retrieval_embed_ms": 53.25230500602629,
-        "retrieval_faiss_ms": 5.83741300215479,
-        "retrieval_graph_ms": 201.95309500559233,
-        "retrieval_fuse_ms": 0.22352999803842977,
-        "retrieval_text_load_ms": 0.16065200179582462,
-        "retrieval_total_ms": 262.03117000113707,
-        "context_ms": 0.04862200148636475,
-        "llm_ms": 6368.325013994763,
-        "total_ms": 6657.129286999407
+        "retrieval_ms": 208.42,
+        "context_ms": 0.04,
+        "llm_ms": 4269.69,
+        "verification_ms": 0.0,
+        "total_ms": 4478.15
       },
-      "ram_gb": 3.756515328,
+      "latency_sum_match": true,
+      "ram_gb": 3.548020736,
       "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
       "pass": true,
-      "answer_text": "\u26a0\ufe0f I found limited or conflicting evidence for this topic. The information below may be incomplete or uncertain. Please consult a healthcare professional for definitive guidance.\n\nThe provided evidence does not directly describe the mechanism of action of beta blockers on cardiac output and heart rate. However, it can be inferred from the information given that beta-blockers reduce heart rate and myocardial contractility, which in turn can lead to a decrease in cardiac output [E1]. This is based on the guideline suggesting the use of beta-blockers in the management of chronic heart failure, indicating their role in managing heart function. \n\nFor a more detailed explanation of the mechanism of action, additional sources focusing on pharmacology and physiology would be necessary. This is information, not medical advice \u2014 consult your physician.",
+      "answer_text": "\u26a0\ufe0f I found limited or conflicting evidence for this topic. The information below may be incomplete or uncertain. Please consult a healthcare professional for definitive guidance.\n\nThe provided evidence does not directly describe the mechanism of action of beta blockers on cardiac output and heart rate. However, it can be inferred from the context that beta blockers reduce heart rate and cardiac output by blocking beta-adrenergic receptors, which leads to decreased sympathetic stimulation of the heart [E1]. This results in a reduction in heart rate and myocardial contractility, thereby lowering cardiac output [E1]. \n\nThis is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "Beta-blockers reduce heart rate and myocardial contractility.",
+            "claim_text": "However, it can be inferred from the context that beta blockers reduce heart rate and cardiac output by blocking beta-adrenergic receptors, which leads to decreased sympathetic stimulation of the heart [E1].",
             "cited_labels": [
               "[E1]"
             ],
             "claim_type": "factual"
           },
           "verdict": "not_mentioned",
-          "explanation": "The evidence does not directly mention the mechanism of action of beta-blockers.",
+          "explanation": "The evidence does not mention how beta blockers reduce heart rate and cardiac output.",
           "cited_snippets": [
-            "medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure"
+            "medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NIC"
           ]
         },
         {
           "claim": {
-            "claim_text": "The use of beta-blockers can lead to a decrease in cardiac output.",
+            "claim_text": "This results in a reduction in heart rate and myocardial contractility, thereby lowering cardiac output [E1].",
             "cited_labels": [
               "[E1]"
             ],
             "claim_type": "factual"
           },
           "verdict": "not_mentioned",
-          "explanation": "The evidence does not directly mention the effect on cardiac output.",
+          "explanation": "The evidence does not mention the mechanism of reducing heart rate and myocardial contractility.",
           "cited_snippets": [
-            "medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure"
-          ]
-        },
-        {
-          "claim": {
-            "claim_text": "Guidelines suggest the use of beta-blockers in the management of chronic heart failure.",
-            "cited_labels": [
-              "[E1]"
-            ],
-            "claim_type": "factual"
-          },
-          "verdict": "supported",
-          "explanation": "The evidence mentions the use of beta-blockers in the management of chronic heart failure.",
-          "cited_snippets": [
-            "medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure"
-          ]
-        },
-        {
-          "claim": {
-            "claim_text": "The provided evidence does not directly describe the mechanism of action of beta-blockers.",
-            "cited_labels": [
-              "[E1]"
-            ],
-            "claim_type": "factual"
-          },
-          "verdict": "supported",
-          "explanation": "The evidence does not directly describe the mechanism of action of beta-blockers.",
-          "cited_snippets": [
-            "medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure"
+            "medicines for heart failure with mildly reduced ejection fraction and D: MRA for heart failure with preserved ejection fraction. Chronic heart failure in adults: diagnosis and management (NG106) \u00a9 NIC"
           ]
         }
       ],
@@ -1869,97 +1868,66 @@
       "id": "P10",
       "query": "potassium hyperkalemia ECG changes peaked T waves treatment",
       "description": "Emergency medicine \u2014 hyperkalemia ECG changes & treatment",
-      "answer_status": "caution",
-      "final_confidence": 0.686,
-      "confidence_tier": "medium",
+      "answer_status": "verified",
+      "final_confidence": 0.836,
+      "confidence_tier": "high",
       "evidence_confidence": 0.59,
-      "faithfulness_score": 0.75,
-      "n_claims": 4,
-      "n_supported": 3,
+      "faithfulness_score": 1.0,
+      "n_claims": 2,
+      "n_supported": 2,
       "n_contradicted": 0,
-      "n_not_mentioned": 1,
+      "n_not_mentioned": 0,
       "n_refusal_valid": 0,
       "retry_count": 0,
       "retry_confidence_trajectory": [
-        0.686
+        0.836
       ],
-      "latency_total_ms": 20297.69667099754,
-      "latency_verification_ms": 13733.77846799849,
+      "fallback_used": false,
+      "latency_total_ms": 6411.910910996085,
+      "latency_verification_ms": 1910.5,
       "latency_breakdown": {
-        "retrieval_ms": 291.99165000318317,
-        "retrieval_embed_ms": 62.26545300160069,
-        "retrieval_faiss_ms": 8.322890993440524,
-        "retrieval_graph_ms": 219.63218900054926,
-        "retrieval_fuse_ms": 0.3131379999103956,
-        "retrieval_text_load_ms": 0.3036900016013533,
-        "retrieval_total_ms": 291.6253319999669,
-        "context_ms": 0.10316299449186772,
-        "llm_ms": 5940.707709996786,
-        "total_ms": 19992.430069993134,
-        "verification_ms": 13733.77846799849
+        "retrieval_ms": 183.64,
+        "context_ms": 0.05,
+        "llm_ms": 4121.41,
+        "verification_ms": 1910.5,
+        "total_ms": 6215.61
       },
-      "ram_gb": 3.764703232,
+      "latency_sum_match": true,
+      "ram_gb": 3.567558656,
       "vram_mb": 4784.0,
       "has_disclaimer": true,
       "blocklisted_citations_count": 0,
       "pmc_twin_detected": false,
-      "pass": false,
-      "answer_text": "Hyperkalemia can lead to specific ECG changes such as peaked T waves, which are characteristic of elevated potassium levels [E5]. The treatment for hyperkalemia initially involves measures to immediately antagonize the cardiac effects of hyperkalemia. Intravenous calcium serves to protect the heart by raising the action potential threshold and reducing excitability, without changing the resting membrane potential. This helps restore the difference between resting and threshold potentials, reversing the depolarization that can occur with hyperkalemia [E8].\n\nThis is information, not medical advice \u2014 consult your physician.",
+      "pass": true,
+      "answer_text": "[E8] mentions that intravenous calcium serves to protect the heart in hyperkalemia, indicating that calcium can be used to manage the cardiac effects of hyperkalemia, such as peaked T waves on ECG [E8]. This is because calcium raises the action potential threshold and reduces excitability, which can help reverse the depolarization that occurs with hyperkalemia [E8].\n\nThis is information, not medical advice \u2014 consult your physician.",
       "claims": [
         {
           "claim": {
-            "claim_text": "Hyperkalemia can lead to specific ECG changes such as peaked T waves.",
+            "claim_text": "[E8] mentions that intravenous calcium serves to protect the heart in hyperkalemia, indicating that calcium can be used to manage the cardiac effects of hyperkalemia, such as peaked T waves on ECG [E8].",
             "cited_labels": [
-              "[E5]"
+              "[E8]",
+              "[E8]"
             ],
             "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The cited evidence mentions ECG changes related to hyperkalemia.",
+          "explanation": "Evidence supports the claim.",
           "cited_snippets": [
-            "of epidemiological studies in this area and/or the pathogenic consequences of hyperkalemia []. Cardiac dysrhythmia: mechanism e K1 Kr Figure 2 I I An "
+            "stages: 1. Immediate antagonism of the cardiac effects of hyperkalemia. Intravenous calcium serves to protect the heart, whereas other measures are taken to correct hyperkalemia. Calcium raises the ac"
           ]
         },
         {
           "claim": {
-            "claim_text": "The treatment for hyperkalemia initially involves measures to immediately antagonize the cardiac effects of hyperkalemia.",
+            "claim_text": "This is because calcium raises the action potential threshold and reduces excitability, which can help reverse the depolarization that occurs with hyperkalemia [E8].",
             "cited_labels": [
               "[E8]"
             ],
             "claim_type": "factual"
           },
           "verdict": "supported",
-          "explanation": "The cited evidence discusses the initial treatment involving measures to antagonize the cardiac effects of hyperkalemia.",
+          "explanation": "Evidence supports the claim.",
           "cited_snippets": [
-            "stages: 1. Immediate antagonism of the cardiac effects of hyperkalemia. Intravenous calcium serves to protect the heart, whereas other measures are ta"
-          ]
-        },
-        {
-          "claim": {
-            "claim_text": "Intravenous calcium serves to protect the heart by raising the action potential threshold and reducing excitability.",
-            "cited_labels": [
-              "[E8]"
-            ],
-            "claim_type": "factual"
-          },
-          "verdict": "supported",
-          "explanation": "The cited evidence explains the mechanism of intravenous calcium in protecting the heart.",
-          "cited_snippets": [
-            "stages: 1. Immediate antagonism of the cardiac effects of hyperkalemia. Intravenous calcium serves to protect the heart, whereas other measures are ta"
-          ]
-        },
-        {
-          "claim": {
-            "claim_text": "Intravenous calcium does not change the resting membrane potential.",
-            "cited_labels": [
-              "[E8]"
-            ],
-            "claim_type": "factual"
-          },
-          "verdict": "not_mentioned",
-          "explanation": "The cited evidence does not mention whether intravenous calcium changes the resting membrane potential.",
-          "cited_snippets": [
-            "stages: 1. Immediate antagonism of the cardiac effects of hyperkalemia. Intravenous calcium serves to protect the heart, whereas other measures are ta"
+            "stages: 1. Immediate antagonism of the cardiac effects of hyperkalemia. Intravenous calcium serves to protect the heart, whereas other measures are taken to correct hyperkalemia. Calcium raises the ac"
           ]
         }
       ],

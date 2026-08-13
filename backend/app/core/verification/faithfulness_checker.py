@@ -1,14 +1,16 @@
 """
-MedGraphRAG Backend — Fast Single-Pass Faithfulness Checker
-=============================================================
-Combines atomic claim extraction and faithfulness verification into a SINGLE ULTRA-FAST LLM PASS.
+MedGraphRAG Backend — Step 8.2 Single-Pass Faithfulness Checker
+=================================================================
+Combines claim filtering and faithfulness verification into a SINGLE FAST LLM PASS.
 
-Key Optimizations:
-  1. Single LLM call (max_tokens=350, temp=0.1) extracting up to 5 atomic claims with verdicts.
-  2. ONLY passes cited [E#] evidence snippets (truncated to 150 chars each) -> ~150 prompt tokens.
-  3. Fast-path refusal detection (verification_ms ≈ 0).
-  4. Robust regex object parser handles any truncated or unclosed JSON arrays cleanly without throwing errors.
-  5. Guarantees verification_ms ≤ 3,000 ms per non-refusal query.
+Key Features & Optimizations:
+  1. Pre-verification claim filtering:
+     - Drops disclaimers ("This is information, not medical advice...")
+     - Drops epistemic/meta statements ("The evidence does not mention...", "based on given evidence...")
+     - Keeps max 4 factual claims (most important first).
+  2. Payload snippet truncation: 400 chars per cited snippet.
+  3. Single LLM call (max_tokens=250, temp=0.1) demanding strict JSON array.
+  4. Returns tuple: (verifications: list[ClaimVerification], faithfulness_score: float, fallback_used: bool).
 """
 
 from __future__ import annotations
@@ -37,27 +39,84 @@ REFUSAL_PATTERNS = [
     "evidence provided does not",
 ]
 
+# Meta/epistemic patterns to filter out before claim verification
+DISCARD_PATTERNS = [
+    "this is information",
+    "medical advice",
+    "consult your physician",
+    "consult a healthcare",
+    "consult a physician",
+    "the provided evidence does not",
+    "the evidence provided does not",
+    "does not specifically mention",
+    "does not detail",
+    "based on the given evidence",
+    "i cannot provide",
+    "i cannot confirm",
+    "it cannot be concluded",
+    "for specific treatment recommendations",
+    "refer to current clinical practice",
+    "refer to the full guideline",
+    "the documents discuss",
+]
+
+
+def filter_answer_claims(answer_text: str, citations: List[CitationMeta]) -> List[Claim]:
+    """
+    Split answer_text into sentences and filter out disclaimers, epistemic meta-statements,
+    and non-factual recommendation boilerplate.
+
+    Returns at most 4 factual Claim objects.
+    """
+    all_cited_labels = [c.label for c in citations]
+    raw_sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", answer_text) if s.strip()]
+
+    clean_claims: List[Claim] = []
+
+    for sentence in raw_sentences:
+        sent_lower = sentence.lower()
+        if any(pat in sent_lower for pat in DISCARD_PATTERNS):
+            continue
+
+        cited_labels = re.findall(r"\[E\d+\]", sentence)
+        if not cited_labels:
+            cited_labels = all_cited_labels
+
+        clean_claims.append(
+            Claim(
+                claim_text=sentence,
+                cited_labels=cited_labels,
+                claim_type="factual",
+            )
+        )
+        if len(clean_claims) >= 4:
+            break
+
+    # If all sentences were meta/disclaimers, fallback to first non-disclaimer sentence
+    if not clean_claims and raw_sentences:
+        first_sent = raw_sentences[0]
+        clean_claims.append(
+            Claim(
+                claim_text=first_sent[:300],
+                cited_labels=all_cited_labels,
+                claim_type="factual",
+            )
+        )
+
+    return clean_claims
+
 
 def verify_in_single_pass(
     answer_text: str,
     citations: List[CitationMeta],
     retrieval_result: Optional[RetrievalResult] = None,
-) -> Tuple[List[ClaimVerification], float]:
+) -> Tuple[List[ClaimVerification], float, bool]:
     """
-    Perform claim extraction and faithfulness verification in a SINGLE FAST LLM PASS (≤ 3 s).
-
-    Parameters
-    ----------
-    answer_text : str
-        Generated answer text from LLM.
-    citations : list of CitationMeta
-        Retrieved evidence citations.
-    retrieval_result : RetrievalResult, optional
-        Full retrieval result if available.
+    Perform claim filtering and single-pass faithfulness verification.
 
     Returns
     -------
-    tuple of (verifications: list[ClaimVerification], faithfulness_score: float)
+    tuple of (verifications: list[ClaimVerification], faithfulness_score: float, fallback_used: bool)
     """
     text_lower = answer_text.lower()
     all_cited_labels = [c.label for c in citations]
@@ -75,9 +134,12 @@ def verify_in_single_pass(
                 claim=refusal_claim,
                 verdict="refusal_valid",
                 explanation="Answer is an explicit refusal grounded in insufficient evidence.",
-                cited_snippets=[c.snippet[:150] for c in citations[:3]],
+                cited_snippets=[c.snippet[:400] for c in citations[:3]],
             )
-            return [verification], 1.0
+            return [verification], 1.0, False
+
+    # ── Step 2: Claim Filtering ──────────────────────────────────────────────
+    claims = filter_answer_claims(answer_text, citations)
 
     # ── Filter Citations to CITED Labels Only ─────────────────────────────────
     cited_in_text = set(re.findall(r"\[E\d+\]", answer_text))
@@ -86,42 +148,41 @@ def verify_in_single_pass(
     if not target_citations:
         target_citations = citations[:3]
 
-    # ── Build Ultra-Compact Evidence Text (150 chars max per snippet) ─────────
+    # ── Build Evidence Text (400 chars max per snippet) ───────────────────────
     snippet_blocks = []
     for c in target_citations[:4]:
-        snippet_text = c.snippet[:150].strip()
+        snippet_text = c.snippet[:400].strip()
         snippet_blocks.append(f"{c.label}: {snippet_text}")
     evidence_text = "\n\n".join(snippet_blocks) if snippet_blocks else "No evidence provided."
 
-    # ── Single-Pass LLM Call (max_tokens=350 for ≤ 3s latency) ───────────────
-    prompt = settings.verification_single_pass_prompt.replace(
-        "{evidence_text}", evidence_text
-    ).replace(
-        "{answer_text}", answer_text
+    # Format claims text for prompt payload
+    claims_text = "\n".join([f"Claim {i+1}: {c.claim_text}" for i, c in enumerate(claims)])
+    prompt = (
+        settings.verification_single_pass_prompt
+        .replace("{evidence_text}", evidence_text)
+        .replace("{answer_text}", claims_text)
     )
     messages = [{"role": "user", "content": prompt}]
 
+    # ── Single-Pass LLM Call (max_tokens=250) ─────────────────────────────────
+    max_tokens = settings.verification_max_tokens
+    fallback_used = False
+
     try:
-        llm_res = generate_chat(messages=messages, max_tokens=350, temperature=0.1)
+        llm_res = generate_chat(messages=messages, max_tokens=max_tokens, temperature=0.1)
         raw_text = llm_res.get("text", "").strip()
 
-        # Robust extraction using regex pattern for completed or partially completed JSON objects
+        # Extract JSON objects
         json_objects = re.findall(r"\{[^{}]*\}", raw_text)
         verifications: List[ClaimVerification] = []
 
-        for raw_obj in json_objects[:5]:  # Cap at 5 claims max
+        for i, raw_obj in enumerate(json_objects[: len(claims)]):
             try:
                 item = json.loads(raw_obj)
-                if isinstance(item, dict) and "claim_text" in item:
-                    ctext = str(item.get("claim_text", "")).strip()
-                    clabels = item.get("cited_labels", [])
-                    if isinstance(clabels, str):
-                        clabels = [clabels]
-                    ctype = str(item.get("claim_type", "factual")).lower()
-                    if ctype not in ("factual", "recommendation", "value", "refusal"):
-                        ctype = "factual"
-
+                if isinstance(item, dict):
+                    claim_obj = claims[i] if i < len(claims) else claims[0]
                     raw_verdict = str(item.get("verdict", "not_mentioned")).lower()
+
                     if "supported" in raw_verdict:
                         verdict = "supported"
                     elif "contradict" in raw_verdict:
@@ -132,12 +193,13 @@ def verify_in_single_pass(
                         verdict = "not_mentioned"
 
                     explanation = str(item.get("explanation", "Verification completed.")).strip()
+                    # Truncate explanation to 15 words per spec
+                    words = explanation.split()
+                    if len(words) > 15:
+                        explanation = " ".join(words[:15])
 
-                    snippets = [
-                        c.snippet[:150] for c in citations if c.label in clabels
-                    ]
+                    snippets = [c.snippet[:200] for c in citations if c.label in claim_obj.cited_labels]
 
-                    claim_obj = Claim(claim_text=ctext, cited_labels=clabels, claim_type=ctype)
                     verifications.append(
                         ClaimVerification(
                             claim=claim_obj,
@@ -151,21 +213,22 @@ def verify_in_single_pass(
 
         if verifications:
             score = _compute_faithfulness_score(verifications)
-            logger.info("Single-pass verification complete: %d claims, score = %.3f", len(verifications), score)
-            return verifications, score
+            logger.info("Single-pass verification complete: %d claims, score = %.3f (fallback_used=False)", len(verifications), score)
+            return verifications, score, False
 
     except Exception as exc:
-        logger.warning("Single-pass verification failed: %s. Using fallback.", exc)
+        logger.warning("Single-pass verification LLM call failed: %s. Using fallback.", exc)
 
     # ── Fallback Handling ────────────────────────────────────────────────────
-    fallback_claim = Claim(claim_text=answer_text[:250].strip(), cited_labels=all_cited_labels, claim_type="factual")
+    fallback_used = True
+    fallback_claim = claims[0] if claims else Claim(claim_text=answer_text[:250].strip(), cited_labels=all_cited_labels, claim_type="factual")
     fallback_verification = ClaimVerification(
         claim=fallback_claim,
         verdict="not_mentioned",
         explanation="Single-pass verification parsing fallback.",
         cited_snippets=[c.snippet[:150] for c in citations[:2]],
     )
-    return [fallback_verification], 0.5
+    return [fallback_verification], 0.5, True
 
 
 def _compute_faithfulness_score(verifications: List[ClaimVerification]) -> float:

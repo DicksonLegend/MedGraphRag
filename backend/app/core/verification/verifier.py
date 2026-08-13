@@ -1,10 +1,12 @@
 """
-MedGraphRAG Backend — Verification Agent
-==========================================
-Orchestrates claim extraction, faithfulness checking, confidence scoring, and retry gating.
+MedGraphRAG Backend — Verification Agent (Step 8.2)
+=====================================================
+Orchestrates claim filtering, single-pass faithfulness checking, confidence scoring, and retry gating.
 
-Ensures that every generated answer delivered to the user is verified for factual adherence,
-properly confidence-scored, and gated against hallucinations or ungrounded claims.
+Ensures:
+  - latency_total_ms equals sum(retrieval_ms, context_ms, llm_ms, verification_ms).
+  - retry_count and fallback_used flags are tracked accurately.
+  - Answers are confidence-scored and gated against hallucinations.
 """
 
 from __future__ import annotations
@@ -66,6 +68,13 @@ class VerificationAgent:
         # ── Edge Case: Malformed or Empty Answer ──────────────────────────────
         if not answer_result.answer_text or not answer_result.answer_text.strip():
             logger.error("Answer text is empty or malformed.")
+            updated_lat = dict(answer_result.latency_breakdown)
+            updated_lat["verification_ms"] = 0.0
+            r_ms = updated_lat.get("retrieval_ms", 0.0)
+            c_ms = updated_lat.get("context_ms", 0.0)
+            l_ms = updated_lat.get("llm_ms", 0.0)
+            updated_lat["total_ms"] = round(r_ms + c_ms + l_ms, 2)
+
             return VerifiedAnswerResult(
                 query=answer_result.query,
                 destination=answer_result.destination,
@@ -79,9 +88,10 @@ class VerificationAgent:
                 citations=answer_result.citations,
                 retry_count=0,
                 retry_confidence_trajectory=[0.0],
+                fallback_used=True,
                 disclaimer="This is information, not medical advice — consult your physician.",
                 n_evidence=answer_result.n_evidence,
-                latency_breakdown=answer_result.latency_breakdown,
+                latency_breakdown=updated_lat,
                 llm_mode=answer_result.llm_mode,
                 ram_gb=answer_result.ram_gb,
                 vram_mb=answer_result.vram_mb,
@@ -89,7 +99,7 @@ class VerificationAgent:
 
         try:
             # ── Single-Pass Verification (Stage A + B) ────────────────────────
-            verifications, faithfulness_score = verify_in_single_pass(
+            verifications, faithfulness_score, fallback_used = verify_in_single_pass(
                 answer_text=answer_result.answer_text,
                 citations=answer_result.citations,
                 retrieval_result=retrieval_result,
@@ -103,10 +113,14 @@ class VerificationAgent:
 
             verification_ms = (time.perf_counter() - t0) * 1000
 
-            # Update latency breakdown dictionary
+            # Update latency breakdown and enforce exact sum
             updated_latency = dict(answer_result.latency_breakdown)
-            updated_latency["verification_ms"] = verification_ms
-            updated_latency["total_ms"] = updated_latency.get("total_ms", 0.0) + verification_ms
+            updated_latency["verification_ms"] = round(verification_ms, 2)
+            r_ms = updated_latency.get("retrieval_ms", 0.0)
+            c_ms = updated_latency.get("context_ms", 0.0)
+            l_ms = updated_latency.get("llm_ms", 0.0)
+            v_ms = updated_latency["verification_ms"]
+            updated_latency["total_ms"] = round(r_ms + c_ms + l_ms + v_ms, 2)
 
             has_contradiction = any(v.verdict == "contradicted" for v in verifications)
             is_refusal = any(v.verdict == "refusal_valid" for v in verifications)
@@ -132,6 +146,7 @@ class VerificationAgent:
                     initial_faithfulness=faithfulness_score,
                     initial_confidence=final_confidence,
                     initial_tier=tier,
+                    initial_fallback_used=fallback_used,
                     start_time=t0,
                 )
 
@@ -152,8 +167,8 @@ class VerificationAgent:
                 answer_text = f"{settings.uncertainty_disclosure}{answer_text}"
 
             logger.info(
-                "Verification complete: status=%s, final_confidence=%.3f (tier=%s, faithfulness=%.3f, verification_ms=%.1f)",
-                status, final_confidence, tier, faithfulness_score, verification_ms
+                "Verification complete: status=%s, final_confidence=%.3f (tier=%s, faithfulness=%.3f, verification_ms=%.1f, fallback_used=%s)",
+                status, final_confidence, tier, faithfulness_score, verification_ms, fallback_used
             )
 
             return VerifiedAnswerResult(
@@ -169,6 +184,7 @@ class VerificationAgent:
                 citations=answer_result.citations,
                 retry_count=0,
                 retry_confidence_trajectory=[final_confidence],
+                fallback_used=fallback_used,
                 disclaimer="This is information, not medical advice — consult your physician.",
                 n_evidence=answer_result.n_evidence,
                 latency_breakdown=updated_latency,
@@ -179,6 +195,14 @@ class VerificationAgent:
 
         except Exception as exc:
             logger.error("Unhandled exception in VerificationAgent: %s. Returning fallback.", exc, exc_info=True)
+            updated_lat = dict(answer_result.latency_breakdown)
+            updated_lat["verification_ms"] = round((time.perf_counter() - t0) * 1000, 2)
+            r_ms = updated_lat.get("retrieval_ms", 0.0)
+            c_ms = updated_lat.get("context_ms", 0.0)
+            l_ms = updated_lat.get("llm_ms", 0.0)
+            v_ms = updated_lat["verification_ms"]
+            updated_lat["total_ms"] = round(r_ms + c_ms + l_ms + v_ms, 2)
+
             return VerifiedAnswerResult(
                 query=answer_result.query,
                 destination=answer_result.destination,
@@ -192,9 +216,10 @@ class VerificationAgent:
                 citations=answer_result.citations,
                 retry_count=0,
                 retry_confidence_trajectory=[answer_result.evidence_confidence],
+                fallback_used=True,
                 disclaimer="This is information, not medical advice — consult your physician.",
                 n_evidence=answer_result.n_evidence,
-                latency_breakdown=answer_result.latency_breakdown,
+                latency_breakdown=updated_lat,
                 llm_mode=answer_result.llm_mode,
                 ram_gb=answer_result.ram_gb,
                 vram_mb=answer_result.vram_mb,

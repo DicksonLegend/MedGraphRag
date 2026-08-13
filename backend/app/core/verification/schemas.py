@@ -73,6 +73,10 @@ class VerifiedAnswerResult(AnswerResult):
         default_factory=list,
         description="History of final_confidence values after each retry attempt.",
     )
+    fallback_used: bool = Field(
+        default=False,
+        description="True if JSON parse fallback was triggered during verification.",
+    )
     disclaimer: str = Field(
         default="This is information, not medical advice — consult your physician.",
         description="Mandatory medical disclaimer text.",
