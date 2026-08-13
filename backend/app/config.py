@@ -522,6 +522,39 @@ class Settings(BaseSettings):
         ),
         description="Single-pass prompt template combining claim extraction and faithfulness check.",
     )
+    # ── Step 9 Router & Agent Settings ───────────────────────────────────────
+    router_rule_first_enabled: bool = Field(
+        default=True,
+        description="Enable fast CPU rule-first routing before LLM fallback.",
+    )
+    router_llm_fallback_enabled: bool = Field(
+        default=True,
+        description="Enable LLM classification fallback when rules are inconclusive.",
+    )
+    router_relational_keywords: List[str] = Field(
+        default=[
+            "which drugs", "what drugs", "drugs treat", "what tests", "lab test for",
+            "interactions", "side effects of", "causes of", "treats", "mapped to",
+            "relationship between", "mechanism of action"
+        ],
+        description="Keywords indicating a graph-first knowledge_graph intent.",
+    )
+    router_out_of_scope_keywords: List[str] = Field(
+        default=[
+            "poem", "haiku", "sing", "code", "python", "weather", "recipe",
+            "joke", "capital of", "who wrote", "sports", "football"
+        ],
+        description="Keywords indicating an out_of_scope non-medical query.",
+    )
+    router_llm_classification_prompt: str = Field(
+        default=(
+            "Classify the following query into exactly ONE route from: "
+            "[medical_query, knowledge_graph, report, out_of_scope]. "
+            "Respond ONLY with the single route string.\n\n"
+            "QUERY: {query}"
+        ),
+        description="LLM single-line classification prompt template.",
+    )
     uncertainty_disclosure: str = Field(
         default=(
             "⚠️ I found limited or conflicting evidence for this topic. "

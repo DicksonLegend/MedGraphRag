@@ -49,7 +49,7 @@ class VerifiedAnswerResult(AnswerResult):
     """Extends AnswerResult with verification status, faithfulness, and retry details."""
 
     answer_status: Literal[
-        "verified", "caution", "uncertain", "contradiction_detected", "refusal", "error"
+        "verified", "caution", "uncertain", "contradiction_detected", "refusal", "out_of_scope", "not_implemented_yet", "error"
     ] = Field(description="Final gated answer status.")
 
     final_confidence: float = Field(
