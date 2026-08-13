@@ -239,6 +239,40 @@ def out_of_scope_node(state: MedGraphState) -> Dict[str, Any]:
     return {"verified_result": verified_res}
 
 
+def _build_graph_path_strings(retrieval_res: Optional[RetrievalResult]) -> List[str]:
+    """Format graph paths from retrieval result items into human-readable provenance strings."""
+    if not retrieval_res or not retrieval_res.items:
+        return []
+
+    paths: List[str] = []
+    for item in retrieval_res.items:
+        g_path = item.graph_path
+        g_ents = item.graph_entities
+        cid = item.chunk_id
+        doc_id = item.document_id
+
+        if not g_path:
+            continue
+
+        if len(g_ents) >= 2:
+            e1, e2 = g_ents[0], g_ents[1]
+            e1_str = f"{e1.get('label', 'Entity')}({e1.get('name', e1.get('id', ''))})"
+            e2_str = f"{e2.get('label', 'Entity')}({e2.get('name', e2.get('id', ''))})"
+            edge1 = g_path[0] if len(g_path) > 0 else "RELATED"
+            edge2 = g_path[1] if len(g_path) > 1 else "DOCUMENT_MENTIONS"
+            paths.append(f"{e1_str} -[{edge1}]-> {e2_str} -[{edge2}]-> Document({doc_id}) -[HAS_CHUNK]-> Chunk({cid})")
+        elif len(g_ents) == 1:
+            e1 = g_ents[0]
+            e1_str = f"{e1.get('label', 'Entity')}({e1.get('name', e1.get('id', ''))})"
+            edge1 = g_path[0] if len(g_path) > 0 else "DOCUMENT_MENTIONS"
+            paths.append(f"{e1_str} -[{edge1}]-> Document({doc_id}) -[HAS_CHUNK]-> Chunk({cid})")
+        else:
+            edges_str = " -> ".join(g_path)
+            paths.append(f"Document({doc_id}) -[{edges_str}]-> Chunk({cid})")
+
+    return list(dict.fromkeys(paths))
+
+
 # ── Node 6: Finalize Node ────────────────────────────────────────────────────
 def finalize_node(state: MedGraphState) -> Dict[str, Any]:
     """Assemble final_response dictionary from state and verified_result."""
@@ -254,6 +288,11 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
             citations_data.append(c.model_dump())
             if hasattr(c, "graph_paths") and c.graph_paths:
                 graph_paths.extend(c.graph_paths)
+
+    # Collect graph path provenance from retrieval_result in state
+    retrieval_res: Optional[RetrievalResult] = state.get("retrieval_result")
+    ret_paths = _build_graph_path_strings(retrieval_res)
+    graph_paths.extend(ret_paths)
 
     graph_paths = list(dict.fromkeys(graph_paths))
 
@@ -285,5 +324,5 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
         },
     }
 
-    logger.info("finalize_node complete for route=%s (total_ms=%.2f)", route, total_ms)
+    logger.info("finalize_node complete for route=%s (total_ms=%.2f, graph_paths=%d)", route, total_ms, len(graph_paths))
     return {"final_response": final_response}

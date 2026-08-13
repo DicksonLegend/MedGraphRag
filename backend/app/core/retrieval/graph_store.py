@@ -118,7 +118,7 @@ def traverse_from_documents(
 
     # ── Pass 0: Independent Query Entity Seeding ──────────────────────────────
     if query:
-        _pass0_query_entity_seeding(query, results, seen_chunk_ids, max_results)
+        _pass0_query_entity_seeding(query, results, seen_chunk_ids, max(5, max_results // 2))
 
     # ── Pass 1: Direct HAS_CHUNK from seed documents ─────────────────────────
     if len(results) < max_results:
@@ -143,6 +143,19 @@ def traverse_from_documents(
 # Query Entity Seeding (Pass 0)
 # ---------------------------------------------------------------------------
 
+SYNONYM_MAP: Dict[str, List[str]] = {
+    "dvt": ["deep vein thrombosis"],
+    "inr": ["international normalized ratio", "warfarin"],
+    "ace": ["angiotensin converting enzyme", "ace inhibitor"],
+    "ecg": ["electrocardiogram", "hyperkalemia"],
+    "sofa": ["sequential organ failure assessment", "sepsis"],
+    "afib": ["atrial fibrillation"],
+    "mi": ["myocardial infarction"],
+    "hgb": ["hemoglobin"],
+    "hb": ["hemoglobin"],
+}
+
+
 def _pass0_query_entity_seeding(
     query: str,
     results: List[Dict[str, Any]],
@@ -158,15 +171,28 @@ def _pass0_query_entity_seeding(
         "guidelines", "guideline", "treatment", "first", "line", "risk", "side",
         "effects", "criteria", "changes", "peaked", "waves", "diagnosis", "score",
         "mechanism", "action", "output", "rate", "levels", "threshold", "elevation",
-        "contraindications", "failure", "organ", "dysfunction", "critical", "care"
+        "contraindications", "failure", "organ", "dysfunction", "critical", "care",
+        "which", "drugs", "treat", "what", "does", "mean", "meanings", "about"
     }
 
-    raw_tokens = [w for w in re.findall(r"\b[a-zA-Z]{3,}\b", query) if w.lower() not in stopwords]
-    bigrams = [" ".join(raw_tokens[i:i+2]) for i in range(len(raw_tokens)-1)]
-    candidates = list(dict.fromkeys(bigrams + raw_tokens))  # preserve order, unique
+    # Extract all alphanumeric words of length >= 2
+    raw_words = [w.lower() for w in re.findall(r"\b[a-zA-Z0-9]{2,}\b", query) if w.lower() not in stopwords]
+
+    # 2-word n-grams
+    bigrams = [" ".join(raw_words[i:i+2]) for i in range(len(raw_words)-1)]
+
+    # Expand synonyms
+    expanded_terms: List[str] = []
+    for w in raw_words:
+        expanded_terms.append(w)
+        if w in SYNONYM_MAP:
+            expanded_terms.extend(SYNONYM_MAP[w])
+
+    # Preserve order, unique candidates
+    candidates = list(dict.fromkeys(bigrams + expanded_terms))
 
     for term in candidates:
-        if len(term) < 4 and not term.isupper():
+        if len(term) < 2:
             continue
         if len(results) >= limit:
             break
@@ -281,7 +307,7 @@ def _traverse_from_disease_entity(
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
                 "graph_path":     ["DOCUMENT_MENTIONS", "HAS_CHUNK"],
-                "graph_score":    0.80,
+                "graph_score":    0.85,
                 "edge_trust":     "high",
                 "graph_entities": [entity_dict],
             })
@@ -325,7 +351,7 @@ def _traverse_from_labtest_entity(
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
                 "graph_path":     ["LABTEST_RELATED_TO", "DOCUMENT_MENTIONS", "HAS_CHUNK"],
-                "graph_score":    0.80,
+                "graph_score":    0.85,
                 "edge_trust":     "high",
                 "graph_entities": entities,
             })
@@ -342,23 +368,25 @@ def _traverse_from_drug_entity(
     seen: Set[str],
     limit: int,
 ) -> None:
-    """Drug <-[DOCUMENT_MENTIONS]- Document -[HAS_CHUNK]-> Chunk AND Drug -[DRUG_TREATS]-> Disease..."""
-    # 1. Direct document mentions (high-trust)
+    """Drug -[DRUG_TREATS|DRUG_CAUSES]-> Disease <-[DOCUMENT_MENTIONS]- Document -[HAS_CHUNK]-> Chunk."""
     try:
         df = _conn.execute(
             """
-            MATCH (dr:Drug {node_id: $drid})<-[:DOCUMENT_MENTIONS]-(doc:Document)-[:HAS_CHUNK]->(c:Chunk)
-            RETURN c.chunk_id, c.document_id, c.faiss_id, c.category, c.chunk_type, c.source_doc
+            MATCH (dr:Drug {node_id: $drid})-[:DRUG_TREATS|DRUG_CAUSES]->(dis:Disease)<-[:DOCUMENT_MENTIONS]-(doc:Document)-[:HAS_CHUNK]->(c:Chunk)
+            RETURN c.chunk_id, c.document_id, c.faiss_id, c.category, c.chunk_type, c.source_doc, dis.disease_id AS dis_id, dis.name AS dis_name
             LIMIT $lim
             """,
             {"drid": drid, "lim": settings.graph_entity_chunk_limit},
         ).get_as_df()
-        entity_dict = {"label": "Drug", "id": drid, "name": drname}
         for _, row in df.iterrows():
             cid = row["c.chunk_id"]
             if cid in seen:
                 continue
             seen.add(cid)
+            entities = [
+                {"label": "Drug", "id": drid, "name": drname},
+                {"label": "Disease", "id": row["dis_id"], "name": row["dis_name"]},
+            ]
             results.append({
                 "chunk_id":       cid,
                 "document_id":    row["c.document_id"],
@@ -366,52 +394,15 @@ def _traverse_from_drug_entity(
                 "category":       row["c.category"],
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
-                "graph_path":     ["DOCUMENT_MENTIONS", "HAS_CHUNK"],
-                "graph_score":    0.80,
+                "graph_path":     ["DRUG_TREATS", "DOCUMENT_MENTIONS", "HAS_CHUNK"],
+                "graph_score":    0.85,
                 "edge_trust":     "high",
-                "graph_entities": [entity_dict],
+                "graph_entities": entities,
             })
             if len(results) >= limit:
                 return
     except Exception as exc:
-        logger.debug("Traverse from drug %s (direct) failed: %s", drid, exc)
-
-    # 2. Drug -> DRUG_TREATS -> Disease -> Document -> Chunk (low-trust edge)
-    if len(results) < limit:
-        try:
-            df2 = _conn.execute(
-                """
-                MATCH (dr:Drug {node_id: $drid})-[:DRUG_TREATS]->(dis:Disease)<-[:DOCUMENT_MENTIONS]-(doc:Document)-[:HAS_CHUNK]->(c:Chunk)
-                RETURN c.chunk_id, c.document_id, c.faiss_id, c.category, c.chunk_type, c.source_doc, dis.disease_id AS dis_id, dis.name AS dis_name
-                LIMIT $lim
-                """,
-                {"drid": drid, "lim": settings.graph_entity_chunk_limit},
-            ).get_as_df()
-            for _, row in df2.iterrows():
-                cid = row["c.chunk_id"]
-                if cid in seen:
-                    continue
-                seen.add(cid)
-                entities = [
-                    {"label": "Drug", "id": drid, "name": drname},
-                    {"label": "Disease", "id": row["dis_id"], "name": row["dis_name"]},
-                ]
-                results.append({
-                    "chunk_id":       cid,
-                    "document_id":    row["c.document_id"],
-                    "faiss_id":       int(row["c.faiss_id"]),
-                    "category":       row["c.category"],
-                    "chunk_type":     row["c.chunk_type"],
-                    "source_doc":     row["c.source_doc"],
-                    "graph_path":     ["DRUG_TREATS", "DOCUMENT_MENTIONS", "HAS_CHUNK"],
-                    "graph_score":    0.40,
-                    "edge_trust":     "low",
-                    "graph_entities": entities,
-                })
-                if len(results) >= limit:
-                    return
-        except Exception as exc:
-            logger.debug("Traverse from drug %s (DRUG_TREATS) failed: %s", drid, exc)
+        logger.debug("Traverse from drug %s failed: %s", drid, exc)
 
 
 def _traverse_from_ontology_entity(
@@ -448,7 +439,7 @@ def _traverse_from_ontology_entity(
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
                 "graph_path":     ["DISEASE_MAPPED_TO", "DOCUMENT_MENTIONS", "HAS_CHUNK"],
-                "graph_score":    0.80,
+                "graph_score":    0.85,
                 "edge_trust":     "high",
                 "graph_entities": entities,
             })
@@ -487,8 +478,9 @@ def _pass1_has_chunk(
             res = _conn.execute(
                 """
                 MATCH (doc:Document {document_id: $did})-[:HAS_CHUNK]->(c:Chunk)
+                OPTIONAL MATCH (doc)-[:DOCUMENT_MENTIONS]->(dis:Disease)
                 RETURN c.chunk_id, c.document_id, c.faiss_id, c.category,
-                       c.chunk_type, c.source_doc
+                       c.chunk_type, c.source_doc, dis.disease_id AS dis_id, dis.name AS dis_name
                 LIMIT $lim
                 """,
                 {"did": doc_id, "lim": settings.graph_entity_chunk_limit},
@@ -502,6 +494,13 @@ def _pass1_has_chunk(
             if cid in seen:
                 continue
             seen.add(cid)
+
+            dis_id = row.get("dis_id")
+            dis_name = row.get("dis_name")
+            entities = []
+            if dis_id and dis_name and str(dis_id) != "nan":
+                entities.append({"label": "Disease", "id": str(dis_id), "name": str(dis_name)})
+
             results.append({
                 "chunk_id":      cid,
                 "document_id":   row["c.document_id"],
@@ -512,7 +511,7 @@ def _pass1_has_chunk(
                 "graph_path":    ["HAS_CHUNK"],
                 "graph_score":   0.85,          # high-trust direct structural edge
                 "edge_trust":    "high",
-                "graph_entities": [],
+                "graph_entities": entities,
             })
             if len(results) >= limit:
                 break
