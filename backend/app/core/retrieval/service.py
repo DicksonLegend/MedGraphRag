@@ -92,14 +92,19 @@ class HybridRetrievalService:
 
         # ── Stage 4: Graph Traversal ─────────────────────────────────────────
         t0 = time.perf_counter()
-        # Extract unique doc_ids from top FAISS hits for seeding
-        seed_doc_ids = self._extract_seed_docs(balanced_faiss)
+        if settings.retrieval_graph_enabled:
+            # Extract unique doc_ids from top FAISS hits for seeding
+            seed_doc_ids = self._extract_seed_docs(balanced_faiss)
 
-        graph_candidates = graph_store.traverse_from_documents(
-            seed_doc_ids=seed_doc_ids,
-            max_results=settings.graph_max_results,
-            query=request.query,
-        )
+            graph_candidates = graph_store.traverse_from_documents(
+                seed_doc_ids=seed_doc_ids,
+                max_results=settings.graph_max_results,
+                query=request.query,
+            )
+        else:
+            seed_doc_ids = []
+            graph_candidates = []
+
         latency_breakdown["graph_ms"] = (time.perf_counter() - t0) * 1000
         logger.info(
             "[Stage 4] Graph: %d candidates from %d seeds in %.1f ms",
@@ -151,6 +156,7 @@ class HybridRetrievalService:
                     graph_boost_applied=item["graph_boost_applied"],
                     graph_path=item["graph_path"],
                     graph_entities=item["graph_entities"],
+                    graph_path_str=item.get("graph_path_str"),
                     edge_trust=item["edge_trust"],
                     source_type=item["source_type"],
                 )

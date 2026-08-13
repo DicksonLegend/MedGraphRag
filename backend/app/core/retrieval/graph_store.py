@@ -168,15 +168,17 @@ def _pass0_query_entity_seeding(
     """
     import re
     stopwords = {
+        "of", "in", "to", "for", "with", "on", "at", "from", "by", "an", "a", "the",
+        "and", "or", "is", "are", "be", "was", "were", "what", "which", "how", "does",
+        "do", "did", "mean", "meaning", "meanings", "about", "write", "me", "poem", "sea",
         "guidelines", "guideline", "treatment", "first", "line", "risk", "side",
         "effects", "criteria", "changes", "peaked", "waves", "diagnosis", "score",
         "mechanism", "action", "output", "rate", "levels", "threshold", "elevation",
-        "contraindications", "failure", "organ", "dysfunction", "critical", "care",
-        "which", "drugs", "treat", "what", "does", "mean", "meanings", "about"
+        "contraindications", "failure", "organ", "dysfunction", "critical", "care"
     }
 
-    # Extract all alphanumeric words of length >= 2
-    raw_words = [w.lower() for w in re.findall(r"\b[a-zA-Z0-9]{2,}\b", query) if w.lower() not in stopwords]
+    # Extract all alphanumeric words of length >= 3 to prevent 2-letter false matches
+    raw_words = [w.lower() for w in re.findall(r"\b[a-zA-Z0-9]{3,}\b", query) if w.lower() not in stopwords]
 
     # 2-word n-grams
     bigrams = [" ".join(raw_words[i:i+2]) for i in range(len(raw_words)-1)]
@@ -192,7 +194,7 @@ def _pass0_query_entity_seeding(
     candidates = list(dict.fromkeys(bigrams + expanded_terms))
 
     for term in candidates:
-        if len(term) < 2:
+        if len(term) < 3 and not term.isupper():
             continue
         if len(results) >= limit:
             break
@@ -307,6 +309,7 @@ def _traverse_from_disease_entity(
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
                 "graph_path":     ["DOCUMENT_MENTIONS", "HAS_CHUNK"],
+                "graph_path_str": f"Disease({dname}) -[DOCUMENT_MENTIONS]-> Document({row['c.document_id']}) -[HAS_CHUNK]-> Chunk({cid})",
                 "graph_score":    0.85,
                 "edge_trust":     "high",
                 "graph_entities": [entity_dict],
@@ -351,6 +354,7 @@ def _traverse_from_labtest_entity(
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
                 "graph_path":     ["LABTEST_RELATED_TO", "DOCUMENT_MENTIONS", "HAS_CHUNK"],
+                "graph_path_str": f"LabTest({lname}) -[LABTEST_RELATED_TO]-> Disease({row['dis_name']}) -[DOCUMENT_MENTIONS]-> Document({row['c.document_id']}) -[HAS_CHUNK]-> Chunk({cid})",
                 "graph_score":    0.85,
                 "edge_trust":     "high",
                 "graph_entities": entities,
@@ -395,6 +399,7 @@ def _traverse_from_drug_entity(
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
                 "graph_path":     ["DRUG_TREATS", "DOCUMENT_MENTIONS", "HAS_CHUNK"],
+                "graph_path_str": f"Drug({drname}) -[DRUG_TREATS]-> Disease({row['dis_name']}) -[DOCUMENT_MENTIONS]-> Document({row['c.document_id']}) -[HAS_CHUNK]-> Chunk({cid})",
                 "graph_score":    0.85,
                 "edge_trust":     "high",
                 "graph_entities": entities,
@@ -439,6 +444,7 @@ def _traverse_from_ontology_entity(
                 "chunk_type":     row["c.chunk_type"],
                 "source_doc":     row["c.source_doc"],
                 "graph_path":     ["DISEASE_MAPPED_TO", "DOCUMENT_MENTIONS", "HAS_CHUNK"],
+                "graph_path_str": f"OntologyTerm({oname}) <-[DISEASE_MAPPED_TO]- Disease({row['dis_name']}) -[DOCUMENT_MENTIONS]-> Document({row['c.document_id']}) -[HAS_CHUNK]-> Chunk({cid})",
                 "graph_score":    0.85,
                 "edge_trust":     "high",
                 "graph_entities": entities,
@@ -501,6 +507,7 @@ def _pass1_has_chunk(
             if dis_id and dis_name and str(dis_id) != "nan":
                 entities.append({"label": "Disease", "id": str(dis_id), "name": str(dis_name)})
 
+            path_str = f"Disease({entities[0]['name']}) <-[DOCUMENT_MENTIONS]- Document({row['c.document_id']}) -[HAS_CHUNK]-> Chunk({cid})" if entities else f"Document({row['c.document_id']}) -[HAS_CHUNK]-> Chunk({cid})"
             results.append({
                 "chunk_id":      cid,
                 "document_id":   row["c.document_id"],
@@ -509,6 +516,7 @@ def _pass1_has_chunk(
                 "chunk_type":    row["c.chunk_type"],
                 "source_doc":    row["c.source_doc"],
                 "graph_path":    ["HAS_CHUNK"],
+                "graph_path_str": path_str,
                 "graph_score":   0.85,          # high-trust direct structural edge
                 "edge_trust":    "high",
                 "graph_entities": entities,

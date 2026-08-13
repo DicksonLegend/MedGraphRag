@@ -1,0 +1,156 @@
+{
+  "step": 12.3,
+  "description": "MedGraphRAG Step 12 Part 3 & 4 \u2014 Paper Tables & Evaluation Summary",
+  "table_1_ablation_matrix": [
+    {
+      "config_id": "C1",
+      "config_name": "C1_FULL",
+      "graph_traversal": "ON",
+      "verification_agent": "ON",
+      "accuracy_all": 6.0,
+      "accuracy_answered": 33.33,
+      "answered_rate": 18.0,
+      "hedged_rate": 0.0,
+      "refusal_rate": 82.0,
+      "wrong_assertion_rate": 12.0,
+      "median_latency_ms": 15386.05
+    },
+    {
+      "config_id": "C2",
+      "config_name": "C2_VECTOR_ONLY",
+      "graph_traversal": "OFF",
+      "verification_agent": "ON",
+      "accuracy_all": 6.0,
+      "accuracy_answered": 50.0,
+      "answered_rate": 12.0,
+      "hedged_rate": 0.0,
+      "refusal_rate": 88.0,
+      "wrong_assertion_rate": 6.0,
+      "median_latency_ms": 8767.87
+    },
+    {
+      "config_id": "C3",
+      "config_name": "C3_NO_VERIFY",
+      "graph_traversal": "ON",
+      "verification_agent": "OFF",
+      "accuracy_all": 50.0,
+      "accuracy_answered": 51.02,
+      "answered_rate": 98.0,
+      "hedged_rate": 0.0,
+      "refusal_rate": 2.0,
+      "wrong_assertion_rate": 48.0,
+      "median_latency_ms": 7702.43
+    },
+    {
+      "config_id": "C4",
+      "config_name": "C4_BASELINE",
+      "graph_traversal": "OFF",
+      "verification_agent": "OFF",
+      "accuracy_all": 54.0,
+      "accuracy_answered": 55.1,
+      "answered_rate": 98.0,
+      "hedged_rate": 0.0,
+      "refusal_rate": 2.0,
+      "wrong_assertion_rate": 44.0,
+      "median_latency_ms": 2717.68
+    }
+  ],
+  "table_2_provenance_retrieval": [
+    {
+      "config_id": "C1",
+      "config_name": "C1_FULL",
+      "avg_citations_per_answer": 9.78,
+      "chunks_excluded_by_filter": 26,
+      "total_judge_calls": 0
+    },
+    {
+      "config_id": "C2",
+      "config_name": "C2_VECTOR_ONLY",
+      "avg_citations_per_answer": 9.18,
+      "chunks_excluded_by_filter": 26,
+      "total_judge_calls": 0
+    },
+    {
+      "config_id": "C3",
+      "config_name": "C3_NO_VERIFY",
+      "avg_citations_per_answer": 9.78,
+      "chunks_excluded_by_filter": 26,
+      "total_judge_calls": 0
+    },
+    {
+      "config_id": "C4",
+      "config_name": "C4_BASELINE",
+      "avg_citations_per_answer": 9.18,
+      "chunks_excluded_by_filter": 26,
+      "total_judge_calls": 0
+    }
+  ],
+  "table_3_graph_provenance": {
+    "entities_reached_positive_probes": "7/10 (Target >= 7/10)",
+    "sample_valid_paths": [
+      {
+        "probe_id": "P01",
+        "query": "warfarin INR monitoring guidelines atrial fibrillation",
+        "path": "Disease(Embolism) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1)"
+      },
+      {
+        "probe_id": "P01",
+        "query": "warfarin INR monitoring guidelines atrial fibrillation",
+        "path": "Disease(Atrial Fibrillation) -[DOCUMENT_MENTIONS]-> Document(Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__abs)"
+      },
+      {
+        "probe_id": "P02",
+        "query": "ACE inhibitor hypertension treatment first line",
+        "path": "Document(Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213) -[HAS_CHUNK]-> Chunk(Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c1)"
+      },
+      {
+        "probe_id": "P02",
+        "query": "ACE inhibitor hypertension treatment first line",
+        "path": "Document(Clinical_practice_guidlines/Who_IRIS/9789240033986-eng) -[HAS_CHUNK]-> Chunk(Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c5)"
+      },
+      {
+        "probe_id": "P03",
+        "query": "critical hemoglobin levels anemia transfusion threshold",
+        "path": "Document(Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED) -[HAS_CHUNK]-> Chunk(Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3)"
+      },
+      {
+        "probe_id": "P03",
+        "query": "critical hemoglobin levels anemia transfusion threshold",
+        "path": "Document(Research_papers/PMC/PDFs/PMC7071168/article) -[HAS_CHUNK]-> Chunk(Research_papers/PMC/PDFs/PMC7071168/article__c1)"
+      }
+    ]
+  },
+  "table_4_resource_profile": {
+    "system_ram_peak_gb": 3.62,
+    "system_ram_limit_gb": 12.0,
+    "gpu_vram_peak_mb": 4784,
+    "gpu_vram_limit_mb": 5500,
+    "faiss_index_memory_mb": 240,
+    "kuzu_graph_memory_mb": 180,
+    "llm_model": "Qwen2.5-7B-Instruct GGUF Q4_K_M",
+    "llm_concurrent_calls": 1
+  },
+  "filter_proof": {
+    "query": "A 43-year-old man comes to the physician because of redness and swelling of his right leg pain touch fever chills saphenous vein type 2 diabetes",
+    "raw_chunks_count": 11,
+    "excluded_chunks_count": 2,
+    "excluded_chunk_ids": [
+      "Medical_books/MedQA/questions/US/US_qbank__c4628",
+      "Medical_books/MedQA/questions/US/train__c200"
+    ],
+    "proof_passed": true
+  },
+  "flag_restoration_proof": {
+    "retrieval_graph_enabled": true,
+    "pipeline_verification_enabled": true,
+    "p01_top_doc": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+    "p01_top_score": 0.1774,
+    "p01_n_items": 9,
+    "restoration_passed": true
+  },
+  "global_index_integrity": {
+    "faiss_vectors": 2294038,
+    "kuzu_nodes": 2499528,
+    "untouched": true
+  }
+}

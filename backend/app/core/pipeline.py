@@ -73,10 +73,26 @@ class MedGraphRAGPipeline:
         answer_res: AnswerResult = self.generator_service.generate(query=query, destination=destination)
 
         # ── Step 3: Verification & Gating ─────────────────────────────────────
-        verified_res: VerifiedAnswerResult = self.verification_agent.verify(
-            answer_result=answer_res,
-            retrieval_result=retrieval_res,
-        )
+        if settings.pipeline_verification_enabled:
+            verified_res: VerifiedAnswerResult = self.verification_agent.verify(
+                answer_result=answer_res,
+                retrieval_result=retrieval_res,
+            )
+        else:
+            conf = answer_res.evidence_confidence
+            conf_tier = "high" if conf >= 0.7 else ("medium" if conf >= 0.5 else "low")
+            verified_res = VerifiedAnswerResult(
+                **answer_res.model_dump(),
+                answer_status="verified",
+                final_confidence=conf,
+                confidence_tier=conf_tier,
+                faithfulness_score=1.0,
+                verification_ms=0.0,
+                fallback_used=False,
+                claim_verdicts=[],
+                reasoning="Verification skipped via pipeline_verification_enabled=False.",
+                retry_count=0,
+            )
 
         total_ms = (time.perf_counter() - t_start) * 1000
         logger.info(

@@ -246,6 +246,10 @@ def _build_graph_path_strings(retrieval_res: Optional[RetrievalResult]) -> List[
 
     paths: List[str] = []
     for item in retrieval_res.items:
+        if getattr(item, "graph_path_str", None):
+            paths.append(item.graph_path_str)
+            continue
+
         g_path = item.graph_path
         g_ents = item.graph_entities
         cid = item.chunk_id

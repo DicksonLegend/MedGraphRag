@@ -282,6 +282,16 @@ class Settings(BaseSettings):
         description="Total candidate pool size after category balancing, fed into fusion.",
     )
 
+    # ── Ablation flags ───────────────────────────────────────────────────────
+    retrieval_graph_enabled: bool = Field(
+        default=True,
+        description="Enable Kùzu graph traversal in hybrid retrieval.",
+    )
+    pipeline_verification_enabled: bool = Field(
+        default=True,
+        description="Enable single-pass verification in MedGraphRAG pipeline.",
+    )
+
     # ── Graph traversal ───────────────────────────────────────────────────────
     graph_seed_docs: int = Field(
         default=5,

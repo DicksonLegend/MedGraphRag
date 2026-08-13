@@ -2,110 +2,132 @@
   "step": 12.1,
   "description": "Step 12 Part 1 Evaluation \u2014 Graph Entity Seeding & graph_paths Population",
   "final_verdict": "PASS",
-  "entities_reached_positive_probes": "8/10 (Target >= 7/10)",
+  "entities_reached_positive_probes": "7/10 (Target >= 7/10)",
   "probe_results": [
     {
       "id": "P01",
       "query": "warfarin INR monitoring guidelines atrial fibrillation",
       "route": "medical_query",
-      "latency_ms": 8737.27,
+      "latency_ms": 8127.74,
       "entities_reached": 4,
       "chunks_from_graph": 4,
-      "graph_paths_count": 0,
-      "graph_paths_sample": []
+      "graph_paths_count": 5,
+      "graph_paths_sample": [
+        "Disease(Embolism) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1)",
+        "Disease(Atrial Fibrillation) -[DOCUMENT_MENTIONS]-> Document(Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__abs)"
+      ]
     },
     {
       "id": "P02",
       "query": "ACE inhibitor hypertension treatment first line",
       "route": "medical_query",
-      "latency_ms": 8272.95,
+      "latency_ms": 8362.5,
       "entities_reached": 0,
       "chunks_from_graph": 0,
-      "graph_paths_count": 0,
-      "graph_paths_sample": []
+      "graph_paths_count": 4,
+      "graph_paths_sample": [
+        "Document(Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213) -[HAS_CHUNK]-> Chunk(Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c1)",
+        "Document(Clinical_practice_guidlines/Who_IRIS/9789240033986-eng) -[HAS_CHUNK]-> Chunk(Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c5)"
+      ]
     },
     {
       "id": "P03",
       "query": "critical hemoglobin levels anemia transfusion threshold",
       "route": "medical_query",
-      "latency_ms": 8318.05,
+      "latency_ms": 8350.71,
       "entities_reached": 2,
       "chunks_from_graph": 1,
-      "graph_paths_count": 0,
-      "graph_paths_sample": []
+      "graph_paths_count": 3,
+      "graph_paths_sample": [
+        "Document(Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED) -[HAS_CHUNK]-> Chunk(Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3)",
+        "Document(Research_papers/PMC/PDFs/PMC7071168/article) -[HAS_CHUNK]-> Chunk(Research_papers/PMC/PDFs/PMC7071168/article__c1)"
+      ]
     },
     {
       "id": "P04",
       "query": "troponin elevation myocardial infarction diagnosis",
       "route": "medical_query",
-      "latency_ms": 9438.33,
+      "latency_ms": 9540.65,
       "entities_reached": 1,
       "chunks_from_graph": 2,
-      "graph_paths_count": 0,
-      "graph_paths_sample": []
+      "graph_paths_count": 3,
+      "graph_paths_sample": [
+        "Document(Research_papers/PMC/PDFs/PMC6855329/article) -[HAS_CHUNK]-> Chunk(Research_papers/PMC/PDFs/PMC6855329/article__c1)",
+        "Disease(Myocardial Infarction) -[DOCUMENT_MENTIONS]-> Document(Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs)"
+      ]
     },
     {
       "id": "P05",
       "query": "metformin type 2 diabetes contraindications renal failure",
       "route": "medical_query",
-      "latency_ms": 5651.71,
+      "latency_ms": 5667.52,
       "entities_reached": 2,
       "chunks_from_graph": 1,
-      "graph_paths_count": 0,
-      "graph_paths_sample": []
+      "graph_paths_count": 1,
+      "graph_paths_sample": [
+        "Drug(Metformin) -[DRUG_TREATS]-> Disease(Myocardial Infarction) -[DOCUMENT_MENTIONS]-> Document(Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs)"
+      ]
     },
     {
       "id": "P06",
       "query": "aspirin side effects gastrointestinal bleeding risk",
       "route": "medical_query",
-      "latency_ms": 9126.83,
+      "latency_ms": 9171.32,
       "entities_reached": 1,
       "chunks_from_graph": 0,
-      "graph_paths_count": 0,
-      "graph_paths_sample": []
+      "graph_paths_count": 2,
+      "graph_paths_sample": [
+        "Disease(Ulcer) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_39327242) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_39327242__abs)",
+        "Disease(Ulcer) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_37516507) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_37516507__abs)"
+      ]
     },
     {
       "id": "P07",
       "query": "deep vein thrombosis DVT diagnosis treatment anticoagulation",
       "route": "medical_query",
-      "latency_ms": 15772.66,
+      "latency_ms": 16009.79,
       "entities_reached": 3,
       "chunks_from_graph": 1,
-      "graph_paths_count": 0,
-      "graph_paths_sample": []
+      "graph_paths_count": 5,
+      "graph_paths_sample": [
+        "Disease(Thrombosis) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__abs)",
+        "Disease(Thrombosis) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__abs)"
+      ]
     },
     {
       "id": "P08",
       "query": "sepsis SOFA score organ dysfunction criteria",
       "route": "medical_query",
-      "latency_ms": 3424.13,
+      "latency_ms": 3538.79,
+      "entities_reached": 0,
+      "chunks_from_graph": 0,
+      "graph_paths_count": 2,
+      "graph_paths_sample": [
+        "Document(Research_papers/PMC/XML/PMC9310818/article) -[HAS_CHUNK]-> Chunk(Research_papers/PMC/XML/PMC9310818/article__abs)",
+        "Document(Research_papers/PMC/XML/PMC7236499/article) -[HAS_CHUNK]-> Chunk(Research_papers/PMC/XML/PMC7236499/article__c1)"
+      ]
+    },
+    {
+      "id": "P09",
+      "query": "mechanism of action beta blocker cardiac output heart rate",
+      "route": "knowledge_graph",
+      "latency_ms": 9060.91,
       "entities_reached": 0,
       "chunks_from_graph": 0,
       "graph_paths_count": 0,
       "graph_paths_sample": []
     },
     {
-      "id": "P09",
-      "query": "mechanism of action beta blocker cardiac output heart rate",
-      "route": "knowledge_graph",
-      "latency_ms": 7980.21,
-      "entities_reached": 2,
-      "chunks_from_graph": 1,
-      "graph_paths_count": 1,
-      "graph_paths_sample": [
-        "LabTest(Clinically significant fungi (e.g. Mucorales, Histoplasma capsulatum, Blastomyces dermatitidis, Coccidioides spp., Cryptococcus neoformans/gattii, Pneumocystis jirovecii)) -[LABTEST_RELATED_TO]-> Disease(Sepsis) -[DOCUMENT_MENTIONS]-> Document(Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs)"
-      ]
-    },
-    {
       "id": "P10",
       "query": "potassium hyperkalemia ECG changes peaked T waves treatment",
       "route": "medical_query",
-      "latency_ms": 8649.2,
+      "latency_ms": 8922.42,
       "entities_reached": 1,
       "chunks_from_graph": 0,
-      "graph_paths_count": 1,
+      "graph_paths_count": 3,
       "graph_paths_sample": [
-        "LabTest(Clinically significant fungi (e.g. Mucorales, Histoplasma capsulatum, Blastomyces dermatitidis, Coccidioides spp., Cryptococcus neoformans/gattii, Pneumocystis jirovecii)) -[LABTEST_RELATED_TO]-> Disease(Sepsis) -[DOCUMENT_MENTIONS]-> Document(Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs)"
+        "Disease(Hyperkalemia) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639__abs)",
+        "Disease(Hyperkalemia) -[HAS_CHUNK]-> Document(Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894) -[HAS_CHUNK]-> Chunk(Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894__abs)"
       ]
     }
   ],

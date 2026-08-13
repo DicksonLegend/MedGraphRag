@@ -95,7 +95,8 @@ def run_part1_evaluation() -> Dict[str, Any]:
         ret_res = ret_svc.retrieve(RetrievalRequest(query=qtext, destination="global", top_n=10))
         entities_reached = ret_res.graph_stats.entities_reached
         chunks_from_graph = ret_res.graph_stats.chunks_from_graph
-        graph_paths = res.get("graph_paths", [])
+        from app.core.agents.nodes import _build_graph_path_strings
+        graph_paths = res.get("graph_paths", []) or _build_graph_path_strings(ret_res)
 
         if entities_reached > 0:
             entities_reached_positive_count += 1

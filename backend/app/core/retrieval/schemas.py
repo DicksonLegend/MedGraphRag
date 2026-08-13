@@ -85,9 +85,9 @@ class EvidenceItem(BaseModel):
             "(keys: label, id, name). Empty if FAISS-only."
         ),
     )
-    edge_trust: Literal["high", "low", "none"] = Field(
-        default="none",
-        description="Trust level of the graph path used to reach this item.",
+    graph_path_str: Optional[str] = Field(
+        default=None,
+        description="Formatted human-readable graph path string (e.g. 'LabTest(X) -> Disease(Y) -> Chunk(Z)').",
     )
 
     # ── Retrieval source ─────────────────────────────────────────────────────
