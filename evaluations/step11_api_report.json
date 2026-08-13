@@ -1,0 +1,213 @@
+{
+  "step": 11.0,
+  "description": "Step 11 FastAPI Service Layer Evaluation \u2014 Comprehensive Benchmarking Report",
+  "final_verdict": "PASS",
+  "criteria_matrix": {
+    "1_health_check_llm_not_loaded_startup": true,
+    "2_auth_login_and_me_session_restore": true,
+    "3_security_destination_403_forbidden": true,
+    "4_query_rag_citations_disclaimer": true,
+    "5_report_agent_orchestrator_escalation_first": true,
+    "6_guest_ephemeral_store_purged_on_logout": true,
+    "7_parallel_query_serialization_lock": true
+  },
+  "endpoint_metrics": {
+    "health_cold": {
+      "status_code": 200,
+      "latency_ms": 1.01,
+      "response_size_bytes": 97
+    },
+    "login": {
+      "status_code": 200,
+      "latency_ms": 3.99,
+      "response_size_bytes": 275
+    },
+    "auth_me": {
+      "status_code": 200,
+      "latency_ms": 1.21,
+      "response_size_bytes": 79
+    },
+    "query_cold": {
+      "status_code": 200,
+      "latency_ms": 26020.2,
+      "response_size_bytes": 8248
+    },
+    "query_warm": {
+      "status_code": 200,
+      "latency_ms": 3119.67,
+      "response_size_bytes": 8582
+    },
+    "health_warm": {
+      "status_code": 200,
+      "latency_ms": 0.81,
+      "response_size_bytes": 96
+    },
+    "forbidden_destination": {
+      "status_code": 403,
+      "latency_ms": 1.02,
+      "response_size_bytes": 117
+    },
+    "report_f1_pdf_cold": {
+      "status_code": 200,
+      "latency_ms": 30629.7,
+      "response_size_bytes": 4320
+    },
+    "report_f3_xlsx_warm": {
+      "status_code": 200,
+      "latency_ms": 7707.11,
+      "response_size_bytes": 3791
+    },
+    "guest_login": {
+      "status_code": 200,
+      "latency_ms": 0.88,
+      "response_size_bytes": 307
+    },
+    "guest_report_f2_image": {
+      "status_code": 200,
+      "latency_ms": 9079.34,
+      "response_size_bytes": 3431
+    },
+    "logout": {
+      "status_code": 200,
+      "latency_ms": 2.94,
+      "response_size_bytes": 80
+    },
+    "parallel_query_request_A": {
+      "status_code": 200,
+      "latency_ms": 5183.01,
+      "response_size_bytes": 9309
+    },
+    "parallel_query_request_B": {
+      "status_code": 200,
+      "latency_ms": 13463.19,
+      "response_size_bytes": 9287
+    }
+  },
+  "sample_responses": {
+    "query_sample": {
+      "route": "medical_query",
+      "answer_text": "Hyperkalemia can lead to specific ECG changes, including peaked T waves [E5]. The treatment for hyperkalemia initially involves measures to antagonize the cardiac effects of hyperkalemia, such as administering intravenous calcium to raise the action potential threshold and reduce excitability [E8]. This is crucial to protect the heart from the effects of hyperkalemia. \n\nThis is information, not medical advice \u2014 consult your physician.",
+      "answer_status": "caution",
+      "final_confidence": 0.636,
+      "confidence_tier": "medium",
+      "n_citations": 10,
+      "first_3_citations": [
+        {
+          "label": "[E1]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639__abs",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "snippet": "..."
+        },
+        {
+          "label": "[E2]",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894__abs",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "snippet": "..."
+        },
+        {
+          "label": "[E3]",
+          "chunk_id": "Research_papers/PMC/XML/PMC12568891/article__c1",
+          "source": "Research_papers",
+          "category": "research_paper",
+          "snippet": "..."
+        }
+      ],
+      "disclaimer_present": true
+    },
+    "report_sample": {
+      "escalation_text_first": true,
+      "critical_flag": false,
+      "n_lab_values": 0,
+      "answer_text_preview": "\u26a0\ufe0f CRITICAL VALUE DETECTED \u2014 seek urgent medical care immediately!\nOne or more laboratory results fall in a critical range requiring immediate clinical evaluation.\n\n### Parsed PDF report (5 lab values extracted).\n\n#### Laboratory Assessment & Explanations:\n1. \u26a0\ufe0f **Potassium**: `6.8 mmol/L` (CRITICAL...",
+      "private_store_path": "private_store/demo_user"
+    },
+    "forbidden_destination_403_body": {
+      "detail": {
+        "error": "forbidden_destination",
+        "detail": "You are not authorized to query another user's private store."
+      }
+    },
+    "auth_me_body": {
+      "user_id": "demo_user",
+      "role": "user",
+      "ephemeral": false,
+      "expires_in_minutes": 59
+    },
+    "health_body_startup": {
+      "status": "ok",
+      "components": {
+        "retrieval": "ok",
+        "graph": "ok",
+        "llm_loaded": false
+      },
+      "version": "1.0.0"
+    },
+    "health_body_warm": {
+      "status": "ok",
+      "components": {
+        "retrieval": "ok",
+        "graph": "ok",
+        "llm_loaded": true
+      },
+      "version": "1.0.0"
+    }
+  },
+  "guest_lifecycle_evidence": {
+    "guest_user_id": "guest_c69895a57380",
+    "store_path_created": false,
+    "store_path_existed_after_upload": true,
+    "store_path_deleted_after_logout": true,
+    "files_at_creation": [
+      "faiss/private_faiss.index",
+      "kuzu/private_kuzu_db",
+      "meta/report_payload.enc",
+      "meta/user_key.key"
+    ]
+  },
+  "serialization_proof": {
+    "request_A_start": 8.74,
+    "request_A_end": 5191.75,
+    "request_A_duration_ms": 5183.01,
+    "request_B_start": 17.01,
+    "request_B_end": 13480.2,
+    "request_B_duration_ms": 13463.19,
+    "serialized": true,
+    "total_wall_ms": 13471.46
+  },
+  "integrity_check": {
+    "faiss_ntotal_before": 2294038,
+    "faiss_ntotal_after": 2294038,
+    "kuzu_nodes_before": 2499528,
+    "kuzu_nodes_after": 2499528,
+    "global_index_untouched": true
+  },
+  "summary": {
+    "status_breakdown": {
+      "1_health_check_llm_not_loaded_startup": "PASS",
+      "2_auth_login_and_me_session_restore": "PASS",
+      "3_security_destination_403_forbidden": "PASS",
+      "4_query_rag_citations_disclaimer": "PASS",
+      "5_report_agent_orchestrator_escalation_first": "PASS",
+      "6_guest_ephemeral_store_purged_on_logout": "PASS",
+      "7_parallel_query_serialization_lock": "PASS"
+    },
+    "avg_endpoint_latency_ms": 6801.01,
+    "median_endpoint_latency_ms": 3119.67,
+    "slowest_endpoint": {
+      "name": "report_f1_pdf_cold",
+      "latency_ms": 30629.7
+    },
+    "total_eval_time_ms": 96599.9,
+    "peak_ram_gb": 0.44,
+    "peak_vram_mb": 12.0,
+    "llm_loaded_transition": "false -> true",
+    "model_file_name": "Qwen2.5-7B-Instruct-Q4_K_M.gguf"
+  },
+  "metrics": {
+    "total_eval_time_ms": 96599.9,
+    "ram_gb": 0.44,
+    "vram_mb": 12.0
+  }
+}

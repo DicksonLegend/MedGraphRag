@@ -162,7 +162,7 @@ def report_agent_node(state: MedGraphState) -> Dict[str, Any]:
 
         lines.append(report_res.disclaimer)
         answer_text = "\n".join(lines)
-        answer_status = "success"
+        answer_status = "verified"
         confidence = 1.0
 
     except Exception as e:

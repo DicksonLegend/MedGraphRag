@@ -594,6 +594,46 @@ class Settings(BaseSettings):
         description="Explicit conversion factors for unit normalization.",
     )
 
+    # ── Step 11 FastAPI API & Security Settings ──────────────────────────────
+    jwt_secret_key: Optional[str] = Field(
+        default=None,
+        validation_alias="MEDGRAPH_JWT_SECRET",
+        description="JWT secret key. If unset, a random per-process key is generated with a loud warning.",
+    )
+    jwt_algorithm: str = Field(
+        default="HS256",
+        description="JWT signature algorithm.",
+    )
+    jwt_expire_minutes: int = Field(
+        default=60,
+        description="JWT access token expiration time in minutes.",
+    )
+    max_upload_mb: int = Field(
+        default=20,
+        description="Maximum allowed multipart upload size in megabytes.",
+    )
+    demo_users: Dict[str, str] = Field(
+        default={
+            # sha256 hash of 'password123'
+            "demo_user": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+            "admin": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+        },
+        description="Demo username -> sha256(password) lookup table.",
+    )
+
+    def get_effective_jwt_secret(self) -> str:
+        """Return MEDGRAPH_JWT_SECRET or generate a loud-warning per-process random key."""
+        if self.jwt_secret_key:
+            return self.jwt_secret_key
+        if not hasattr(self, "_generated_random_jwt_secret"):
+            import secrets
+            logger.warning(
+                "⚠️ [SECURITY WARNING] MEDGRAPH_JWT_SECRET environment variable is UNSET! "
+                "Generating a random per-process secret key. JWT tokens will NOT survive server restarts!"
+            )
+            object.__setattr__(self, "_generated_random_jwt_secret", secrets.token_hex(32))
+        return getattr(self, "_generated_random_jwt_secret")
+
     # ── Logging ──────────────────────────────────────────────────────────────
     log_level: str = Field(
         default="INFO",
