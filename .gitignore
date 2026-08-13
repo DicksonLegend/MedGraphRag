@@ -39,3 +39,4 @@ graphify-out/
 _logs/
 tmp/
 scratch/
+private_store/

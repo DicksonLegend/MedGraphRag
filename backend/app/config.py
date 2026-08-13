@@ -568,6 +568,32 @@ class Settings(BaseSettings):
         description="Warning note when contradictions are detected.",
     )
 
+    # ── Step 10 Report & Private Store Settings ──────────────────────────────
+    private_store_dir: Path = Field(
+        default=Path("private_store"),
+        description="Root directory for isolated encrypted per-user private stores.",
+    )
+    ocr_confidence_threshold: float = Field(
+        default=0.75,
+        description="Confidence threshold below which OCR extracted fields are flagged needs_review.",
+    )
+    unit_conversion_factors: Dict[str, float] = Field(
+        default={
+            "creatinine_mg/dl->umol/l": 88.4,
+            "creatinine_mg/dl->µmol/l": 88.4,
+            "glucose_mg/dl->mmol/l": 0.0555,
+            "hemoglobin_g/dl->g/l": 10.0,
+            "hemoglobin_g/dl->g/dl": 1.0,
+            "potassium_mmol/l->mmol/l": 1.0,
+            "potassium_meq/l->mmol/l": 1.0,
+            "sodium_mmol/l->mmol/l": 1.0,
+            "sodium_meq/l->mmol/l": 1.0,
+            "platelet_10^9/l->10^9/l": 1.0,
+            "wbc_10^9/l->10^9/l": 1.0,
+        },
+        description="Explicit conversion factors for unit normalization.",
+    )
+
     # ── Logging ──────────────────────────────────────────────────────────────
     log_level: str = Field(
         default="INFO",

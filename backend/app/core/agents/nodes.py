@@ -110,37 +110,93 @@ def knowledge_agent_node(state: MedGraphState) -> Dict[str, Any]:
     return {"retrieval_result": retrieval_res, "verified_result": verified_res}
 
 
-# ── Node 4: Report Agent (Step 10 Stub) ───────────────────────────────────────
+# ── Node 4: Report Agent (Step 10 Handler) ───────────────────────────────────
 def report_agent_node(state: MedGraphState) -> Dict[str, Any]:
-    """Stub node for Step 10 diagnostic lab report interpretation."""
+    """Execute Step 10 diagnostic lab report interpretation and private storage."""
     query = state.get("query", "Diagnostic Report Analysis")
-    destination = state.get("destination", "global")
+    user_id = state.get("user_id") or "default_user"
+    destination = state.get("destination", "private")
+    report_payload = state.get("report_payload") or {}
 
-    logger.info("report_agent_node stub called with payload %s", state.get("report_payload"))
+    logger.info("report_agent_node processing payload for user %s (destination=%s)", user_id, destination)
 
-    stub_res = VerifiedAnswerResult(
+    file_bytes = report_payload.get("file_bytes") or b""
+    filename = report_payload.get("filename") or "report.txt"
+
+    if not file_bytes and "raw_text" in report_payload:
+        file_bytes = str(report_payload["raw_text"]).encode("utf-8")
+
+    from app.core.report.service import ReportInterpretationService
+    svc = ReportInterpretationService()
+
+    try:
+        report_res = svc.process_report(
+            file_bytes=file_bytes,
+            filename=filename,
+            user_id=user_id,
+            destination=destination,
+        )
+
+        lines: List[str] = []
+        if report_res.critical_flag and report_res.escalation_text:
+            lines.append(report_res.escalation_text)
+            lines.append("")
+
+        lines.append(f"### {report_res.parsed_summary}")
+        lines.append("")
+        lines.append("#### Laboratory Assessment & Explanations:")
+
+        for idx, exp in enumerate(report_res.explanations, start=1):
+            asm = exp.assessment
+            nlv = asm.normalized_lab_value
+            cls_upper = asm.classification.upper()
+            status_symbol = "⚠️" if asm.is_critical else ("🔴" if "HIGH" in cls_upper or "LOW" in cls_upper else "🟢")
+            lines.append(f"{idx}. {status_symbol} **{nlv.canonical_test_name}**: `{nlv.lab_value.value_raw_str} {nlv.lab_value.unit_raw}` ({cls_upper})")
+            lines.append(f"   - **Ref Range**: {asm.reference_range_used}")
+            lines.append(f"   - **Explanation**: {exp.what_it_means}")
+            if exp.possible_causes:
+                lines.append(f"   - **Possible Associated Conditions**: {', '.join(exp.possible_causes)}")
+            if exp.provenance:
+                lines.append(f"   - **Provenance**: {'; '.join(exp.provenance)}")
+            lines.append("")
+
+        lines.append(report_res.disclaimer)
+        answer_text = "\n".join(lines)
+        answer_status = "success"
+        confidence = 1.0
+
+    except Exception as e:
+        logger.error("Report agent node execution failed: %s", e, exc_info=True)
+        answer_text = (
+            f"Error processing diagnostic report: {e}\n\n"
+            "This is information, not medical advice — consult your physician."
+        )
+        answer_status = "error"
+        confidence = 0.0
+
+    verified_res = VerifiedAnswerResult(
         query=query,
         destination=destination,
-        answer_text="Report interpretation module arrives in Step 10.\n\nThis is information, not medical advice — consult your physician.",
-        answer_status="not_implemented_yet",
-        final_confidence=1.0,
-        confidence_tier="high",
+        answer_text=answer_text,
+        answer_status=answer_status,
+        final_confidence=confidence,
+        confidence_tier="high" if confidence > 0.8 else "low",
         evidence_confidence=1.0,
         faithfulness_score=1.0,
         claims=[],
         citations=[],
         retry_count=0,
-        retry_confidence_trajectory=[1.0],
+        retry_confidence_trajectory=[confidence],
         fallback_used=False,
         disclaimer="This is information, not medical advice — consult your physician.",
-        n_evidence=0,
+        n_evidence=len(report_payload.get("lab_values", [])),
         latency_breakdown={"retrieval_ms": 0.0, "context_ms": 0.0, "llm_ms": 0.0, "verification_ms": 0.0, "total_ms": 0.0},
         llm_mode="full_gpu",
         ram_gb=0.0,
         vram_mb=0.0,
     )
 
-    return {"verified_result": stub_res}
+    return {"verified_result": verified_res}
 
 
 # ── Node 5: Out of Scope Node ────────────────────────────────────────────────

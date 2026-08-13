@@ -80,6 +80,13 @@ def warm_up() -> None:
         _open_connection()
 
 
+def get_kuzu_connection() -> Optional[kuzu.Connection]:
+    """Get thread-safe Kùzu connection singleton."""
+    with _lock:
+        _open_connection()
+    return _conn
+
+
 # ---------------------------------------------------------------------------
 # Public API
 # ---------------------------------------------------------------------------

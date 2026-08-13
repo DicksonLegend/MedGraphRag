@@ -1,0 +1,82 @@
+{
+  "step": 10.0,
+  "description": "Step 10 Report Interpretation + Private Knowledge Space Evaluation",
+  "final_verdict": "PASS",
+  "regression_check_probes": [
+    {
+      "probe_id": "P01",
+      "query": "warfarin INR monitoring guidelines atrial fibrillation",
+      "top_doc_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+      "top_score": 0.1771,
+      "n_items": 10,
+      "byte_identical": true
+    },
+    {
+      "probe_id": "P02",
+      "query": "ACE inhibitor hypertension treatment first line",
+      "top_doc_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+      "top_score": 0.1842,
+      "n_items": 10,
+      "byte_identical": true
+    },
+    {
+      "probe_id": "P03",
+      "query": "critical hemoglobin levels anemia transfusion threshold",
+      "top_doc_id": "Research_papers/PMC/PDFs/PMC7071168/article",
+      "top_score": 0.1745,
+      "n_items": 10,
+      "byte_identical": true
+    }
+  ],
+  "fixture_evaluations": [
+    {
+      "fixture_id": "F1",
+      "filename": "F1_sample_cbc_cmp.pdf",
+      "parsed_summary": "Parsed PDF report (5 lab values extracted).",
+      "n_lab_values": 5,
+      "critical_flag": true,
+      "escalation_present": true,
+      "processing_latency_ms": 13444.17,
+      "private_store_path": "private_store/test_user_step10"
+    },
+    {
+      "fixture_id": "F2",
+      "filename": "F2_sample_lab_image.png",
+      "parsed_summary": "Parsed IMAGE report (3 lab values extracted).",
+      "n_lab_values": 3,
+      "critical_flag": true,
+      "escalation_present": true,
+      "processing_latency_ms": 8738.19,
+      "private_store_path": "private_store/test_user_step10"
+    },
+    {
+      "fixture_id": "F3",
+      "filename": "F3_sample_lab_data.xlsx",
+      "parsed_summary": "Parsed XLSX report (5 lab values extracted).",
+      "n_lab_values": 5,
+      "critical_flag": false,
+      "escalation_present": false,
+      "processing_latency_ms": 7643.24,
+      "private_store_path": "private_store/test_user_step10"
+    }
+  ],
+  "private_retrieval_verification": {
+    "private_hit_retrieved": true,
+    "global_unaffected": true
+  },
+  "criteria_matrix": {
+    "1_value_fidelity_100pct": true,
+    "2_unit_normalization_with_proof": true,
+    "3_critical_escalation_warning": true,
+    "4_explanation_and_provenance": true,
+    "5_private_aes256gcm_isolation": true,
+    "6_private_retrieval_wired": true,
+    "7_global_index_byte_identical": true,
+    "8_safety_disclaimer_present": true
+  },
+  "system_metrics": {
+    "total_eval_time_ms": 34800.12,
+    "ram_gb": 3.4,
+    "vram_mb": 4784.0
+  }
+}

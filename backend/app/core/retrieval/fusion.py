@@ -228,6 +228,7 @@ def rrf_fuse(
                 "source":           item.get("source", ""),
                 "title":            item.get("title"),
                 "token_count":      item.get("token_count", 0),
+                "text_snippet":     item.get("text_snippet", ""),
                 # Scores
                 "faiss_score":      item.get("faiss_score", 0.0),
                 "graph_score":      0.0,

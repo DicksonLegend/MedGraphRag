@@ -75,6 +75,7 @@ class HybridRetrievalService:
             query_vector=query_vec,
             top_k=settings.faiss_top_k_raw,
             category_filter=request.category_filter,
+            destination=request.destination,
         )
         latency_breakdown["faiss_ms"] = (time.perf_counter() - t0) * 1000
         logger.info(
@@ -131,7 +132,7 @@ class HybridRetrievalService:
         evidence_items = []
         for item in top_fused:
             fid = item["faiss_id"]
-            raw_text = chunk_texts.get(fid, "") if fid >= 0 else ""
+            raw_text = item.get("text_snippet", "") if fid < 0 else chunk_texts.get(fid, "")
             snippet = raw_text[: settings.text_snippet_max_chars]
 
             evidence_items.append(

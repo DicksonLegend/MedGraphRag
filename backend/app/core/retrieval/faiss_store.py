@@ -119,25 +119,21 @@ def search(
     query_vector: np.ndarray,
     top_k: int,
     category_filter: Optional[List[str]] = None,
+    destination: str = "global",
 ) -> List[Dict[str, Any]]:
     """
-    Vector search against the IVFpq FAISS index.
+    Vector search against the IVFpq FAISS index (and optional private index).
 
     Parameters
     ----------
     query_vector : np.ndarray, shape=(1, 768), dtype=float32
         L2-normalised query embedding.
     top_k : int
-        Number of raw candidates to retrieve (before category filtering).
+        Number of raw candidates to retrieve.
     category_filter : list of str, optional
         If provided, restrict results to these categories.
-
-    Returns
-    -------
-    list of dict — each dict contains:
-        faiss_id, score, chunk_id, document_id, category,
-        subcategory, source, title, chunk_type, token_count
-    Sorted by score descending.
+    destination : str, default "global"
+        Target space ("global" or user_id for private index blending).
     """
     with _lock:
         _load_store()
@@ -164,6 +160,34 @@ def search(
 
     # Sort by score descending (FAISS IP metric — higher is better)
     results.sort(key=lambda x: x["faiss_score"], reverse=True)
+
+    # Blending private user hits when destination != "global"
+    if destination != "global":
+        priv_index_path = settings.private_store_dir / destination / "faiss" / "private_faiss.index"
+        if priv_index_path.exists():
+            try:
+                priv_idx = faiss.read_index(str(priv_index_path))
+                p_scores, p_indices = priv_idx.search(query_vector, min(top_k, priv_idx.ntotal))
+                from app.core.report.store import load_private_decrypted_payload
+                priv_payload = load_private_decrypted_payload(destination)
+                snippet = priv_payload.get("raw_text_snippet", "") if priv_payload else ""
+                for p_score in p_scores[0]:
+                    results.insert(0, {
+                        "faiss_id": -99,
+                        "chunk_id": f"private_{destination}_c0",
+                        "document_id": f"private_store/{destination}/report",
+                        "category": "private_report",
+                        "subcategory": "user_report",
+                        "source": f"Private_User_Report_{destination}",
+                        "title": f"User Diagnostic Report ({destination})",
+                        "chunk_type": "body",
+                        "token_count": len(snippet.split()),
+                        "faiss_score": float(p_score) + 0.5,
+                        "text_snippet": snippet or "User private diagnostic lab report content.",
+                    })
+            except Exception as pe:
+                logger.warning("Private FAISS search for user %s failed: %s", destination, pe)
+
     return results
 
 
