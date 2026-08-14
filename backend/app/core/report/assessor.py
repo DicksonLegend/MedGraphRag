@@ -9,7 +9,8 @@ Respects age/sex ranges and records exact dataset/range row provenance.
 from __future__ import annotations
 
 import logging
-from typing import Dict, List, Optional, Tuple
+import re
+from typing import Any, Dict, List, Optional, Tuple
 
 from app.core.report.schemas import Assessment, NormalizedLabValue
 from app.core.retrieval.graph_store import get_kuzu_connection
@@ -33,6 +34,14 @@ REFERENCE_RANGES_DB: Dict[str, Dict[str, Any]] = {
         "critical_low": 70.0,
         "critical_high": 200.0,
         "provenance": "Consolidated_Lab_Critical_Values_Dataset / Hemoglobin_Ref_v1",
+    },
+    "Hemoglobin A1c": {
+        "unit": "%",
+        "normal_low": 4.0,
+        "normal_high": 5.6,
+        "critical_low": None,
+        "critical_high": 10.0,
+        "provenance": "ADA Standards of Medical Care / HbA1c_Ref_v1",
     },
     "Creatinine": {
         "unit": "umol/L",

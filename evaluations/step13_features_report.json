@@ -1,0 +1,397 @@
+{
+  "step": 13.0,
+  "description": "Step 13 Feature Layer (MedTrend, CareGap, CoverageMap) Comprehensive Evaluation",
+  "final_verdict": "PASS",
+  "total_suite_time_seconds": 179.91,
+  "criteria_matrix": {
+    "trend_direction_correct": true,
+    "unit_alignment_correct": true,
+    "caregap_reconciliation_correct": true,
+    "caregap_guideline_citations_100pct": true,
+    "coverage_classes_match_expectations": true,
+    "disclaimer_present_100pct": true,
+    "no_diagnosis_framing": true,
+    "private_store_isolation": true,
+    "global_index_untouched": true,
+    "vram_under_5500mb": true,
+    "ram_under_12gb": true,
+    "per_feature_latency_under_15s": true,
+    "regression_step11_api_pass_7_of_7": true
+  },
+  "summary_metrics": {
+    "criteria_passed": 13,
+    "total_criteria": 13,
+    "peak_vram_mb": 4776.0,
+    "peak_ram_gb": 4.28,
+    "max_feature_latency_seconds": 2.12
+  },
+  "latencies_ms": {
+    "medtrend_ms": 20.82,
+    "caregap_ms": 2118.43,
+    "coverage_c1_ms": 1481.2,
+    "coverage_c2_ms": 1894.64
+  },
+  "feature_1_medtrend": {
+    "user_id": "feature_test_user",
+    "total_trends": 5,
+    "significant_count": 2,
+    "creatinine_trend": {
+      "test_name": "Creatinine",
+      "canonical_unit": "umol/L",
+      "measurements": [
+        {
+          "report_id": "rep_317ff8dc",
+          "report_date": "2026-05-10",
+          "value": 97.24,
+          "unit": "umol/L",
+          "ref_low": 53.0,
+          "ref_high": 115.0,
+          "is_critical": false
+        },
+        {
+          "report_id": "rep_0ea68848",
+          "report_date": "2026-08-12",
+          "value": 167.96,
+          "unit": "umol/L",
+          "ref_low": 53.0,
+          "ref_high": 115.0,
+          "is_critical": false
+        }
+      ],
+      "measurement_count": 2,
+      "earliest_date": "2026-05-10",
+      "latest_date": "2026-08-12",
+      "earliest_value": 97.24,
+      "latest_value": 167.96,
+      "delta": 70.72,
+      "rate_per_month": 22.8994,
+      "direction": "worsening",
+      "is_significant": true,
+      "significance_reason": "Crossed upper reference threshold (115.0 umol/L).",
+      "possible_causes": [
+        {
+          "test_name": "Creatinine",
+          "disease_name": "Chronic Kidney Disease",
+          "edge_type": "LABTEST_RELATED_TO",
+          "graph_path_str": "LabTest(Creatinine) -[LABTEST_RELATED_TO]-> Disease(Chronic Kidney Disease)"
+        },
+        {
+          "test_name": "Creatinine",
+          "disease_name": "Acute Kidney Injury",
+          "edge_type": "LABTEST_RELATED_TO",
+          "graph_path_str": "LabTest(Creatinine) -[LABTEST_RELATED_TO]-> Disease(Acute Kidney Injury)"
+        }
+      ],
+      "clinical_framing": "Discuss this trajectory with your physician."
+    },
+    "potassium_trend": {
+      "test_name": "Potassium",
+      "canonical_unit": "mmol/L",
+      "measurements": [
+        {
+          "report_id": "rep_317ff8dc",
+          "report_date": "2026-05-10",
+          "value": 4.2,
+          "unit": "mmol/L",
+          "ref_low": 3.5,
+          "ref_high": 5.1,
+          "is_critical": false
+        },
+        {
+          "report_id": "rep_0ea68848",
+          "report_date": "2026-08-12",
+          "value": 4.3,
+          "unit": "mmol/L",
+          "ref_low": 3.5,
+          "ref_high": 5.1,
+          "is_critical": false
+        }
+      ],
+      "measurement_count": 2,
+      "earliest_date": "2026-05-10",
+      "latest_date": "2026-08-12",
+      "earliest_value": 4.2,
+      "latest_value": 4.3,
+      "delta": 0.1,
+      "rate_per_month": 0.0324,
+      "direction": "stable",
+      "is_significant": false,
+      "significance_reason": null,
+      "possible_causes": [],
+      "clinical_framing": "Discuss this trajectory with your physician."
+    },
+    "hba1c_trend": {
+      "test_name": "Hemoglobin A1c",
+      "canonical_unit": "%",
+      "measurements": [
+        {
+          "report_id": "rep_317ff8dc",
+          "report_date": "2026-05-10",
+          "value": 6.9,
+          "unit": "%",
+          "ref_low": 4.0,
+          "ref_high": 5.6,
+          "is_critical": false
+        },
+        {
+          "report_id": "rep_0ea68848",
+          "report_date": "2026-08-12",
+          "value": 7.8,
+          "unit": "%",
+          "ref_low": 4.0,
+          "ref_high": 5.6,
+          "is_critical": false
+        }
+      ],
+      "measurement_count": 2,
+      "earliest_date": "2026-05-10",
+      "latest_date": "2026-08-12",
+      "earliest_value": 6.9,
+      "latest_value": 7.8,
+      "delta": 0.9,
+      "rate_per_month": 0.2914,
+      "direction": "worsening",
+      "is_significant": true,
+      "significance_reason": "Significant increase of +0.9% (\u22650.5% clinical threshold).",
+      "possible_causes": [
+        {
+          "test_name": "Hemoglobin A1c",
+          "disease_name": "Type 2 Diabetes Mellitus",
+          "edge_type": "LABTEST_RELATED_TO",
+          "graph_path_str": "LabTest(Hemoglobin A1c) -[LABTEST_RELATED_TO]-> Disease(Type 2 Diabetes Mellitus)"
+        },
+        {
+          "test_name": "Hemoglobin A1c",
+          "disease_name": "Impaired Glucose Tolerance",
+          "edge_type": "LABTEST_RELATED_TO",
+          "graph_path_str": "LabTest(Hemoglobin A1c) -[LABTEST_RELATED_TO]-> Disease(Impaired Glucose Tolerance)"
+        }
+      ],
+      "clinical_framing": "Discuss this trajectory with your physician."
+    },
+    "summary_text": "Longitudinal analysis evaluated 5 lab tests across your recorded diagnostic reports.\n\u26a0\ufe0f 2 notable trajectory shift(s) were flagged for clinical review:\n - Creatinine: Worsening trend (\u0394 = +70.72 umol/L, +22.8994/month). Crossed upper reference threshold (115.0 umol/L).\n - Hemoglobin A1c: Worsening trend (\u0394 = +0.9 %, +0.2914/month). Significant increase of +0.9% (\u22650.5% clinical threshold).\n\nFraming: These trajectories are provided for personal health tracking. Please discuss these trends with your healthcare provider for clinical evaluation.",
+    "provenance_count": 6
+  },
+  "feature_2_caregap": {
+    "user_id": "feature_test_user_t2",
+    "total_gaps": 4,
+    "out_of_target_count": 1,
+    "missing_check_count": 3,
+    "sample_gaps": [
+      {
+        "gap_type": "out_of_target",
+        "condition_or_topic": "Type 2 Diabetes Mellitus",
+        "recommended_check": "Hemoglobin A1c",
+        "observed_value": "8.2 %",
+        "guideline_target": "HbA1c < 7.0% for most nonpregnant adults",
+        "status": "Above guideline glycemic target (>7.0%)",
+        "guideline_provenance": [
+          {
+            "document_id": "Research_papers/PMC/XML/PMC9107726/article",
+            "source": "Research_papers",
+            "snippet": "change in the leading cause of death from vascular causes to cancer among people with diabetes was observed in England from 2001 to 2018 []. In addition, a decrease in mortality due to cancer and CVD in older people with T2DM in Australia was observe",
+            "category": "research_paper",
+            "fused_score": 0.1732
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "to Remission Programme \u2022 NICE guideline on overweight and obesity management. [2026] 1.3.5 Integrate dietary advice with a personalised diabetes management plan, including other aspects of healthy living such as increasing physical activity and losin",
+            "category": "guideline",
+            "fused_score": 0.0169
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-1-diabetes-in-adults-diagnosis-and-management-pdf-1837276469701",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "type 1 diabetes should be provided by a range of professionals with skills in diabetes care, working together in a coordinated Type 1 diabetes in adults: diagnosis and management (NG17) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (h",
+            "category": "guideline",
+            "fused_score": 0.0164
+          }
+        ],
+        "recommendation_text": "Discuss with your doctor regarding glycemic management optimization."
+      },
+      {
+        "gap_type": "missing_recommended_check",
+        "condition_or_topic": "Type 2 Diabetes Mellitus",
+        "recommended_check": "Creatinine",
+        "observed_value": null,
+        "guideline_target": "Annual evaluation of estimated GFR / serum creatinine",
+        "status": "Recommended monitoring test not found in recent report (Screening for diabetic kidney disease)",
+        "guideline_provenance": [
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "the 50th percentile for height. [2021] For a short explanation of why the committee made these recommendations and how they might affect practice, see the rationale and impact section on pharmacotherapy for blood pressure control. Full details of the",
+            "category": "guideline",
+            "fused_score": 0.0172
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "line with the NHS information on healthy living to people who have raised blood pressure but have not been diagnosed with hypertension. [2026] Annual blood pressure measurement for people with type 2 diabetes 1.2.12 Measure blood pressure at least an",
+            "category": "guideline",
+            "fused_score": 0.0169
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "of medicines. Randomised controlled trials examining these different issues would help to improve diabetes care. 5 Self-monitoring of blood glucose levels What is the optimal frequency for self\u2011monitoring of blood glucose in adults with type 2 diabet",
+            "category": "guideline",
+            "fused_score": 0.0164
+          }
+        ],
+        "recommendation_text": "Discuss with your doctor whether a Creatinine check is appropriate as part of routine Type 2 Diabetes Mellitus care."
+      },
+      {
+        "gap_type": "missing_recommended_check",
+        "condition_or_topic": "Type 2 Diabetes Mellitus",
+        "recommended_check": "Urine Albumin",
+        "observed_value": null,
+        "guideline_target": "Annual urine albumin-to-creatinine ratio (uACR < 30 mg/g)",
+        "status": "Recommended monitoring test not found in recent report (Early detection of nephropathy)",
+        "guideline_provenance": [
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "of the greater sensitivity for low levels of proteinuria Chronic kidney disease: assessment and management (NG203) \u00a9 NICE 2026. All rights reserved. Subject to Notice of rights (https://www.nice.org.uk/terms-and- conditions#notice-of-rights). Page 8 ",
+            "category": "guideline",
+            "fused_score": 0.1838
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "line with the NHS information on healthy living to people who have raised blood pressure but have not been diagnosed with hypertension. [2026] Annual blood pressure measurement for people with type 2 diabetes 1.2.12 Measure blood pressure at least an",
+            "category": "guideline",
+            "fused_score": 0.0169
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "to Remission Programme \u2022 NICE guideline on overweight and obesity management. [2026] 1.3.5 Integrate dietary advice with a personalised diabetes management plan, including other aspects of healthy living such as increasing physical activity and losin",
+            "category": "guideline",
+            "fused_score": 0.0154
+          }
+        ],
+        "recommendation_text": "Discuss with your doctor whether a Urine Albumin check is appropriate as part of routine Type 2 Diabetes Mellitus care."
+      },
+      {
+        "gap_type": "missing_recommended_check",
+        "condition_or_topic": "Hypertension",
+        "recommended_check": "Creatinine",
+        "observed_value": null,
+        "guideline_target": "Baseline & annual renal function assessment",
+        "status": "Recommended monitoring test not found in recent report (Renal status monitoring under antihypertensive therapy)",
+        "guideline_provenance": [
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "and monitoring hypertension .......................................................................................... 10 1.5 Identifying who to refer for same-day specialist review ............................................................. 24 Ter",
+            "category": "guideline",
+            "fused_score": 0.1883
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "key questions and rated outcomes to identify those critical for the development of the guideline. Conflicts of interest were handled in line with the current Compliance, Risk Management and Ethics (CRE) policy and all members of the GDG were asked to",
+            "category": "guideline",
+            "fused_score": 0.1835
+          },
+          {
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "source": "Clinical_practice_guidlines",
+            "snippet": "number of monitoring checks (eGFRcreatinine) per year for adults, children and young people with or at risk of chronic kidney disease Note: ACR monitoring should be individualised based on a person's individual characteristics, risk of progression an",
+            "category": "guideline",
+            "fused_score": 0.0167
+          }
+        ],
+        "recommendation_text": "Discuss with your doctor whether a Creatinine check is appropriate as part of routine Hypertension care."
+      }
+    ],
+    "summary_text": "CareGap reconciliation evaluated your report against evidence-based clinical guidelines.\nIdentified 4 clinical care reconciliation item(s):\n - 1 value(s) outside guideline-recommended targets.\n - 3 recommended monitoring check(s) not observed in this report.\n\nFraming: These items represent evidence-based guideline considerations. This is not a diagnosis. Please discuss these recommendations with your physician.",
+    "guideline_provenance_count": 6
+  },
+  "feature_3_coverage_map": {
+    "c1_query": "warfarin INR monitoring guidelines atrial fibrillation",
+    "c1_overall_coverage": "strong",
+    "c1_subquestions_count": 2,
+    "c1_subquestions": [
+      {
+        "sub_question": "What is the clinical definition and diagnostic criteria for warfarin INR monitoring guidelines atrial fibrillation?",
+        "coverage_class": "strong",
+        "top_fused_score": 0.1766,
+        "distinct_doc_count": 10,
+        "evidence_count": 10,
+        "top_citations": [
+          "Research_papers (Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292): IMPORTANCE: Catheter ablation is associated with reduced heart failure (HF) hospitalization and death in select patients...",
+          "Research_papers (Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908): {\n  \"pmid\": \"39374908\",\n  \"title\": \"The 2024 European Society of Cardiology Guidelines for Diagnosis and Management of A..."
+        ],
+        "suggested_rephrase": null
+      },
+      {
+        "sub_question": "What are the evidence-based management and monitoring recommendations for warfarin INR monitoring guidelines atrial fibrillation?",
+        "coverage_class": "strong",
+        "top_fused_score": 0.1774,
+        "distinct_doc_count": 10,
+        "evidence_count": 10,
+        "top_citations": [
+          "Research_papers (Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454): [ \"anticoagulation\", \"atrial fibrillation\", \"liver cirrhosis\", \"portal vein\", \"venous thrombosis\" ], \"mesh_terms\": [ \"Hu...",
+          "Clinical_practice_guidlines (Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207): take a pulse for themselves or their family members. The findings in this report are subject to at least two limita- tio..."
+        ],
+        "suggested_rephrase": null
+      }
+    ],
+    "c2_query": "potassium hyperkalemia ECG changes peaked T waves treatment",
+    "c2_overall_coverage": "strong",
+    "c2_subquestions_count": 3,
+    "c2_subquestions": [
+      {
+        "sub_question": "What are the ECG changes associated with potassium hyperkalemia?",
+        "coverage_class": "strong",
+        "top_fused_score": 0.1777,
+        "distinct_doc_count": 10,
+        "evidence_count": 10,
+        "top_citations": [
+          "Research_papers (Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639): Hyperkalemia is an electrolyte abnormality with potentially life-threatening consequences. Despite various guidelines, n...",
+          "Research_papers (Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894): Hyperkalemia represents a widespread and potentially lethal condition that affects millions of people across their lives..."
+        ],
+        "suggested_rephrase": null
+      },
+      {
+        "sub_question": "What are peaked T waves in the context of hyperkalemia?",
+        "coverage_class": "strong",
+        "top_fused_score": 0.1783,
+        "distinct_doc_count": 10,
+        "evidence_count": 10,
+        "top_citations": [
+          "Research_papers (Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639): Hyperkalemia is an electrolyte abnormality with potentially life-threatening consequences. Despite various guidelines, n...",
+          "Research_papers (Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894): Hyperkalemia represents a widespread and potentially lethal condition that affects millions of people across their lives..."
+        ],
+        "suggested_rephrase": null
+      },
+      {
+        "sub_question": "What is the treatment for potassium hyperkalemia?",
+        "coverage_class": "strong",
+        "top_fused_score": 0.1777,
+        "distinct_doc_count": 10,
+        "evidence_count": 10,
+        "top_citations": [
+          "Research_papers (Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639): Hyperkalemia is an electrolyte abnormality with potentially life-threatening consequences. Despite various guidelines, n...",
+          "Research_papers (Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_34890894): Hyperkalemia represents a widespread and potentially lethal condition that affects millions of people across their lives..."
+        ],
+        "suggested_rephrase": null
+      }
+    ]
+  },
+  "regression_results": {
+    "step11_api_verdict": "PASS",
+    "criteria_passed": 7,
+    "target": "7/7"
+  },
+  "global_index_integrity": {
+    "faiss_before": 2294038,
+    "faiss_after": 2294038,
+    "kuzu_before": 2499528,
+    "kuzu_after": 2499528,
+    "untouched": true
+  }
+}

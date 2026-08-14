@@ -114,22 +114,84 @@ def store_private_report(
 
     # 2. Build per-user Kuzu DB (with lock safety)
     db_path = kuzu_dir / "private_kuzu_db"
+    
+    # Extract report date from raw text or fallback to current UTC date
+    import re
+    import uuid
+    from datetime import datetime, timezone
+    date_match = re.search(r"Date[:\s]+(\d{4}-\d{2}-\d{2})", raw_text, re.IGNORECASE)
+    if not date_match:
+        date_match = re.search(r"(\d{4}-\d{2}-\d{2})", raw_text)
+    report_date = date_match.group(1) if date_match else datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    report_id = f"rep_{uuid.uuid4().hex[:8]}"
+
     try:
         db = kuzu.Database(str(db_path))
         conn = kuzu.Connection(db)
         try:
+            # Legacy PrivateLabValue table for backwards compatibility
             conn.execute("CREATE NODE TABLE IF NOT EXISTS PrivateLabValue(id STRING, test_name STRING, val_str STRING, classification STRING, PRIMARY KEY(id))")
+            
+            # Step 13 Schema: (:Report)-[:HAS_LAB_VALUE]->(:LabValue)
+            conn.execute("CREATE NODE TABLE IF NOT EXISTS Report(id STRING, report_date STRING, filename STRING, PRIMARY KEY(id))")
+            conn.execute("CREATE NODE TABLE IF NOT EXISTS LabValue(id STRING, test_name STRING, value DOUBLE, unit STRING, ref_low DOUBLE, ref_high DOUBLE, is_critical BOOLEAN, PRIMARY KEY(id))")
+            conn.execute("CREATE REL TABLE IF NOT EXISTS HAS_LAB_VALUE(FROM Report TO LabValue)")
+
+            # Insert Report node
+            try:
+                conn.execute(
+                    f"CREATE (:Report {{id: '{report_id}', report_date: '{report_date}', filename: 'report_{report_id}'}})"
+                )
+            except Exception:
+                pass
+
             for idx, asm in enumerate(assessments):
                 node_id = f"{user_id}_lab_{idx}"
                 t_name = asm.normalized_lab_value.canonical_test_name.replace("'", "''")
                 val_s = asm.normalized_lab_value.lab_value.value_raw_str
                 cls_s = asm.classification
+                
+                # Insert legacy node
                 try:
                     conn.execute(
                         f"CREATE (:PrivateLabValue {{id: '{node_id}', test_name: '{t_name}', val_str: '{val_s}', classification: '{cls_s}'}})"
                     )
                 except Exception:
                     pass
+
+                # Parse reference range bounds
+                ref_low = 0.0
+                ref_high = 9999.0
+                range_str = asm.reference_range_used or asm.normalized_lab_value.lab_value.reference_range_raw
+                if range_str:
+                    range_match = re.findall(r"([0-9]+\.?[0-9]*)", range_str)
+                    if len(range_match) >= 2:
+                        try:
+                            ref_low = float(range_match[0])
+                            ref_high = float(range_match[1])
+                        except Exception:
+                            pass
+                    elif len(range_match) == 1:
+                        try:
+                            ref_high = float(range_match[0])
+                        except Exception:
+                            pass
+
+                val_num = float(asm.normalized_lab_value.normalized_value)
+                unit_s = asm.normalized_lab_value.normalized_unit.replace("'", "''")
+                is_crit = "true" if asm.is_critical else "false"
+                lv_node_id = f"{user_id}_{report_id}_lv_{idx}"
+
+                # Insert LabValue node and link to Report
+                try:
+                    conn.execute(
+                        f"CREATE (:LabValue {{id: '{lv_node_id}', test_name: '{t_name}', value: {val_num}, unit: '{unit_s}', ref_low: {ref_low}, ref_high: {ref_high}, is_critical: {is_crit}}})"
+                    )
+                    conn.execute(
+                        f"MATCH (r:Report {{id: '{report_id}'}}), (lv:LabValue {{id: '{lv_node_id}'}}) CREATE (r)-[:HAS_LAB_VALUE]->(lv)"
+                    )
+                except Exception as lve:
+                    logger.debug("Failed inserting LabValue node: %s", lve)
         finally:
             del conn
             del db

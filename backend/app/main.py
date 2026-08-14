@@ -22,7 +22,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import auth, health, query, report
+from app.api.routes import auth, features, health, query, report
 from app.config import settings
 from app.core.retrieval import faiss_store, graph_store
 
@@ -59,7 +59,11 @@ def purge_stale_guest_directories() -> int:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan context manager for startup & shutdown tasks."""
-    logger.info("=== Starting MedGraphRAG FastAPI Service Layer ===")
+    # 0. Log resolved private_store_dir and assert writable
+    pstore = settings.private_store_dir.resolve()
+    pstore.mkdir(parents=True, exist_ok=True)
+    logger.info("Resolved private_store_dir: %s", pstore)
+    assert os.access(pstore, os.W_OK), f"private_store_dir {pstore} is not writable!"
 
     # 1. Enforce JWT Secret Warning check
     secret = settings.get_effective_jwt_secret()
@@ -108,3 +112,4 @@ app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(query.router)
 app.include_router(report.router)
+app.include_router(features.router)

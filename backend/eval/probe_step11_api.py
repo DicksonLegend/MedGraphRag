@@ -22,14 +22,19 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List
 
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(_PROJECT_ROOT / "backend"))
+
+from app.config import PROJECT_ROOT, settings
+
 import httpx
 import psutil
 
-BASE_DIR = Path("/home/dicksone/Documents/MedGraphRag")
+BASE_DIR = PROJECT_ROOT
 BACKEND_DIR = BASE_DIR / "backend"
-FIXTURES_DIR = BASE_DIR / "evaluations" / "fixtures"
-REPORT_OUTPUT_PATH = BASE_DIR / "evaluations" / "step11_api_report.json"
-STEP12_0_PROBEFIX_REPORT_PATH = BASE_DIR / "evaluations" / "step12_0_probefix_report.json"
+FIXTURES_DIR = settings.evaluations_dir / "fixtures"
+REPORT_OUTPUT_PATH = settings.evaluations_dir / "step11_api_report.json"
+STEP12_0_PROBEFIX_REPORT_PATH = settings.evaluations_dir / "step12_0_probefix_report.json"
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -252,7 +257,7 @@ def run_step11_evaluation():
 
         # Check escalation warning appears FIRST
         escalation_first = "CRITICAL VALUE DETECTED" in answer_text[:150]
-        user_store_dir = BASE_DIR / "private_store" / "demo_user"
+        user_store_dir = settings.private_store_dir / "demo_user"
         enc_payload_path = user_store_dir / "meta" / "report_payload.enc"
         private_store_exists = enc_payload_path.exists()
 
@@ -280,7 +285,7 @@ def run_step11_evaluation():
         guest_user_id = guest_login_resp.json().get("user_id")
         guest_headers = {"Authorization": f"Bearer {guest_token}"}
 
-        guest_dir = BASE_DIR / "private_store" / guest_user_id
+        guest_dir = settings.private_store_dir / guest_user_id
         store_path_created = guest_dir.exists()
 
         # Upload F2 report for guest

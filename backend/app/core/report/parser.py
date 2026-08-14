@@ -243,14 +243,16 @@ def _parse_excel(file_bytes: bytes, raw_hash: str) -> ParsedReport:
 def _parse_csv(file_bytes: bytes, raw_hash: str) -> ParsedReport:
     """Parse CSV using pandas, preserving exact cell strings."""
     try:
-        df = pd.read_csv(io.BytesIO(file_bytes), dtype=str)
+        df = pd.read_csv(io.BytesIO(file_bytes), dtype=str, comment="#")
         df = df.fillna("")
         table_rows = [df.columns.tolist()] + df.values.tolist()
         table_rows = [[str(cell).strip() for cell in row] for row in table_rows]
 
+        raw_decoded = file_bytes.decode("utf-8", errors="ignore")
         sheet_text = "\n".join(["\t".join(row) for row in table_rows])
+        full_text = f"{raw_decoded}\n{sheet_text}" if raw_decoded != sheet_text else sheet_text
         return ParsedReport(
-            raw_text=sheet_text,
+            raw_text=full_text,
             text_blocks=[sheet_text],
             tables=[table_rows],
             format="csv",

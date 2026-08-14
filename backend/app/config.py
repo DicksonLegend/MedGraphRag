@@ -24,6 +24,14 @@ logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
+# Project root resolved relative to this file's location
+# ---------------------------------------------------------------------------
+PROJECT_ROOT = Path(__file__).resolve().parents[2]  # backend/app/config.py -> MedGraphRag/
+_BACKEND_DIR = PROJECT_ROOT / "backend"
+_PROJECT_ROOT = PROJECT_ROOT
+
+
+# ---------------------------------------------------------------------------
 # LLM configuration sub-model (Step 7)
 # Nested inside Settings so all values are env-var driven with prefix MEDGRAPH_LLM_
 # ---------------------------------------------------------------------------
@@ -60,7 +68,7 @@ class LLMSettings(BaseModel):
         description="GGUF filename inside the repo and under models/.",
     )
     model_path: Path = Field(
-        default=Path("models/Qwen2.5-7B-Instruct-Q4_K_M.gguf"),
+        default=PROJECT_ROOT / "models" / "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
         description=(
             "Local path to the GGUF file, relative to project root. "
             "Override with an absolute path if needed."
@@ -195,33 +203,41 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # ── Index paths ──────────────────────────────────────────────────────────
+    # ── Core system paths ───────────────────────────────────────────────────
     project_root: Path = Field(
-        default=_PROJECT_ROOT,
+        default=PROJECT_ROOT,
         description="Absolute path to the MedGraphRag project root.",
     )
     index_dir: Path = Field(
-        default=_PROJECT_ROOT / "index" / "global",
+        default=PROJECT_ROOT / "index" / "global",
         description="Read-only index artifact directory.",
     )
+    models_dir: Path = Field(
+        default=PROJECT_ROOT / "models",
+        description="Directory for local model weight files.",
+    )
+    evaluations_dir: Path = Field(
+        default=PROJECT_ROOT / "evaluations",
+        description="Directory for evaluation output reports and fixtures.",
+    )
     faiss_index_path: Path = Field(
-        default=_PROJECT_ROOT / "index" / "global" / "faiss.index",
+        default=PROJECT_ROOT / "index" / "global" / "faiss.index",
         description="Path to the IVFpq FAISS index file.",
     )
     sidecar_parquet_path: Path = Field(
-        default=_PROJECT_ROOT / "index" / "global" / "id_mapping.parquet",
+        default=PROJECT_ROOT / "index" / "global" / "id_mapping.parquet",
         description="Path to the chunk-id sidecar Parquet file.",
     )
     chunks_jsonl_path: Path = Field(
-        default=_PROJECT_ROOT / "index" / "global" / "chunks.jsonl",
+        default=PROJECT_ROOT / "index" / "global" / "chunks.jsonl",
         description="Path to the chunks JSONL text file.",
     )
     chunk_offsets_npy_path: Path = Field(
-        default=_PROJECT_ROOT / "index" / "global" / "chunk_line_offsets.npy",
+        default=PROJECT_ROOT / "index" / "global" / "chunk_line_offsets.npy",
         description="Path to the precomputed byte-offset index for chunks.jsonl.",
     )
     kuzu_db_path: Path = Field(
-        default=_PROJECT_ROOT / "index" / "global" / "kuzu_db_v5",
+        default=PROJECT_ROOT / "index" / "global" / "kuzu_db_v5",
         description="Path to the Kùzu single-file graph database.",
     )
 
@@ -580,7 +596,7 @@ class Settings(BaseSettings):
 
     # ── Step 10 Report & Private Store Settings ──────────────────────────────
     private_store_dir: Path = Field(
-        default=Path("private_store"),
+        default=PROJECT_ROOT / "private_store",
         description="Root directory for isolated encrypted per-user private stores.",
     )
     ocr_confidence_threshold: float = Field(

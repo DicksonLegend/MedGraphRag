@@ -1,0 +1,110 @@
+{
+  "resolved_PROJECT_ROOT": "/home/dicksone/Documents/MedGraphRag",
+  "stores_found_before": [
+    "/home/dicksone/Documents/MedGraphRag/private_store",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store"
+  ],
+  "deleted_paths": [
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user/meta/user_key.key",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user/meta/report_payload.enc",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user/meta",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user/kuzu/private_kuzu_db",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user/kuzu",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user/faiss/private_faiss.index",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user/faiss",
+    "/home/dicksone/Documents/MedGraphRag/backend/private_store/demo_user"
+  ],
+  "checks": {
+    "check_a_health_from_both_cwds": {
+      "pass": true,
+      "evidence": {
+        "root": {
+          "status_code": 200,
+          "body": {
+            "status": "ok",
+            "components": {
+              "retrieval": "ok",
+              "graph": "ok",
+              "llm_loaded": false
+            },
+            "version": "1.0.0"
+          },
+          "pass": true
+        },
+        "backend": {
+          "status_code": 200,
+          "body": {
+            "status": "ok",
+            "components": {
+              "retrieval": "ok",
+              "graph": "ok",
+              "llm_loaded": false
+            },
+            "version": "1.0.0"
+          },
+          "pass": true
+        }
+      }
+    },
+    "check_b_guest_lifecycle": {
+      "pass": true,
+      "evidence": {
+        "root": {
+          "guest_user_id": "guest_a1d72bce69ea",
+          "store_in_root": true,
+          "store_in_backend_accident": false,
+          "private_query_success": true,
+          "guest_dir_purged_on_logout": true,
+          "pass": true
+        },
+        "backend": {
+          "guest_user_id": "guest_019836014f25",
+          "store_in_root": true,
+          "store_in_backend_accident": false,
+          "private_query_success": true,
+          "guest_dir_purged_on_logout": true,
+          "pass": true
+        }
+      }
+    },
+    "check_c_demo_user_query": {
+      "pass": true,
+      "evidence": {
+        "status_code": 200,
+        "citations_count": 10,
+        "has_private_citation": true,
+        "sample_citation": {
+          "label": "[E1]",
+          "chunk_id": "private_demo_user_c0",
+          "document_id": "private_store/demo_user/report",
+          "source": "Private_User_Report_demo_user",
+          "category": "private_report",
+          "chunk_type": "body",
+          "title": "User Diagnostic Report (demo_user)",
+          "snippet": "--- Sheet: Sheet1 ---\nTest Name\tResult\tUnit\tReference Range\nCreatinine\t4.0\tmg/dL\t0.6 - 1.2\nGlucose\t90.0\tmg/dL\t70 - 100\nHemoglobin\t13.0\tg/dL\t12.0 - 16.0\nSodium\t142.0\tmmol/L\t135 - 145\nPotassium\t4.2\tmmol/L\t3.5 - 5.1",
+          "fused_score": 0.23464311233815166,
+          "source_type": "both"
+        }
+      }
+    },
+    "check_d_probe_step11_api": {
+      "pass": true,
+      "verdict": "PASS",
+      "criteria_passed": 7,
+      "canonical_report_path": "/home/dicksone/Documents/MedGraphRag/evaluations/step11_api_report.json"
+    },
+    "check_e_grep_bare_literals": {
+      "pass": true,
+      "bare_literal_matches": 0
+    },
+    "check_f_index_integrity": {
+      "pass": true,
+      "faiss_count": 2294038,
+      "faiss_expected": 2294038,
+      "kuzu_count": 2499528,
+      "kuzu_expected": 2499528,
+      "untouched": true
+    }
+  },
+  "overall_verdict": "PASS"
+}

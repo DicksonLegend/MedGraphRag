@@ -43,6 +43,13 @@ CANONICAL_ALIASES: Dict[str, Tuple[str, str, str]] = {
     "ast": ("Aspartate Aminotransferase", "1920-8", "U/L"),
     "tsh": ("Thyroid Stimulating Hormone", "3016-3", "mIU/L"),
     "troponin": ("Troponin I", "10839-9", "ng/mL"),
+    "hemoglobin a1c": ("Hemoglobin A1c", "4548-4", "%"),
+    "hba1c": ("Hemoglobin A1c", "4548-4", "%"),
+    "hb a1c": ("Hemoglobin A1c", "4548-4", "%"),
+    "a1c": ("Hemoglobin A1c", "4548-4", "%"),
+    "glycated hemoglobin": ("Hemoglobin A1c", "4548-4", "%"),
+    "urine albumin": ("Urine Albumin", "14957-5", "mg/L"),
+    "egfr": ("Glomerular Filtration Rate", "33914-3", "mL/min/1.73m2"),
 }
 
 
@@ -94,8 +101,8 @@ def _normalize_single(lv: LabValue, conn: Any) -> NormalizedLabValue:
         if def_unit:
             target_unit = def_unit
     else:
-        # Check partial match
-        for alias, (c_name, l_code, def_unit) in CANONICAL_ALIASES.items():
+        # Check partial match (longest alias first to prevent 'hemoglobin' shadowing 'hemoglobin a1c')
+        for alias, (c_name, l_code, def_unit) in sorted(CANONICAL_ALIASES.items(), key=lambda x: len(x[0]), reverse=True):
             if alias in clean_name:
                 canonical_name = c_name
                 loinc_code = l_code
