@@ -1,0 +1,169 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* =========================================================================
+       THEME A: Clinical Calm (Light - Default)
+       WCAG AA certified contrast ratios across all surfaces & text tokens
+       ========================================================================= */
+    --color-canvas: #F6F8FA;
+    --color-card: #FFFFFF;
+    --color-card-hover: #F8FAFC;
+    --color-card-border: #E3E8EF;
+    
+    --color-ink: #10243E;
+    --color-ink-muted: #48617D;
+    --color-ink-subtle: #7A90A9;
+
+    --color-brand: #0F766E;           /* Deep medical teal */
+    --color-brand-hover: #0D655E;
+    --color-brand-surface: #F0FDFA;
+    --color-brand-border: #CCFBF1;
+    --color-brand-secondary: #2563EB;
+
+    --color-status-success: #15803D;
+    --color-status-success-bg: #DCFCE7;
+    --color-status-caution: #B45309;
+    --color-status-caution-bg: #FEF3C7;
+    --color-status-danger: #B91C1C;
+    --color-status-danger-bg: #FEE2E2;
+    --color-status-info: #1D4ED8;
+    --color-status-info-bg: #DBEAFE;
+  }
+
+  .dark {
+    /* =========================================================================
+       THEME B: Vital Monitor (Dark - Toggle)
+       Precision telemetry aesthetic with luminous status accents
+       ========================================================================= */
+    --color-canvas: #0A1120;
+    --color-card: #101B31;
+    --color-card-hover: #162441;
+    --color-card-border: #1E2A44;
+    
+    --color-ink: #E8EEF9;
+    --color-ink-muted: #9BB0CD;
+    --color-ink-subtle: #5B7293;
+
+    --color-brand: #2DD4BF;           /* Radiant ECG teal */
+    --color-brand-hover: #14B8A6;
+    --color-brand-surface: #0A242B;
+    --color-brand-border: #134E4A;
+    --color-brand-secondary: #7C9EFF;
+
+    --color-status-success: #4ADE80;
+    --color-status-success-bg: #072B18;
+    --color-status-caution: #FBBF24;
+    --color-status-caution-bg: #2E1F03;
+    --color-status-danger: #F87171;
+    --color-status-danger-bg: #330F13;
+    --color-status-info: #60A5FA;
+    --color-status-info-bg: #0B2244;
+  }
+}
+
+/* Custom theme color utility extensions */
+@theme {
+  --color-canvas: var(--color-canvas);
+  --color-card: var(--color-card);
+  --color-card-hover: var(--color-card-hover);
+  --color-card-border: var(--color-card-border);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-ink-subtle: var(--color-ink-subtle);
+  --color-brand: var(--color-brand);
+  --color-brand-hover: var(--color-brand-hover);
+  --color-brand-surface: var(--color-brand-surface);
+  --color-brand-border: var(--color-brand-border);
+  --color-brand-secondary: var(--color-brand-secondary);
+  --color-status-success: var(--color-status-success);
+  --color-status-success-bg: var(--color-status-success-bg);
+  --color-status-caution: var(--color-status-caution);
+  --color-status-caution-bg: var(--color-status-caution-bg);
+  --color-status-danger: var(--color-status-danger);
+  --color-status-danger-bg: var(--color-status-danger-bg);
+  --color-status-info: var(--color-status-info);
+  --color-status-info-bg: var(--color-status-info-bg);
+  --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --font-heading: Sora, "Space Grotesk", sans-serif;
+}
+
+/* Base typography & rendering invariants */
+body {
+  margin: 0;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mono tabular figures for all numbers, deltas, timestamps & scores */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Animations */
+@keyframes ecgPulse {
+  0% { stroke-dashoffset: 1000; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes codeBluePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.94; transform: scale(0.998); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(4px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-ecg-pulse {
+  animation: ecgPulse 2.4s ease-in-out infinite;
+}
+
+.animate-code-blue {
+  animation: codeBluePulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-ink-subtle);
+  border-radius: 9999px;
+  opacity: 0.3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ink-muted);
+}
+
+/* Accessible focus rings */
+*:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* Reduced motion safety */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
