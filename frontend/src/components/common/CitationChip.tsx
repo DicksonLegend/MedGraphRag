@@ -1,13 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 import type { CitationMeta } from '../../api/types';
-import { Tag, BookOpen, Layers, X } from 'lucide-react';
+import { Tag, BookOpen, Layers, X, ExternalLink } from 'lucide-react';
 
 interface CitationChipProps {
   label: string;
   citation?: CitationMeta;
+  onSelect?: (label: string) => void;
 }
 
-export const CitationChip: React.FC<CitationChipProps> = ({ label, citation }) => {
+export const CitationChip: React.FC<CitationChipProps> = ({
+  label,
+  citation,
+  onSelect,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
 
@@ -26,6 +31,14 @@ export const CitationChip: React.FC<CitationChipProps> = ({ label, citation }) =
     };
   }, [isOpen]);
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsOpen(!isOpen);
+    if (onSelect) {
+      onSelect(label);
+    }
+  };
+
   if (!citation) {
     return (
       <span className="inline-flex items-center px-1.5 py-0.5 mx-0.5 text-xs font-mono font-medium rounded bg-card-border/60 text-ink-muted border border-card-border">
@@ -39,9 +52,9 @@ export const CitationChip: React.FC<CitationChipProps> = ({ label, citation }) =
       {/* Specimen-Tag Style Chip Button */}
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="inline-flex items-center space-x-1 px-2 py-0.5 rounded border border-brand-border bg-brand-surface text-brand hover:bg-brand hover:text-white transition-all text-xs font-mono font-semibold shadow-2xs group focus:outline-hidden"
-        title="View clinical evidence citation details"
+        onClick={handleClick}
+        className="inline-flex items-center space-x-1 px-2 py-0.5 rounded border border-brand-border bg-brand-surface text-brand hover:bg-brand hover:text-white transition-all text-xs font-mono font-semibold shadow-2xs group focus:outline-hidden cursor-pointer"
+        title="View clinical evidence citation in proof console"
         aria-expanded={isOpen}
       >
         <Tag className="w-3 h-3 opacity-70 group-hover:opacity-100" />
@@ -67,7 +80,10 @@ export const CitationChip: React.FC<CitationChipProps> = ({ label, citation }) =
               </span>
             </div>
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(false);
+              }}
               className="p-1 rounded-md text-ink-subtle hover:text-ink hover:bg-canvas transition-colors"
             >
               <X className="w-3.5 h-3.5" />
@@ -98,9 +114,24 @@ export const CitationChip: React.FC<CitationChipProps> = ({ label, citation }) =
           </div>
 
           {/* Evidence Snippet */}
-          <div className="bg-canvas p-2.5 rounded-lg border border-card-border text-xs text-ink leading-relaxed max-h-36 overflow-y-auto font-sans">
+          <div className="bg-canvas p-2.5 rounded-lg border border-card-border text-xs text-ink leading-relaxed max-h-36 overflow-y-auto font-sans mb-2">
             "{citation.snippet}"
           </div>
+
+          {onSelect && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsOpen(false);
+                onSelect(label);
+              }}
+              className="w-full py-1.5 px-2.5 rounded-lg bg-brand-surface border border-brand-border text-brand text-[11px] font-heading font-semibold hover:bg-brand hover:text-white transition-colors flex items-center justify-center space-x-1"
+            >
+              <ExternalLink className="w-3 h-3" />
+              <span>Inspect in Evidence Console</span>
+            </button>
+          )}
         </div>
       )}
     </span>

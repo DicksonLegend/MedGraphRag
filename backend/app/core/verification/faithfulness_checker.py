@@ -169,7 +169,7 @@ def verify_in_single_pass(
     fallback_used = False
 
     try:
-        llm_res = generate_chat(messages=messages, max_tokens=max_tokens, temperature=0.1)
+        llm_res = generate_chat(messages=messages, max_tokens=max_tokens, temperature=0.0)
         raw_text = llm_res.get("text", "").strip()
 
         # Extract JSON objects

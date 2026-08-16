@@ -7,11 +7,13 @@ import { CitationChip } from '../common/CitationChip';
 interface MarkdownAnswerProps {
   content: string;
   citations: CitationMeta[];
+  onCitationClick?: (label: string) => void;
 }
 
 export const MarkdownAnswer: React.FC<MarkdownAnswerProps> = ({
   content,
   citations,
+  onCitationClick,
 }) => {
   // Helper to render text with embedded citation chips
   const renderTextWithCitations = (text: string) => {
@@ -27,6 +29,7 @@ export const MarkdownAnswer: React.FC<MarkdownAnswerProps> = ({
             key={index}
             label={part}
             citation={citation}
+            onSelect={onCitationClick}
           />
         );
       }
@@ -41,7 +44,7 @@ export const MarkdownAnswer: React.FC<MarkdownAnswerProps> = ({
         components={{
           p: ({ children }) => {
             return (
-              <p className="mb-3 last:mb-0 leading-relaxed">
+              <p className="mb-3 last:mb-0 leading-relaxed text-sm">
                 {React.Children.map(children, (child) => {
                   if (typeof child === 'string') {
                     return renderTextWithCitations(child);
@@ -53,7 +56,7 @@ export const MarkdownAnswer: React.FC<MarkdownAnswerProps> = ({
           },
           li: ({ children }) => {
             return (
-              <li className="mb-1 leading-relaxed">
+              <li className="mb-1.5 leading-relaxed text-sm">
                 {React.Children.map(children, (child) => {
                   if (typeof child === 'string') {
                     return renderTextWithCitations(child);
@@ -65,12 +68,12 @@ export const MarkdownAnswer: React.FC<MarkdownAnswerProps> = ({
           },
           strong: ({ children }) => {
             return (
-              <strong className="font-semibold text-ink">
+              <strong className="font-bold text-ink">
                 {children}
               </strong>
             );
           },
-          code: ({ children, className }) => {
+          code: ({ children }) => {
             return (
               <code className="px-1.5 py-0.5 rounded bg-canvas border border-card-border font-mono text-xs text-brand font-semibold tabular-nums">
                 {children}
@@ -88,7 +91,7 @@ export const MarkdownAnswer: React.FC<MarkdownAnswerProps> = ({
             </th>
           ),
           td: ({ children }) => (
-            <td className="px-3 py-2 border-b border-card-border/60 text-ink">
+            <td className="px-3 py-2 border-b border-card-border/60 text-ink font-mono">
               {children}
             </td>
           ),

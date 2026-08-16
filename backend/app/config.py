@@ -122,8 +122,8 @@ class LLMSettings(BaseModel):
 
     # ── Generation ────────────────────────────────────────────────────────────
     temperature: float = Field(
-        default=0.2,
-        description="Sampling temperature. 0.2 for near-deterministic medical answers.",
+        default=0.0,
+        description="Sampling temperature. 0.0 for deterministic medical answers.",
     )
     max_tokens: int = Field(
         default=800,
@@ -437,7 +437,7 @@ class Settings(BaseSettings):
         description="Quantization type for value cache (q8_0 saves VRAM).",
     )
     llm_temperature: float = Field(
-        default=0.2,
+        default=0.0,
         description="Sampling temperature for deterministic medical grounding.",
     )
     llm_max_tokens: int = Field(

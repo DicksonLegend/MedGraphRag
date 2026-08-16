@@ -153,6 +153,7 @@ def get_llm() -> llama_cpp.Llama:
                     "n_ctx": settings.llm_n_ctx,
                     "flash_attn": settings.llm_flash_attn,
                     "offload_kqv": settings.llm_offload_kqv,
+                    "seed": 42,
                     "verbose": False,
                 }
                 if type_k_enum is not None:
@@ -219,12 +220,22 @@ def generate_chat(
     ram_before = _get_ram_gb()
     vram_before = _get_vram_mb()
 
+    # Reset KV cache to ensure deterministic generation without residual cache contamination
+    try:
+        llm.reset()
+    except Exception:
+        pass
+
     # Pass chat messages to native create_chat_completion (ChatML auto-formatted)
-    response = llm.create_chat_completion(
-        messages=messages,
-        max_tokens=max_tok,
-        temperature=temp,
-    )
+    kwargs = {
+        "messages": messages,
+        "max_tokens": max_tok,
+        "temperature": temp,
+    }
+    if temp == 0.0:
+        kwargs["top_p"] = 1.0
+        kwargs["top_k"] = 1
+    response = llm.create_chat_completion(**kwargs)
 
     latency_ms = (time.perf_counter() - t0) * 1000
     choice = response["choices"][0]

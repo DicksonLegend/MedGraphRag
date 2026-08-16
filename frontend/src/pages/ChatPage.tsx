@@ -3,25 +3,27 @@ import { queryApi } from '../api/query';
 import type { QueryResponse } from '../api/types';
 import { useAuthStore } from '../stores/authStore';
 import { EcgLoader } from '../components/common/EcgLoader';
-import { ConfidenceRing } from '../components/common/ConfidenceRing';
-import { SubwayMap } from '../components/common/SubwayMap';
-import { DisclaimerFooter } from '../components/common/DisclaimerFooter';
+import { ClinicalAnswerConsole } from '../components/chat/ClinicalAnswerConsole';
 import { ErrorState } from '../components/common/ErrorState';
-import { MarkdownAnswer } from '../components/chat/MarkdownAnswer';
-import { TechnicalDetails } from '../components/chat/TechnicalDetails';
-import { getAnswerStatusProps } from '../lib/utils';
 import {
   Send,
   Lock,
   Globe,
   Sparkles,
-  CheckCircle2,
-  AlertTriangle,
-  HelpCircle,
-  XCircle,
-  ShieldAlert,
-  Info,
+  HeartPulse,
+  Pill,
+  Activity,
+  ArrowRight,
+  Database,
+  Search,
 } from 'lucide-react';
+
+interface SuggestionCard {
+  title: string;
+  category: string;
+  query: string;
+  icon: React.ReactNode;
+}
 
 export const ChatPage: React.FC = () => {
   const [query, setQuery] = useState('');
@@ -41,7 +43,7 @@ export const ChatPage: React.FC = () => {
     setErrorMsg(null);
     setResult(null);
 
-    // If first query or cold start, inform user
+    // Warm-up detection notice
     const coldTimer = setTimeout(() => {
       setIsColdModel(true);
     }, 3000);
@@ -62,35 +64,55 @@ export const ChatPage: React.FC = () => {
     }
   };
 
-  const sampleQueries = [
-    'potassium hyperkalemia ECG changes peaked T waves treatment',
-    'warfarin INR monitoring guidelines atrial fibrillation',
-    'metformin contraindications chronic kidney disease eGFR threshold',
+  const suggestionCards: SuggestionCard[] = [
+    {
+      title: 'Hyperkalemia ECG Changes & Treatment',
+      category: 'Cardiology & Electrolytes',
+      query: 'potassium hyperkalemia ECG changes peaked T waves treatment',
+      icon: <HeartPulse className="w-4 h-4 text-status-danger" />,
+    },
+    {
+      title: 'Warfarin Anticoagulation Guidelines',
+      category: 'Pharmacology & Hemostasis',
+      query: 'warfarin INR monitoring guidelines atrial fibrillation',
+      icon: <Pill className="w-4 h-4 text-status-info" />,
+    },
+    {
+      title: 'Metformin Renal Thresholds (eGFR)',
+      category: 'Nephrology & Endocrinology',
+      query: 'metformin contraindications chronic kidney disease eGFR threshold',
+      icon: <Activity className="w-4 h-4 text-brand" />,
+    },
   ];
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      {/* Top Description Card */}
-      <div className="p-5 rounded-2xl border border-card-border bg-card shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <h2 className="text-base sm:text-lg font-heading font-extrabold text-ink">
-              Self-Verifying Medical Query & Evidence Search
-            </h2>
-            <p className="text-xs text-ink-muted leading-relaxed font-sans">
-              Combines FAISS MedCPT vector retrieval with Kùzu biomedical knowledge graph reasoning and claim-by-claim verification.
+    <div className="space-y-8 max-w-7xl mx-auto">
+      {/* Top Clinical Query Header & Search Console */}
+      <div className="p-6 sm:p-7 rounded-2xl border border-card-border bg-card shadow-xs space-y-5">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center space-x-2">
+              <div className="p-2 rounded-xl bg-brand text-white shadow-xs">
+                <Search className="w-5 h-5" />
+              </div>
+              <h2 className="text-base sm:text-lg font-heading font-extrabold text-ink tracking-tight">
+                Clinical Evidence Search & Verification Console
+              </h2>
+            </div>
+            <p className="text-xs text-ink-muted leading-relaxed font-sans max-w-3xl">
+              Cross-examines FAISS MedCPT article vectors and Kùzu biomedical knowledge graph connections with strict claim-by-claim faithfulness verification.
             </p>
           </div>
 
           {/* Search Destination Switch */}
-          <div className="flex items-center space-x-2 bg-canvas p-1.5 rounded-xl border border-card-border shrink-0">
+          <div className="flex items-center space-x-2 bg-canvas p-1.5 rounded-xl border border-card-border shrink-0 self-start lg:self-auto">
             <button
               type="button"
               onClick={() => setSearchPrivate(false)}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-heading font-semibold transition-all ${
+              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-heading font-semibold transition-all cursor-pointer ${
                 !searchPrivate
                   ? 'bg-brand text-white shadow-xs'
-                  : 'text-ink-muted hover:text-ink'
+                  : 'text-ink-muted hover:text-ink hover:bg-card/50'
               }`}
             >
               <Globe className="w-3.5 h-3.5" />
@@ -99,14 +121,14 @@ export const ChatPage: React.FC = () => {
             <button
               type="button"
               onClick={() => setSearchPrivate(true)}
-              className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-heading font-semibold transition-all ${
+              className={`flex items-center space-x-1.5 px-3.5 py-1.5 rounded-lg text-xs font-heading font-semibold transition-all cursor-pointer ${
                 searchPrivate
                   ? 'bg-brand text-white shadow-xs'
-                  : 'text-ink-muted hover:text-ink'
+                  : 'text-ink-muted hover:text-ink hover:bg-card/50'
               }`}
             >
               <Lock className="w-3.5 h-3.5" />
-              <span>My Private Reports</span>
+              <span>My Reports ({user_id || 'User'})</span>
             </button>
           </div>
         </div>
@@ -117,7 +139,7 @@ export const ChatPage: React.FC = () => {
             e.preventDefault();
             handleSearch();
           }}
-          className="mt-4 flex gap-2"
+          className="flex gap-2"
         >
           <input
             type="text"
@@ -126,49 +148,64 @@ export const ChatPage: React.FC = () => {
             placeholder={
               searchPrivate
                 ? `Query your private diagnostic records (${user_id})...`
-                : 'Enter medical inquiry, drug interaction, or clinical guideline query...'
+                : 'Enter biomedical question, medication protocol, or diagnostic inquiry...'
             }
             className="flex-1 px-4 py-3 rounded-xl border border-card-border bg-canvas text-ink text-sm font-sans focus:border-brand focus:ring-1 focus:ring-brand transition-colors"
           />
           <button
             type="submit"
             disabled={isLoading || !query.trim()}
-            className="flex items-center space-x-2 px-6 py-3 rounded-xl font-heading font-bold text-white bg-brand hover:bg-brand-hover active:scale-[0.98] disabled:opacity-50 transition-all shadow-sm shrink-0"
+            className="flex items-center space-x-2 px-6 py-3 rounded-xl font-heading font-bold text-white bg-brand hover:bg-brand-hover active:scale-[0.98] disabled:opacity-50 transition-all shadow-md shrink-0 cursor-pointer"
           >
             <Send className="w-4 h-4" />
-            <span className="hidden sm:inline">{isLoading ? 'Searching...' : 'Search'}</span>
+            <span className="hidden sm:inline">{isLoading ? 'Synthesizing...' : 'Search'}</span>
           </button>
         </form>
 
-        {/* Quick Sample Queries */}
-        <div className="mt-3 flex flex-wrap items-center gap-1.5">
-          <span className="text-[11px] font-mono text-ink-subtle flex items-center space-x-1 mr-1">
-            <Sparkles className="w-3 h-3 text-brand" />
-            <span>Example queries:</span>
+        {/* Suggestion Cards with Hover Lift */}
+        <div className="space-y-2 pt-1">
+          <span className="text-[11px] font-mono text-ink-subtle uppercase tracking-wider block">
+            Suggested Clinical Benchmarks:
           </span>
-          {sampleQueries.map((sample, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => {
-                setQuery(sample);
-                handleSearch(sample);
-              }}
-              className="text-[11px] font-sans px-2.5 py-1 rounded-lg bg-canvas hover:bg-card-border text-ink-muted hover:text-ink border border-card-border transition-colors text-left truncate max-w-xs"
-            >
-              {sample}
-            </button>
-          ))}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {suggestionCards.map((card, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => {
+                  setQuery(card.query);
+                  handleSearch(card.query);
+                }}
+                className="p-3.5 rounded-xl bg-canvas hover:bg-card border border-card-border hover:border-brand/40 transition-all duration-200 text-left space-y-1.5 group cursor-pointer shadow-2xs hover:shadow-xs transform hover:-translate-y-0.5"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-1.5">
+                    {card.icon}
+                    <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-ink-subtle">
+                      {card.category}
+                    </span>
+                  </div>
+                  <ArrowRight className="w-3 h-3 text-ink-subtle opacity-0 group-hover:opacity-100 group-hover:text-brand transition-opacity" />
+                </div>
+                <p className="text-xs font-heading font-semibold text-ink group-hover:text-brand transition-colors line-clamp-1">
+                  {card.title}
+                </p>
+                <p className="text-[11px] font-mono text-ink-muted line-clamp-1">
+                  {card.query}
+                </p>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Loading State with ECG Wave */}
+      {/* Loading State: EXACT ECG TELEMETRY LOADER */}
       {isLoading && (
         <div className="p-8 rounded-2xl border border-card-border bg-card shadow-xs">
           <EcgLoader
             isCold={isColdModel}
-            label="Executing Hybrid Vector-Graph Retrieval..."
-            sublabel="Retrieving evidence chunks, exploring Kùzu knowledge graph relationships, and synthesizing verified answer..."
+            label="Executing Hybrid Vector-Graph Synthesis & Verification..."
+            sublabel="Retrieving reciprocal-rank fused evidence, traversing Kùzu knowledge graph, and verifying claim-by-claim faithfulness..."
           />
         </div>
       )}
@@ -176,67 +213,18 @@ export const ChatPage: React.FC = () => {
       {/* Error State */}
       {errorMsg && (
         <ErrorState
-          title="Query Processing Error"
+          title="Query Execution Notice"
           message={errorMsg}
           onRetry={() => handleSearch()}
         />
       )}
 
-      {/* Result Presentation */}
+      {/* Result Presentation: Two-Pane Clinical Answer Console */}
       {result && !isLoading && (
-        <div className="p-6 sm:p-8 rounded-2xl border border-card-border bg-card shadow-sm space-y-6 animate-fade-in">
-          {/* Header Metadata Bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-card-border">
-            <div className="flex flex-wrap items-center gap-2">
-              {/* Route Badge */}
-              <span className="px-2.5 py-1 text-xs font-mono font-bold bg-canvas text-ink rounded-lg border border-card-border uppercase">
-                Route: {result.route}
-              </span>
-
-              {/* Status Pill */}
-              {(() => {
-                const statusProps = getAnswerStatusProps(result.answer_status);
-                return (
-                  <span className={`px-2.5 py-1 text-xs font-heading font-semibold rounded-lg border flex items-center space-x-1.5 ${statusProps.badgeClass}`}>
-                    <span>{statusProps.label}</span>
-                  </span>
-                );
-              })()}
-            </div>
-
-            {/* Confidence Ring Gauge */}
-            <ConfidenceRing
-              score={result.final_confidence}
-              tier={result.confidence_tier}
-            />
-          </div>
-
-          {/* Synthesized Answer Text with Specimen-Tag Citations */}
-          <div className="bg-canvas/50 p-5 rounded-xl border border-card-border/80">
-            <h3 className="text-xs font-heading font-bold text-ink uppercase tracking-wider mb-3">
-              Verified Clinical Synthesis
-            </h3>
-            <MarkdownAnswer
-              content={result.answer_text}
-              citations={result.citations}
-            />
-          </div>
-
-          {/* Subway Map for Knowledge Graph Paths */}
-          {result.graph_paths && result.graph_paths.length > 0 && (
-            <SubwayMap paths={result.graph_paths} />
-          )}
-
-          {/* Technical Diagnostics */}
-          <TechnicalDetails
-            latency={result.latency_breakdown}
-            retryCount={result.retry_count}
-            route={result.route}
-          />
-
-          {/* Medical Disclaimer */}
-          <DisclaimerFooter />
-        </div>
+        <ClinicalAnswerConsole
+          result={result}
+          searchDestination={searchPrivate && user_id ? user_id : 'global'}
+        />
       )}
     </div>
   );

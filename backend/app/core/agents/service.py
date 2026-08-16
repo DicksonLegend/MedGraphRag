@@ -69,7 +69,8 @@ class AgentOrchestrator:
             "latency_ms": {},
         }
 
-        thread_id = user_id or "default_thread"
+        import uuid
+        thread_id = f"{user_id}_{uuid.uuid4().hex[:8]}" if user_id else f"thread_{uuid.uuid4().hex[:8]}"
         config = {"configurable": {"thread_id": thread_id}}
 
         logger.info("AgentOrchestrator invoking graph for query %r (destination=%s, user_id=%s)", query, destination, user_id)
