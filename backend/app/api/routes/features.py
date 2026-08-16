@@ -25,14 +25,15 @@ from app.core.features import (
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/features", tags=["Features"])
+router = APIRouter(tags=["Features"])
 
 
 class CoverageRequest(BaseModel):
     query: str = Field(..., min_length=3, description="Medical query to evaluate for evidence coverage")
 
 
-@router.post("/trend", response_model=TrendResult)
+@router.post("/features/trend", response_model=TrendResult)
+@router.post("/api/v1/features/trend", response_model=TrendResult)
 async def get_trend_analysis(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ) -> TrendResult:
@@ -53,7 +54,8 @@ async def get_trend_analysis(
         )
 
 
-@router.post("/caregap", response_model=CareGapResult)
+@router.post("/features/caregap", response_model=CareGapResult)
+@router.post("/api/v1/features/caregap", response_model=CareGapResult)
 async def get_caregap_analysis(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ) -> CareGapResult:
@@ -75,7 +77,8 @@ async def get_caregap_analysis(
         )
 
 
-@router.post("/coverage", response_model=CoverageMap)
+@router.post("/features/coverage", response_model=CoverageMap)
+@router.post("/api/v1/features/coverage", response_model=CoverageMap)
 async def get_coverage_map(
     request: CoverageRequest,
     current_user: Dict[str, Any] = Depends(get_current_user),

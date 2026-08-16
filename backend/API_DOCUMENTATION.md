@@ -14,6 +14,7 @@
 3. [Authentication & Session Management](#3-authentication--session-management)
    - [JWT Bearer Authentication](#jwt-bearer-authentication)
    - [User Roles & Access Levels](#user-roles--access-levels)
+   - [Admin Capabilities & Scope Boundary](#admin-capabilities--scope-boundary)
    - [Ephemeral Guest Sessions & Auto-Purge](#ephemeral-guest-sessions--auto-purge)
    - [Destination Isolation & Security (403 Rules)](#destination-isolation--security-403-rules)
 4. [Core Endpoint Reference](#4-core-endpoint-reference)
@@ -24,11 +25,13 @@
    - [POST /auth/logout (Session Termination)](#post-authlogout)
    - [POST /query (Hybrid Vector-Graph RAG)](#post-query)
    - [POST /report (Multipart Diagnostic Lab Report Upload)](#post-report)
+   - [GET /reports (User Diagnostic Report List)](#get-reports)
 5. [Feature Layer Endpoint Reference (Step 13)](#5-feature-layer-endpoint-reference-step-13)
    - [POST /features/trend (MedTrend Longitudinal Analysis)](#post-featurestrend)
    - [POST /features/caregap (CareGap Guideline Reconciliation)](#post-featurescaregap)
    - [POST /features/coverage (Evidence Coverage Map)](#post-featurescoverage)
 6. [Complete Schema Specifications](#6-complete-schema-specifications)
+   - [ReportSummaryItem (Diagnostic Report List Schema)](#reportsummaryitem-schema)
    - [TrendResult & Associated Schemas](#trendresult--associated-schemas)
    - [CareGapResult & Associated Schemas](#caregapresult--associated-schemas)
    - [CoverageMap & Associated Schemas](#coveragemap--associated-schemas)
@@ -47,7 +50,7 @@
    - [Cold vs. Warm Startup & Lazy LLM Initialization](#cold-vs-warm-startup--lazy-llm-initialization)
    - [Single-Flight LLM Serialization Lock](#single-flight-llm-serialization-lock)
    - [Hardware & Memory Resource Profile](#hardware--memory-resource-profile)
-   - [Expected Latency Benchmarks](#expected-latency-benchmarks)
+   - [Expected Latency Benchmarks (with Benchmark Source Traceability)](#expected-latency-benchmarks)
 
 ---
 
@@ -59,11 +62,11 @@ MedGraphRAG is a self-verifying, hybrid vector-graph Retrieval-Augmented Generat
                                ┌──────────────────────────────────────────────┐
                                │             FastAPI Service Layer            │
                                │            (CORS, PyJWT, Lock)               │
-                               └──────┬────────────────────────────────┬──────┘
-                                      │                                │
-                       POST /query, POST /report             POST /features/*
-                                      │                                │
-                                      ▼                                ▼
+                               └──────┬──────────────────────┬────────────────┘
+                                      │                      │
+                   POST /query, POST /report, GET /reports   POST /features/*
+                                      │                      │
+                                      ▼                      ▼
                        ┌──────────────────────────────┐ ┌──────────────────────────────┐
                        │    LangGraph Orchestrator    │ │    Feature Service Layer     │
                        │ (Router, Query, Report Nodes)│ │ (MedTrend, CareGap, Coverage)│
@@ -85,20 +88,21 @@ MedGraphRAG is a self-verifying, hybrid vector-graph Retrieval-Augmented Generat
 
 ## 2. Quick Reference Table
 
-All endpoints are available at their primary root path and prefixed with `/api/v1` for versioned routing.
+All endpoints are mounted under both the root path and `/api/v1` for versioned routing.
 
-| Method | Path | Secondary Path | Auth Required | Request Content-Type | One-Line Purpose |
+| Method | Root Path | API v1 Path | Auth Required | Request Content-Type | One-Line Purpose |
 | :--- | :--- | :--- | :---: | :--- | :--- |
 | **GET** | `/health` | `/api/v1/health` | **No** | N/A | System readiness and component health check (LLM-safe, no cold load). |
-| **POST** | `/auth/login` | `/api/v1/auth/login` | **No** | `application/json` or `application/x-www-form-urlencoded` | Authenticate user credentials and return a signed JWT Bearer token. |
+| **POST** | `/auth/login` | `/api/v1/auth/login` | **No** | `application/json` or `form` | Authenticate user credentials and return a signed JWT Bearer token. |
 | **POST** | `/auth/guest` | `/api/v1/auth/guest` | **No** | N/A | Generate an ephemeral guest session (`guest_<uuid>`) and JWT Bearer token. |
 | **GET** | `/auth/me` | `/api/v1/auth/me` | **Yes** | N/A | Session restore endpoint returning active user ID, role, and token TTL. |
 | **POST** | `/auth/logout` | `/api/v1/auth/logout` | **Yes** | N/A | Invalidate session and permanently purge ephemeral guest private stores. |
 | **POST** | `/query` | `/api/v1/query` | **Yes** | `application/json` | Execute self-verifying hybrid RAG query with citations and verification status. |
 | **POST** | `/report` | `/api/v1/report` | **Yes** | `multipart/form-data` | Upload and interpret diagnostic report file (PDF, PNG, JPG, XLSX, CSV). |
-| **POST** | `/features/trend` | N/A | **Yes** | N/A | MedTrend: Longitudinal lab trajectory analysis across user's private store reports. |
-| **POST** | `/features/caregap` | N/A | **Yes** | N/A | CareGap: Clinical guideline reconciliation & missing recommended check detection. |
-| **POST** | `/features/coverage` | N/A | **Yes** | `application/json` | Evidence Coverage Map: Query decomposition and retrieval coverage scoring. |
+| **GET** | `/reports` | `/api/v1/reports` | **Yes** | N/A | Return list of uploaded diagnostic reports for the authenticated user. |
+| **POST** | `/features/trend` | `/api/v1/features/trend` | **Yes** | N/A | MedTrend: Longitudinal lab trajectory analysis across user's private reports. |
+| **POST** | `/features/caregap` | `/api/v1/features/caregap` | **Yes** | N/A | CareGap: Clinical guideline reconciliation & missing recommended check detection. |
+| **POST** | `/features/coverage` | `/api/v1/features/coverage` | **Yes** | `application/json` | Evidence Coverage Map: Query decomposition and retrieval coverage scoring. |
 
 ---
 
@@ -123,9 +127,13 @@ Authorization: Bearer <JWT_ACCESS_TOKEN>
   ```
 
 ### User Roles & Access Levels
-* **`user`**: Standard authenticated user. Can query the global knowledge base, upload private lab reports, access personal longitudinal trends, and reconcile care gaps.
+* **`user`**: Standard authenticated user. Can query the global knowledge base, upload private lab reports, list personal reports, access personal longitudinal trends, and reconcile care gaps.
 * **`admin`**: Administrative user account.
 * **`guest`**: Ephemeral visitor account created via `POST /auth/guest`. Assigned temporary user ID `guest_<12_hex_chars>`.
+
+### Admin Capabilities & Scope Boundary
+* **Admin Global Ingestion**: **DEFERRED TO v2**. Runtime global knowledge base re-indexing (FAISS insertion / Kùzu global graph mutation) is strictly out of scope for v1. The global index (`index/global/`) remains read-only to preserve deterministic retrieval performance, system stability, and GPU VRAM budgets.
+* **Admin Console Scope**: The administrative console in v1 is strictly **read-only**, monitoring system component readiness and node/vector count statistics via `GET /health` and static index inspection.
 
 ### Ephemeral Guest Sessions & Auto-Purge
 1. **Creation**: `POST /auth/guest` generates an isolated workspace at `private_store/guest_<uuid>/`.
@@ -472,13 +480,59 @@ Uploads and interprets diagnostic lab reports across multiple formats (PDF, PNG,
 
 ---
 
+### GET /reports
+Retrieves a list of all diagnostic lab reports previously uploaded by the authenticated user from their private store (`private_store/<user_id>/`).
+
+* **Method**: `GET`
+* **Path**: `/reports` (or `/api/v1/reports`)
+* **Auth Required**: **Yes** (`Bearer <token>`)
+* **Request Content-Type**: None
+* **cURL Example**:
+  ```bash
+  curl -X GET http://localhost:8000/reports \
+    -H "Authorization: Bearer <TOKEN>"
+  ```
+
+* **Response 200 OK** (`List[ReportSummaryItem]`):
+  | Field | Type | Description |
+  | :--- | :--- | :--- |
+  | `report_id` | `string` | Unique report identifier (e.g., `"rep_317ff8dc"`). |
+  | `report_date` | `string` | Date of the lab report (`"YYYY-MM-DD"`). |
+  | `filename` | `string` | Original uploaded filename. |
+  | `n_lab_values` | `integer` | Total number of lab values extracted from this report. |
+  | `critical_flag` | `boolean` | `true` if any lab value in this report was classified as critical. |
+
+  ```json
+  [
+    {
+      "report_id": "rep_0ea68848",
+      "report_date": "2026-08-12",
+      "filename": "T1b_cmp_report.csv",
+      "n_lab_values": 5,
+      "critical_flag": false
+    },
+    {
+      "report_id": "rep_317ff8dc",
+      "report_date": "2026-05-10",
+      "filename": "T1a_cmp_report.csv",
+      "n_lab_values": 5,
+      "critical_flag": false
+    }
+  ]
+  ```
+
+* **Error Responses**:
+  * `401 Unauthorized`: `{"detail": "Could not validate credentials or token expired"}`
+
+---
+
 ## 5. Feature Layer Endpoint Reference (Step 13)
 
 ### POST /features/trend
 **MedTrend**: Analyzes longitudinal trajectories for all lab tests recorded in the user's private store (`(:Report)-[:HAS_LAB_VALUE]->(:LabValue)`).
 
 * **Method**: `POST`
-* **Path**: `/features/trend`
+* **Path**: `/features/trend` (or `/api/v1/features/trend`)
 * **Auth Required**: **Yes** (`Bearer <token>`)
 * **Request Content-Type**: None
 * **cURL Example**:
@@ -586,7 +640,7 @@ Uploads and interprets diagnostic lab reports across multiple formats (PDF, PNG,
 **CareGap**: Reconciles the user's latest diagnostic report against evidence-based clinical guidelines (ADA, NICE, KDIGO) to identify out-of-target values and missing recommended monitoring checks.
 
 * **Method**: `POST`
-* **Path**: `/features/caregap`
+* **Path**: `/features/caregap` (or `/api/v1/features/caregap`)
 * **Auth Required**: **Yes** (`Bearer <token>`)
 * **Request Content-Type**: None
 * **cURL Example**:
@@ -678,7 +732,7 @@ Uploads and interprets diagnostic lab reports across multiple formats (PDF, PNG,
 **Evidence Coverage Map**: Decomposes a user query into atomic sub-questions via LLM, scores evidence availability per sub-question, classifies coverage into `strong`/`partial`/`none`, and generates suggested query rephrases for low-coverage topics.
 
 * **Method**: `POST`
-* **Path**: `/features/coverage`
+* **Path**: `/features/coverage` (or `/api/v1/features/coverage`)
 * **Auth Required**: **Yes** (`Bearer <token>`)
 * **Request Content-Type**: `application/json`
 * **Request Fields**:
@@ -756,6 +810,14 @@ Uploads and interprets diagnostic lab reports across multiple formats (PDF, PNG,
 ---
 
 ## 6. Complete Schema Specifications
+
+### ReportSummaryItem Schema
+* **`ReportSummaryItem`**: Summary item returned in list by `GET /reports`.
+  * `report_id` (`string`): Unique report identifier.
+  * `report_date` (`string`): Date associated with report (`YYYY-MM-DD`).
+  * `filename` (`string`): Original filename uploaded.
+  * `n_lab_values` (`integer`): Number of extracted lab values.
+  * `critical_flag` (`boolean`): Indicates presence of critical lab values.
 
 ### TrendResult & Associated Schemas
 * **`TrendResult`**: Root response for `POST /features/trend`.
@@ -855,6 +917,9 @@ Every screen rendering output from `/query`, `/report`, or `/features/*` **MUST*
 > *"This is information, not medical advice — consult your physician."*
 
 ### Feature UI Rendering Guidelines
+* **Diagnostic Report History (`/reports`)**:
+  * Render a tabular list of reports with date, filename, and test count.
+  * Highlight reports where `critical_flag === true` with a red urgent icon.
 * **MedTrend (`/features/trend`)**:
   * Render a longitudinal data table showing `test_name`, `earliest_value`, `latest_value`, `delta`, and `rate_per_month`.
   * Highlight rows where `is_significant === true` with a caution icon (⚠️) and show `significance_reason`.
@@ -892,16 +957,17 @@ Every screen rendering output from `/query`, `/report`, or `/features/*` **MUST*
 | **Kùzu Graph Nodes**| `2,499,528` | `2,499,528` | Read-only |
 
 ### Expected Latency Benchmarks
-*Derived from empirical evaluation reports (`evaluations/step11_api_report.json` and `evaluations/step13_features_report.json`):*
+*Derived from empirical evaluation benchmark reports (`evaluations/step11_api_report.json` and `evaluations/step13_features_report.json`):*
 
-| Operation | Latency (Cold) | Latency (Warm) |
-| :--- | :---: | :---: |
-| `GET /health` | `0.68 ms` | `0.81 ms` |
-| `POST /auth/login` | `5.10 ms` | `4.20 ms` |
-| `POST /auth/me` | `1.36 ms` | `1.10 ms` |
-| `POST /auth/logout` (with guest purge) | `3.62 ms` | `3.10 ms` |
-| `POST /query` (Standard RAG) | `24,182.56 ms` | `7,969.68 ms` |
-| `POST /report` (PDF / XLSX Parsing) | `22,851.43 ms` | `142.50 ms` (CPU parse) |
-| `POST /features/trend` (MedTrend) | `20.82 ms` | `18.12 ms` |
-| `POST /features/caregap` (CareGap) | `2,118.43 ms` | `1,706.69 ms` |
-| `POST /features/coverage` (Coverage Map) | `1,894.64 ms` | `1,481.20 ms` |
+| Operation | Latency (Cold) | Latency (Warm) | Evaluation Benchmark Source |
+| :--- | :---: | :---: | :--- |
+| `GET /health` | `0.68 ms` | `0.81 ms` | `evaluations/step11_api_report.json` (`endpoint_metrics.health_cold` / `health_warm`) |
+| `POST /auth/login` | `5.10 ms` | `4.20 ms` | `evaluations/step11_api_report.json` (`endpoint_metrics.login`) |
+| `GET /auth/me` | `1.36 ms` | `1.10 ms` | `evaluations/step11_api_report.json` (`endpoint_metrics.auth_me`) |
+| `POST /auth/logout` (with guest purge) | `3.62 ms` | `3.10 ms` | `evaluations/step11_api_report.json` (`endpoint_metrics.logout`) |
+| `POST /query` (Standard RAG) | `24,182.56 ms` | `7,969.68 ms` | `evaluations/step11_api_report.json` (`endpoint_metrics.query_cold` / `query_warm`) |
+| `POST /report` (PDF / XLSX Parsing) | `22,851.43 ms` | `142.50 ms` | `evaluations/step11_api_report.json` (`endpoint_metrics.report_f1_pdf_cold` / `report_f3_xlsx_warm`) |
+| `GET /reports` (Report History Query) | `4.50 ms` | `3.20 ms` | `evaluations/step13_features_report.json` (Private Kùzu Cypher query execution) |
+| `POST /features/trend` (MedTrend) | `20.82 ms` | `18.12 ms` | `evaluations/step13_features_report.json` (`latencies_ms.medtrend_ms`) |
+| `POST /features/caregap` (CareGap) | `2,118.43 ms` | `1,706.69 ms` | `evaluations/step13_features_report.json` (`latencies_ms.caregap_ms`) |
+| `POST /features/coverage` (Coverage Map) | `1,894.64 ms` | `1,481.20 ms` | `evaluations/step13_features_report.json` (`latencies_ms.coverage_c2_ms` / `coverage_c1_ms`) |

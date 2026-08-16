@@ -104,3 +104,88 @@ async def process_report(
             "error": "report_processing_error",
             "detail": "Failed to interpret diagnostic report cleanly.",
         }
+
+
+class ReportSummaryItem(BaseModel):
+    report_id: str
+    report_date: str
+    filename: str
+    n_lab_values: int
+    critical_flag: bool
+
+
+@router.get("/reports", response_model=List[ReportSummaryItem])
+@router.get("/api/v1/reports", response_model=List[ReportSummaryItem])
+async def list_user_reports(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> List[ReportSummaryItem]:
+    """
+    Return the authenticated user's report list from their private store metadata.
+    Includes guest users. Scoped strictly to the authenticated user's private store.
+    """
+    user_id = current_user["user_id"]
+    user_dir = settings.private_store_dir / user_id
+
+    if not user_dir.exists():
+        return []
+
+    reports: List[ReportSummaryItem] = []
+    seen_ids = set()
+
+    # 1. Query private Kùzu DB if present
+    db_path = user_dir / "kuzu" / "private_kuzu_db"
+    if db_path.exists():
+        try:
+            import kuzu
+            db = kuzu.Database(str(db_path), read_only=True)
+            conn = kuzu.Connection(db)
+            try:
+                query = """
+                MATCH (r:Report)
+                OPTIONAL MATCH (r)-[:HAS_LAB_VALUE]->(lv:LabValue)
+                RETURN r.id AS report_id, r.report_date AS report_date, r.filename AS filename,
+                       count(lv) AS n_lab_values,
+                       sum(CASE WHEN lv.is_critical THEN 1 ELSE 0 END) AS n_critical
+                ORDER BY r.report_date DESC
+                """
+                df = conn.execute(query).get_as_df()
+                for _, row in df.iterrows():
+                    rid = str(row["report_id"])
+                    if rid not in seen_ids:
+                        seen_ids.add(rid)
+                        n_crit = int(row.get("n_critical", 0))
+                        reports.append(
+                            ReportSummaryItem(
+                                report_id=rid,
+                                report_date=str(row.get("report_date", "")),
+                                filename=str(row.get("filename", f"report_{rid}")),
+                                n_lab_values=int(row.get("n_lab_values", 0)),
+                                critical_flag=(n_crit > 0),
+                            )
+                        )
+            finally:
+                del conn
+                del db
+        except Exception as e:
+            logger.debug("Private Kùzu report query fallback for user %s: %s", user_id, e)
+
+    # 2. Fallback to decrypted payload if no Report nodes found
+    if not reports:
+        from app.core.report.store import load_private_decrypted_payload
+        payload = load_private_decrypted_payload(user_id)
+        if payload:
+            asms = payload.get("assessments", [])
+            has_crit = any(a.get("is_critical", False) for a in asms)
+            rid = payload.get("report_id", f"rep_{user_id[:8]}")
+            reports.append(
+                ReportSummaryItem(
+                    report_id=rid,
+                    report_date=payload.get("report_date", "2026-08-12"),
+                    filename=payload.get("filename", "diagnostic_report.pdf"),
+                    n_lab_values=len(asms),
+                    critical_flag=has_crit,
+                )
+            )
+
+    return reports
+
