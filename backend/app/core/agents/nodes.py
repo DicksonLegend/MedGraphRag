@@ -80,9 +80,11 @@ def query_agent_node(state: MedGraphState) -> Dict[str, Any]:
 
     logger.info("query_agent_node executing for query %r (destination=%s)", query, destination)
     pipeline = _get_pipeline()
+    retrieval_req = RetrievalRequest(query=query, destination=destination)
+    retrieval_res = pipeline.retrieval_service.retrieve(retrieval_req)
     verified_res: VerifiedAnswerResult = pipeline.answer(query=query, destination=destination)
 
-    return {"verified_result": verified_res}
+    return {"retrieval_result": retrieval_res, "verified_result": verified_res}
 
 
 # ── Node 3: Knowledge Agent (Graph-First RAG) ─────────────────────────────────

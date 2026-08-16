@@ -3,7 +3,10 @@ MedGraphRAG Backend — Multipart Diagnostic Report Route Handler
 =================================================================
 POST /report
 Accepts diagnostic report files (PDF, PNG, JPG, XLSX, CSV).
-Amendment 3: PIN /report routing via AgentOrchestrator().answer(route="report", ...).
+GET /reports
+Returns list of summary report records for the authenticated user.
+GET /reports/{report_id}
+Returns detailed report record with full lab values for the authenticated user.
 Enforces 20 MB max upload limit (413) and allowed extensions (415).
 Enforces single-flight LLM serialization lock and non-blocking asyncio.to_thread execution.
 """
@@ -13,10 +16,10 @@ from __future__ import annotations
 import asyncio
 import logging
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.api.deps import get_current_user, get_llm_lock
 from app.config import settings
@@ -71,7 +74,6 @@ async def process_report(
     try:
         # Single-flight serialization lock
         async with llm_lock:
-            # Amendment 3: PIN /report routing via AgentOrchestrator().answer()
             orchestrator = AgentOrchestrator()
             response = await asyncio.to_thread(
                 orchestrator.answer,
@@ -115,6 +117,22 @@ class ReportSummaryItem(BaseModel):
     critical_flag: bool
 
 
+class LabValueDetailItem(BaseModel):
+    test_name: str
+    value: float
+    unit: str
+    ref_low: Optional[float] = None
+    ref_high: Optional[float] = None
+    is_critical: bool = False
+
+
+class ReportDetailResponse(BaseModel):
+    report_id: str
+    report_date: str
+    filename: str
+    lab_values: List[LabValueDetailItem] = Field(default_factory=list)
+
+
 @router.get("/reports", response_model=List[ReportSummaryItem])
 @router.get("/api/v1/reports", response_model=List[ReportSummaryItem])
 async def list_user_reports(
@@ -141,13 +159,13 @@ async def list_user_reports(
             db = kuzu.Database(str(db_path), read_only=True)
             conn = kuzu.Connection(db)
             try:
+                # Implicit grouping via aggregation in Kùzu Cypher
                 query = """
-                MATCH (r:Report)
-                OPTIONAL MATCH (r)-[:HAS_LAB_VALUE]->(lv:LabValue)
+                MATCH (r:Report)-[:HAS_LAB_VALUE]->(lv:LabValue)
                 RETURN r.id AS report_id, r.report_date AS report_date, r.filename AS filename,
                        count(lv) AS n_lab_values,
                        sum(CASE WHEN lv.is_critical THEN 1 ELSE 0 END) AS n_critical
-                ORDER BY r.report_date DESC
+                ORDER BY report_date DESC
                 """
                 df = conn.execute(query).get_as_df()
                 for _, row in df.iterrows():
@@ -155,12 +173,13 @@ async def list_user_reports(
                     if rid not in seen_ids:
                         seen_ids.add(rid)
                         n_crit = int(row.get("n_critical", 0))
+                        n_lv = int(row.get("n_lab_values", 0))
                         reports.append(
                             ReportSummaryItem(
                                 report_id=rid,
                                 report_date=str(row.get("report_date", "")),
                                 filename=str(row.get("filename", f"report_{rid}")),
-                                n_lab_values=int(row.get("n_lab_values", 0)),
+                                n_lab_values=n_lv,
                                 critical_flag=(n_crit > 0),
                             )
                         )
@@ -190,3 +209,100 @@ async def list_user_reports(
 
     return reports
 
+
+@router.get("/reports/{report_id}", response_model=ReportDetailResponse)
+@router.get("/api/v1/reports/{report_id}", response_model=ReportDetailResponse)
+async def get_user_report_detail(
+    report_id: str,
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> ReportDetailResponse:
+    """
+    Return detailed lab measurements for a specific report owned by the authenticated user.
+    Strict user isolation: Returns 404 for missing or unauthorized report IDs.
+    """
+    user_id = current_user["user_id"]
+    user_dir = settings.private_store_dir / user_id
+
+    if not user_dir.exists():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Report '{report_id}' not found in user private store.",
+        )
+
+    db_path = user_dir / "kuzu" / "private_kuzu_db"
+    if db_path.exists():
+        try:
+            import kuzu
+            db = kuzu.Database(str(db_path), read_only=True)
+            conn = kuzu.Connection(db)
+            try:
+                query = f"""
+                MATCH (r:Report {{id: '{report_id}'}})-[:HAS_LAB_VALUE]->(lv:LabValue)
+                RETURN r.id AS report_id, r.report_date AS report_date, r.filename AS filename,
+                       lv.test_name AS test_name, lv.value AS value, lv.unit AS unit,
+                       lv.ref_low AS ref_low, lv.ref_high AS ref_high, lv.is_critical AS is_critical
+                ORDER BY lv.test_name ASC
+                """
+                df = conn.execute(query).get_as_df()
+                if not df.empty:
+                    first_row = df.iloc[0]
+                    lab_values = []
+                    for _, row in df.iterrows():
+                        r_low = float(row["ref_low"]) if row["ref_low"] is not None and row["ref_low"] > 0 else None
+                        r_high = float(row["ref_high"]) if row["ref_high"] is not None and row["ref_high"] < 9000 else None
+                        lab_values.append(
+                            LabValueDetailItem(
+                                test_name=str(row["test_name"]),
+                                value=float(row["value"]),
+                                unit=str(row["unit"]),
+                                ref_low=r_low,
+                                ref_high=r_high,
+                                is_critical=bool(row["is_critical"]),
+                            )
+                        )
+                    return ReportDetailResponse(
+                        report_id=str(first_row["report_id"]),
+                        report_date=str(first_row["report_date"]),
+                        filename=str(first_row["filename"]),
+                        lab_values=lab_values,
+                    )
+            finally:
+                del conn
+                del db
+        except Exception as e:
+            logger.debug("Error querying Kùzu report detail for %s: %s", report_id, e)
+
+    # Fallback to decrypted payload if report_id matches
+    from app.core.report.store import load_private_decrypted_payload
+    payload = load_private_decrypted_payload(user_id)
+    if payload:
+        payload_rid = payload.get("report_id", f"rep_{user_id[:8]}")
+        if payload_rid == report_id or report_id == "report_meta":
+            asms = payload.get("assessments", [])
+            lab_values = []
+            for asm in asms:
+                nlv = asm.get("normalized_lab_value", {})
+                t_name = nlv.get("canonical_test_name") or asm.get("test_name", "Unknown")
+                val = float(nlv.get("normalized_value", 0.0))
+                unit = nlv.get("normalized_unit", "")
+                lab_values.append(
+                    LabValueDetailItem(
+                        test_name=t_name,
+                        value=val,
+                        unit=unit,
+                        ref_low=None,
+                        ref_high=None,
+                        is_critical=bool(asm.get("is_critical", False)),
+                    )
+                )
+            return ReportDetailResponse(
+                report_id=report_id,
+                report_date=payload.get("report_date", "2026-08-12"),
+                filename=payload.get("filename", "diagnostic_report.pdf"),
+                lab_values=lab_values,
+            )
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Report '{report_id}' not found in user private store.",
+    )

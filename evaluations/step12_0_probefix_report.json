@@ -14,73 +14,73 @@
   "endpoint_metrics": {
     "health_cold": {
       "status_code": 200,
-      "latency_ms": 0.68,
+      "latency_ms": 1.09,
       "response_size_bytes": 97
     },
     "login": {
       "status_code": 200,
-      "latency_ms": 5.1,
+      "latency_ms": 5.46,
       "response_size_bytes": 275
     },
     "auth_me": {
       "status_code": 200,
-      "latency_ms": 1.36,
+      "latency_ms": 1.48,
       "response_size_bytes": 79
     },
     "query_cold": {
       "status_code": 200,
-      "latency_ms": 24182.56,
-      "response_size_bytes": 8236
+      "latency_ms": 13674.92,
+      "response_size_bytes": 8750
     },
     "query_warm": {
       "status_code": 200,
-      "latency_ms": 7969.68,
-      "response_size_bytes": 8903
+      "latency_ms": 3666.76,
+      "response_size_bytes": 8904
     },
     "health_warm": {
       "status_code": 200,
-      "latency_ms": 0.81,
+      "latency_ms": 1.01,
       "response_size_bytes": 96
     },
     "forbidden_destination": {
       "status_code": 403,
-      "latency_ms": 0.93,
+      "latency_ms": 1.1,
       "response_size_bytes": 117
     },
     "report_f1_pdf_cold": {
       "status_code": 200,
-      "latency_ms": 22851.43,
-      "response_size_bytes": 4348
+      "latency_ms": 10142.67,
+      "response_size_bytes": 4320
     },
     "report_f3_xlsx_warm": {
       "status_code": 200,
-      "latency_ms": 22587.69,
-      "response_size_bytes": 3784
+      "latency_ms": 7808.82,
+      "response_size_bytes": 3791
     },
     "guest_login": {
       "status_code": 200,
-      "latency_ms": 1.22,
+      "latency_ms": 1.7,
       "response_size_bytes": 307
     },
     "guest_report_f2_image": {
       "status_code": 200,
-      "latency_ms": 22364.87,
-      "response_size_bytes": 3472
+      "latency_ms": 8684.45,
+      "response_size_bytes": 3431
     },
     "logout": {
       "status_code": 200,
-      "latency_ms": 2.48,
+      "latency_ms": 2.26,
       "response_size_bytes": 80
     },
     "parallel_query_request_A": {
       "status_code": 200,
-      "latency_ms": 13583.35,
-      "response_size_bytes": 9242
+      "latency_ms": 5541.2,
+      "response_size_bytes": 9772
     },
     "parallel_query_request_B": {
       "status_code": 200,
-      "latency_ms": 32241.02,
-      "response_size_bytes": 9141
+      "latency_ms": 10637.4,
+      "response_size_bytes": 9584
     }
   },
   "sample_responses": {
@@ -155,7 +155,7 @@
     }
   },
   "guest_lifecycle_evidence": {
-    "guest_user_id": "guest_7b8b859d7964",
+    "guest_user_id": "guest_e2943eae3f42",
     "store_path_created": false,
     "store_path_existed_after_upload": true,
     "store_path_deleted_after_logout": true,
@@ -167,14 +167,14 @@
     ]
   },
   "serialization_proof": {
-    "request_A_start": 12.34,
-    "request_A_end": 13595.68,
-    "request_A_duration_ms": 13583.35,
-    "request_B_start": 20.07,
-    "request_B_end": 32261.09,
-    "request_B_duration_ms": 32241.02,
+    "request_A_start": 12.07,
+    "request_A_end": 5553.27,
+    "request_A_duration_ms": 5541.2,
+    "request_B_start": 21.57,
+    "request_B_end": 10658.96,
+    "request_B_duration_ms": 10637.4,
     "serialized": true,
-    "total_wall_ms": 32248.75
+    "total_wall_ms": 10646.89
   },
   "integrity_check": {
     "faiss_ntotal_before": 2294038,
@@ -193,21 +193,21 @@
       "6_guest_ephemeral_store_purged_on_logout": "PASS",
       "7_parallel_query_serialization_lock": "PASS"
     },
-    "avg_endpoint_latency_ms": 10413.8,
-    "median_endpoint_latency_ms": 7969.68,
+    "avg_endpoint_latency_ms": 4297.88,
+    "median_endpoint_latency_ms": 3666.76,
     "slowest_endpoint": {
-      "name": "parallel_query_request_B",
-      "latency_ms": 32241.02
+      "name": "query_cold",
+      "latency_ms": 13674.92
     },
-    "total_eval_time_ms": 139473.35,
-    "peak_ram_gb": 7.52,
-    "peak_vram_mb": 5637.0,
+    "total_eval_time_ms": 61348.67,
+    "peak_ram_gb": 2.76,
+    "peak_vram_mb": 4784.0,
     "llm_loaded_transition": "false -> true",
     "model_file_name": "Qwen2.5-7B-Instruct-Q4_K_M.gguf"
   },
   "metrics": {
-    "total_eval_time_ms": 139473.35,
-    "ram_gb": 7.52,
-    "vram_mb": 5637.0
+    "total_eval_time_ms": 61348.67,
+    "ram_gb": 2.76,
+    "vram_mb": 4784.0
   }
 }

@@ -2,8 +2,8 @@
 
 ## 🎯 Final Verdict: **PASS** (13/13 Criteria Satisfied)
 - **Report JSON**: [`evaluations/step13_features_report.json`](file:///home/dicksone/Documents/MedGraphRag/evaluations/step13_features_report.json)
-- **Execution Time**: `179.91 s`
-- **Peak Hardware**: RAM `4.28 GB` | VRAM `4776.0 MB`
+- **Execution Time**: `176.68 s`
+- **Peak Hardware**: RAM `3.93 GB` | VRAM `4776.0 MB`
 
 ---
 
@@ -32,10 +32,10 @@
 | Lab Test | Earliest Val | Latest Val | Delta (Δ) | Rate/Month | Direction | Significant? | Clinical Reason |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
 | **Creatinine** | 97.24 umol/L | 167.96 umol/L | `+70.72` | `+22.8994/mo` | `worsening` | ⚠️ YES | Crossed upper reference threshold (115.0 umol/L). |
-| **Hemoglobin A1c** | 6.9 % | 7.8 % | `+0.9` | `+0.2914/mo` | `worsening` | ⚠️ YES | Significant increase of +0.9% (≥0.5% clinical threshold). |
+| **Hemoglobin A1c** | 6.9 % | 7.8 % | `+0.9` | `+0.2914/mo` | `worsening` | ⚠️ YES | Exacerbation: Rose further above upper threshold (5.6 %) by +0.90 %. |
 | **Potassium** | 4.2 mmol/L | 4.3 mmol/L | `+0.1` | `+0.0324/mo` | `stable` | No | Normal variance |
 | **Sodium** | 140.0 mmol/L | 139.0 mmol/L | `-1` | `-0.3238/mo` | `stable` | No | Normal variance |
-| **Glucose** | 6.105 mmol/L | 8.0475 mmol/L | `+1.9425` | `+0.629/mo` | `worsening` | No | Normal variance |
+| **Glucose** | 6.105 mmol/L | 8.0475 mmol/L | `+1.9425` | `+0.629/mo` | `worsening` | ⚠️ YES | Exacerbation: Rose further above upper threshold (5.6 mmol/L) by +1.94 mmol/L. |
 
 **Graph-Derived Possible Causes for Significant Trajectory:**
 - `LabTest(Creatinine) -[LABTEST_RELATED_TO]-> Disease(Chronic Kidney Disease)`

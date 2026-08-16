@@ -1,5 +1,5 @@
 import { apiClient } from './client';
-import type { ReportResponse, ReportSummaryItem } from './types';
+import type { ReportDetailResponse, ReportResponse, ReportSummaryItem } from './types';
 
 export const reportsApi = {
   uploadReport: async (file: File): Promise<ReportResponse> => {
@@ -14,6 +14,12 @@ export const reportsApi = {
 
   listReports: async (): Promise<ReportSummaryItem[]> => {
     return apiClient<ReportSummaryItem[]>('/reports', {
+      method: 'GET',
+    });
+  },
+
+  getReportDetail: async (reportId: string): Promise<ReportDetailResponse> => {
+    return apiClient<ReportDetailResponse>(`/reports/${reportId}`, {
       method: 'GET',
     });
   },

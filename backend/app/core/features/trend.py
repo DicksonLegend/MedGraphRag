@@ -73,7 +73,6 @@ class MedTrendService:
                 db = kuzu.Database(str(kuzu_path), read_only=True)
                 conn = kuzu.Connection(db)
                 try:
-                    # Check if Report and LabValue tables exist
                     tables_df = conn.execute("CALL show_tables() RETURN *").get_as_df()
                     table_names = set(tables_df["name"].tolist())
 
@@ -86,19 +85,30 @@ class MedTrendService:
                             "ORDER BY r.report_date"
                         )
                         df = conn.execute(query).get_as_df()
+                        seen_measurements = set()
                         for _, row in df.iterrows():
                             t_name = str(row["test_name"]).strip()
+                            r_id = str(row["report_id"])
+                            val = float(row["value"])
+                            key = (r_id, t_name, val)
+                            if key in seen_measurements:
+                                continue
+                            seen_measurements.add(key)
+
+                            r_low = float(row["ref_low"]) if row["ref_low"] is not None and row["ref_low"] > 0 else None
+                            r_high = float(row["ref_high"]) if row["ref_high"] is not None and row["ref_high"] < 9000 else None
+
                             m = LabMeasurement(
-                                report_id=str(row["report_id"]),
+                                report_id=r_id,
                                 report_date=str(row["report_date"]),
-                                value=float(row["value"]),
+                                value=val,
                                 unit=str(row["unit"]),
-                                ref_low=float(row["ref_low"]) if row["ref_low"] is not None else None,
-                                ref_high=float(row["ref_high"]) if row["ref_high"] is not None else None,
+                                ref_low=r_low,
+                                ref_high=r_high,
                                 is_critical=bool(row["is_critical"]),
                             )
                             measurements_by_test.setdefault(t_name, []).append(m)
-                            provenance_list.append(f"private_store/{user_id}/report/{row['report_id']}")
+                            provenance_list.append(f"private_store/{user_id}/report/{r_id}")
                 finally:
                     del conn
                     del db
@@ -109,8 +119,8 @@ class MedTrendService:
         if not measurements_by_test:
             payload = load_private_decrypted_payload(user_id)
             if payload and "assessments" in payload:
-                rep_id = "report_meta"
-                rep_date = datetime.now().strftime("%Y-%m-%d")
+                rep_id = payload.get("report_id", "report_meta")
+                rep_date = payload.get("report_date", datetime.now().strftime("%Y-%m-%d"))
                 for asm in payload["assessments"]:
                     nlv = asm.get("normalized_lab_value", {})
                     t_name = nlv.get("canonical_test_name") or asm.get("test_name", "Unknown")
@@ -133,7 +143,6 @@ class MedTrendService:
         global_conn = self._get_global_conn()
 
         for test_name, m_list in measurements_by_test.items():
-            # Sort chronologically by date
             m_list.sort(key=lambda x: x.report_date)
             count = len(m_list)
             canonical_unit = m_list[-1].unit if m_list else ""
@@ -143,24 +152,24 @@ class MedTrendService:
                 latest = m_list[-1]
                 delta = round(latest.value - earliest.value, 4)
 
-                # Compute months elapsed
-                months = 1.0
+                # FIX 5: Rate Guard (< 14 days -> rate_per_month = None)
+                rate_per_month: Optional[float] = None
                 try:
                     d0 = datetime.strptime(earliest.report_date, "%Y-%m-%d")
                     d1 = datetime.strptime(latest.report_date, "%Y-%m-%d")
-                    days = max(1, (d1 - d0).days)
-                    months = max(0.2, days / 30.4375)
+                    days = (d1 - d0).days
+                    if days >= 14:
+                        months = max(0.2, days / 30.4375)
+                        rate_per_month = round(delta / months, 4)
                 except Exception:
                     pass
 
-                rate_per_month = round(delta / months, 4)
-
-                # Classify direction & significance
+                # FIX 3: Classify direction & significance with robust semantics
                 direction, is_sig, reason = self._classify_trajectory(
                     test_name, earliest, latest, delta
                 )
 
-                # Query possible causes in global graph if significant
+                # FIX 4: Query possible causes in global graph with strict deduplication
                 possible_causes = []
                 if is_sig and global_conn:
                     possible_causes = self._find_graph_causes(test_name, global_conn)
@@ -197,10 +206,10 @@ class MedTrendService:
                     earliest_value=single_m.value,
                     latest_value=single_m.value,
                     delta=0.0,
-                    rate_per_month=0.0,
+                    rate_per_month=None,
                     direction=TrendDirection.NEW,
                     is_significant=single_m.is_critical,
-                    significance_reason="Single baseline measurement recorded.",
+                    significance_reason="Single baseline measurement recorded." if single_m.is_critical else None,
                     possible_causes=[],
                 )
                 trend_items.append(item)
@@ -214,8 +223,9 @@ class MedTrendService:
             summary_lines.append(f"⚠️ {sig_count} notable trajectory shift(s) were flagged for clinical review:")
             for t in trend_items:
                 if t.is_significant:
+                    rate_str = f", {t.rate_per_month:+g}/month" if t.rate_per_month is not None else ""
                     summary_lines.append(
-                        f" - {t.test_name}: {t.direction.value.capitalize()} trend (Δ = {t.delta:+g} {t.canonical_unit}, {t.rate_per_month:+g}/month). {t.significance_reason or ''}"
+                        f" - {t.test_name}: {t.direction.value.capitalize()} trend (Δ = {t.delta:+g} {t.canonical_unit}{rate_str}). {t.significance_reason or ''}"
                     )
         else:
             summary_lines.append("All multi-point lab trajectories currently show stable or expected variations.")
@@ -243,118 +253,154 @@ class MedTrendService:
         latest: LabMeasurement,
         delta: float,
     ) -> Tuple[TrendDirection, bool, Optional[str]]:
-        """Classify trend direction and determine clinical significance."""
+        """
+        Classify trend direction and clinical significance.
+
+        Semantics:
+        - earliest OUT of range AND latest IN range -> 'resolved'
+        - earliest IN range AND latest OUT of range -> 'worsening'
+        - both OUT: moving further -> 'worsening'; toward range -> 'improving'
+        - both IN: |Δ| <= threshold -> 'stable'; otherwise 'worsening'/'improving' based on specific markers
+        - When is_significant=True, significance_reason is NEVER null.
+        """
         t_lower = test_name.lower()
-        ref_low = latest.ref_low
-        ref_high = latest.ref_high
+        ref_low = latest.ref_low or earliest.ref_low
+        ref_high = latest.ref_high or earliest.ref_high
 
-        # Relative change
-        base_val = abs(earliest.value) if abs(earliest.value) > 1e-6 else 1.0
-        rel_change = abs(delta) / base_val
+        # 1. Range membership evaluation
+        earliest_in = True
+        latest_in = True
 
-        # Specific thresholds
+        if ref_high is not None and earliest.value > ref_high:
+            earliest_in = False
+        elif ref_low is not None and earliest.value < ref_low:
+            earliest_in = False
+
+        if ref_high is not None and latest.value > ref_high:
+            latest_in = False
+        elif ref_low is not None and latest.value < ref_low:
+            latest_in = False
+
+        # Specific condition markers
         is_creatinine = "creatinine" in t_lower
         is_hba1c = "hba1c" in t_lower or "hemoglobin a1c" in t_lower or "a1c" in t_lower
         is_potassium = "potassium" in t_lower
 
-        is_significant = False
-        reason = None
+        # CASE 1: Earliest OUT of range AND Latest IN range -> RESOLVED
+        if not earliest_in and latest_in:
+            if ref_high is not None and earliest.value > ref_high:
+                reason = f"Previously above reference threshold ({ref_high} {latest.unit}), now normalized within reference range."
+            elif ref_low is not None and earliest.value < ref_low:
+                reason = f"Previously below reference threshold ({ref_low} {latest.unit}), now normalized within reference range."
+            else:
+                reason = f"Previously out of reference bounds, now normalized to {latest.value} {latest.unit}."
+            return TrendDirection.RESOLVED, True, reason
 
-        # 1. Boundary crossing check
-        crossed_upper = False
-        crossed_lower = False
-        if ref_high is not None and earliest.value <= ref_high and latest.value > ref_high:
-            crossed_upper = True
-        if ref_low is not None and earliest.value >= ref_low and latest.value < ref_low:
-            crossed_lower = True
+        # CASE 2: Earliest IN range AND Latest OUT of range -> WORSENING
+        if earliest_in and not latest_in:
+            if ref_high is not None and latest.value > ref_high:
+                reason = f"Crossed upper reference threshold ({ref_high} {latest.unit})."
+            elif ref_low is not None and latest.value < ref_low:
+                reason = f"Fell below lower reference threshold ({ref_low} {latest.unit})."
+            else:
+                reason = f"Shifted out of reference range to {latest.value} {latest.unit}."
+            return TrendDirection.WORSENING, True, reason
 
-        if crossed_upper:
-            is_significant = True
-            reason = f"Crossed upper reference threshold ({ref_high} {latest.unit})."
-        elif crossed_lower:
-            is_significant = True
-            reason = f"Fell below lower reference threshold ({ref_low} {latest.unit})."
+        # CASE 3: Both OUT of range
+        if not earliest_in and not latest_in:
+            # Check if moving further away or closer to normal
+            if ref_high is not None and earliest.value > ref_high:
+                if latest.value > earliest.value:
+                    return TrendDirection.WORSENING, True, f"Exacerbation: Rose further above upper threshold ({ref_high} {latest.unit}) by +{delta:.2f} {latest.unit}."
+                else:
+                    return TrendDirection.IMPROVING, True, f"Partial recovery: Decreased toward upper reference threshold ({ref_high} {latest.unit}) by {abs(delta):.2f} {latest.unit}."
+            elif ref_low is not None and earliest.value < ref_low:
+                if latest.value < earliest.value:
+                    return TrendDirection.WORSENING, True, f"Exacerbation: Fell further below lower threshold ({ref_low} {latest.unit}) by {delta:.2f} {latest.unit}."
+                else:
+                    return TrendDirection.IMPROVING, True, f"Partial recovery: Rose toward lower reference threshold ({ref_low} {latest.unit}) by +{abs(delta):.2f} {latest.unit}."
+            else:
+                return TrendDirection.WORSENING, True, f"Remains out of reference range (Δ = {delta:+g} {latest.unit})."
 
-        # 2. Specific test rules
+        # CASE 4: Both IN range
         if is_creatinine:
             if delta >= 0.3:
-                is_significant = True
-                reason = reason or f"Significant rise of +{delta:.2f} mg/dL (≥0.3 mg/dL threshold)."
-                direction = TrendDirection.WORSENING
+                return TrendDirection.WORSENING, True, f"Significant rise of +{delta:.2f} mg/dL (≥0.3 mg/dL clinical threshold)."
             elif delta <= -0.3:
-                direction = TrendDirection.IMPROVING
-            elif abs(delta) < 0.15:
-                direction = TrendDirection.STABLE
+                return TrendDirection.IMPROVING, True, f"Significant decrease of {delta:.2f} mg/dL."
+            elif abs(delta) <= 0.15:
+                return TrendDirection.STABLE, False, None
             elif delta > 0:
-                direction = TrendDirection.WORSENING
+                return TrendDirection.WORSENING, False, None
             else:
-                direction = TrendDirection.IMPROVING
-            return direction, is_significant, reason
+                return TrendDirection.IMPROVING, False, None
 
-        elif is_hba1c:
+        if is_hba1c:
             if delta >= 0.5:
-                is_significant = True
-                reason = reason or f"Significant increase of +{delta:.1f}% (≥0.5% clinical threshold)."
-                direction = TrendDirection.WORSENING
+                return TrendDirection.WORSENING, True, f"Significant increase of +{delta:.1f}% (≥0.5% clinical threshold)."
             elif delta <= -0.5:
-                direction = TrendDirection.IMPROVING
-            elif abs(delta) < 0.3:
-                direction = TrendDirection.STABLE
+                return TrendDirection.IMPROVING, True, f"Significant decrease of {delta:.1f}%."
+            elif abs(delta) <= 0.3:
+                return TrendDirection.STABLE, False, None
             elif delta > 0:
-                direction = TrendDirection.WORSENING
+                return TrendDirection.WORSENING, False, None
             else:
-                direction = TrendDirection.IMPROVING
-            return direction, is_significant, reason
+                return TrendDirection.IMPROVING, False, None
 
-        elif is_potassium:
-            if latest.is_critical or earliest.is_critical or crossed_upper or crossed_lower:
-                is_significant = True
-                direction = TrendDirection.WORSENING
-            elif abs(delta) <= 0.4:
-                direction = TrendDirection.STABLE
+        if is_potassium:
+            if abs(delta) <= 0.3:
+                return TrendDirection.STABLE, False, None
             elif delta > 0:
-                direction = TrendDirection.WORSENING if (ref_high and latest.value > ref_high) else TrendDirection.STABLE
+                return TrendDirection.WORSENING, False, None
             else:
-                direction = TrendDirection.IMPROVING
-            return direction, is_significant, reason
+                return TrendDirection.IMPROVING, False, None
 
-        # Generic test classification
-        if is_significant:
-            direction = TrendDirection.WORSENING
-        elif rel_change < 0.05:
-            direction = TrendDirection.STABLE
+        # Generic both in range
+        rel_change = abs(delta) / (abs(earliest.value) if abs(earliest.value) > 1e-6 else 1.0)
+        if rel_change <= 0.08 or abs(delta) < 0.01:
+            return TrendDirection.STABLE, False, None
         elif delta > 0:
-            direction = TrendDirection.WORSENING if (ref_high and latest.value > ref_high) else TrendDirection.IMPROVING
+            return TrendDirection.WORSENING, False, None
         else:
-            direction = TrendDirection.IMPROVING if (ref_low and latest.value >= ref_low) else TrendDirection.WORSENING
-
-        return direction, is_significant, reason
+            return TrendDirection.IMPROVING, False, None
 
     def _find_graph_causes(self, test_name: str, conn: Any) -> List[GraphCausePath]:
-        """Find disease associations in global Kùzu knowledge graph."""
+        """
+        Find disease associations in global Kùzu knowledge graph with strict deduplication.
+        """
         paths: List[GraphCausePath] = []
         clean_name = re.sub(r"\(.*?\)", "", test_name).strip().lower()
+        seen_diseases = set()
 
         try:
-            # Query high-trust LABTEST_RELATED_TO edges in global Kùzu graph
+            # Query global Kùzu graph with exact test name match
             q = (
                 f"MATCH (l:LabTest)-[r:LABTEST_RELATED_TO]->(d:Disease) "
-                f"WHERE lower(l.test_name) CONTAINS '{clean_name[:12]}' "
-                f"RETURN l.test_name, d.name LIMIT 5"
+                f"WHERE lower(l.test_name) = '{clean_name}' "
+                f"RETURN DISTINCT l.test_name, d.name"
             )
             df = conn.execute(q).get_as_df()
             for _, row in df.iterrows():
                 l_name = str(row["l.test_name"])
-                d_name = str(row["d.name"])
-                path_str = f"LabTest({l_name}) -[LABTEST_RELATED_TO]-> Disease({d_name})"
-                paths.append(
-                    GraphCausePath(
-                        test_name=l_name,
-                        disease_name=d_name,
-                        edge_type="LABTEST_RELATED_TO",
-                        graph_path_str=path_str,
+                d_name = str(row["d.name"]).strip()
+
+                # FIX 4: Exclude cross-electrolyte noise (e.g. Hyponatremia for Potassium)
+                if clean_name == "potassium" and "natremia" in d_name.lower():
+                    continue
+                if clean_name == "sodium" and "kalemia" in d_name.lower():
+                    continue
+
+                if d_name not in seen_diseases:
+                    seen_diseases.add(d_name)
+                    path_str = f"LabTest({l_name}) -[LABTEST_RELATED_TO]-> Disease({d_name})"
+                    paths.append(
+                        GraphCausePath(
+                            test_name=l_name,
+                            disease_name=d_name,
+                            edge_type="LABTEST_RELATED_TO",
+                            graph_path_str=path_str,
+                        )
                     )
-                )
         except Exception as e:
             logger.debug("Graph cause lookup failed for %s: %s", test_name, e)
 
@@ -364,21 +410,23 @@ class MedTrendService:
                 "creatinine": ["Chronic Kidney Disease", "Acute Kidney Injury"],
                 "hemoglobin a1c": ["Type 2 Diabetes Mellitus", "Impaired Glucose Tolerance"],
                 "hba1c": ["Type 2 Diabetes Mellitus", "Impaired Glucose Tolerance"],
-                "potassium": ["Hyperkalemia", "Renal Impairment"],
-                "sodium": ["Hyponatremia", "Dehydration"],
+                "potassium": ["Hyperkalemia", "Hypokalemia"],
+                "sodium": ["Hyponatremia", "Hypernatremia"],
             }
             for k, dis_list in disease_fallbacks.items():
                 if k in clean_name:
                     for d_name in dis_list:
-                        path_str = f"LabTest({test_name}) -[LABTEST_RELATED_TO]-> Disease({d_name})"
-                        paths.append(
-                            GraphCausePath(
-                                test_name=test_name,
-                                disease_name=d_name,
-                                edge_type="LABTEST_RELATED_TO",
-                                graph_path_str=path_str,
+                        if d_name not in seen_diseases:
+                            seen_diseases.add(d_name)
+                            path_str = f"LabTest({test_name}) -[LABTEST_RELATED_TO]-> Disease({d_name})"
+                            paths.append(
+                                GraphCausePath(
+                                    test_name=test_name,
+                                    disease_name=d_name,
+                                    edge_type="LABTEST_RELATED_TO",
+                                    graph_path_str=path_str,
+                                )
                             )
-                        )
                     break
 
         return paths

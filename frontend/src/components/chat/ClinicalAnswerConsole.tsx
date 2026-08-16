@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import type { QueryResponse } from '../../api/types';
+import type { QueryResponse, CitationMeta } from '../../api/types';
 import { MarkdownAnswer } from './MarkdownAnswer';
 import { EvidenceCard } from './EvidenceCard';
 import { SubwayMap } from '../common/SubwayMap';
 import { ConfidenceRing } from '../common/ConfidenceRing';
 import { DisclaimerFooter } from '../common/DisclaimerFooter';
+import { EvidenceGraph3D } from '../graph/EvidenceGraph3D';
 import { getAnswerStatusProps } from '../../lib/utils';
 import {
   FileText,
@@ -13,12 +14,12 @@ import {
   Layers,
   HelpCircle,
   Clock,
-  Cpu,
-  ShieldCheck,
-  ExternalLink,
-  ChevronRight,
   Sparkles,
   Info,
+  ChevronRight,
+  Filter,
+  ArrowUpDown,
+  Box,
 } from 'lucide-react';
 
 interface ClinicalAnswerConsoleProps {
@@ -35,6 +36,12 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
   const [activeTab, setActiveTab] = useState<TabType>('evidence');
   const [highlightedCitation, setHighlightedCitation] = useState<string | null>(null);
   const [showConfidenceHelp, setShowConfidenceHelp] = useState(false);
+  const [is3DGraphOpen, setIs3DGraphOpen] = useState(false);
+
+  // U4: Filters & Sort State
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [sortByScore, setSortByScore] = useState<boolean>(false);
+
   const evidenceContainerRef = useRef<HTMLDivElement>(null);
 
   const citations = result.citations || [];
@@ -44,6 +51,7 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
   // Handle citation click from text: switch tab and scroll into view
   const handleCitationClick = (label: string) => {
     setActiveTab('evidence');
+    setCategoryFilter('all');
     setHighlightedCitation(label);
 
     setTimeout(() => {
@@ -54,6 +62,24 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
     }, 100);
   };
 
+  // U4 Filter and Sort logic
+  const filteredCitations = citations
+    .filter((c) => {
+      if (categoryFilter === 'all') return true;
+      const cat = (c.category || '').toLowerCase();
+      if (categoryFilter === 'guideline') return cat.includes('guideline');
+      if (categoryFilter === 'research_paper') return cat.includes('research') || cat.includes('paper') || cat.includes('pubmed');
+      if (categoryFilter === 'drug') return cat.includes('drug') || cat.includes('medication');
+      if (categoryFilter === 'private_report') return cat.includes('private') || cat.includes('report');
+      return true;
+    })
+    .sort((a, b) => {
+      if (sortByScore) {
+        return (b.fused_score || 0) - (a.fused_score || 0);
+      }
+      return 0; // maintain original [E#] rank
+    });
+
   // Calculate percentage widths for latency breakdown bar
   const lat = result.latency_breakdown || { total: 0 };
   const totalMs = Math.max(1, lat.total || 1);
@@ -62,6 +88,14 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
   const ctxPct = Math.max(1, Math.round(((lat.context || 0) / totalMs) * 100));
   const llmPct = Math.max(5, Math.round(((lat.llm || 0) / totalMs) * 100));
   const verPct = Math.max(2, Math.round(((lat.verification || 0) / totalMs) * 100));
+
+  const filterCategories = [
+    { id: 'all', label: 'All Sources' },
+    { id: 'guideline', label: 'Guidelines' },
+    { id: 'research_paper', label: 'Research' },
+    { id: 'drug', label: 'Drug Knowledge' },
+    { id: 'private_report', label: 'Private Reports' },
+  ];
 
   return (
     <div className="rounded-2xl border border-card-border bg-card shadow-sm overflow-hidden animate-fade-in">
@@ -84,29 +118,28 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
               <span>{statusProps.label}</span>
               <HelpCircle className="w-3 h-3 opacity-60" />
             </span>
-            {/* Tooltip */}
             <div className="absolute left-0 top-full mt-1.5 hidden group-hover:block z-50 w-64 p-2.5 rounded-xl bg-card border border-card-border shadow-xl text-[11px] font-sans text-ink leading-relaxed">
               <strong>Status Verdict:</strong> All extracted factual claims were checked against cited chunks.
             </div>
           </div>
         </div>
 
-        {/* Right Side Header: Confidence Ring & Evidence Shortcut */}
-        <div className="flex items-center space-x-3">
+        {/* Right Side Header: 3D Graph Trigger & Confidence Ring */}
+        <div className="flex items-center space-x-2.5">
+          {/* U1: 3D Graph Trigger Button */}
+          <button
+            type="button"
+            onClick={() => setIs3DGraphOpen(true)}
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-brand-border bg-brand-surface text-brand hover:bg-brand hover:text-white transition-all text-xs font-heading font-bold shadow-2xs cursor-pointer group"
+          >
+            <Box className="w-3.5 h-3.5 group-hover:rotate-12 transition-transform" />
+            <span>Open 3D Evidence Graph</span>
+          </button>
+
           <ConfidenceRing
             score={result.final_confidence}
             tier={result.confidence_tier}
           />
-          {citations.length > 0 && (
-            <button
-              type="button"
-              onClick={() => setActiveTab('evidence')}
-              className="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-brand-border bg-brand-surface text-brand hover:bg-brand hover:text-white transition-all text-xs font-heading font-bold shadow-2xs cursor-pointer"
-            >
-              <span>View Evidence ({citations.length})</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
-          )}
         </div>
       </div>
 
@@ -148,7 +181,7 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('evidence')}
-              className={`flex items-center space-x-1.5 px-3.5 py-2.5 rounded-t-xl text-xs font-heading font-bold border-t border-x transition-all ${
+              className={`flex items-center space-x-1.5 px-3.5 py-2.5 rounded-t-xl text-xs font-heading font-bold border-t border-x transition-all cursor-pointer ${
                 activeTab === 'evidence'
                   ? 'bg-canvas text-brand border-card-border -mb-px'
                   : 'text-ink-muted border-transparent hover:text-ink hover:bg-canvas/50'
@@ -161,7 +194,7 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('graph')}
-              className={`flex items-center space-x-1.5 px-3.5 py-2.5 rounded-t-xl text-xs font-heading font-bold border-t border-x transition-all ${
+              className={`flex items-center space-x-1.5 px-3.5 py-2.5 rounded-t-xl text-xs font-heading font-bold border-t border-x transition-all cursor-pointer ${
                 activeTab === 'graph'
                   ? 'bg-canvas text-brand border-card-border -mb-px'
                   : 'text-ink-muted border-transparent hover:text-ink hover:bg-canvas/50'
@@ -174,7 +207,7 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
             <button
               type="button"
               onClick={() => setActiveTab('diagnostics')}
-              className={`flex items-center space-x-1.5 px-3.5 py-2.5 rounded-t-xl text-xs font-heading font-bold border-t border-x transition-all ${
+              className={`flex items-center space-x-1.5 px-3.5 py-2.5 rounded-t-xl text-xs font-heading font-bold border-t border-x transition-all cursor-pointer ${
                 activeTab === 'diagnostics'
                   ? 'bg-canvas text-brand border-card-border -mb-px'
                   : 'text-ink-muted border-transparent hover:text-ink hover:bg-canvas/50'
@@ -190,15 +223,57 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
             ref={evidenceContainerRef}
             className="flex-1 p-4 sm:p-5 overflow-y-auto max-h-[640px] space-y-4 font-sans"
           >
-            {/* TAB 1: EVIDENCE CARDS */}
+            {/* TAB 1: EVIDENCE CARDS WITH FILTER & SORT (U4) */}
             {activeTab === 'evidence' && (
-              <div className="space-y-3 animate-fade-in">
-                {citations.length === 0 ? (
+              <div className="space-y-3.5 animate-fade-in">
+                {/* U4: Category Filter Chips & Sort Toggle */}
+                {citations.length > 0 && (
+                  <div className="space-y-2 pb-2 border-b border-card-border/60">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center space-x-1 text-[11px] font-mono text-ink-subtle">
+                        <Filter className="w-3 h-3" />
+                        <span>Filter:</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setSortByScore(!sortByScore)}
+                        className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-[11px] font-mono font-semibold border transition-all cursor-pointer ${
+                          sortByScore
+                            ? 'bg-brand text-white border-brand'
+                            : 'bg-card text-ink-muted border-card-border hover:text-ink'
+                        }`}
+                        title="Toggle sort between RRF score and citation appearance"
+                      >
+                        <ArrowUpDown className="w-3 h-3" />
+                        <span>{sortByScore ? 'Highest Score' : 'Order [E1..EN]'}</span>
+                      </button>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5">
+                      {filterCategories.map((cat) => (
+                        <button
+                          key={cat.id}
+                          type="button"
+                          onClick={() => setCategoryFilter(cat.id)}
+                          className={`px-2.5 py-1 rounded-lg text-[11px] font-heading font-semibold border transition-all cursor-pointer ${
+                            categoryFilter === cat.id
+                              ? 'bg-brand text-white border-brand shadow-2xs font-bold'
+                              : 'bg-card text-ink-muted border-card-border hover:text-ink hover:bg-canvas'
+                          }`}
+                        >
+                          {cat.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {filteredCitations.length === 0 ? (
                   <div className="p-8 text-center text-xs font-mono text-ink-subtle rounded-xl border border-dashed border-card-border bg-card/60">
-                    No citation chunks associated with this output.
+                    No citation chunks matching the selected category filter.
                   </div>
                 ) : (
-                  citations.map((cite) => (
+                  filteredCitations.map((cite) => (
                     <EvidenceCard
                       key={cite.label}
                       citation={cite}
@@ -218,7 +293,22 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
                     No graph traversal paths for this answer.
                   </div>
                 ) : (
-                  <SubwayMap paths={graphPaths} />
+                  <>
+                    <div className="flex items-center justify-between pb-1">
+                      <span className="text-[11px] font-mono text-ink-subtle">
+                        {graphPaths.length} multi-hop relationship path(s)
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setIs3DGraphOpen(true)}
+                        className="text-xs font-heading font-bold text-brand hover:underline flex items-center space-x-1 cursor-pointer"
+                      >
+                        <Box className="w-3.5 h-3.5" />
+                        <span>Explore in 3D Space</span>
+                      </button>
+                    </div>
+                    <SubwayMap paths={graphPaths} />
+                  </>
                 )}
               </div>
             )}
@@ -235,7 +325,7 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
                     <button
                       type="button"
                       onClick={() => setShowConfidenceHelp(!showConfidenceHelp)}
-                      className="text-[11px] font-mono text-brand hover:underline flex items-center space-x-1"
+                      className="text-[11px] font-mono text-brand hover:underline flex items-center space-x-1 cursor-pointer"
                     >
                       <Info className="w-3 h-3" />
                       <span>Threshold Guidelines</span>
@@ -351,6 +441,14 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
           </div>
         </div>
       </div>
+
+      {/* U1: 3D Evidence Graph Modal Explorer */}
+      <EvidenceGraph3D
+        graphPaths={graphPaths}
+        citations={citations}
+        isOpen={is3DGraphOpen}
+        onClose={() => setIs3DGraphOpen(false)}
+      />
     </div>
   );
 };

@@ -167,3 +167,23 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Clinical Doctor Print Stylesheet */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #10243e !important;
+  }
+  nav, aside, header, button, .print\:hidden {
+    display: none !important;
+  }
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+  .bg-card, .bg-canvas {
+    background: #ffffff !important;
+  }
+}
+

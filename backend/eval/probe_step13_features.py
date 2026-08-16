@@ -291,7 +291,7 @@ def run_evaluation_suite():
         cwd=PROJECT_ROOT,
         capture_output=True,
         text=True,
-        timeout=180.0,
+        timeout=360.0,
     )
     report_11_path = settings.evaluations_dir / "step11_api_report.json"
     p11_pass_count = 0

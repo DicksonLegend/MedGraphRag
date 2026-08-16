@@ -2,7 +2,7 @@
   "step": 13.0,
   "description": "Step 13 Feature Layer (MedTrend, CareGap, CoverageMap) Comprehensive Evaluation",
   "final_verdict": "PASS",
-  "total_suite_time_seconds": 179.91,
+  "total_suite_time_seconds": 176.68,
   "criteria_matrix": {
     "trend_direction_correct": true,
     "unit_alignment_correct": true,
@@ -22,25 +22,25 @@
     "criteria_passed": 13,
     "total_criteria": 13,
     "peak_vram_mb": 4776.0,
-    "peak_ram_gb": 4.28,
-    "max_feature_latency_seconds": 2.12
+    "peak_ram_gb": 3.93,
+    "max_feature_latency_seconds": 4.26
   },
   "latencies_ms": {
-    "medtrend_ms": 20.82,
-    "caregap_ms": 2118.43,
-    "coverage_c1_ms": 1481.2,
-    "coverage_c2_ms": 1894.64
+    "medtrend_ms": 22.44,
+    "caregap_ms": 4261.17,
+    "coverage_c1_ms": 1439.11,
+    "coverage_c2_ms": 1831.26
   },
   "feature_1_medtrend": {
     "user_id": "feature_test_user",
     "total_trends": 5,
-    "significant_count": 2,
+    "significant_count": 3,
     "creatinine_trend": {
       "test_name": "Creatinine",
       "canonical_unit": "umol/L",
       "measurements": [
         {
-          "report_id": "rep_317ff8dc",
+          "report_id": "rep_98a3407a",
           "report_date": "2026-05-10",
           "value": 97.24,
           "unit": "umol/L",
@@ -49,7 +49,7 @@
           "is_critical": false
         },
         {
-          "report_id": "rep_0ea68848",
+          "report_id": "rep_4df1a941",
           "report_date": "2026-08-12",
           "value": 167.96,
           "unit": "umol/L",
@@ -89,7 +89,7 @@
       "canonical_unit": "mmol/L",
       "measurements": [
         {
-          "report_id": "rep_317ff8dc",
+          "report_id": "rep_98a3407a",
           "report_date": "2026-05-10",
           "value": 4.2,
           "unit": "mmol/L",
@@ -98,7 +98,7 @@
           "is_critical": false
         },
         {
-          "report_id": "rep_0ea68848",
+          "report_id": "rep_4df1a941",
           "report_date": "2026-08-12",
           "value": 4.3,
           "unit": "mmol/L",
@@ -125,7 +125,7 @@
       "canonical_unit": "%",
       "measurements": [
         {
-          "report_id": "rep_317ff8dc",
+          "report_id": "rep_98a3407a",
           "report_date": "2026-05-10",
           "value": 6.9,
           "unit": "%",
@@ -134,7 +134,7 @@
           "is_critical": false
         },
         {
-          "report_id": "rep_0ea68848",
+          "report_id": "rep_4df1a941",
           "report_date": "2026-08-12",
           "value": 7.8,
           "unit": "%",
@@ -152,7 +152,7 @@
       "rate_per_month": 0.2914,
       "direction": "worsening",
       "is_significant": true,
-      "significance_reason": "Significant increase of +0.9% (\u22650.5% clinical threshold).",
+      "significance_reason": "Exacerbation: Rose further above upper threshold (5.6 %) by +0.90 %.",
       "possible_causes": [
         {
           "test_name": "Hemoglobin A1c",
@@ -169,8 +169,8 @@
       ],
       "clinical_framing": "Discuss this trajectory with your physician."
     },
-    "summary_text": "Longitudinal analysis evaluated 5 lab tests across your recorded diagnostic reports.\n\u26a0\ufe0f 2 notable trajectory shift(s) were flagged for clinical review:\n - Creatinine: Worsening trend (\u0394 = +70.72 umol/L, +22.8994/month). Crossed upper reference threshold (115.0 umol/L).\n - Hemoglobin A1c: Worsening trend (\u0394 = +0.9 %, +0.2914/month). Significant increase of +0.9% (\u22650.5% clinical threshold).\n\nFraming: These trajectories are provided for personal health tracking. Please discuss these trends with your healthcare provider for clinical evaluation.",
-    "provenance_count": 6
+    "summary_text": "Longitudinal analysis evaluated 5 lab tests across your recorded diagnostic reports.\n\u26a0\ufe0f 3 notable trajectory shift(s) were flagged for clinical review:\n - Creatinine: Worsening trend (\u0394 = +70.72 umol/L, +22.8994/month). Crossed upper reference threshold (115.0 umol/L).\n - Hemoglobin A1c: Worsening trend (\u0394 = +0.9 %, +0.2914/month). Exacerbation: Rose further above upper threshold (5.6 %) by +0.90 %.\n - Glucose: Worsening trend (\u0394 = +1.9425 mmol/L, +0.629/month). Exacerbation: Rose further above upper threshold (5.6 mmol/L) by +1.94 mmol/L.\n\nFraming: These trajectories are provided for personal health tracking. Please discuss these trends with your healthcare provider for clinical evaluation.",
+    "provenance_count": 8
   },
   "feature_2_caregap": {
     "user_id": "feature_test_user_t2",

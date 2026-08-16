@@ -113,6 +113,22 @@ export interface ReportSummaryItem {
   critical_flag: boolean;
 }
 
+export interface LabValueDetailItem {
+  test_name: string;
+  value: number;
+  unit: string;
+  ref_low?: number | null;
+  ref_high?: number | null;
+  is_critical: boolean;
+}
+
+export interface ReportDetailResponse {
+  report_id: string;
+  report_date: string;
+  filename: string;
+  lab_values: LabValueDetailItem[];
+}
+
 export type ReportResponse = QueryResponse;
 
 // ============================================================================

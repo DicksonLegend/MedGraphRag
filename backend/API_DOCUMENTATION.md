@@ -100,6 +100,7 @@ All endpoints are mounted under both the root path and `/api/v1` for versioned r
 | **POST** | `/query` | `/api/v1/query` | **Yes** | `application/json` | Execute self-verifying hybrid RAG query with citations and verification status. |
 | **POST** | `/report` | `/api/v1/report` | **Yes** | `multipart/form-data` | Upload and interpret diagnostic report file (PDF, PNG, JPG, XLSX, CSV). |
 | **GET** | `/reports` | `/api/v1/reports` | **Yes** | N/A | Return list of uploaded diagnostic reports for the authenticated user. |
+| **GET** | `/reports/{id}` | `/api/v1/reports/{id}` | **Yes** | N/A | Return detailed lab measurements for a specific user report. |
 | **POST** | `/features/trend` | `/api/v1/features/trend` | **Yes** | N/A | MedTrend: Longitudinal lab trajectory analysis across user's private reports. |
 | **POST** | `/features/caregap` | `/api/v1/features/caregap` | **Yes** | N/A | CareGap: Clinical guideline reconciliation & missing recommended check detection. |
 | **POST** | `/features/coverage` | `/api/v1/features/coverage` | **Yes** | `application/json` | Evidence Coverage Map: Query decomposition and retrieval coverage scoring. |
@@ -523,6 +524,96 @@ Retrieves a list of all diagnostic lab reports previously uploaded by the authen
 
 * **Error Responses**:
   * `401 Unauthorized`: `{"detail": "Could not validate credentials or token expired"}`
+
+---
+
+### GET /reports/{report_id}
+Retrieves detailed information and full lab values for a specific report owned by the authenticated user.
+
+* **Method**: `GET`
+* **Path**: `/reports/{report_id}` (or `/api/v1/reports/{report_id}`)
+* **Auth Required**: **Yes** (`Bearer <token>`)
+* **Path Parameters**:
+  | Parameter | Type | Required | Description |
+  | :--- | :--- | :---: | :--- |
+  | `report_id` | `string` | **Yes** | Unique identifier of the report to inspect (e.g., `"rep_529bf9c7"`). |
+* **cURL Example**:
+  ```bash
+  curl -X GET http://localhost:8000/reports/rep_529bf9c7 \
+    -H "Authorization: Bearer <TOKEN>"
+  ```
+
+* **Response 200 OK** (`ReportDetailResponse`):
+  | Field | Type | Description |
+  | :--- | :--- | :--- |
+  | `report_id` | `string` | Unique report identifier. |
+  | `report_date` | `string` | Date of the lab report (`"YYYY-MM-DD"`). |
+  | `filename` | `string` | Original uploaded filename. |
+  | `lab_values` | `List[LabValueDetailItem]` | Array of individual laboratory test measurements. |
+
+  **`LabValueDetailItem` Schema**:
+  | Field | Type | Description |
+  | :--- | :--- | :--- |
+  | `test_name` | `string` | Canonical name of the lab test (e.g., `"Potassium"`). |
+  | `value` | `float` | Standardized numeric value. |
+  | `unit` | `string` | Measurement unit (e.g., `"mmol/L"`). |
+  | `ref_low` | `float` or `null` | Normal reference range lower bound. |
+  | `ref_high` | `float` or `null` | Normal reference range upper bound. |
+  | `is_critical` | `boolean` | Flag indicating if measurement meets critical boundary criteria. |
+
+  ```json
+  {
+    "report_id": "rep_529bf9c7",
+    "report_date": "2026-08-12",
+    "filename": "F1_sample_cbc_cmp.pdf",
+    "lab_values": [
+      {
+        "test_name": "Creatinine",
+        "value": 95.0,
+        "unit": "umol/L",
+        "ref_low": 60.0,
+        "ref_high": 115.0,
+        "is_critical": false
+      },
+      {
+        "test_name": "Glucose",
+        "value": 5.2,
+        "unit": "mmol/L",
+        "ref_low": 3.9,
+        "ref_high": 5.6,
+        "is_critical": false
+      },
+      {
+        "test_name": "Hemoglobin",
+        "value": 135.0,
+        "unit": "g/L",
+        "ref_low": 120.0,
+        "ref_high": 160.0,
+        "is_critical": false
+      },
+      {
+        "test_name": "Potassium",
+        "value": 6.8,
+        "unit": "mmol/L",
+        "ref_low": 3.5,
+        "ref_high": 5.1,
+        "is_critical": true
+      },
+      {
+        "test_name": "Sodium",
+        "value": 140.0,
+        "unit": "mmol/L",
+        "ref_low": 135.0,
+        "ref_high": 145.0,
+        "is_critical": false
+      }
+    ]
+  }
+  ```
+
+* **Error Responses**:
+  * `401 Unauthorized`: `{"detail": "Could not validate credentials or token expired"}`
+  * `404 Not Found`: `{"detail": "Report 'rep_xyz' not found in user private store."}`
 
 ---
 

@@ -8,6 +8,7 @@ import { DisclaimerFooter } from '../components/common/DisclaimerFooter';
 import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
 import { MarkdownAnswer } from '../components/chat/MarkdownAnswer';
+import { ReportDrawer } from '../components/reports/ReportDrawer';
 import {
   UploadCloud,
   FileText,
@@ -18,6 +19,7 @@ import {
   CheckCircle2,
   RefreshCw,
   Clock,
+  ChevronRight,
 } from 'lucide-react';
 
 const ALLOWED_EXTENSIONS = ['.pdf', '.png', '.jpg', '.jpeg', '.xlsx', '.csv'];
@@ -30,6 +32,7 @@ export const ReportsPage: React.FC = () => {
   const [uploadResult, setUploadResult] = useState<ReportResponse | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,7 +42,6 @@ export const ReportsPage: React.FC = () => {
       const list = await reportsApi.listReports();
       setReports(list);
     } catch {
-      // Keep empty if none or error
       setReports([]);
     } finally {
       setIsLoadingHistory(false);
@@ -98,14 +100,14 @@ export const ReportsPage: React.FC = () => {
       <div className="p-6 rounded-2xl border border-card-border bg-card shadow-xs space-y-4">
         <div>
           <h2 className="text-base sm:text-lg font-heading font-extrabold text-ink">
-            Diagnostic Lab Report Interpretation
+            Diagnostic Lab Report Ingestion
           </h2>
           <p className="text-xs text-ink-muted">
-            Upload PDF, Image (PNG/JPG), or Spreadsheet (XLSX/CSV) diagnostic lab panels for LOINC normalization, reference range checking, and encrypted private storage.
+            Upload PDF, PNG, JPG, XLSX, or CSV diagnostic panels for automated normalization, reference range evaluation, and AES-256 encrypted storage.
           </p>
         </div>
 
-        {/* Drag & Drop File Zone */}
+        {/* Drag & Drop Area */}
         <div
           onDragOver={(e) => {
             e.preventDefault();
@@ -115,42 +117,49 @@ export const ReportsPage: React.FC = () => {
           onDrop={(e) => {
             e.preventDefault();
             setIsDragOver(false);
-            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
               handleFileSelection(e.dataTransfer.files[0]);
             }
           }}
-          onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-3 ${
+          className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${
             isDragOver
-              ? 'border-brand bg-brand-surface'
-              : 'border-card-border hover:border-brand/60 bg-canvas/40'
+              ? 'border-brand bg-brand-surface/40 scale-[1.01]'
+              : 'border-card-border hover:border-brand/40 bg-canvas/40'
           }`}
         >
           <input
-            type="file"
             ref={fileInputRef}
+            type="file"
+            accept=".pdf,.png,.jpg,.jpeg,.xlsx,.csv"
+            className="hidden"
             onChange={(e) => {
-              if (e.target.files && e.target.files.length > 0) {
+              if (e.target.files && e.target.files[0]) {
                 handleFileSelection(e.target.files[0]);
               }
             }}
-            accept=".pdf,.png,.jpg,.jpeg,.xlsx,.csv"
-            className="hidden"
           />
-          <div className="p-3.5 rounded-2xl bg-canvas border border-card-border text-brand shadow-xs">
-            <UploadCloud className="w-8 h-8" />
-          </div>
-          <div>
-            <p className="font-heading font-bold text-sm text-ink">
-              Click or drag report file to upload
-            </p>
-            <p className="text-xs text-ink-muted mt-1 font-mono">
-              Supported formats: PDF, PNG, JPG, XLSX, CSV (Max 20 MB)
-            </p>
+          <div className="flex flex-col items-center space-y-3">
+            <div className="p-3.5 rounded-full bg-brand-surface text-brand shadow-xs">
+              <UploadCloud className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="text-sm font-heading font-bold text-ink">
+                Drag and drop your diagnostic report here, or{' '}
+                <button
+                  type="button"
+                  onClick={() => fileInputRef.current?.click()}
+                  className="text-brand hover:underline font-bold focus:outline-hidden cursor-pointer"
+                >
+                  browse files
+                </button>
+              </p>
+              <p className="text-[11px] font-mono text-ink-subtle mt-1">
+                Supported: PDF, PNG, JPG, XLSX, CSV (Max 20 MB)
+              </p>
+            </div>
           </div>
         </div>
 
-        {/* Validation / API Error Banner */}
         {errorMsg && (
           <ErrorState
             title="Upload Rejected"
@@ -160,43 +169,42 @@ export const ReportsPage: React.FC = () => {
         )}
       </div>
 
-      {/* Upload Processing Loader */}
+      {/* Uploading Telemetry Loader */}
       {isUploading && (
         <div className="p-8 rounded-2xl border border-card-border bg-card shadow-xs">
           <EcgLoader
-            label="Parsing & Normalizing Diagnostic Report..."
-            sublabel="Extracting lab values, mapping LOINC ontologies, screening critical boundaries, and encrypting to private store..."
+            label="Analyzing Diagnostic Lab Report..."
+            sublabel="Extracting optical tabular data, standardizing canonical test names & units, and checking critical thresholds..."
           />
         </div>
       )}
 
-      {/* Upload Result Section */}
+      {/* Upload Output Result */}
       {uploadResult && !isUploading && (
         <div className="space-y-6 animate-fade-in">
-          {/* 1. Critical Escalation Banner (MUST BE FIRST IF CRITICAL) */}
+          {/* Critical Emergency Banner (if critical values detected) */}
           {isCriticalReport(uploadResult.answer_text) && (
-            <CriticalEscalationBanner message="One or more evaluated lab values cross critical reference boundaries. Please contact your physician or urgent care immediately." />
+            <CriticalEscalationBanner
+              message="One or more lab values meet critical emergency thresholds requiring immediate clinical attention."
+            />
           )}
 
-          {/* 2. Structured Report Interpretation Body */}
-          <div className="p-6 sm:p-8 rounded-2xl border border-card-border bg-card shadow-sm space-y-6">
-            <div className="flex items-center justify-between pb-4 border-b border-card-border">
+          {/* Interpretation Output Card */}
+          <div className="p-6 rounded-2xl border border-card-border bg-card shadow-xs space-y-5">
+            <div className="flex items-center justify-between pb-3 border-b border-card-border">
               <div className="flex items-center space-x-2">
-                <span className="px-2.5 py-1 text-xs font-mono font-bold bg-canvas text-ink rounded-lg border border-card-border uppercase">
-                  Route: {uploadResult.route}
-                </span>
-                <span className="px-2.5 py-1 text-xs font-heading font-semibold rounded-lg bg-status-success-bg text-status-success border border-status-success/30 flex items-center space-x-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Interpretation Verified</span>
-                </span>
+                <FileText className="w-4 h-4 text-brand" />
+                <h3 className="text-sm font-heading font-bold text-ink">
+                  Diagnostic Report Interpretation
+                </h3>
               </div>
               <span className="text-xs font-mono text-ink-subtle">
-                Processing Latency: {uploadResult.latency_breakdown?.total?.toFixed(1) || '—'} ms
+                Status: {uploadResult.answer_status}
               </span>
             </div>
 
-            {/* Markdown Interpretation Output */}
-            <div className="bg-canvas/50 p-6 rounded-xl border border-card-border">
+            {/* Answer Content */}
+            <div className="bg-canvas/50 p-4 rounded-xl border border-card-border">
               <MarkdownAnswer
                 content={uploadResult.answer_text}
                 citations={uploadResult.citations || []}
@@ -225,7 +233,7 @@ export const ReportsPage: React.FC = () => {
           </div>
           <button
             onClick={fetchReports}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-card-border bg-canvas text-xs font-heading font-semibold text-ink-muted hover:text-ink transition-colors"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg border border-card-border bg-canvas text-xs font-heading font-semibold text-ink-muted hover:text-ink transition-colors cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoadingHistory ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
@@ -253,11 +261,16 @@ export const ReportsPage: React.FC = () => {
                   <th className="px-4 py-3">Lab Values Extracted</th>
                   <th className="px-4 py-3">Critical Status</th>
                   <th className="px-4 py-3">Report ID</th>
+                  <th className="px-4 py-3 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-card-border/60">
                 {reports.map((rep) => (
-                  <tr key={rep.report_id} className="hover:bg-canvas/50 transition-colors">
+                  <tr
+                    key={rep.report_id}
+                    onClick={() => setSelectedReportId(rep.report_id)}
+                    className="hover:bg-canvas/60 transition-colors cursor-pointer group"
+                  >
                     <td className="px-4 py-3 font-mono font-medium text-ink flex items-center space-x-2">
                       <Calendar className="w-3.5 h-3.5 text-brand" />
                       <span>{rep.report_date || '—'}</span>
@@ -284,6 +297,12 @@ export const ReportsPage: React.FC = () => {
                     <td className="px-4 py-3 font-mono text-ink-subtle">
                       {rep.report_id}
                     </td>
+                    <td className="px-4 py-3 text-right">
+                      <span className="inline-flex items-center space-x-1 text-xs font-heading font-semibold text-brand group-hover:underline">
+                        <span>Inspect</span>
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -291,6 +310,12 @@ export const ReportsPage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Slide-over Right Drawer for Report Inspection */}
+      <ReportDrawer
+        reportId={selectedReportId}
+        onClose={() => setSelectedReportId(null)}
+      />
     </div>
   );
 };

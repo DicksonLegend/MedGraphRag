@@ -15,6 +15,7 @@ import {
   RefreshCw,
   CheckCircle,
   Tag,
+  Printer,
 } from 'lucide-react';
 
 export const CareGapPage: React.FC = () => {
@@ -65,13 +66,25 @@ export const CareGapPage: React.FC = () => {
           </p>
         </div>
 
-        <button
-          onClick={fetchCareGaps}
-          className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-card-border bg-canvas text-xs font-heading font-semibold text-ink-muted hover:text-ink transition-colors shadow-2xs self-start md:self-auto"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
-          <span>Reconcile Guidelines</span>
-        </button>
+        <div className="flex items-center space-x-2 print:hidden self-start md:self-auto">
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-card-border bg-canvas text-xs font-heading font-semibold text-ink-muted hover:text-ink transition-colors shadow-2xs cursor-pointer"
+          >
+            <Printer className="w-3.5 h-3.5" />
+            <span>Print for my doctor</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={fetchCareGaps}
+            className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl border border-brand-border bg-brand-surface text-xs font-heading font-bold text-brand hover:bg-brand hover:text-white transition-all shadow-2xs cursor-pointer"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
+            <span>Reconcile Guidelines</span>
+          </button>
+        </div>
       </div>
 
       {/* Loading State */}
