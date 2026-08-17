@@ -276,6 +276,15 @@ criteria passed (7/7).
 % ─── IV. Evaluation ──────────────────────────────────────────────────────────
 \section{Evaluation}
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/tradeoff_chart.pdf}
+\caption{MedQA-US ($N=50$) ablation trade-off: Wrong Assertion Rate vs.\
+Refusal Rate across configurations C1--C4. Source: evaluation artifact
+\texttt{step12\_part3\_paper\_tables.json}.}
+\label{fig:tradeoff}
+\end{figure}
+
 \subsection{Benchmark and Metric Definitions}
 
 We evaluate on MedQA-US \cite{jin2021disease}, sampling $N=50$ questions
@@ -320,15 +329,6 @@ graph traversal and verification agent:
 Table~\ref{tab:ablation} reports all metrics from evaluation artifact
 \texttt{step12\_part3\_paper\_tables.json} and
 \texttt{step12\_evaluation\_report.md} (N=50, seed~42).
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=\columnwidth]{figures/tradeoff_chart.pdf}
-\caption{MedQA-US ($N=50$) ablation trade-off: Wrong Assertion Rate vs.\
-Refusal Rate across configurations C1--C4. Source: evaluation artifact
-\texttt{step12\_part3\_paper\_tables.json}.}
-\label{fig:tradeoff}
-\end{figure}
 
 \begin{table*}[t]
 \caption{4-Configuration Ablation on MedQA-US (N=50, seed 42).
@@ -384,7 +384,7 @@ vector-only, reflecting graph-retrieved additional evidence. Zero LLM judge
 fallback calls were required across all runs (the verifier operates
 deterministically on retrieved evidence).
 
-\begin{table}[h]
+\begin{table}[ht]
 \caption{Provenance and Retrieval Metrics.
   Source: evaluation artifact \texttt{step12\_part3\_paper\_tables.json}.}
 \label{tab:provenance}
@@ -436,7 +436,7 @@ Table~\ref{tab:resources} reports the hardware footprint during the full
 Step-12 ablation evaluation (evaluation artifact
 \texttt{step12\_part3\_paper\_tables.json}).
 
-\begin{table}[h]
+\begin{table}[ht]
 \caption{System Resource Footprint.
   Source: evaluation artifact \texttt{step12\_part3\_paper\_tables.json}.}
 \label{tab:resources}
@@ -477,7 +477,7 @@ Table~\ref{tab:latency} reports the per-component latency breakdown for a
 typical warm \texttt{/query} invocation, measured from the
 \texttt{latency\_breakdown} field of the API response.
 
-\begin{table}[h]
+\begin{table}[ht]
 \caption{Per-Component Query Latency (Warm State), single warm
   \texttt{/query} invocation; the ablation-wide retrieval mean is 47.1~ms.
   Source: \texttt{API\_DOCUMENTATION.md} Section~8.}
