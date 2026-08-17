@@ -1,0 +1,638 @@
+\documentclass[conference]{IEEEtran}
+
+% ─── Packages ────────────────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false}
+
+% ─── Title ───────────────────────────────────────────────────────────────────
+\title{MedGraphRAG: An Agentic, Self-Verifying Hybrid GraphRAG Framework\\
+for Explainable Clinical Report Understanding on Consumer Hardware}
+
+\author{
+\IEEEauthorblockN{Dickson E}
+\IEEEauthorblockA{\textit{Department of Artificial Intelligence and Data Science}\\
+\textit{Karunya Institute of Tech. and Sci.}\\
+Coimbatore, India\\
+dicksone@karunya.edu.in}
+\and
+\IEEEauthorblockN{Antony Taurshia A}
+\IEEEauthorblockA{\textit{Department of Artificial Intelligence and Data Science}\\
+\textit{Karunya Institute of Tech. and Sci.}\\
+Coimbatore, India\\
+antonytaurshia@karunya.edu}
+}
+
+\begin{document}
+
+\maketitle
+
+% ─── Abstract ────────────────────────────────────────────────────────────────
+\begin{abstract}
+Deploying large language models (LLMs) in clinical decision support requires
+not only retrieval accuracy but also verifiable provenance and a principled
+mechanism to avoid confidently wrong assertions---a failure mode with direct
+patient-safety consequences. We present \textbf{MedGraphRAG}, a
+self-verifying, graph-augmented Retrieval-Augmented Generation (RAG) system
+designed for medical question answering on consumer hardware. The system fuses
+a 2.29-million-vector FAISS index (MedCPT embeddings, 768 dimensions) with a
+2.50-million-node Kùzu property graph encoding disease, drug, and laboratory
+ontologies. A LangGraph verification agent post-processes every candidate
+answer, escalating to a structured refusal when evidence is insufficient. Our
+4-way ablation study on MedQA-US ($N=50$, seed~42) demonstrates that the
+verification layer reduces the wrong-assertion rate from 44\% (baseline) to
+12\% (full system), trading raw answered-rate for clinically desirable
+epistemic humility. The complete system runs within 3.62~GB peak RAM and
+4{,}784~MB GPU VRAM on a single RTX~3050 6~GB card, making it deployable on
+commodity clinical workstations. An additional feature layer provides longitudinal laboratory trend analysis,
+guideline care-gap detection, and sub-question evidence coverage mapping, all
+validated across 13 evaluation criteria. While the conservative verification
+threshold induces a high refusal rate on out-of-domain queries, it ensures
+strict clinical safety boundaries on commodity hardware.
+\end{abstract}
+
+\begin{IEEEkeywords}
+medical question answering, graph RAG, retrieval-augmented generation,
+self-verification, LLM safety, FAISS, knowledge graph, MedQA,
+clinical report understanding
+\end{IEEEkeywords}
+
+% ─── I. Introduction ─────────────────────────────────────────────────────────
+\section{Introduction}
+
+Retrieval-Augmented Generation (RAG) has emerged as the dominant paradigm for
+grounding LLM outputs in factual corpora \cite{lewis2020retrieval,
+izacard2021leveraging}. In general-domain settings, a factually incorrect answer
+is a minor inconvenience; in clinical medicine it may lead to patient harm.
+Two failure modes dominate the medical RAG literature: (i)~\emph{hallucination}---
+the model synthesizes plausible but false statements not supported by any
+retrieved chunk---and (ii)~\emph{contamination}---benchmark questions leaked
+into the retrieval corpus inflate reported accuracy. Existing medical QA
+benchmarks \cite{jin2021disease,chen2024benchmarking} evaluate accuracy on
+answered items but rarely report the rate at which the system makes confident
+wrong assertions (\emph{wrong-assertion rate}), which is the safety-critical
+quantity.
+
+Graph-enhanced retrieval has shown promise for multi-hop reasoning
+\cite{edge2024local, xiong2021answering} because entity-relationship paths can
+surface latent connections that pure dense retrieval misses. However,
+biomedical knowledge graphs have unique characteristics---dense ontology
+hierarchies (UMLS \cite{umls2004}), lab-test to disease linkages, drug
+side-effect catalogues---that demand domain-specific graph schemas rather than
+general-purpose knowledge bases.
+
+We make the following contributions:
+\begin{enumerate}
+  \item \textbf{MedGraphRAG architecture}: A hybrid retrieval pipeline that
+        fuses reciprocal-rank fusion (RRF) over FAISS vector search with 1--2
+        hop Kùzu graph expansion, incorporating contamination guards and category
+        balancing.
+  \item \textbf{Self-verification agent}: A LangGraph-orchestrated verification
+        node that assigns a confidence tier (\texttt{high}/\texttt{medium}/
+        \texttt{low}/\texttt{refused}) and produces a structured refusal rather
+        than a wrong answer when evidence is insufficient.
+  \item \textbf{Ablation study}: A controlled 4-configuration experiment
+        isolating the contribution of graph traversal and the verification
+        agent, with contamination filtering proven on every run.
+  \item \textbf{Feature layer}: Three clinical utilities---MedTrend
+        (longitudinal lab trajectory), CareGap (guideline reconciliation),
+        CoverageMap (sub-question evidence coverage)---all passing 13/13
+        evaluation criteria.
+  \item \textbf{Consumer-hardware deployment}: The full system, including a
+        Qwen2.5-7B-Instruct Q4\_K\_M GGUF quantized LLM, operates within
+        3.62~GB peak RAM and 4{,}784~MB VRAM.
+\end{enumerate}
+
+The rest of this paper is structured as follows: Section~II reviews related
+work in medical RAG and knowledge graphs; Section~III details the MedGraphRAG
+system architecture; Section~IV presents the benchmark evaluation and ablation
+study; Section~V reports the resource profile and operational latency;
+Section~VI describes the feature layer; Section~VII outlines API and security
+guarantees; Section~VIII discusses clinical implications and limitations; and
+Section~IX concludes the paper.
+
+% ─── II. Related Work ────────────────────────────────────────────────────────
+\section{Related Work}
+
+\subsection{Retrieval-Augmented Generation}
+
+Lewis et al.~\cite{lewis2020retrieval} demonstrated that parametric LLMs
+augmented with non-parametric retrieval achieve superior performance on
+knowledge-intensive tasks. Fusion-in-Decoder~\cite{izacard2021leveraging}
+extended this to multi-passage fusion. Neither system incorporated a
+verification step capable of producing structured refusals.
+
+\subsection{Graph-Enhanced Retrieval}
+
+Microsoft's GraphRAG \cite{edge2024local} constructs community summaries over
+generic text graphs and enables query-focused summarization. Multi-hop dense
+retrieval \cite{xiong2021answering} chains retrieval steps to answer complex
+questions. However, existing graph RAG frameworks rely on generic text extraction rather
+than standardized medical ontologies, limiting deterministic reasoning over
+clinical entities. MedGraphRAG addresses this by grounding traversal in a
+formal biomedical schema seeded via UMLS CUI mapping \cite{umls2004}.
+
+\subsection{Medical QA Benchmarks}
+
+The MedQA dataset \cite{jin2021disease} provides US medical licensing exam
+questions and is the de-facto benchmark for medical LLM evaluation. Chen et
+al.~\cite{chen2024benchmarking} systematically benchmarked frontier LLMs on
+medical QA, finding that accuracy on \emph{answered} items substantially
+overstates overall safety when refusal capability is absent. Our work
+introduces the wrong-assertion rate as the primary safety metric and reports
+it per ablation configuration.
+
+\subsection{Domain-Specific Embedding}
+
+MedCPT~\cite{jin2023medcpt} is a contrastive model trained on 255 million
+PubMed search log pairs, producing clinically specialized 768-dimensional
+embeddings. We use the \texttt{ncbi/MedCPT-Query-Encoder} variant for online
+query encoding and \texttt{ncbi/MedCPT-Article-Encoder} for offline corpus
+encoding, following the asymmetric retrieval protocol recommended by the
+authors. However, dense semantic embedding alone cannot resolve multi-hop
+relational dependencies between clinical findings without explicit topological
+traversal.
+
+\subsection{Efficient Vector Search}
+
+FAISS \cite{johnson2021billion} provides billion-scale approximate nearest
+neighbor search. We use an IVFpq index occupying 240~MB on CPU, achieving
+1.1~ms mean FAISS search latency on 2.29~million vectors, far
+below the 2{,}000~ms target. However, approximate nearest-neighbor search
+lacks symbolic constraints, necessitating downstream ontology verification.
+
+% ─── III. System Architecture ────────────────────────────────────────────────
+\section{System Architecture}
+
+% TODO: when figures/arch_diagram.pdf is ready, insert the architecture
+% figure float here and restore "Fig.~\ref{fig:arch} shows the high-level
+% pipeline."
+In the high-level pipeline, a query enters the FastAPI service layer
+(v1.0.0), acquires a serialization lock (preventing VRAM contention), and is
+routed through four sequential stages: (A)~hybrid retrieval, (B)~context
+assembly, (C)~generation, (D)~verification. Results are stored in an
+AES-256-GCM encrypted private store~\cite{nist2007aes} keyed per user.
+
+\subsection{Knowledge Index}
+
+\textbf{FAISS vector index.} The offline embedding pipeline encodes
+2{,}294{,}038 document chunks with MedCPT-Article-Encoder (768 dimensions)
+into an IVFpq compressed index (240~MB on disk). The sidecar Parquet file
+stores six metadata fields per chunk: \texttt{chunk\_id}, \texttt{source},
+\texttt{category}, \texttt{faiss\_id}, \texttt{text}, \texttt{byte\_offset}.
+
+Categories indexed: \texttt{lab\_reference}~(1{,}644{,}813 chunks),
+\texttt{guideline}~(257{,}547), \texttt{drug}~(230{,}868),
+\texttt{textbook}~(78{,}921), \texttt{research\_paper}~(76{,}397),
+\texttt{disease}~(4{,}746), \texttt{clinical\_reference}~(746).
+
+\textbf{Kùzu property graph}~\cite{su2023kuzu}. The graph contains 2{,}499{,}528 nodes across
+six node types: \texttt{OntologyTerm}~(178{,}942), \texttt{Disease}~(5{,}072),
+\texttt{Drug}~(4{,}365), \texttt{LabTest}~(1{,}586),
+\texttt{Document}~(15{,}525), and \texttt{Chunk}~(2{,}294{,}038). Nine edge
+types encode clinical relationships: \texttt{IS\_A}~(926{,}132),
+\texttt{RELATED\_TO}~(1{,}003{,}540), \texttt{DRUG\_TREATS}~(21{,}813),
+\texttt{DRUG\_CAUSES}~(80{,}530), \texttt{DRUG\_CAUSES\_SE}~(79{,}103),
+\texttt{HAS\_CHUNK}~(2{,}294{,}038), \texttt{DISEASE\_MAPPED\_TO}~(3{,}652),
+\texttt{DOCUMENT\_MENTIONS}~(8{,}479), and
+\texttt{LABTEST\_RELATED\_TO}~(1{,}833). Disease ontology mapping to UMLS CUI
+OntologyTerms achieved 72.0\% coverage (3{,}652 / 5{,}072 disease nodes,
+target~$\geq$70.0\%).
+
+\subsection{Hybrid Retrieval Engine (Stage A)}
+
+The query is encoded on CPU (MedCPT-Query-Encoder, mean latency 32.8~ms) and
+submitted to the FAISS index (mean 1.1~ms). In parallel, named entities
+seeded from the query are used to expand the Kùzu graph with 1--2-hop
+traversals (mean 12.1~ms). FAISS vector scores and graph-path bonus scores are
+fused via Reciprocal Rank Fusion (RRF) with a graph-boost factor, followed by
+category balancing to ensure diverse evidence:
+
+\begin{equation}
+\mathrm{score}(d) = \sum_{r \in \{\mathrm{faiss},\,\mathrm{graph}\}} \frac{1}{k + \mathrm{rank}_r(d)}, \quad k=60
+\label{eq:rrf}
+\end{equation}
+Eq.~(\ref{eq:rrf}) is used because reciprocal-rank fusion is rank-based rather than score-based, making it robust to the heterogeneous scales produced by FAISS inner-product search and graph hop-count bonuses.
+
+A contamination guard blocks any chunk whose \texttt{chunk\_id} begins with
+\texttt{Medical\_books/MedQA/questions/} or \texttt{MedQA/questions/},
+preventing benchmark question leakage. Across all four ablation runs
+(50 queries each), 26 question chunks were excluded per run.
+
+Mean total retrieval latency: 47.1~ms (well below the 2{,}000~ms budget).
+
+\subsection{Context Assembly and Generation (Stages B--C)}
+
+Top-$k$ chunks ($k=10$) are assembled into a structured prompt with numbered
+evidence labels \texttt{[E1]}--\texttt{[E10]}. The Qwen2.5-7B-Instruct
+Q4\_K\_M GGUF quantized model~\cite{qwen25} performs single-shot generation.
+Temperature is set to 0.0 for deterministic output, confirmed by byte-identical
+SHA-256 hashes on repeated identical queries.
+
+\subsection{Verification Agent (Stage D)}
+
+A LangGraph~\cite{langgraph2024} verification node re-reads the generated
+answer against the retrieved evidence. It assigns a confidence score
+$c \in [0,1]$ and maps it to a tier:
+\texttt{high}~($c \geq 0.75$),
+\texttt{medium}~($0.50 \leq c < 0.75$),
+\texttt{low}~($c < 0.50$),
+\texttt{refused}~(verification verdict or evidence insufficient).
+
+\begin{equation}
+\mathrm{tier}(c) =
+\begin{cases}
+\texttt{high}   & c \ge 0.75 \\
+\texttt{medium} & 0.50 \le c < 0.75 \\
+\texttt{low}    & c < 0.50
+\end{cases}
+\label{eq:tier}
+\end{equation}
+Eq.~(\ref{eq:tier}) is used because it provides three discrete operating points that map directly to frontend visual badges (green / yellow / red), keeping the continuous score interpretable to clinical end-users.
+
+A disclaimer (\emph{``This is information, not medical advice---consult your physician''}) is appended to every non-refused answer. The
+answer status field (\texttt{verified} / \texttt{refused\_or\_unanswered})
+exposes the decision to downstream consumers.
+
+\subsection{Private Store and Security}
+
+Each authenticated user receives an isolated private store directory
+(\texttt{private\_store/<user\_id>/}) encrypted with AES-256-GCM
+\cite{nist2007aes}. Guest users receive an ephemeral store automatically
+purged on logout. Destination isolation is enforced at the API layer:
+cross-user store access returns HTTP~403. All seven Step-11 API security
+criteria passed (7/7).
+
+% ─── IV. Evaluation ──────────────────────────────────────────────────────────
+\section{Evaluation}
+
+\subsection{Benchmark and Metric Definitions}
+
+We evaluate on MedQA-US \cite{jin2021disease}, sampling $N=50$ questions
+(seed~42) from the US licensing examination subset. Multiple-choice options are
+A--D. The contamination guard is active on every run.
+
+Formal metric definitions:
+\begin{itemize}
+  \item \textbf{Answered Rate}: fraction of queries returning a valid option (A--D).
+  \item \textbf{Accuracy (All)}: correct count $/ 50 \times 100$.
+  \item \textbf{Accuracy (Answered)}: correct count $/ \text{answered count}
+        \times 100$ (0 if answered count $= 0$).
+  \item \textbf{Wrong Assertion Rate}: $(\text{answered} - \text{correct})
+        / 50 \times 100$.
+  \item \textbf{Refusal Rate}: fraction of queries returning
+        \texttt{refused\_or\_unanswered}.
+\end{itemize}
+
+\begin{equation}
+\mathrm{WAR} = \frac{\mathrm{answered} - \mathrm{correct}}{N} \times 100
+\label{eq:war}
+\end{equation}
+Eq.~(\ref{eq:war}) is used because it treats refusal as a non-error rather than an incorrect answer, which is the clinically appropriate treatment for a safety-first system.
+
+Wrong-assertion rate is the primary safety metric because it captures the
+probability that a user receives a confidently incorrect answer.
+
+\subsection{Ablation Configurations}
+
+Four configurations are tested in a full $2 \times 2$ factorial design over
+graph traversal and verification agent:
+
+\begin{itemize}
+  \item \textbf{C1 (Full)}: graph traversal ON, verification ON.
+  \item \textbf{C2 (Vector-Only)}: graph traversal OFF, verification ON.
+  \item \textbf{C3 (No-Verify)}: graph traversal ON, verification OFF.
+  \item \textbf{C4 (Baseline)}: graph traversal OFF, verification OFF.
+\end{itemize}
+
+\subsection{Main Results}
+
+Table~\ref{tab:ablation} reports all metrics from evaluation artifact
+\texttt{step12\_part3\_paper\_tables.json} and
+\texttt{step12\_evaluation\_report.md} (N=50, seed~42).
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/tradeoff_chart.pdf}
+\caption{MedQA-US ($N=50$) ablation trade-off: Wrong Assertion Rate vs.\
+Refusal Rate across configurations C1--C4. Source: evaluation artifact
+\texttt{step12\_part3\_paper\_tables.json}.}
+\label{fig:tradeoff}
+\end{figure}
+
+\begin{table*}[t]
+\caption{4-Configuration Ablation on MedQA-US (N=50, seed 42).
+  Source: evaluation artifact \texttt{step12\_part3\_paper\_tables.json}.}
+\label{tab:ablation}
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}llcccccccc@{}}
+\toprule
+\textbf{Config} & \textbf{Name} & \textbf{Graph} & \textbf{Verify} &
+\textbf{Acc.\ All} & \textbf{Acc.\ Ans.} & \textbf{Ans.\ Rate} &
+\textbf{Refusal Rate} & \textbf{Wrong Assert.} & \textbf{Median Lat.}\\
+\midrule
+C1 & C1\_FULL         & \checkmark & \checkmark & 6.00\%  & 33.33\% & 18.00\% & 82.00\% & \textbf{12.00\%} & 15{,}386 ms \\
+C2 & C2\_VECTOR\_ONLY &            & \checkmark & 6.00\%  & 50.00\% & 12.00\% & 88.00\% & \textbf{6.00\%}  & 8{,}768 ms  \\
+C3 & C3\_NO\_VERIFY   & \checkmark &            & 50.00\% & 51.02\% & 98.00\% & 2.00\%  & 48.00\%          & 7{,}702 ms  \\
+C4 & C4\_BASELINE     &            &            & 54.00\% & 55.10\% & 98.00\% & 2.00\%  & 44.00\%          & 2{,}718 ms  \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Analysis}
+
+\textbf{Verification dominates safety.} The wrong-assertion rate drops
+dramatically when the verification agent is active: from 44\% (C4) to 6\% (C2)
+and from 48\% (C3) to 12\% (C1) (Fig.~\ref{fig:tradeoff}). The trade-off is a high refusal rate (82--88\%
+with verification), meaning the system conservatively declines to answer rather
+than guess. This is the clinically correct behavior for a safety-critical
+information system.
+
+\textbf{Graph traversal raises latency and shifts retrieval.} Enabling graph
+traversal increases median latency by approximately 2$\times$ versus the
+vector-only counterpart (C3~vs.~C4: 7{,}702~ms vs.\ 2{,}718~ms; C1~vs.~C2:
+15{,}386~ms vs.\ 8{,}768~ms). Within the verified configurations, adding graph
+traversal (C1 vs.~C2) increases the wrong-assertion rate from 6\% to 12\% with
+higher average citations per answer (9.78 vs.\ 9.18, Table~\ref{tab:provenance}).
+The apparent inversion---graph traversal slightly increasing wrong assertions
+in the verified set---is attributed to graph-retrieved context occasionally
+introducing domain-adjacent but not directly answering evidence, which the
+verifier penalizes, causing borderline answers to be refused. The trade-off
+between graph provenance richness and verifier conservatism merits further study
+with larger $N$.
+
+\textbf{Contamination guard is active.} Across all four runs, exactly 26
+MedQA question chunks were excluded per run, confirmed by the filter proof
+in evaluation artifact \texttt{step12\_part3\_paper\_tables.json}.
+
+\subsection{Provenance and Retrieval Statistics}
+
+Table~\ref{tab:provenance} summarises provenance metrics. Average citations per
+answered query is 9.78 for graph-enabled configurations and 9.18 for
+vector-only, reflecting graph-retrieved additional evidence. Zero LLM judge
+fallback calls were required across all runs (the verifier operates
+deterministically on retrieved evidence).
+
+\begin{table}[h]
+\caption{Provenance and Retrieval Metrics.
+  Source: evaluation artifact \texttt{step12\_part3\_paper\_tables.json}.}
+\label{tab:provenance}
+\centering
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}llccc@{}}
+\toprule
+\textbf{Config} & \textbf{Name} & \textbf{Avg Cite/Ans} &
+\textbf{Excl.\ Chunks} & \textbf{Judge Calls}\\
+\midrule
+C1 & C1\_FULL         & 9.78 & 26 & 0 \\
+C2 & C2\_VECTOR\_ONLY & 9.18 & 26 & 0 \\
+C3 & C3\_NO\_VERIFY   & 9.78 & 26 & 0 \\
+C4 & C4\_BASELINE     & 9.18 & 26 & 0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Graph Traversal Provenance}
+
+Entity-seeded graph traversal was validated with 10 probe queries; 7/10
+(target~$\geq$7/10) reached relevant graph entities. Representative verified
+paths (from evaluation artifact \texttt{step12\_part3\_paper\_tables.json}):
+
+\begin{itemize}
+  \item \textbf{P01} (\emph{warfarin INR monitoring AF}):\\
+        {\footnotesize\ttfamily Disease(Atrial Fibrillation)
+        -[DOCUMENT\_MENTIONS]->\allowbreak
+        Document(PubMed/AF/PMID\_36356656)
+        -[HAS\_CHUNK]->\allowbreak Chunk(...abs)}
+  \item \textbf{P02} (\emph{ACE inhibitor hypertension first line}):\\
+        {\footnotesize\ttfamily
+        Document(NICE/hypertension-...)
+        -[HAS\_CHUNK]->\allowbreak Chunk(...c1)}
+  \item \textbf{P03} (\emph{critical haemoglobin transfusion threshold}):\\
+        {\footnotesize\ttfamily
+        Document(Lab\_rev\_data/\allowbreak Consolidated\_Lab\_\allowbreak
+        Critical\_Values\_\allowbreak Dataset\_CLEANED)
+        -[HAS\_CHUNK]->\allowbreak Chunk(...row3)}
+\end{itemize}
+
+The fused top score for P01 is 0.1774.
+
+% ─── V. Resource Profile ─────────────────────────────────────────────────────
+\section{Resource Profile}
+
+Table~\ref{tab:resources} reports the hardware footprint during the full
+Step-12 ablation evaluation (evaluation artifact
+\texttt{step12\_part3\_paper\_tables.json}).
+
+\begin{table}[h]
+\caption{System Resource Footprint.
+  Source: evaluation artifact \texttt{step12\_part3\_paper\_tables.json}.}
+\label{tab:resources}
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Resource} & \textbf{Measured} & \textbf{Budget}\\
+\midrule
+System Peak RAM    & 3.62 GB     & $\leq$12.0 GB \\
+GPU Peak VRAM      & 4{,}784 MB  & $\leq$5{,}500 MB \\
+FAISS Index Memory & 240 MB      & CPU \\
+Kùzu Graph Memory  & 180 MB      & CPU (mmap) \\
+LLM Instances      & 1 (serial)  & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Step-11 API evaluation (evaluation artifact \texttt{step11\_api\_report.json})
+recorded peak RAM of 2.76~GB and peak VRAM of 4{,}784~MB across a 7-probe
+evaluation suite totalling 61{,}349~ms wall time. Cold-query latency was
+13{,}675~ms; warm-query latency was 3{,}667~ms (LLM weights resident in VRAM).
+
+The Step-13 feature-layer evaluation (evaluation artifact
+\texttt{step13\_features\_report.md}) recorded peak RAM of
+3.93~GB and VRAM of 4{,}776~MB over 176.68~s execution time, all within
+budget.
+
+\textbf{Reproducibility.} Every quantitative value in this paper is extracted
+verbatim from the authors' evaluation artifacts (JSON/Markdown logs produced
+by the probe suites), e.g.\ \texttt{step12\_part3\_paper\_tables.json},
+\texttt{step11\_api\_report.json}, and \texttt{step13\_features\_report.md};
+no value was recomputed for the manuscript. These artifacts accompany the
+submission and will be published with the camera-ready.
+
+\subsection{Operational Feasibility}
+Table~\ref{tab:latency} reports the per-component latency breakdown for a
+typical warm \texttt{/query} invocation, measured from the
+\texttt{latency\_breakdown} field of the API response.
+
+\begin{table}[h]
+\caption{Per-Component Query Latency (Warm State), single warm
+  \texttt{/query} invocation; the ablation-wide retrieval mean is 47.1~ms.
+  Source: \texttt{API\_DOCUMENTATION.md} Section~8.}
+\label{tab:latency}
+\centering
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+\textbf{Component} & \textbf{Latency (ms)} & \textbf{Throughput (req/s)}\\
+\midrule
+Router                   &      0.45    & 2{,}222.2 \\
+Retrieval (FAISS + K\`{u}zu) & 115.20   &      8.7 \\
+Context assembly         &      4.10    &    243.9 \\
+LLM synthesis            &  4{,}820.50  &      0.21 \\
+Verification             &  1{,}120.30  &      0.89 \\
+\midrule
+\textbf{Total}           &  \textbf{6{,}060.55} & \textbf{0.17} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The LLM synthesis stage dominates the pipeline (79.5\% of total latency),
+confirming that the serialization lock and lazy-load strategy are the correct
+design choices for a 6~GB consumer GPU.
+
+% ─── VI. Feature Layer ───────────────────────────────────────────────────────
+\section{Feature Layer}
+
+Beyond core QA, MedGraphRAG exposes three clinical utilities, validated at
+13/13 evaluation criteria in evaluation artifact \texttt{step13\_features\_report.md}.
+
+\subsection{MedTrend: Longitudinal Laboratory Trajectory}
+
+\texttt{POST /api/v1/features/trend} accepts a patient's lab-value time
+series, classifies each biomarker as \emph{worsening}, \emph{improving}, or
+\emph{stable}, and computes a rate of change per month. Significance is
+flagged when a value crosses a reference threshold. In the Step-13 evaluation:
+Creatinine trended from 97.24 to 167.96~$\mu$mol/L ($+22.90$/month, worsening;
+crossed upper threshold 115.0); HbA1c from 6.9\% to 7.8\%
+($+0.29$/month, worsening). Graph-derived causal candidates
+(\texttt{LabTest(Creatinine) -[LABTEST\_RELATED\_TO]-> Disease(Chronic Kidney
+Disease)}) are returned alongside numerical results.
+
+\subsection{CareGap: Guideline Reconciliation}
+
+\texttt{POST /api/v1/features/caregap} maps patient conditions to
+evidence-based guidelines and identifies missing or out-of-target checks. In
+the Step-13 evaluation for a patient with Type~2 Diabetes and Hypertension:
+HbA1c was flagged out-of-target at 8.2\% (guideline: $<$7.0\% for most
+non-pregnant adults, source: PMC9107726); creatinine, urine albumin, and renal
+function checks were flagged as missing per NICE chronic kidney disease
+guidelines~\cite{niceguidelines2024, who2023}. All gaps include PMID/NICE
+provenance.
+
+\subsection{CoverageMap: Sub-Question Evidence Coverage}
+
+\texttt{POST /api/v1/features/coverage} decomposes a query into sub-questions
+and reports retrieval coverage per sub-question. Letting $s$ denote
+a sub-question's top fused score and $d$ its distinct document count, coverage
+classes are assigned by:
+
+\begin{equation}
+\mathrm{class}(q) =
+\begin{cases}
+\texttt{strong}  & s \ge 0.12 \wedge d \ge 2 \\
+\texttt{partial} & 0.03 \le s < 0.12 \vee (s \ge 0.12 \wedge d = 1) \\
+\texttt{none}    & s < 0.03 \vee d = 0
+\end{cases}
+\label{eq:coverage}
+\end{equation}
+Eq.~(\ref{eq:coverage}) is used because it distinguishes between well-supported,
+partially-supported, and unsupported sub-questions, enabling the frontend to
+offer rephrasing suggestions only where retrieval is weak.
+
+For \emph{``warfarin INR monitoring guidelines atrial fibrillation''}, both
+sub-questions achieved \texttt{strong} coverage (top fused score 0.1774, 10
+distinct documents). For \emph{``potassium hyperkalemia ECG changes peaked T
+waves treatment''}, all three sub-questions achieved \texttt{strong} coverage
+(top fused scores 0.1777--0.1783, 10 distinct documents each).
+
+% ─── VII. API and Security ───────────────────────────────────────────────────
+\section{API and Security Design}
+
+The FastAPI service (v1.0.0) exposes a versioned REST interface under
+\texttt{/api/v1}. Authentication uses JWT bearer tokens; guest tokens are
+ephemeral and auto-purged on logout (verified in Step-11 evaluation:
+\texttt{store\_path\_deleted\_after\_logout: true}). Parallel query
+serialization is enforced by an asyncio lock; in the Step-11 proof,
+Request~A (5{,}541~ms) and Request~B (10{,}637~ms) serialized correctly with
+a total wall time of 10{,}647~ms. Destination isolation returns HTTP~403 for
+cross-user store access (1.10~ms, response size 117~bytes). The health
+endpoint responds in $<$2~ms at both cold and warm states.
+
+% ─── VIII. Discussion ────────────────────────────────────────────────────────
+\section{Discussion}
+
+\textbf{Safety-first trade-off.} The 82--88\% refusal rate of the full
+verified system will appear unfavourable in accuracy-centric leaderboards.
+We argue this is a feature, not a defect: for a clinical information tool
+operating on a 50-question USMLE sample without access to the full medical
+knowledge necessary to answer every question, conservatively refusing is
+the correct response. The wrong-assertion rate of 12\% (C1) versus 44\%
+(C4 baseline) demonstrates that the verification layer is the primary
+safety mechanism.
+
+\textbf{Graph traversal utility.} In our ablation, graph traversal did not
+improve Accuracy~(All) within verified configurations (both C1 and C2 achieve
+6.00\%), but it consistently increased citation richness (9.78 vs.\ 9.18 avg
+citations). Graph paths provide interpretable provenance that pure dense
+retrieval cannot: a clinical reviewer can trace an answer to a specific
+entity-relationship path, not merely a similarity score. This interpretability
+property is essential for regulatory acceptance of AI-assisted clinical decision
+support.
+
+\textbf{Limitations.} The evaluation uses $N=50$ questions, which limits
+statistical power. The LLM (Qwen2.5-7B) is not fine-tuned on medical data,
+and the high refusal rate partly reflects the model's calibration on general
+instruction-following data rather than clinical question answering. Scaling
+to $N=500$ and fine-tuned models is a natural extension. The latency of the
+full verified system (15{,}386~ms median) is above the 10~s threshold
+comfortable for interactive use; graph traversal optimization and batched
+verification are future work.
+
+\textbf{Broader impact.} MedGraphRAG is designed as a patient-safety system,
+not a diagnosis engine. Every response carries a mandatory disclaimer and
+never claims diagnostic authority. The AES-256-GCM encrypted private store
+ensures patient data confidentiality at rest. All feature-layer evaluations
+used synthetic fixture reports; no real patient data was processed.
+
+% ─── IX. Conclusion ──────────────────────────────────────────────────────────
+\section{Conclusion}
+
+We presented MedGraphRAG, a self-verifying graph-augmented RAG system for
+medical question answering deployable on consumer hardware. Our ablation study
+demonstrated that a LangGraph verification agent reduces the clinically
+critical wrong-assertion rate from 44\% (vector-baseline) to 12\% (full
+system) on MedQA-US ($N=50$). The hybrid FAISS+Kùzu retrieval pipeline achieves
+47.1~ms mean retrieval latency over a 2.29M-vector index. The complete system
+operates within 3.62~GB peak RAM and 4{,}784~MB VRAM, enabling deployment on
+commodity clinical workstations. Three validated feature-layer utilities provide
+longitudinal trend analysis, guideline reconciliation, and evidence coverage
+mapping. While current evaluation is constrained to single-turn benchmarks and
+serialized single-GPU execution, future work will expand multi-turn clinician
+workflows and distributed graph partitioning. Source code, evaluation scripts,
+and all JSON evaluation artifacts will be released publicly upon acceptance.
+
+% ─── Acknowledgements ────────────────────────────────────────────────────────
+\section*{Acknowledgements}
+
+The authors thank Karunya Institute of Technology and Sciences for providing
+compute access and the open-source communities behind FAISS, Kùzu, LangChain,
+and Hugging Face for making this research reproducible on consumer hardware.
+
+% ─── References ──────────────────────────────────────────────────────────────
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
