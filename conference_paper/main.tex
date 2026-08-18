@@ -21,13 +21,13 @@ for Explainable Clinical Report Understanding on Consumer Hardware}
 
 \author{
 \IEEEauthorblockN{Dickson E}
-\IEEEauthorblockA{\textit{Department of Artificial Intelligence and Data Science}\\
+\IEEEauthorblockA{\textit{School of CST}\\
 \textit{Karunya Institute of Tech. and Sci.}\\
 Coimbatore, India\\
 dicksone@karunya.edu.in}
 \and
-\IEEEauthorblockN{Antony Taurshia A}
-\IEEEauthorblockA{\textit{Department of Artificial Intelligence and Data Science}\\
+\IEEEauthorblockN{Antony Taurshia}
+\IEEEauthorblockA{\textit{School of CST}\\
 \textit{Karunya Institute of Tech. and Sci.}\\
 Coimbatore, India\\
 antonytaurshia@karunya.edu}
@@ -183,30 +183,30 @@ required for clinical deployment.
 % ─── Comparison Table ────────────────────────────────────────────────────────
 
 \begin{table}[ht]
-\caption{Feature comparison across retrieval systems. ✓~=~fully supported;
-  ✗~=~absent or not demonstrated.}
+\caption{Feature comparison across retrieval systems. $\checkmark$~=~fully supported;
+  $\times$~=~absent or not demonstrated.}
 \label{tab:compare}
 \centering
-\renewcommand{\arraystretch}{1.1}
-\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{5pt}
 \begin{tabular}{@{}lcccccc@{}}
 \toprule
 \textbf{Capability} &
-\rotatebox{70}{\textbf{RAG~\cite{lewis2020retrieval}}} &
-\rotatebox{70}{\textbf{FiD~\cite{izacard2021leveraging}}} &
-\rotatebox{70}{\textbf{MH-DR~\cite{xiong2021answering}}} &
-\rotatebox{70}{\textbf{GraphRAG~\cite{edge2024local}}} &
-\rotatebox{70}{\textbf{Self-RAG~\cite{asai2024selfrag}}} &
-\rotatebox{70}{\textbf{Ours}} \\
+\rotatebox{60}{\textbf{RAG~\cite{lewis2020retrieval}}} &
+\rotatebox{60}{\textbf{FiD~\cite{izacard2021leveraging}}} &
+\rotatebox{60}{\textbf{MH-DR~\cite{xiong2021answering}}} &
+\rotatebox{60}{\textbf{GraphRAG~\cite{edge2024local}}} &
+\rotatebox{60}{\textbf{Self-RAG~\cite{asai2024selfrag}}} &
+\rotatebox{60}{\textbf{Ours}} \\[\normalbaselineskip]
 \midrule
-Hybrid vector+graph  & ✗ & ✗ & ✗ & ✓ & ✗ & ✓ \\
-Claim-level verify   & ✗ & ✗ & ✗ & ✗ & ✓ & ✓ \\
-Structured refusal   & ✗ & ✗ & ✗ & ✗ & ✗ & ✓ \\
-Graph provenance     & ✗ & ✗ & ✗ & ✓ & ✗ & ✓ \\
-Contamination guard  & ✗ & ✗ & ✗ & ✗ & ✗ & ✓ \\
-Encrypted data store & ✗ & ✗ & ✗ & ✗ & ✗ & ✓ \\
-Longitudinal analytics & ✗ & ✗ & ✗ & ✗ & ✗ & ✓ \\
-Consumer-GPU deploy  & ✗ & ✗ & ✗ & ✗ & ✗ & ✓ \\
+Hybrid vector+graph    & $\times$ & $\times$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ \\
+Claim-level verify     & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+Structured refusal     & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Graph provenance       & $\times$ & $\times$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ \\
+Contamination guard    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Encrypted data store   & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Longitudinal analytics & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Consumer-GPU deploy    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -214,10 +214,14 @@ Consumer-GPU deploy  & ✗ & ✗ & ✗ & ✗ & ✗ & ✓ \\
 % ─── III. System Architecture ────────────────────────────────────────────────
 \section{System Architecture}
 
-% TODO: when figures/arch_diagram.pdf is ready, insert the architecture
-% figure float here and restore "Fig.~\ref{fig:arch} shows the high-level
-% pipeline."
-In the high-level pipeline, a query enters the FastAPI service layer
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/MedGraphRag-Architecture.jpg}
+\caption{MedGraphRAG end-to-end system architecture: a query enters the FastAPI service layer (v1.0.0), acquires a serialization lock, and is routed through (A)~hybrid retrieval, (B)~context assembly, (C)~LLM generation, and (D)~LangGraph verification, with results stored in the AES-256-GCM encrypted private store.}
+\label{fig:arch}
+\end{figure}
+
+Fig.~\ref{fig:arch} shows the high-level pipeline: a query enters the FastAPI service layer
 (v1.0.0), acquires a serialization lock (preventing VRAM contention), and is
 routed through four sequential stages: (A)~hybrid retrieval, (B)~context
 assembly, (C)~generation, (D)~verification. Results are stored in an
@@ -685,7 +689,17 @@ For a clinical information tool operating on a 50-question USMLE sample
 without access to the full medical knowledge necessary to answer every
 question, refusing is the correct response. The wrong-assertion rate of 12\%
 (C1) versus 44\% (C4 baseline) shows that the verification layer is the
-primary safety mechanism.
+primary safety mechanism (Fig.~\ref{fig:disposition}).
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/disposition_chart.pdf}
+\caption{Per-configuration outcome disposition on MedQA-US ($N=50$): counts
+of correct, wrong-asserted, and refused queries. Verification shifts outcomes
+from wrong assertions toward structured refusals. Source: evaluation artifact
+\texttt{step12\_part3\_paper\_tables.json}.}
+\label{fig:disposition}
+\end{figure}
 
 \textbf{Graph traversal utility.} In our ablation, graph traversal did not
 improve Accuracy~(All) within verified configurations (both C1 and C2 achieve
