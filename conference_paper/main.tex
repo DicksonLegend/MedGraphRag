@@ -39,12 +39,13 @@ antonytaurshia@karunya.edu}
 
 % ─── Abstract ────────────────────────────────────────────────────────────────
 \begin{abstract}
-MedGraphRAG is a self-verifying hybrid graph-RAG system for medical question
-answering on consumer hardware, combining dense vector retrieval with a
-biomedical knowledge graph and a claim-level verification agent.
-Prior medical RAG systems report accuracy on answered questions but
-rarely handle insufficient evidence; we treat confidently wrong assertions as
-the primary failure mode and structure the system to refuse rather than guess.
+Confidently wrong assertions in clinical decision support can cause direct
+patient harm, yet most deployed medical RAG systems still report accuracy
+only over answered questions and rarely handle insufficient evidence. This
+paper presents MedGraphRAG, a self-verifying hybrid graph-RAG system for
+medical question answering and explainable clinical report understanding on
+consumer hardware, in which a claim-level verification agent refuses rather
+than guesses when retrieved evidence is insufficient.
 The system fuses a 2.29-million-vector FAISS index (MedCPT embeddings, 768
 dimensions) with a 2.50-million-node K\`{u}zu property graph encoding disease,
 drug, and laboratory ontologies. A LangGraph verification agent post-processes
