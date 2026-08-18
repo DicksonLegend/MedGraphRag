@@ -10,6 +10,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{booktabs}
+\usepackage{float}
 \usepackage{multirow}
 \usepackage{url}
 \usepackage{hyperref}
@@ -182,7 +183,7 @@ required for clinical deployment.
 
 % ─── Comparison Table ────────────────────────────────────────────────────────
 
-\begin{table}[ht]
+\begin{table}[!t]
 \caption{Feature comparison across retrieval systems. $\checkmark$~=~fully supported;
   $\times$~=~absent or not demonstrated.}
 \label{tab:compare}
@@ -214,7 +215,7 @@ Consumer-GPU deploy    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & 
 % ─── III. System Architecture ────────────────────────────────────────────────
 \section{System Architecture}
 
-\begin{figure}[!t]
+\begin{figure}[H]
 \centering
 \includegraphics[width=\columnwidth]{figures/MedGraphRag-Architecture.jpg}
 \caption{MedGraphRAG end-to-end system architecture: a query enters the FastAPI service layer (v1.0.0), acquires a serialization lock, and is routed through (A)~hybrid retrieval, (B)~context assembly, (C)~LLM generation, and (D)~LangGraph verification, with results stored in the AES-256-GCM encrypted private store.}
@@ -374,7 +375,7 @@ that guesses confidently. Wrong-assertion rate is the primary safety metric.
 
 Table~\ref{tab:corpus} summarizes the corpus and graph construction.
 
-\begin{table}[ht]
+\begin{table}[!t]
 \caption{Corpus composition and graph summary.
   Source: evaluation artifact step12\_part3\_paper\_tables.json.}
 \label{tab:corpus}
@@ -418,7 +419,7 @@ Table~\ref{tab:ablation} reports all metrics from evaluation artifact
 step12\_part3\_paper\_tables.json and step12\_evaluation\_report.md
 (N=50, seed~42).
 
-\begin{table*}[t]
+\begin{table*}[!t]
 \caption{4-Configuration Ablation on MedQA-US (N=50, seed 42).
   Source: evaluation artifact step12\_part3\_paper\_tables.json.}
 \label{tab:ablation}
@@ -448,7 +449,7 @@ refusal rate (82--88\% with verification), meaning the system declines to
 answer rather than guess. This is the correct behavior for a safety-critical
 clinical information system.
 
-\begin{figure}[!t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/tradeoff_chart.pdf}
 \caption{Safety frontier on MedQA-US ($N=50$, seed 42): wrong-assertion rate
@@ -484,7 +485,7 @@ vector-only, reflecting additional graph-retrieved evidence. Zero LLM judge
 fallback calls were required across all runs (the verifier operates
 deterministically on retrieved evidence).
 
-\begin{table}[ht]
+\begin{table}[!t]
 \caption{Provenance and Retrieval Metrics.
   Source: evaluation artifact step12\_part3\_paper\_tables.json.}
 \label{tab:provenance}
@@ -511,14 +512,15 @@ Entity-seeded graph traversal was validated with 10 probe queries; 7/10
 paths (evaluation artifact step12\_part3\_paper\_tables.json):
 
 \begin{itemize}
-  \item \textbf{P01} (\emph{warfarin INR monitoring AF}):\\
-        Disease(Atrial Fibrillation) $\rightarrow$
-        Document(PubMed/AF/PMID\_36356656) $\rightarrow$ Chunk(...abs)
-  \item \textbf{P02} (\emph{ACE inhibitor hypertension first line}):\\
-        Document(NICE/hypertension-...) $\rightarrow$ Chunk(...c1)
-  \item \textbf{P03} (\emph{critical haemoglobin transfusion threshold}):\\
-        Document(Lab\_rev\_data/Consolidated\_Lab\_Critical\_Values\_Dataset\_CLEANED)
-        $\rightarrow$ Chunk(...row3)
+\item \textbf{P01} (\emph{warfarin INR monitoring AF}):\\
+{\footnotesize Disease(Atrial Fibrillation) $\rightarrow$
+Document(PubMed/AF/\\ PMID\_36356656) $\rightarrow$ Chunk(...abs)}
+\item \textbf{P02} (\emph{ACE inhibitor hypertension first line}):\\
+{\footnotesize Document(NICE/hypertension-...) $\rightarrow$ Chunk(...c1)}
+\item \textbf{P03} (\emph{critical haemoglobin transfusion threshold}):\\
+{\footnotesize Document(Lab\_rev\_data/\\
+Consolidated\_Lab\_Critical\_Values\_\\
+Dataset\_CLEANED) $\rightarrow$ Chunk(...row3)}
 \end{itemize}
 
 The fused top score for P01 is 0.1774.
@@ -530,7 +532,7 @@ Table~\ref{tab:resources} reports the hardware footprint during the full
 Step-12 ablation evaluation (evaluation artifact
 step12\_part3\_paper\_tables.json).
 
-\begin{table}[ht]
+\begin{table}[!t]
 \caption{System Resource Footprint.
   Source: evaluation artifact step12\_part3\_paper\_tables.json.}
 \label{tab:resources}
@@ -558,7 +560,7 @@ The Step-13 feature-layer evaluation (evaluation artifact
 step13\_features\_report.md) recorded peak RAM of 3.93~GB and VRAM of
 4{,}776~MB over 176.68~s execution time, all within budget (Fig.~\ref{fig:resource}).
 
-\begin{figure}[!t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/resource_chart.pdf}
 \caption{Consumer-hardware resource footprint (measured vs.\ budget) across
@@ -584,7 +586,7 @@ Table~\ref{tab:latency} reports the per-component latency breakdown for a
 typical warm /query invocation, measured from the latency\_breakdown field
 of the API response.
 
-\begin{table}[ht]
+\begin{table}[!t]
 \caption{Per-Component Query Latency (Warm State), single warm
   /query invocation; the ablation-wide retrieval mean is 47.1~ms.
   Source: API\_DOCUMENTATION.md Section~8.}
@@ -615,6 +617,16 @@ design choices for a 6~GB consumer GPU.
 
 Beyond core QA, MedGraphRAG exposes three clinical utilities, validated at
 13/13 evaluation criteria in evaluation artifact step13\_features\_report.md.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=\textwidth]{figures/coverage_heatmap.pdf}
+\caption{Sub-question evidence coverage for the two feature-layer queries:
+top fused score, distinct document count, and coverage class for each of the
+five atomic sub-questions (all classified \texttt{strong}). Source:
+evaluation artifact \texttt{step13\_features\_report.json}.}
+\label{fig:coverage}
+\end{figure*}
 
 \subsection{MedTrend: Longitudinal Laboratory Trajectory}
 
@@ -665,16 +677,6 @@ documents). For \emph{``potassium hyperkalemia ECG changes peaked T waves
 treatment''}, all three sub-questions achieved strong coverage (top fused
 scores 0.1777--0.1783, 10 distinct documents each) (Fig.~\ref{fig:coverage}).
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=\columnwidth]{figures/coverage_heatmap.pdf}
-\caption{Sub-question evidence coverage for the two feature-layer queries:
-top fused score, distinct document count, and coverage class for each of the
-five atomic sub-questions (all classified \texttt{strong}). Source:
-evaluation artifact \texttt{step13\_features\_report.json}.}
-\label{fig:coverage}
-\end{figure}
-
 % ─── VII. API and Security ───────────────────────────────────────────────────
 \section{API and Security Design}
 
@@ -698,7 +700,7 @@ question, refusing is the correct response. The wrong-assertion rate of 12\%
 (C1) versus 44\% (C4 baseline) shows that the verification layer is the
 primary safety mechanism (Fig.~\ref{fig:disposition}).
 
-\begin{figure}[!t]
+\begin{figure}[!htbp]
 \centering
 \includegraphics[width=\columnwidth]{figures/disposition_chart.pdf}
 \caption{Per-configuration outcome disposition on MedQA-US ($N=50$): counts
