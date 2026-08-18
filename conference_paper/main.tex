@@ -238,13 +238,15 @@ AES-256-GCM encrypted private store~\cite{nist2007aes} keyed per user.
 
 \subsection{Knowledge Index}
 
-\textbf{FAISS vector index.} The offline embedding pipeline encodes
+\noindent\textbf{i) FAISS vector index.}\\*
+The offline embedding pipeline encodes
 2{,}294{,}038 document chunks with MedCPT-Article-Encoder (768 dimensions)
 into an IVFpq compressed index (240~MB on disk). Each chunk carries six
 metadata fields: chunk\_id, source, category, faiss\_id, text, byte\_offset.
 Seven corpus categories are indexed (see Table~\ref{tab:corpus} in §IV).
 
-\textbf{K\`{u}zu property graph}~\cite{su2023kuzu}. The graph contains
+\noindent\textbf{ii) K\`{u}zu property graph}~\cite{su2023kuzu}.\\*
+The graph contains
 2{,}499{,}528 nodes across six node types: OntologyTerm~(178{,}942),
 Disease~(5{,}072), Drug~(4{,}365), LabTest~(1{,}586),
 Document~(15{,}525), and Chunk~(2{,}294{,}038). Nine edge types encode
@@ -438,7 +440,8 @@ C4 & C4\_BASELINE     &            &            & 54.00\% & 55.10\% & 98.00\% & 
 
 \subsection{Analysis}
 
-\textbf{Verification dominates safety.} The wrong-assertion rate drops
+\noindent\textbf{i) Verification dominates safety.}\\*
+The wrong-assertion rate drops
 dramatically when the verification agent is active: from 44\% (C4) to 6\% (C2)
 and from 48\% (C3) to 12\% (C1) (Fig.~\ref{fig:tradeoff}). The cost is a high
 refusal rate (82--88\% with verification), meaning the system declines to
@@ -456,7 +459,8 @@ verified configurations fall inside it. Source: evaluation artifact
 \label{fig:tradeoff}
 \end{figure}
 
-\textbf{Graph traversal raises latency and shifts retrieval.} Enabling graph
+\noindent\textbf{ii) Graph traversal raises latency and shifts retrieval.}\\*
+Enabling graph
 traversal roughly doubles median latency versus the vector-only counterpart
 (C3~vs.~C4: 7{,}702~ms vs.\ 2{,}718~ms; C1~vs.~C2: 15{,}386~ms
 vs.\ 8{,}768~ms). Within the verified configurations, adding graph traversal
@@ -467,7 +471,8 @@ domain-adjacent evidence, which the verifier penalizes, causing borderline
 answers to be refused. The trade-off between provenance richness and verifier
 conservatism merits study with larger $N$.
 
-\textbf{Contamination guard is active.} Across all four runs, exactly 26
+\noindent\textbf{iii) Contamination guard is active.}\\*
+Across all four runs, exactly 26
 MedQA question chunks were excluded per run, confirmed by the filter proof
 in evaluation artifact step12\_part3\_paper\_tables.json.
 
@@ -565,7 +570,8 @@ single RTX~3050 6~GB card. Sources: evaluation artifacts
 \label{fig:resource}
 \end{figure}
 
-\textbf{Reproducibility.} Every quantitative value in this paper is extracted
+\noindent\textbf{i) Reproducibility.}\\*
+Every quantitative value in this paper is extracted
 verbatim from the authors' evaluation artifacts (JSON/Markdown logs produced
 by the probe suites), e.g.\ step12\_part3\_paper\_tables.json,
 step11\_api\_report.json, and step13\_features\_report.md;
@@ -683,7 +689,8 @@ cold and warm states. All 7/7 Step-11 API security criteria passed.
 % ─── VIII. Discussion ────────────────────────────────────────────────────────
 \section{Discussion}
 
-\textbf{Safety-first trade-off.} The 82--88\% refusal rate of the full
+\noindent\textbf{i) Safety-first trade-off.}\\*
+The 82--88\% refusal rate of the full
 verified system will appear unfavorable in accuracy-centric leaderboards.
 For a clinical information tool operating on a 50-question USMLE sample
 without access to the full medical knowledge necessary to answer every
@@ -701,14 +708,16 @@ from wrong assertions toward structured refusals. Source: evaluation artifact
 \label{fig:disposition}
 \end{figure}
 
-\textbf{Graph traversal utility.} In our ablation, graph traversal did not
+\noindent\textbf{ii) Graph traversal utility.}\\*
+In our ablation, graph traversal did not
 improve Accuracy~(All) within verified configurations (both C1 and C2 achieve
 6.00\%), but it consistently increased citation richness (9.78 vs.\ 9.18 avg
 citations). Graph paths provide interpretable provenance that dense retrieval
 cannot: a clinical reviewer can trace an answer to a specific
 entity-relationship path, not merely a similarity score.
 
-\textbf{Limitations.} The evaluation uses $N=50$ questions, which limits
+\noindent\textbf{iii) Limitations.}\\*
+The evaluation uses $N=50$ questions, which limits
 statistical power. The LLM (Qwen2.5-7B) is not fine-tuned on medical data,
 and the high refusal rate partly reflects the model's calibration on general
 instruction-following data rather than clinical question answering. Scaling
@@ -717,7 +726,8 @@ full verified system (15{,}386~ms median) is above the 10~s threshold
 comfortable for interactive use; graph traversal optimization and batched
 verification are future work.
 
-\textbf{Broader impact.} MedGraphRAG is designed as a patient-safety system,
+\noindent\textbf{iv) Broader impact.}\\*
+MedGraphRAG is designed as a patient-safety system,
 not a diagnosis engine. Every response carries a mandatory disclaimer and
 never claims diagnostic authority. The AES-256-GCM encrypted private store
 ensures patient data confidentiality at rest. All feature-layer evaluations
