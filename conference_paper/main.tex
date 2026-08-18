@@ -339,15 +339,6 @@ access returns HTTP~403. All seven Step-11 API security criteria passed (7/7).
 % ─── IV. Evaluation ──────────────────────────────────────────────────────────
 \section{Evaluation}
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=\columnwidth]{figures/tradeoff_chart.pdf}
-\caption{MedQA-US ($N=50$) ablation trade-off: Wrong Assertion Rate vs.\
-Refusal Rate across configurations C1--C4. Source: evaluation artifact
-step12\_part3\_paper\_tables.json.}
-\label{fig:tradeoff}
-\end{figure}
-
 \subsection{Benchmark and Metric Definitions}
 
 We evaluate on MedQA-US \cite{jin2021disease}, sampling $N=50$ questions
@@ -452,11 +443,13 @@ clinical information system.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=\columnwidth]{figures/disposition_chart.pdf}
-\caption{Per-configuration breakdown: correct / wrong-asserted / refused
-  query counts ($N=50$). Source: evaluation artifact
-  step12\_part3\_paper\_tables.json.}
-\label{fig:disposition}
+\includegraphics[width=\columnwidth]{figures/tradeoff_chart.pdf}
+\caption{Safety frontier on MedQA-US ($N=50$, seed 42): wrong-assertion rate
+vs.\ refusal rate per ablation configuration. The shaded area marks the safe
+operating region (refusal $\geq 70\%$, wrong assertion $\leq 15\%$); only the
+verified configurations fall inside it. Source: evaluation artifact
+\texttt{step12\_part3\_paper\_tables.json}.}
+\label{fig:tradeoff}
 \end{figure}
 
 \textbf{Graph traversal raises latency and shifts retrieval.} Enabling graph
@@ -469,9 +462,6 @@ The inversion is attributed to graph-retrieved context occasionally introducing
 domain-adjacent evidence, which the verifier penalizes, causing borderline
 answers to be refused. The trade-off between provenance richness and verifier
 conservatism merits study with larger $N$.
-
-Fig.~\ref{fig:disposition} shows the per-configuration count breakdown
-(correct / wrong-asserted / refused) across all 50 queries.
 
 \textbf{Contamination guard is active.} Across all four runs, exactly 26
 MedQA question chunks were excluded per run, confirmed by the filter proof
@@ -557,19 +547,19 @@ evaluation suite totalling 61{,}349~ms wall time. Cold-query latency was
 
 The Step-13 feature-layer evaluation (evaluation artifact
 step13\_features\_report.md) recorded peak RAM of 3.93~GB and VRAM of
-4{,}776~MB over 176.68~s execution time, all within budget.
+4{,}776~MB over 176.68~s execution time, all within budget (Fig.~\ref{fig:resource}).
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=\columnwidth]{figures/resource_chart.pdf}
-\caption{Peak RAM and VRAM across evaluation phases (Steps 11, 12, 13) vs.\
-  hardware budgets. Source: evaluation artifacts step11\_api\_report.json,
-  step12\_part3\_paper\_tables.json, step13\_features\_report.md.}
+\caption{Consumer-hardware resource footprint (measured vs.\ budget) across
+five axes: peak RAM, peak VRAM, FAISS index memory, Kùzu graph memory, and
+serialized LLM instances; all measured values remain within budget on a
+single RTX~3050 6~GB card. Sources: evaluation artifacts
+\texttt{step12\_part3\_paper\_tables.json}, \texttt{step11\_api\_report.json},
+\texttt{step13\_features\_report.md}.}
 \label{fig:resource}
 \end{figure}
-
-Fig.~\ref{fig:resource} plots measured RAM and VRAM across the three evaluation
-phases against the hardware budgets. All phases remain within budget.
 
 \textbf{Reproducibility.} Every quantitative value in this paper is extracted
 verbatim from the authors' evaluation artifacts (JSON/Markdown logs produced
@@ -663,7 +653,17 @@ For \emph{``warfarin INR monitoring guidelines atrial fibrillation''}, both
 sub-questions achieved strong coverage (top fused score 0.1774, 10 distinct
 documents). For \emph{``potassium hyperkalemia ECG changes peaked T waves
 treatment''}, all three sub-questions achieved strong coverage (top fused
-scores 0.1777--0.1783, 10 distinct documents each).
+scores 0.1777--0.1783, 10 distinct documents each) (Fig.~\ref{fig:coverage}).
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/coverage_heatmap.pdf}
+\caption{Sub-question evidence coverage for the two feature-layer queries:
+top fused score, distinct document count, and coverage class for each of the
+five atomic sub-questions (all classified \texttt{strong}). Source:
+evaluation artifact \texttt{step13\_features\_report.json}.}
+\label{fig:coverage}
+\end{figure}
 
 % ─── VII. API and Security ───────────────────────────────────────────────────
 \section{API and Security Design}
