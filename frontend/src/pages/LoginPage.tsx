@@ -128,7 +128,7 @@ export const LoginPage: React.FC = () => {
         <button
           type="button"
           onClick={toggleTheme}
-          className="group p-2 rounded-full bg-card/85 backdrop-blur-xl border border-card-border text-ink hover:text-brand hover:scale-105 active:scale-95 transition-all shadow-xs cursor-pointer"
+          className="group p-2 rounded-full bg-card/85 backdrop-blur-xl border border-card-border text-ink hover:text-brand hover:scale-105 active:scale-95 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-hidden transition-all shadow-xs cursor-pointer"
           title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
           aria-label="Toggle Theme"
         >
@@ -159,6 +159,7 @@ export const LoginPage: React.FC = () => {
           <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-brand-surface border border-brand-border text-[9px] sm:text-[10px] font-mono font-semibold text-brand tracking-wider uppercase shadow-xs">
             <Sparkles className="w-2.5 h-2.5 text-brand" />
             <span>Self-Verifying Clinical AI</span>
+            <span className="text-[8px] opacity-75 font-mono px-1 py-0.2 rounded bg-brand/10 border border-brand/20">v1.0.0</span>
           </div>
         </div>
 
@@ -195,7 +196,7 @@ export const LoginPage: React.FC = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   autoComplete="username"
-                  className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-card-border bg-canvas text-ink text-xs sm:text-sm font-mono placeholder:text-ink-subtle/60 focus:bg-card focus:border-brand focus:ring-2 focus:ring-brand/20 outline-hidden transition-all shadow-2xs"
+                  className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-card-border bg-canvas text-ink text-xs sm:text-sm font-mono placeholder:text-ink-subtle/60 focus:bg-card focus:border-brand focus:ring-2 focus:ring-brand focus-visible:outline-hidden transition-all shadow-2xs"
                   placeholder="demo_user or admin"
                 />
               </div>
@@ -222,13 +223,13 @@ export const LoginPage: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="w-full pl-9 pr-9 py-2 rounded-xl border border-card-border bg-canvas text-ink text-xs sm:text-sm font-mono placeholder:text-ink-subtle/60 focus:bg-card focus:border-brand focus:ring-2 focus:ring-brand/20 outline-hidden transition-all shadow-2xs"
+                  className="w-full pl-9 pr-9 py-2 rounded-xl border border-card-border bg-canvas text-ink text-xs sm:text-sm font-mono placeholder:text-ink-subtle/60 focus:bg-card focus:border-brand focus:ring-2 focus:ring-brand focus-visible:outline-hidden transition-all shadow-2xs"
                   placeholder="••••••••"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-ink-subtle hover:text-ink transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-ink-subtle hover:text-ink focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-hidden rounded-md transition-colors"
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
                   {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
@@ -240,13 +241,13 @@ export const LoginPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full mt-1 relative group overflow-hidden flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-heading font-bold text-white dark:text-[#0A1120] bg-brand hover:bg-brand-hover active:scale-[0.99] disabled:opacity-50 transition-all shadow-md shadow-brand/25 cursor-pointer"
+              className="w-full mt-1 relative group overflow-hidden flex items-center justify-center space-x-2 py-2.5 px-4 rounded-xl text-xs sm:text-sm font-heading font-bold text-white dark:text-[#0A1120] bg-brand hover:bg-brand-hover active:scale-[0.99] disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 focus-visible:outline-hidden transition-all shadow-md shadow-brand/25 cursor-pointer"
             >
               <div className="absolute inset-0 w-1/2 h-full bg-white/20 skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000 ease-out pointer-events-none" />
               {isLoading ? (
                 <>
                   <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Authenticating...</span>
+                  <span>Verifying token…</span>
                 </>
               ) : (
                 <>
@@ -261,7 +262,7 @@ export const LoginPage: React.FC = () => {
           {/* Divider */}
           <div className="relative flex items-center justify-center my-3">
             <div className="border-t border-card-border w-full" />
-            <span className="bg-card px-2.5 text-[9px] font-mono font-semibold text-ink-subtle uppercase tracking-wider">
+            <span className="bg-card px-2.5 text-[9px] font-mono font-semibold text-ink-subtle uppercase tracking-wider whitespace-nowrap">
               Or Instant Access
             </span>
           </div>
@@ -271,7 +272,7 @@ export const LoginPage: React.FC = () => {
             type="button"
             onClick={handleGuestLogin}
             disabled={isLoading}
-            className="w-full group flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-heading font-semibold text-ink bg-canvas hover:bg-brand-surface hover:text-brand border border-card-border hover:border-brand-border active:scale-[0.99] transition-all cursor-pointer shadow-2xs"
+            className="w-full group flex items-center justify-between py-2 px-3.5 rounded-xl text-xs font-heading font-semibold text-ink bg-canvas hover:bg-brand-surface hover:text-brand border border-card-border hover:border-brand-border active:scale-[0.99] focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-hidden transition-all cursor-pointer shadow-2xs"
           >
             <div className="flex items-center space-x-2">
               <div className="p-1 rounded-md bg-brand-surface text-brand group-hover:bg-brand group-hover:text-white dark:group-hover:text-[#0A1120] transition-colors">
@@ -296,7 +297,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCredentials('demo_user', 'password123')}
-                className="flex flex-col text-left p-1.5 px-2.5 rounded-lg border border-card-border bg-card hover:border-brand hover:bg-brand-surface transition-all group cursor-pointer shadow-2xs"
+                className="flex flex-col text-left p-1.5 px-2.5 rounded-lg border border-card-border bg-card hover:border-brand hover:bg-brand-surface focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-hidden transition-all group cursor-pointer shadow-2xs"
               >
                 <div className="flex items-center justify-between text-[10px] font-heading font-semibold text-ink group-hover:text-brand">
                   <span>Clinician Demo</span>
@@ -308,7 +309,7 @@ export const LoginPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setCredentials('admin', 'password123')}
-                className="flex flex-col text-left p-1.5 px-2.5 rounded-lg border border-card-border bg-card hover:border-brand hover:bg-brand-surface transition-all group cursor-pointer shadow-2xs"
+                className="flex flex-col text-left p-1.5 px-2.5 rounded-lg border border-card-border bg-card hover:border-brand hover:bg-brand-surface focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-hidden transition-all group cursor-pointer shadow-2xs"
               >
                 <div className="flex items-center justify-between text-[10px] font-heading font-semibold text-ink group-hover:text-brand">
                   <span>Administrator</span>
