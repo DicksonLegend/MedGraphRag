@@ -6,28 +6,27 @@
   :root {
     /* =========================================================================
        THEME A: Clinical Calm (Light - Default)
-       WCAG AA certified contrast ratios across all surfaces & text tokens
        ========================================================================= */
-    --color-canvas: #F6F8FA;
+    --color-canvas: #FAFAF9;
     --color-card: #FFFFFF;
-    --color-card-hover: #F8FAFC;
-    --color-card-border: #E3E8EF;
+    --color-card-hover: #F5F5F4;
+    --color-card-border: #E7E5E4;
     
-    --color-ink: #10243E;
-    --color-ink-muted: #48617D;
-    --color-ink-subtle: #7A90A9;
+    --color-ink: #0F172A;
+    --color-ink-muted: #475569;
+    --color-ink-subtle: #64748B;
 
     --color-brand: #0F766E;           /* Deep medical teal */
-    --color-brand-hover: #0D655E;
+    --color-brand-hover: #115E59;
     --color-brand-surface: #F0FDFA;
     --color-brand-border: #CCFBF1;
     --color-brand-secondary: #2563EB;
 
-    --color-status-success: #15803D;
+    --color-status-success: #16A34A;
     --color-status-success-bg: #DCFCE7;
-    --color-status-caution: #B45309;
+    --color-status-caution: #D97706;
     --color-status-caution-bg: #FEF3C7;
-    --color-status-danger: #B91C1C;
+    --color-status-danger: #DC2626;
     --color-status-danger-bg: #FEE2E2;
     --color-status-info: #1D4ED8;
     --color-status-info-bg: #DBEAFE;
@@ -36,30 +35,29 @@
   .dark {
     /* =========================================================================
        THEME B: Vital Monitor (Dark - Toggle)
-       Precision telemetry aesthetic with luminous status accents
        ========================================================================= */
-    --color-canvas: #0A1120;
-    --color-card: #101B31;
-    --color-card-hover: #162441;
-    --color-card-border: #1E2A44;
+    --color-canvas: #0B1220;
+    --color-card: #0F172A;
+    --color-card-hover: #1E293B;
+    --color-card-border: #1E293B;
     
-    --color-ink: #E8EEF9;
-    --color-ink-muted: #9BB0CD;
-    --color-ink-subtle: #5B7293;
+    --color-ink: #F8FAFC;
+    --color-ink-muted: #94A3B8;
+    --color-ink-subtle: #64748B;
 
-    --color-brand: #2DD4BF;           /* Radiant ECG teal */
-    --color-brand-hover: #14B8A6;
-    --color-brand-surface: #0A242B;
+    --color-brand: #14B8A6;           /* Mint / Radiant ECG teal */
+    --color-brand-hover: #0D9488;
+    --color-brand-surface: #042F2E;
     --color-brand-border: #134E4A;
-    --color-brand-secondary: #7C9EFF;
+    --color-brand-secondary: #60A5FA;
 
-    --color-status-success: #4ADE80;
-    --color-status-success-bg: #072B18;
-    --color-status-caution: #FBBF24;
+    --color-status-success: #16A34A;
+    --color-status-success-bg: #052E16;
+    --color-status-caution: #D97706;
     --color-status-caution-bg: #2E1F03;
-    --color-status-danger: #F87171;
+    --color-status-danger: #DC2626;
     --color-status-danger-bg: #330F13;
-    --color-status-info: #60A5FA;
+    --color-status-info: #3B82F6;
     --color-status-info-bg: #0B2244;
   }
 }

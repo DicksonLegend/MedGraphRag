@@ -6,14 +6,14 @@ interface DisclaimerFooterProps {
 }
 
 export const DisclaimerFooter: React.FC<DisclaimerFooterProps> = ({
-  customText = 'This is information, not medical advice — consult your physician.',
+  customText = 'MedGraphRAG is an information tool, not a diagnostic device. All responses require mandatory physician review.',
 }) => {
   return (
-    <footer className="mt-6 pt-4 border-t border-card-border/80 flex items-center space-x-2 text-xs text-ink-muted">
-      <Info className="w-4 h-4 text-brand shrink-0" />
-      <p className="font-sans leading-relaxed">
+    <div className="flex items-center space-x-2 pt-2 text-[12px] text-slate-500 dark:text-slate-400">
+      <Info className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#14B8A6] shrink-0 stroke-[1.75]" />
+      <p className="font-sans leading-tight">
         {customText}
       </p>
-    </footer>
+    </div>
   );
 };
