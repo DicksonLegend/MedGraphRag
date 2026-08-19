@@ -44,7 +44,18 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
   const [highlightedCitation, setHighlightedCitation] = useState<string | null>(null);
   const [showConfidenceHelp, setShowConfidenceHelp] = useState(false);
   const [is3DGraphOpen, setIs3DGraphOpen] = useState(false);
-  const [showClaimsReport, setShowClaimsReport] = useState(false);
+  const [showClaimsReport, setShowClaimsReport] = useState(true);
+
+  // Helper to strip any trailing disclaimer text inside the answer card
+  const cleanAnswerText = (text: string) => {
+    if (!text) return '';
+    return text
+      .replace(
+        /(?:\r?\n|\s)*(?:_\*|\*|_)?(?:Disclaimer:?\s*)?This is information, not medical advice\s*[—–-]\s*consult your physician\.?(?:_\*|\*|_)?\s*$/i,
+        ''
+      )
+      .trim();
+  };
 
   // Filters & Sort State
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -269,7 +280,7 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
               /* Verified Answer Text (No inner disclaimer) */
               <div className="bg-slate-50/70 dark:bg-slate-900/60 p-4 rounded-lg border border-slate-200 dark:border-slate-800 text-[13.5px] leading-[1.45] text-slate-900 dark:text-slate-100 font-sans">
                 <MarkdownAnswer
-                  content={result.answer_text}
+                  content={cleanAnswerText(result.answer_text)}
                   citations={citations}
                   onCitationClick={handleCitationClick}
                 />
