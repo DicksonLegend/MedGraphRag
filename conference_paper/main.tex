@@ -53,7 +53,7 @@ drug, and laboratory ontologies. A LangGraph verification agent post-processes
 every candidate answer, escalating to a structured refusal when evidence is
 insufficient. Our 4-way ablation study on MedQA-US ($N=50$, seed~42)
 demonstrates that the verification layer reduces the wrong-assertion rate
-from 44\% (baseline) to 12\% (full system), trading raw answered-rate for
+from 44\% (unverified baseline, C4) to 12\% (full system), trading raw answered-rate for
 clinically appropriate conservative refusal behavior. The complete system runs
 within 3.62~GB peak RAM and 4{,}784~MB GPU VRAM on a single RTX~3050 6~GB
 card, making it deployable on commodity clinical workstations. An additional
@@ -150,8 +150,10 @@ typed, auditable clinical relationship.
 
 The MedQA dataset \cite{jin2021disease} is built from US medical licensing exam
 questions and remains the standard benchmark for medical LLM evaluation. Chen et
-al.~\cite{chen2024benchmarking} showed that accuracy on answered items
-substantially overstates safety when the model cannot decline to answer. Our
+al.~\cite{chen2024benchmarking} showed that on challenging clinical
+questions with expert-written explanations, even strong LLMs degrade
+substantially, indicating that accuracy on standard exam-style benchmarks
+overstates real-world safety when the model cannot decline to answer. Our
 work defines wrong-assertion rate as the primary safety metric and tracks it
 across four ablation configurations.
 
@@ -181,33 +183,47 @@ requires fine-tuning on a curated reflection corpus and does not include
 encrypted patient data stores or graph provenance paths---two properties
 required for clinical deployment.
 
+\subsection{Recent Medical RAG and Graph Systems}
+
+Medical RAG research has moved toward domain benchmarks and graph grounding.
+MedRAG~\cite{medrag2024} evaluates retrieval-augmented medical QA across
+multiple corpora but performs no claim-level verification and offers no
+refusal mechanism. MediGRAF~\cite{medigraf2026} combines a property graph
+with vector retrieval for safer clinical patient QA, yet provides no
+structured refusal, contamination guard, encrypted per-patient store, or
+consumer-GPU deployment. MedGraphRAG complements these efforts by adding
+calibrated refusal, typed provenance paths, and a privacy-preserving feature
+layer within one consumer GPU.
+
 % ─── Comparison Table ────────────────────────────────────────────────────────
 
-\begin{table}[!t]
+\begin{table}[!htbp]
 \caption{Feature comparison across retrieval systems. $\checkmark$~=~fully supported;
   $\times$~=~absent or not demonstrated.}
 \label{tab:compare}
 \centering
 \renewcommand{\arraystretch}{1.15}
-\setlength{\tabcolsep}{5pt}
-\begin{tabular}{@{}lcccccc@{}}
+\setlength{\tabcolsep}{2pt}
+\scriptsize
+\begin{tabular}{@{}lccccccc@{}}
 \toprule
 \textbf{Capability} &
 \rotatebox{60}{\textbf{RAG~\cite{lewis2020retrieval}}} &
-\rotatebox{60}{\textbf{FiD~\cite{izacard2021leveraging}}} &
 \rotatebox{60}{\textbf{MH-DR~\cite{xiong2021answering}}} &
 \rotatebox{60}{\textbf{GraphRAG~\cite{edge2024local}}} &
 \rotatebox{60}{\textbf{Self-RAG~\cite{asai2024selfrag}}} &
+\rotatebox{60}{\textbf{MedRAG~\cite{medrag2024}}} &
+\rotatebox{60}{\textbf{MediGRAF~\cite{medigraf2026}}} &
 \rotatebox{60}{\textbf{Ours}} \\[\normalbaselineskip]
 \midrule
-Hybrid vector+graph    & $\times$ & $\times$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ \\
-Claim-level verify     & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ & $\checkmark$ \\
-Structured refusal     & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
-Graph provenance       & $\times$ & $\times$ & $\times$ & $\checkmark$ & $\times$ & $\checkmark$ \\
-Contamination guard    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
-Encrypted data store   & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
-Longitudinal analytics & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
-Consumer-GPU deploy    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Hybrid vector+graph    & $\times$ & $\times$ & $\checkmark$ & $\times$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+Claim-level verify     & $\times$ & $\times$ & $\times$ & $\checkmark$ & $\times$ & $\times$ & $\checkmark$ \\
+Structured refusal     & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Graph provenance       & $\times$ & $\times$ & $\checkmark$ & $\times$ & $\times$ & $\checkmark$ & $\checkmark$ \\
+Contamination guard    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Encrypted data store   & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Longitudinal analytics & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
+Consumer-GPU deploy    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & $\checkmark$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -215,18 +231,18 @@ Consumer-GPU deploy    & $\times$ & $\times$ & $\times$ & $\times$ & $\times$ & 
 % ─── III. System Architecture ────────────────────────────────────────────────
 \section{System Architecture}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=\columnwidth]{figures/MedGraphRag-Architecture.jpg}
-\caption{MedGraphRAG end-to-end system architecture: a query enters the FastAPI service layer (v1.0.0), acquires a serialization lock, and is routed through (A)~hybrid retrieval, (B)~context assembly, (C)~LLM generation, and (D)~LangGraph verification, with results stored in the AES-256-GCM encrypted private store.}
-\label{fig:arch}
-\end{figure}
-
 Fig.~\ref{fig:arch} shows the high-level pipeline: a query enters the FastAPI service layer
 (v1.0.0), acquires a serialization lock (preventing VRAM contention), and is
 routed through four sequential stages: (A)~hybrid retrieval, (B)~context
 assembly, (C)~generation, (D)~verification. Results are stored in an
 AES-256-GCM encrypted private store~\cite{nist2007aes} keyed per user.
+
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\columnwidth]{figures/MedGraphRag-Architecture.jpg}
+\caption{MedGraphRAG end-to-end system architecture: a query enters the FastAPI service layer (v1.0.0), acquires a serialization lock, and is routed through (A)~hybrid retrieval, (B)~context assembly, (C)~LLM generation, and (D)~LangGraph verification, with results stored in the AES-256-GCM encrypted private store.}
+\label{fig:arch}
+\end{figure}
 
 % TODO (disabled until figures/ui_screenshot.png is ready):
 % \begin{figure}[!t]
@@ -697,7 +713,7 @@ verified system will appear unfavorable in accuracy-centric leaderboards.
 For a clinical information tool operating on a 50-question USMLE sample
 without access to the full medical knowledge necessary to answer every
 question, refusing is the correct response. The wrong-assertion rate of 12\%
-(C1) versus 44\% (C4 baseline) shows that the verification layer is the
+(C1) versus 44\% (unverified baseline, C4) shows that the verification layer is the
 primary safety mechanism (Fig.~\ref{fig:disposition}).
 
 \begin{figure}[!htbp]
@@ -741,7 +757,7 @@ used synthetic fixture reports; no real patient data was processed.
 We presented MedGraphRAG, a self-verifying graph-augmented RAG system for
 medical question answering deployable on consumer hardware. Our ablation study
 demonstrated that a LangGraph verification agent reduces the clinically
-critical wrong-assertion rate from 44\% (vector-baseline) to 12\% (full
+critical wrong-assertion rate from 44\% (unverified baseline, C4) to 12\% (full
 system) on MedQA-US ($N=50$). The hybrid FAISS+K\`{u}zu retrieval pipeline
 achieves 47.1~ms mean retrieval latency over a 2.29M-vector index. The
 complete system operates within 3.62~GB peak RAM and 4{,}784~MB VRAM,
@@ -752,14 +768,6 @@ constrained to single-turn benchmarks and serialized single-GPU execution,
 future work will expand multi-turn clinician workflows and distributed graph
 partitioning. Source code, evaluation scripts, and all JSON evaluation
 artifacts will be released publicly upon acceptance.
-
-% ─── Acknowledgements ────────────────────────────────────────────────────────
-\section*{Acknowledgements}
-
-The authors thank Karunya Institute of Technology and Sciences for providing
-compute access and the open-source communities behind FAISS, K\`{u}zu,
-LangChain, and Hugging Face for making this research reproducible on consumer
-hardware.
 
 % ─── References ──────────────────────────────────────────────────────────────
 \bibliographystyle{IEEEtran}
