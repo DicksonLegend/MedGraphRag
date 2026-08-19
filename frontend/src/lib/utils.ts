@@ -144,3 +144,73 @@ export function getCoverageClassProps(covClass: CoverageClass) {
       };
   }
 }
+
+/**
+ * Enterprise Lab Value Reference Range Comparator
+ * Compares value vs [ref_low, ref_high] and is_critical flag.
+ */
+export interface ComputedLabStatus {
+  status: 'normal' | 'high' | 'low' | 'critical_high' | 'critical_low' | 'critical';
+  label: string;
+  isCritical: boolean;
+  isOutOfRange: boolean;
+  colorClass: string;
+  badgeClass: string;
+}
+
+export function computeLabValueStatus(
+  value: number,
+  ref_low?: number | null,
+  ref_high?: number | null,
+  is_critical?: boolean
+): ComputedLabStatus {
+  if (is_critical) {
+    return {
+      status: 'critical',
+      label: 'Critical Range',
+      isCritical: true,
+      isOutOfRange: true,
+      colorClass: 'text-[#DC2626] font-semibold',
+      badgeClass:
+        'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800 font-semibold',
+    };
+  }
+
+  if (ref_high !== undefined && ref_high !== null && value > ref_high) {
+    const isSevere = value >= ref_high * 1.5;
+    return {
+      status: isSevere ? 'critical_high' : 'high',
+      label: isSevere ? 'Critical · High' : 'High',
+      isCritical: isSevere,
+      isOutOfRange: true,
+      colorClass: isSevere ? 'text-[#DC2626] font-semibold' : 'text-[#D97706] font-semibold',
+      badgeClass: isSevere
+        ? 'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800 font-semibold'
+        : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800 font-semibold',
+    };
+  }
+
+  if (ref_low !== undefined && ref_low !== null && value < ref_low) {
+    const isSevere = value <= ref_low * 0.7;
+    return {
+      status: isSevere ? 'critical_low' : 'low',
+      label: isSevere ? 'Critical · Low' : 'Low',
+      isCritical: isSevere,
+      isOutOfRange: true,
+      colorClass: isSevere ? 'text-[#DC2626] font-semibold' : 'text-[#D97706] font-semibold',
+      badgeClass: isSevere
+        ? 'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800 font-semibold'
+        : 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800 font-semibold',
+    };
+  }
+
+  return {
+    status: 'normal',
+    label: 'Normal',
+    isCritical: false,
+    isOutOfRange: false,
+    colorClass: 'text-slate-800 dark:text-slate-200',
+    badgeClass:
+      'bg-green-50 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800 font-medium',
+  };
+}
