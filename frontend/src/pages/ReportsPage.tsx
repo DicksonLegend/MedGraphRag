@@ -29,12 +29,17 @@ import {
   Filter,
 } from 'lucide-react';
 
+import { useSessionStore } from '../stores/sessionStore';
+
 const ALLOWED_EXTENSIONS = ['.pdf', '.png', '.jpg', '.jpeg', '.xlsx', '.csv'];
 const MAX_UPLOAD_BYTES = 20 * 1024 * 1024; // 20 MB
 
 type FilterStatus = 'all' | 'normal' | 'critical';
 
 export const ReportsPage: React.FC = () => {
+  const reportsSession = useSessionStore((state) => state.reports);
+  const setReportsState = useSessionStore((state) => state.setReportsState);
+
   const [reports, setReports] = useState<ReportSummaryItem[]>([]);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
   const [isUploading, setIsUploading] = useState(false);
@@ -42,7 +47,14 @@ export const ReportsPage: React.FC = () => {
   const [uploadResult, setUploadResult] = useState<ReportResponse | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [selectedReportId, setSelectedReportId] = useState<string | null>(null);
+  const [selectedReportId, setSelectedReportIdState] = useState<string | null>(
+    reportsSession.selectedReportId
+  );
+
+  const setSelectedReportId = (id: string | null) => {
+    setSelectedReportIdState(id);
+    setReportsState({ selectedReportId: id });
+  };
   const [filterStatus, setFilterStatus] = useState<FilterStatus>('all');
   const [purgeTarget, setPurgeTarget] = useState<ReportSummaryItem | null>(null);
   const [purgedNotification, setPurgedNotification] = useState<string | null>(null);

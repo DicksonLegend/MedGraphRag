@@ -258,20 +258,27 @@ const Sparkline: React.FC<SparklineProps> = ({ measurements }) => {
   );
 };
 
+import { useSessionStore } from '../stores/sessionStore';
+
 export const TrendsPage: React.FC = () => {
-  const [data, setData] = useState<TrendResult | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const medtrendSession = useSessionStore((state) => state.medtrend);
+  const setMedTrendState = useSessionStore((state) => state.setMedTrendState);
+
+  const [data, setData] = useState<TrendResult | null>(medtrendSession.result);
+  const [isLoading, setIsLoading] = useState(!medtrendSession.result || medtrendSession.status === 'loading');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const fetchTrends = async () => {
     setIsLoading(true);
     setErrorMsg(null);
+    setMedTrendState({ status: 'loading' });
     try {
       const res = await featuresApi.getTrends();
       // If server returned empty or partial trend set, use Step-13 aligned dataset
+      let finalResult: TrendResult;
       if (!res.trends || res.trends.length < 3) {
-        setData({
+        finalResult = {
           user_id: res.user_id || 'demo_user',
           trends: STEP13_ALIGNED_TRENDS,
           significant_count: 3,
@@ -285,13 +292,15 @@ export const TrendsPage: React.FC = () => {
           provenance: ['private_store/reports/kuzu_longitudinal_nodes'],
           disclaimer: 'This is information, not medical advice — consult your physician.',
           disclaimer_present: true,
-        });
+        };
       } else {
-        setData(res);
+        finalResult = res;
       }
+      setData(finalResult);
+      setMedTrendState({ status: 'success', result: finalResult });
     } catch {
       // Clean fallback to Step-13 paper values
-      setData({
+      const fallbackResult: TrendResult = {
         user_id: 'demo_user',
         trends: STEP13_ALIGNED_TRENDS,
         significant_count: 3,
@@ -305,14 +314,18 @@ export const TrendsPage: React.FC = () => {
         provenance: ['private_store/reports/kuzu_longitudinal_nodes'],
         disclaimer: 'This is information, not medical advice — consult your physician.',
         disclaimer_present: true,
-      });
+      };
+      setData(fallbackResult);
+      setMedTrendState({ status: 'success', result: fallbackResult });
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchTrends();
+    if (!medtrendSession.result || medtrendSession.status === 'loading') {
+      fetchTrends();
+    }
   }, []);
 
   const handlePrint = () => {

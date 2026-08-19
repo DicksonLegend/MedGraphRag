@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { queryApi } from '../api/query';
 import type { QueryResponse } from '../api/types';
 import { useAuthStore } from '../stores/authStore';
+import { useSessionStore } from '../stores/sessionStore';
 import { ClinicalAnswerConsole } from '../components/chat/ClinicalAnswerConsole';
 import { ErrorState } from '../components/common/ErrorState';
 import {
@@ -38,15 +40,28 @@ interface RecentQuery {
 }
 
 export const ChatPage: React.FC = () => {
-  const [query, setQuery] = useState('');
-  const [searchPrivate, setSearchPrivate] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const consoleSession = useSessionStore((state) => state.console);
+  const setConsoleState = useSessionStore((state) => state.setConsoleState);
+
+  const [query, setQuery] = useState(consoleSession.query || '');
+  const [searchPrivate, setSearchPrivate] = useState(consoleSession.searchPrivate || false);
+  const [isLoading, setIsLoading] = useState(consoleSession.status === 'loading');
   const [loadingStage, setLoadingStage] = useState<number>(0);
-  const [result, setResult] = useState<QueryResponse | null>(null);
+  const [result, setResult] = useState<QueryResponse | null>(consoleSession.result);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const { user_id } = useAuthStore();
+  const [searchParams] = useSearchParams();
+
+  // Sync with store on mount or store change
+  useEffect(() => {
+    if (consoleSession.result && !result) {
+      setResult(consoleSession.result);
+      setQuery(consoleSession.query);
+      setSearchPrivate(consoleSession.searchPrivate);
+    }
+  }, [consoleSession.result]);
 
   // Keyboard shortcut: "/" focuses the search input
   useEffect(() => {
@@ -89,6 +104,7 @@ export const ChatPage: React.FC = () => {
     setIsLoading(true);
     setErrorMsg(null);
     setResult(null);
+    setConsoleState({ query: q, status: 'loading', result: null, searchPrivate });
 
     try {
       const destination = searchPrivate && user_id ? user_id : 'global';
@@ -97,12 +113,34 @@ export const ChatPage: React.FC = () => {
         destination,
       });
       setResult(res);
+      const isRefused =
+        res.answer_status === 'refusal' ||
+        res.answer_status === 'out_of_scope' ||
+        (res.final_confidence < 0.5 && res.answer_status !== 'verified');
+      setConsoleState({
+        query: q,
+        status: isRefused ? 'refused' : 'verified',
+        result: res,
+        searchPrivate,
+      });
     } catch (err: any) {
+      setConsoleState({ status: 'error' });
       setErrorMsg(err.message || 'An error occurred during query execution.');
     } finally {
       setIsLoading(false);
     }
   };
+
+  // URL query parameter listener or resume loading state
+  useEffect(() => {
+    const qParam = searchParams.get('q');
+    if (qParam && qParam.trim() && qParam.trim() !== consoleSession.query) {
+      setQuery(qParam.trim());
+      handleSearch(qParam.trim());
+    } else if (consoleSession.status === 'loading' && consoleSession.query) {
+      handleSearch(consoleSession.query);
+    }
+  }, [searchParams]);
 
   const suggestionCards: SuggestionCard[] = [
     {

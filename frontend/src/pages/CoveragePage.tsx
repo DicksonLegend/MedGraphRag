@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { featuresApi } from '../api/features';
 import type { CoverageMap, SubQuestionCoverage } from '../api/types';
@@ -105,10 +105,17 @@ const LOW_COVERAGE_MOCK: CoverageMap = {
   disclaimer_present: true,
 };
 
+import { useSessionStore } from '../stores/sessionStore';
+
 export const CoveragePage: React.FC = () => {
-  const [query, setQuery] = useState('warfarin INR monitoring guidelines atrial fibrillation');
-  const [data, setData] = useState<CoverageMap | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const coverageSession = useSessionStore((state) => state.coverage);
+  const setCoverageState = useSessionStore((state) => state.setCoverageState);
+
+  const [query, setQuery] = useState(
+    coverageSession.query || 'warfarin INR monitoring guidelines atrial fibrillation'
+  );
+  const [data, setData] = useState<CoverageMap | null>(coverageSession.result);
+  const [isLoading, setIsLoading] = useState(coverageSession.status === 'loading');
   const [loadingStage, setLoadingStage] = useState<number>(1);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<string | null>(null);
@@ -117,6 +124,12 @@ export const CoveragePage: React.FC = () => {
   const [highlightedCard, setHighlightedCard] = useState<number | null>(null);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (coverageSession.status === 'loading' && coverageSession.query) {
+      handleEvaluate(coverageSession.query);
+    }
+  }, []);
 
   const handleEvaluate = async (searchQuery?: string) => {
     const q = (searchQuery || query).trim();
@@ -128,6 +141,7 @@ export const CoveragePage: React.FC = () => {
       setErrorMsg(null);
       setData(null);
       setLoadingStage(1);
+      setCoverageState({ query: q, status: 'loading', result: null });
 
       const t1 = setTimeout(() => setLoadingStage(2), 400);
       const t2 = setTimeout(() => setLoadingStage(3), 800);
@@ -135,6 +149,7 @@ export const CoveragePage: React.FC = () => {
 
       setTimeout(() => {
         setData(LOW_COVERAGE_MOCK);
+        setCoverageState({ query: q, status: 'success', result: LOW_COVERAGE_MOCK });
         setIsLoading(false);
         clearTimeout(t1);
         clearTimeout(t2);
@@ -147,6 +162,7 @@ export const CoveragePage: React.FC = () => {
     setErrorMsg(null);
     setData(null);
     setLoadingStage(1);
+    setCoverageState({ query: q, status: 'loading', result: null });
 
     const s1 = setTimeout(() => setLoadingStage(2), 400);
     const s2 = setTimeout(() => setLoadingStage(3), 850);
@@ -155,12 +171,14 @@ export const CoveragePage: React.FC = () => {
     try {
       const res = await featuresApi.getCoverageMap({ query: q });
       setData(res);
+      setCoverageState({ query: q, status: 'success', result: res });
       const initialOpen: { [key: number]: boolean } = {};
       res.sub_questions.forEach((_, idx) => {
         initialOpen[idx] = true;
       });
       setOpenAccordion(initialOpen);
     } catch (err: any) {
+      setCoverageState({ status: 'error' });
       setErrorMsg(err.message || 'Failed to evaluate evidence coverage.');
     } finally {
       clearTimeout(s1);

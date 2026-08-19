@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { authApi } from '../api/auth';
 import type { LoginRequest, UserClaims } from '../api/types';
+import { useSessionStore } from './sessionStore';
 
 interface AuthState {
   token: string | null;
@@ -99,6 +100,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       return true;
     } catch {
       sessionStorage.removeItem('medgraph_token');
+      useSessionStore.getState().clearSession();
       set({
         token: null,
         user_id: null,
@@ -123,6 +125,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
       // Proceed with client cleanup regardless
     } finally {
       sessionStorage.removeItem('medgraph_token');
+      useSessionStore.getState().clearSession();
+
       set({
         token: null,
         user_id: null,
@@ -138,6 +142,8 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   clearAuth: () => {
     sessionStorage.removeItem('medgraph_token');
+    useSessionStore.getState().clearSession();
+
     set({
       token: null,
       user_id: null,

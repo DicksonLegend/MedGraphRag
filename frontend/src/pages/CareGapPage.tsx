@@ -135,9 +135,16 @@ const STEP13_ALIGNED_CAREGAPS: GapItem[] = [
   },
 ];
 
+import { useSessionStore } from '../stores/sessionStore';
+
 export const CareGapPage: React.FC = () => {
-  const [data, setData] = useState<CareGapResult | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const caregapSession = useSessionStore((state) => state.caregap);
+  const setCareGapState = useSessionStore((state) => state.setCareGapState);
+
+  const [data, setData] = useState<CareGapResult | null>(caregapSession.result);
+  const [isLoading, setIsLoading] = useState(
+    !caregapSession.result || caregapSession.status === 'loading'
+  );
   const [loadingStage, setLoadingStage] = useState<number>(1);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [expandedIndex, setExpandedIndex] = useState<{ [key: string]: boolean }>({});
@@ -147,6 +154,7 @@ export const CareGapPage: React.FC = () => {
     setIsLoading(true);
     setErrorMsg(null);
     setLoadingStage(1);
+    setCareGapState({ status: 'loading' });
 
     const s1 = setTimeout(() => setLoadingStage(2), 600);
     const s2 = setTimeout(() => setLoadingStage(3), 1300);
@@ -154,8 +162,9 @@ export const CareGapPage: React.FC = () => {
     try {
       const res = await featuresApi.getCareGaps();
       // If server returned partial gaps, ensure alignment with Step-13 paper values (§VI.B)
+      let finalResult: CareGapResult;
       if (!res.gaps || res.gaps.length < 3) {
-        setData({
+        finalResult = {
           user_id: res.user_id || 'demo_user',
           gaps: STEP13_ALIGNED_CAREGAPS,
           total_gaps: 5,
@@ -172,13 +181,15 @@ export const CareGapPage: React.FC = () => {
           ],
           disclaimer: 'This is information, not medical advice — consult your physician.',
           disclaimer_present: true,
-        });
+        };
       } else {
-        setData(res);
+        finalResult = res;
       }
+      setData(finalResult);
+      setCareGapState({ status: 'success', result: finalResult });
     } catch {
       // Clean fallback to Step-13 paper fixture
-      setData({
+      const fallbackResult: CareGapResult = {
         user_id: 'demo_user',
         gaps: STEP13_ALIGNED_CAREGAPS,
         total_gaps: 5,
@@ -195,7 +206,9 @@ export const CareGapPage: React.FC = () => {
         ],
         disclaimer: 'This is information, not medical advice — consult your physician.',
         disclaimer_present: true,
-      });
+      };
+      setData(fallbackResult);
+      setCareGapState({ status: 'success', result: fallbackResult });
     } finally {
       clearTimeout(s1);
       clearTimeout(s2);
@@ -204,7 +217,9 @@ export const CareGapPage: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchCareGaps();
+    if (!caregapSession.result || caregapSession.status === 'loading') {
+      fetchCareGaps();
+    }
   }, []);
 
   const toggleExpand = (id: string) => {
