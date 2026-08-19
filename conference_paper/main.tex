@@ -129,19 +129,21 @@ Section~IX concludes the paper.
 
 \subsection{Retrieval-Augmented Generation}
 
-Lewis et al.~\cite{lewis2020retrieval} showed that combining a non-parametric
-retrieval index with a parametric LLM substantially improves performance on
-knowledge-intensive tasks. Fusion-in-Decoder~\cite{izacard2021leveraging}
-extended this by reading evidence from multiple passages simultaneously. Neither
+Lewis et al.~\cite{lewis2020retrieval} attached a dense retriever to a
+Transformer so the model could consult external documents at inference
+time, reporting large gains on tasks that demand factual knowledge. Izacard
+and Grave~\cite{izacard2021leveraging} then read several retrieved passages
+jointly inside the decoder instead of scoring them one by one. Neither
 approach incorporated a verification step capable of producing structured
 refusals when evidence is absent or contradictory.
 
 \subsection{Graph-Enhanced Retrieval}
 
-Microsoft's GraphRAG \cite{edge2024local} builds community summaries over generic
-text graphs to support query-focused summarization. Multi-hop dense
-retrieval \cite{xiong2021answering} chains sequential retrieval steps to resolve
-complex questions. Both rely on unstructured text extraction; neither grounds
+Edge et al.~\cite{edge2024local} first let an LLM convert a corpus into an
+entity graph and pre-summarise each detected community, trading retrieval
+precision for global coverage. Xiong et al.~\cite{xiong2021answering}
+instead decompose a complex question into a chain of retrieval steps,
+fetching one more passage per hop. Both rely on unstructured text extraction; neither grounds
 graph traversal in a biomedical ontology. MedGraphRAG differs by seeding
 traversal from UMLS CUI entities \cite{umls2004}, giving each returned path a
 typed, auditable clinical relationship.
@@ -159,8 +161,10 @@ across four ablation configurations.
 
 \subsection{Domain-Specific Embedding}
 
-MedCPT \cite{jin2023medcpt} was trained on 255 million PubMed search log pairs
-and produces clinically specialized 768-dimensional embeddings. We use the
+For embeddings we adopt MedCPT~\cite{jin2023medcpt}, a pair of
+contrastively trained encoders whose PubMed query--article training log
+gives them a clinical vocabulary that general-purpose encoders lack; both
+encoders output 768-dimensional vectors. We use the
 ncbi/MedCPT-Query-Encoder for online query encoding and
 ncbi/MedCPT-Article-Encoder for offline corpus encoding, following the authors'
 asymmetric retrieval protocol. Dense embedding alone cannot resolve multi-hop
@@ -168,8 +172,10 @@ relational dependencies without explicit graph traversal.
 
 \subsection{Efficient Vector Search}
 
-FAISS \cite{johnson2021billion} supports billion-scale approximate nearest
-neighbor search. We use an IVFpq index occupying 240~MB on CPU, achieving
+The vector index runs on FAISS~\cite{johnson2021billion}, whose
+inverted-file and product-quantisation schemes compress billion-scale
+corpora into a few hundred megabytes while keeping search in the
+millisecond range. We use an IVFpq index occupying 240~MB on CPU, achieving
 1.1~ms mean search latency over 2.29~million vectors---well below the
 2{,}000~ms budget. Approximate search lacks symbolic constraints, however, so
 downstream ontology verification remains necessary.
@@ -567,14 +573,10 @@ LLM Instances      & 1 (serial)  & 1 \\
 \end{tabular}
 \end{table}
 
-The Step-11 API evaluation (evaluation artifact step11\_api\_report.json)
-recorded peak RAM of 2.76~GB and peak VRAM of 4{,}784~MB across a 7-probe
-evaluation suite totalling 61{,}349~ms wall time. Cold-query latency was
-13{,}675~ms; warm-query latency was 3{,}667~ms (LLM weights resident in VRAM).
-
-The Step-13 feature-layer evaluation (evaluation artifact
-step13\_features\_report.md) recorded peak RAM of 3.93~GB and VRAM of
-4{,}776~MB over 176.68~s execution time, all within budget (Fig.~\ref{fig:resource}).
+The Step-11 API suite recorded 2.76~GB RAM / 4{,}784~MB VRAM over
+61{,}349~ms (cold 13{,}675~ms; warm 3{,}667~ms); the Step-13 feature-layer
+suite recorded 3.93~GB / 4{,}776~MB over 176.68~s---all within budget
+(Fig.~\ref{fig:resource}).
 
 \begin{figure}[!htbp]
 \centering
@@ -588,13 +590,9 @@ single RTX~3050 6~GB card. Sources: evaluation artifacts
 \label{fig:resource}
 \end{figure}
 
-\noindent\textbf{i) Reproducibility.}\\*
-Every quantitative value in this paper is extracted
-verbatim from the authors' evaluation artifacts (JSON/Markdown logs produced
-by the probe suites), e.g.\ step12\_part3\_paper\_tables.json,
-step11\_api\_report.json, and step13\_features\_report.md;
-no value was recomputed for the manuscript. These artifacts accompany the
-submission and will be published with the camera-ready.
+\textbf{Reproducibility.} Every value is extracted verbatim from the
+evaluation artifacts accompanying the submission; none were recomputed, and
+all will be published with the camera-ready.
 
 \subsection{Operational Feasibility}
 
@@ -648,8 +646,7 @@ evaluation artifact \texttt{step13\_features\_report.json}.}
 
 POST /api/v1/features/trend accepts a patient's lab-value time series,
 classifies each biomarker as \emph{worsening}, \emph{improving}, or
-\emph{stable}, and computes a rate of change per month. Significance is
-flagged when a value crosses a reference threshold. In the Step-13 evaluation:
+\emph{stable}, and computes a rate of change per month. In the Step-13 evaluation:
 Creatinine trended from 97.24 to 167.96~$\mu$mol/L ($+22.90$/month, worsening;
 crossed upper threshold 115.0); HbA1c from 6.9\% to 7.8\%
 ($+0.29$/month, worsening). Graph-derived causal candidates
@@ -701,8 +698,7 @@ The FastAPI service (v1.0.0) exposes a versioned REST interface under
 logout. Parallel query serialization is enforced by an asyncio lock, confirmed
 in the Step-11 proof (Request~A 5{,}541~ms, Request~B 10{,}637~ms, total wall
 time 10{,}647~ms). Destination isolation returns HTTP~403 for cross-user store
-access (1.10~ms, 117~bytes). The health endpoint responds in $<$2~ms at both
-cold and warm states. All 7/7 Step-11 API security criteria passed.
+access (1.10~ms, 117~bytes). All 7/7 Step-11 API security criteria passed.
 
 % ─── VIII. Discussion ────────────────────────────────────────────────────────
 \section{Discussion}
@@ -710,9 +706,8 @@ cold and warm states. All 7/7 Step-11 API security criteria passed.
 \noindent\textbf{i) Safety-first trade-off.}\\*
 The 82--88\% refusal rate of the full
 verified system will appear unfavorable in accuracy-centric leaderboards.
-For a clinical information tool operating on a 50-question USMLE sample
-without access to the full medical knowledge necessary to answer every
-question, refusing is the correct response. The wrong-assertion rate of 12\%
+For a tool operating on a 50-question USMLE sample without full medical
+knowledge, refusing is the correct response. The wrong-assertion rate of 12\%
 (C1) versus 44\% (unverified baseline, C4) shows that the verification layer is the
 primary safety mechanism (Fig.~\ref{fig:disposition}).
 
@@ -739,17 +734,23 @@ The evaluation uses $N=50$ questions, which limits
 statistical power. The LLM (Qwen2.5-7B) is not fine-tuned on medical data,
 and the high refusal rate partly reflects the model's calibration on general
 instruction-following data rather than clinical question answering. Scaling
-to $N=500$ and fine-tuned models is a natural extension. The latency of the
-full verified system (15{,}386~ms median) is above the 10~s threshold
-comfortable for interactive use; graph traversal optimization and batched
-verification are future work.
+to $N=500$ and fine-tuned models is a natural extension. Median latency (15{,}386~ms) exceeds comfortable interactive thresholds;
+batched verification is future work.
 
 \noindent\textbf{iv) Broader impact.}\\*
-MedGraphRAG is designed as a patient-safety system,
-not a diagnosis engine. Every response carries a mandatory disclaimer and
-never claims diagnostic authority. The AES-256-GCM encrypted private store
-ensures patient data confidentiality at rest. All feature-layer evaluations
-used synthetic fixture reports; no real patient data was processed.
+MedGraphRAG is a patient-safety tool, not a diagnosis engine: every
+response carries a mandatory disclaimer and never claims diagnostic
+authority, and per-user stores are encrypted at rest.
+
+\subsection{Ethics Statement}
+No real patient data were used: the feature layer was validated on
+synthetic fixture reports and the benchmark (MedQA-US) is a public
+examination dataset. MedGraphRAG is an information tool, not a diagnostic
+device; every non-refused response carries a mandatory disclaimer and the
+system never claims clinical authority. Per-user stores are encrypted with
+AES-256-GCM and isolated at the API layer, and guest data are purged on
+logout. No human subjects were involved, so no ethics-board approval was
+required.
 
 % ─── IX. Conclusion ──────────────────────────────────────────────────────────
 \section{Conclusion}
@@ -758,8 +759,7 @@ We presented MedGraphRAG, a self-verifying graph-augmented RAG system for
 medical question answering deployable on consumer hardware. Our ablation study
 demonstrated that a LangGraph verification agent reduces the clinically
 critical wrong-assertion rate from 44\% (unverified baseline, C4) to 12\% (full
-system) on MedQA-US ($N=50$). The hybrid FAISS+K\`{u}zu retrieval pipeline
-achieves 47.1~ms mean retrieval latency over a 2.29M-vector index. The
+system) on MedQA-US ($N=50$). The
 complete system operates within 3.62~GB peak RAM and 4{,}784~MB VRAM,
 enabling deployment on commodity clinical workstations. Three validated
 feature-layer utilities provide longitudinal trend analysis, guideline
