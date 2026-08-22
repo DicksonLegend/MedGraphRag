@@ -178,8 +178,8 @@ export const CoveragePage: React.FC = () => {
       });
       setOpenAccordion(initialOpen);
     } catch (err: any) {
-      setCoverageState({ status: 'error' });
       setErrorMsg(err.message || 'Failed to evaluate evidence coverage.');
+      setCoverageState({ status: 'error' });
     } finally {
       clearTimeout(s1);
       clearTimeout(s2);
@@ -188,60 +188,37 @@ export const CoveragePage: React.FC = () => {
     }
   };
 
-  const handleCopyText = (text: string, id: string) => {
+  const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text);
     setCopiedIndex(id);
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
-  const handleExportJSON = () => {
-    if (!data) return;
-    const jsonStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', `coverage_map_export_${Date.now()}.json`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const toggleAccordion = (idx: number) => {
+    setOpenAccordion((prev) => ({ ...prev, [idx]: !prev[idx] }));
   };
 
-  const toggleAccordion = (index: number) => {
-    setOpenAccordion((prev) => ({ ...prev, [index]: !prev[index] }));
-  };
-
-  const cleanSnippetText = (snippet: string) => {
-    return snippet.replace(/^[A-Za-z0-9_]+\s*\([^)]*\)\s*:\s*/i, '').trim();
-  };
-
-  const extractDocId = (citeStr: string, idx: number) => {
-    const match = citeStr.match(/\(([^)]+)\)/);
-    if (match) return match[1];
-    return `DOC_${idx + 1}`;
-  };
-
-  const extractCategory = (citeStr: string) => {
-    const l = citeStr.toLowerCase();
-    if (l.includes('guideline') || l.includes('nice') || l.includes('ada') || l.includes('kdigo')) {
-      return { label: 'GUIDELINE', cls: 'bg-teal-50 text-teal-800 border-teal-200 dark:bg-teal-950/40 dark:text-teal-300 dark:border-teal-800' };
+  const scrollToCard = (idx: number) => {
+    setHighlightedCard(idx);
+    const el = document.getElementById(`subq-card-${idx}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-    if (l.includes('drug') || l.includes('fda') || l.includes('dosing')) {
-      return { label: 'DRUG', cls: 'bg-blue-50 text-blue-800 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800' };
-    }
-    return { label: 'RESEARCH_PAPER', cls: 'bg-purple-50 text-purple-800 border-purple-200 dark:bg-purple-950/40 dark:text-purple-300 dark:border-purple-800' };
+    setTimeout(() => setHighlightedCard(null), 2500);
   };
+
+  const overallProps = data ? getCoverageClassProps(data.overall_coverage) : null;
 
   return (
-    <div className="space-y-4 max-w-6xl mx-auto font-sans text-slate-800 dark:text-slate-200">
-      {/* ── SEARCH & EVALUATE QUERY CARD ── */}
-      <div className="p-4 sm:p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3.5">
+    <div className="space-y-4 max-w-7xl mx-auto font-sans text-slate-800 dark:text-slate-200">
+      {/* ── 1. EVIDENCE RADAR COMMAND DECK ── */}
+      <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] shadow-md p-4 sm:p-5 space-y-3.5">
         <div>
           <div className="flex items-center space-x-2">
             <div className="p-1.5 rounded-lg bg-teal-50 dark:bg-teal-950/80 text-[#0F766E] dark:text-[#14B8A6] border border-teal-200 dark:border-teal-800">
               <MapPin className="w-4 h-4 stroke-[1.75]" />
             </div>
-            <h2 className="text-[15px] font-semibold text-slate-900 dark:text-slate-100">
+            <h2 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100">
               Evidence Coverage Map
             </h2>
           </div>
@@ -250,89 +227,93 @@ export const CoveragePage: React.FC = () => {
           </p>
         </div>
 
-        {/* Input Form */}
+        {/* Search Input Bar */}
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleEvaluate();
           }}
-          className="flex gap-2"
+          className="space-y-2.5"
         >
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Enter clinical inquiry to evaluate hybrid evidence depth (e.g. Warfarin INR targets)..."
-            className="flex-1 px-3.5 py-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 text-xs font-mono focus:border-teal-600 focus:ring-2 focus:ring-teal-600 focus:outline-hidden transition-colors"
-          />
-          <button
-            type="submit"
-            disabled={isLoading || !query.trim()}
-            className="flex items-center space-x-1.5 h-10 px-4 rounded-lg font-medium text-xs text-white bg-[#0F766E] hover:bg-[#115E59] active:scale-[0.98] disabled:opacity-50 transition-all shadow-xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600"
-          >
-            <Search className="w-3.5 h-3.5 stroke-[1.75]" />
-            <span className="hidden sm:inline">{isLoading ? 'Evaluating...' : 'Map Coverage'}</span>
-          </button>
-        </form>
+          <div className="flex gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Enter clinical topic or multi-hop question for coverage decomposition..."
+                className="w-full pl-3.5 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/80 text-slate-900 dark:text-slate-100 text-[13.5px] font-mono placeholder:text-slate-400 focus:bg-white dark:focus:bg-[#0F172A] focus:border-[#0F766E] dark:focus:border-[#14B8A6] focus:ring-2 focus:ring-[#0F766E]/20 dark:focus:ring-[#14B8A6]/20 focus-visible:outline-hidden transition-all shadow-2xs"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isLoading || !query.trim()}
+              className={`flex items-center space-x-1.5 px-5 py-2.5 rounded-xl font-medium text-xs sm:text-sm text-white transition-all shadow-xs shrink-0 cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:outline-hidden ${
+                query.trim()
+                  ? 'bg-[#0F766E] hover:bg-[#115E59] active:scale-[0.98]'
+                  : 'bg-[#0F766E]/60 cursor-not-allowed opacity-60'
+              }`}
+            >
+              <Search className="w-3.5 h-3.5 stroke-[1.75]" />
+              <span>{isLoading ? 'Decomposing…' : 'Map Coverage'}</span>
+            </button>
+          </div>
 
-        {/* 1.a Quick "Try:" Chips with paper queries */}
-        <div className="flex flex-wrap items-center gap-1.5 pt-1 text-[11px] font-mono text-slate-500">
-          <span className="flex items-center space-x-1 uppercase text-[10px] font-semibold text-slate-400">
-            <Sparkles className="w-3 h-3 text-[#0F766E] dark:text-[#14B8A6] stroke-[1.75]" />
-            <span>Benchmark Queries:</span>
-          </span>
-          <button
-            type="button"
-            onClick={() => {
-              const qStr = 'warfarin INR monitoring guidelines atrial fibrillation';
-              setQuery(qStr);
-              handleEvaluate(qStr);
-            }}
-            className="h-6 px-2 inline-flex items-center rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] transition-colors cursor-pointer"
-          >
-            Warfarin INR monitoring guidelines
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const qStr = 'potassium hyperkalemia ECG changes peaked T waves treatment';
-              setQuery(qStr);
-              handleEvaluate(qStr);
-            }}
-            className="h-6 px-2 inline-flex items-center rounded-md bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] transition-colors cursor-pointer"
-          >
-            Hyperkalemia ECG changes & treatment
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              const qStr = 'experimental gene therapy dosing neonatal sepsis';
-              setQuery(qStr);
-              handleEvaluate(qStr);
-            }}
-            className="h-6 px-2 inline-flex items-center rounded-md bg-red-50/60 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-800 dark:text-red-300 hover:underline transition-colors cursor-pointer"
-            title="Demonstrates low-coverage refusal and rephrase flow"
-          >
-            Low-Coverage Demo: Gene therapy neonatal sepsis
-          </button>
-        </div>
+          {/* Benchmark Query Chips */}
+          <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+            <span className="text-slate-500 text-[11px] uppercase tracking-wider flex items-center space-x-1">
+              <Sparkles className="w-3 h-3 text-[#0F766E] dark:text-[#14B8A6]" />
+              <span>Benchmark Queries:</span>
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('warfarin INR monitoring guidelines atrial fibrillation');
+                handleEvaluate('warfarin INR monitoring guidelines atrial fibrillation');
+              }}
+              className="h-6 px-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 hover:bg-teal-50 dark:hover:bg-teal-950/40 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer text-[11px]"
+            >
+              Warfarin INR monitoring guidelines
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('potassium hyperkalemia ECG changes peaked T waves treatment');
+                handleEvaluate('potassium hyperkalemia ECG changes peaked T waves treatment');
+              }}
+              className="h-6 px-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 hover:bg-teal-50 dark:hover:bg-teal-950/40 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] border border-slate-200 dark:border-slate-800 transition-colors cursor-pointer text-[11px]"
+            >
+              Hyperkalemia ECG changes & treatment
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setQuery('experimental gene therapy dosing neonatal sepsis');
+                handleEvaluate('experimental gene therapy dosing neonatal sepsis');
+              }}
+              className="h-6 px-2.5 rounded-lg bg-red-50 dark:bg-red-950/40 hover:bg-red-100 text-[#DC2626] border border-red-200 dark:border-red-800 transition-colors cursor-pointer text-[11px] font-semibold"
+            >
+              Low-Coverage Demo: Gene therapy neonatal sepsis
+            </button>
+          </div>
+        </form>
       </div>
 
-      {/* ── 2. 4-STAGE SEQUENTIAL LOADING STEPPER ── */}
+      {/* ── 2. LOADING STATE: 4-STAGE STEPPER WITH SEQUENTIAL HIGHLIGHTS ── */}
       {isLoading && (
-        <div className="p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3.5 animate-fade-in">
+        <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-md space-y-3.5 animate-fade-in">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
-              Decomposing & Mapping Evidence Density...
+              Evaluating Multi-Hop Evidence Coverage...
             </span>
-            <span className="h-6 px-2 text-[11px] font-mono font-semibold rounded bg-teal-50 dark:bg-teal-950/40 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
-              Stage {loadingStage} of 4
+            <span className="h-6 px-2.5 text-[11px] font-mono font-semibold rounded-lg bg-teal-50 dark:bg-teal-950/40 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
+              Stage {loadingStage}/4 Active
             </span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs font-mono">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 text-xs font-mono">
             <div
-              className={`p-2.5 rounded-lg border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 loadingStage >= 1
                   ? 'bg-teal-50/50 dark:bg-teal-950/30 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-200 font-semibold'
                   : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
@@ -343,12 +324,12 @@ export const CoveragePage: React.FC = () => {
                 <span>1 Decompose</span>
               </div>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1 font-sans">
-                3-5 atomic sub-questions
+                {loadingStage >= 1 ? '3 atomic sub-questions' : 'Prompt decomposition'}
               </span>
             </div>
 
             <div
-              className={`p-2.5 rounded-lg border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 loadingStage >= 2
                   ? 'bg-teal-50/50 dark:bg-teal-950/30 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-200 font-semibold'
                   : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
@@ -359,46 +340,46 @@ export const CoveragePage: React.FC = () => {
                 <span>2 Retrieve</span>
               </div>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1 font-sans">
-                50 docs scanned
+                {loadingStage >= 2 ? 'FAISS + Kùzu traversal' : 'Multi-index retrieval'}
               </span>
             </div>
 
             <div
-              className={`p-2.5 rounded-lg border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 loadingStage >= 3
                   ? 'bg-teal-50/50 dark:bg-teal-950/30 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-200 font-semibold'
                   : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
               }`}
             >
               <div className="flex items-center space-x-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                <span className="w-2 h-2 rounded-full bg-[#D97706]" />
                 <span>3 Score</span>
               </div>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1 font-sans">
-                RRF fusion k=60
+                {loadingStage >= 3 ? 'Fused RRF density' : 'Rank fusion calculation'}
               </span>
             </div>
 
             <div
-              className={`p-2.5 rounded-lg border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 loadingStage >= 4
                   ? 'bg-teal-50/50 dark:bg-teal-950/30 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-200 font-semibold'
                   : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
               }`}
             >
               <div className="flex items-center space-x-1.5">
-                <span className="w-2 h-2 rounded-full bg-purple-500" />
+                <span className="w-2 h-2 rounded-full bg-[#16A34A]" />
                 <span>4 Classify</span>
               </div>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 block mt-1 font-sans">
-                Eq.(7) threshold gate
+                {loadingStage >= 4 ? 'Eq.(7) gating matrix' : 'Certainty threshold'}
               </span>
             </div>
           </div>
 
           <EcgLoader
-            label="Evaluating Evidence Coverage Density..."
-            sublabel="Extracting atomic sub-questions with LLM, executing reciprocal rank fusion scoring per question, and classifying coverage tiers..."
+            label="Decomposing & Evaluating Hybrid Density..."
+            sublabel="Factoring inquiry into atomic sub-questions, calculating fused RRF scores across FAISS & Kùzu, and determining certainty class..."
           />
         </div>
       )}
@@ -406,102 +387,106 @@ export const CoveragePage: React.FC = () => {
       {/* Error State */}
       {errorMsg && (
         <ErrorState
-          title="Evidence Coverage Error"
+          title="Evidence Coverage Evaluation Error"
           message={errorMsg}
           onRetry={() => handleEvaluate()}
         />
       )}
 
-      {/* ── 1. EMPTY STATE WITH EQUATION 7 EXPLAINER & RECENT RUNS ── */}
-      {!data && !isLoading && !errorMsg && (
+      {/* ── 3. EMPTY / INITIAL STATE: EQUATION (7) CONTRACT & RECENT COVERAGE LOG ── */}
+      {!data && !isLoading && (
         <div className="space-y-4 animate-fade-in">
-          {/* 1.b Eq.(7) Coverage Explainer Card */}
-          <div className="p-4 sm:p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3">
+          {/* Equation (7) Continuous Gating Spectrum */}
+          <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] shadow-xs p-4 sm:p-5 space-y-3.5">
             <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
               <div className="flex items-center space-x-2">
                 <BookOpen className="w-4 h-4 text-[#0F766E] dark:text-[#14B8A6] stroke-[1.75]" />
-                <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                <h3 className="font-semibold text-xs text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                   How Coverage is Classified — Equation (7)
                 </h3>
               </div>
-              <span className="text-[11px] font-mono text-slate-500">
+              <span className="text-[10px] font-mono text-slate-400">
                 Paper §IV.C Mathematical Contract
               </span>
             </div>
 
             <p className="text-xs text-slate-600 dark:text-slate-400 font-sans leading-relaxed">
-              Every complex inquiry is factored into atomic propositions q1, ..., qk. For each sub-question, the fused reciprocal rank score s = RRF(qi) and distinct document count d determine the certainty class:
+              Every complex inquiry is factored into atomic propositions <span className="font-mono text-slate-800 dark:text-slate-200">q1, ..., qk</span>. For each sub-question, the fused reciprocal rank score <span className="font-mono text-slate-800 dark:text-slate-200">s = RRF(q)</span> and distinct document count <span className="font-mono text-slate-800 dark:text-slate-200">d</span> determine the certainty class:
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs font-mono">
-              <div className="p-3 rounded-lg border border-green-200 dark:border-green-800/80 bg-green-50/40 dark:bg-green-950/20 space-y-1">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 font-mono text-xs">
+              {/* Strong */}
+              <div className="p-3.5 rounded-xl bg-green-50/50 dark:bg-green-950/20 border border-green-200 dark:border-green-800/80 space-y-1">
                 <div className="flex items-center space-x-1.5 text-[#16A34A] font-semibold">
                   <CheckCircle2 className="w-3.5 h-3.5 stroke-[1.75]" />
                   <span>Strong Coverage</span>
                 </div>
-                <div className="text-[11px] text-slate-700 dark:text-slate-300 font-bold">
+                <div className="text-slate-800 dark:text-slate-200 font-semibold pt-0.5">
                   s ≥ 0.12 ∧ d ≥ 2
                 </div>
-                <p className="text-[10px] text-slate-500 font-sans">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-sans leading-tight pt-1">
                   High-density multi-document factual consensus. Direct synthesis permitted.
                 </p>
               </div>
 
-              <div className="p-3 rounded-lg border border-amber-200 dark:border-amber-800/80 bg-amber-50/40 dark:bg-amber-950/20 space-y-1">
+              {/* Partial */}
+              <div className="p-3.5 rounded-xl bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/80 space-y-1">
                 <div className="flex items-center space-x-1.5 text-[#D97706] font-semibold">
                   <AlertTriangle className="w-3.5 h-3.5 stroke-[1.75]" />
                   <span>Partial Coverage</span>
                 </div>
-                <div className="text-[11px] text-slate-700 dark:text-slate-300 font-bold">
+                <div className="text-slate-800 dark:text-slate-200 font-semibold pt-0.5">
                   0.03 ≤ s &lt; 0.12 ∨ (s ≥ 0.12 ∧ d = 1)
                 </div>
-                <p className="text-[10px] text-slate-500 font-sans">
-                  Single-source or moderate score. Marked with caution disclaimers.
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-sans leading-tight pt-1">
+                  Single source or moderate score. Marked with caution disclaimers.
                 </p>
               </div>
 
-              <div className="p-3 rounded-lg border border-red-200 dark:border-red-800/80 bg-red-50/40 dark:bg-red-950/20 space-y-1">
+              {/* None */}
+              <div className="p-3.5 rounded-xl bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-800/80 space-y-1">
                 <div className="flex items-center space-x-1.5 text-[#DC2626] font-semibold">
                   <AlertOctagon className="w-3.5 h-3.5 stroke-[1.75]" />
                   <span>No Coverage / Refusal</span>
                 </div>
-                <div className="text-[11px] text-slate-700 dark:text-slate-300 font-bold">
+                <div className="text-slate-800 dark:text-slate-200 font-semibold pt-0.5">
                   s &lt; 0.03 ∨ d = 0
                 </div>
-                <p className="text-[10px] text-slate-500 font-sans">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-sans leading-tight pt-1">
                   Ungrounded topic. Triggers structured refusal with suggested rephrases.
                 </p>
               </div>
             </div>
           </div>
 
-          {/* 1.c Recent Coverage Maps List */}
-          <div className="p-4 sm:p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3">
-            <div className="flex items-center justify-between">
+          {/* Recent Coverage Maps Telemetry Log */}
+          <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] shadow-xs overflow-hidden">
+            <div className="p-3.5 sm:px-4 bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Clock className="w-4 h-4 text-slate-400 stroke-[1.75]" />
-                <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                <Clock className="w-3.5 h-3.5 text-slate-400 stroke-[1.75]" />
+                <h3 className="font-semibold text-xs text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                   Recent Coverage Maps
                 </h3>
               </div>
-              <span className="text-[11px] font-mono text-slate-500">Benchmark Telemetry</span>
+              <span className="text-[10px] font-mono text-slate-400">Benchmark Telemetry</span>
             </div>
 
-            <div className="divide-y divide-slate-100 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden font-mono text-xs">
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {RECENT_COVERAGE_MAPS.map((rec, idx) => (
-                <div
+                <button
                   key={idx}
+                  type="button"
                   onClick={() => {
                     setQuery(rec.query);
                     handleEvaluate(rec.query);
                   }}
-                  className="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-slate-50 dark:hover:bg-slate-900/60 transition-colors cursor-pointer group"
+                  className="w-full p-3.5 hover:bg-slate-50 dark:hover:bg-slate-900/50 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-2 group transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600 focus-visible:outline-hidden"
                 >
-                  <div className="space-y-0.5">
-                    <p className="font-sans font-medium text-slate-900 dark:text-slate-100 group-hover:text-[#0F766E] dark:group-hover:text-[#14B8A6]">
+                  <div className="space-y-0.5 min-w-0">
+                    <p className="text-xs font-semibold text-slate-900 dark:text-slate-100 group-hover:text-[#0F766E] dark:group-hover:text-[#14B8A6] truncate">
                       "{rec.query}"
                     </p>
-                    <div className="flex items-center space-x-2 text-[11px] text-slate-500">
+                    <div className="flex items-center space-x-2 text-[11px] font-mono text-slate-500">
                       <span>Top score: {rec.score.toFixed(4)}</span>
                       <span>·</span>
                       <span>{rec.sub_count} sub-questions</span>
@@ -510,188 +495,186 @@ export const CoveragePage: React.FC = () => {
 
                   <div className="flex items-center space-x-2 shrink-0">
                     <span
-                      className={`h-6 px-2 inline-flex items-center rounded text-[10px] font-semibold uppercase border ${
+                      className={`h-5 px-2 inline-flex items-center rounded text-[10px] font-mono font-semibold uppercase ${
                         rec.overall === 'strong'
-                          ? 'bg-green-50 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800'
-                          : 'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
+                          ? 'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
+                          : 'bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
                       }`}
                     >
                       {rec.overall}
                     </span>
-                    <span className="text-[11px] text-slate-400">{rec.time}</span>
+                    <span className="text-[11px] font-mono text-slate-400">{rec.time}</span>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
         </div>
       )}
 
-      {/* ── RESULTS PRESENTATION ── */}
+      {/* ── 4. RESULTS SECTION ── */}
       {data && !isLoading && (
         <div className="space-y-4 animate-fade-in">
-          {/* ── 3. RESULTS — OVERALL BANNER WITH TELEMETRY CHIPS & ACTIONS ── */}
+          {/* Overall Banner */}
           <div
-            className={`p-4 sm:p-5 rounded-lg border flex flex-col md:flex-row md:items-center justify-between gap-3.5 shadow-xs ${
+            className={`p-4 sm:p-5 rounded-2xl border-l-4 ${
               data.overall_coverage === 'strong'
-                ? 'bg-green-50/40 dark:bg-green-950/20 border-green-200 dark:border-green-800/80'
+                ? 'border-l-[#16A34A] bg-green-50/40 dark:bg-green-950/20 border-green-200 dark:border-green-900/60'
                 : data.overall_coverage === 'partial'
-                ? 'bg-amber-50/40 dark:bg-amber-950/20 border-amber-200 dark:border-amber-800/80'
-                : 'bg-red-50/40 dark:bg-red-950/20 border-red-200 dark:border-red-800/80'
-            }`}
+                ? 'border-l-[#D97706] bg-amber-50/40 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/60'
+                : 'border-l-[#DC2626] bg-red-50/40 dark:bg-red-950/20 border-red-200 dark:border-red-900/60'
+            } border shadow-xs space-y-2.5`}
           >
-            <div className="space-y-1.5">
-              <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div className="flex items-center space-x-2">
                 <span
-                  className={`h-7 px-2.5 inline-flex items-center rounded-lg text-xs font-mono font-semibold uppercase border ${
+                  className={`h-6 px-2.5 inline-flex items-center space-x-1 rounded-md text-xs font-mono font-bold uppercase ${
                     data.overall_coverage === 'strong'
-                      ? 'bg-green-50 dark:bg-green-950/60 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800'
+                      ? 'bg-green-100 dark:bg-green-900/60 text-green-800 dark:text-green-300'
                       : data.overall_coverage === 'partial'
-                      ? 'bg-amber-50 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800'
-                      : 'bg-red-50 dark:bg-red-950/60 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
+                      ? 'bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300'
+                      : 'bg-red-100 dark:bg-red-900/60 text-red-800 dark:text-red-300'
                   }`}
                 >
-                  Overall: {data.overall_coverage} Coverage
+                  {data.overall_coverage === 'strong' ? <CheckCircle2 className="w-3.5 h-3.5" /> : data.overall_coverage === 'partial' ? <AlertTriangle className="w-3.5 h-3.5" /> : <AlertOctagon className="w-3.5 h-3.5" />}
+                  <span>{data.overall_coverage} Coverage</span>
                 </span>
-
-                {/* 3. Mean top score & RRF mono chip */}
-                <span className="h-7 px-2.5 inline-flex items-center rounded-lg text-xs font-mono font-medium bg-white dark:bg-[#0F172A] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 shadow-2xs">
-                  mean top score {data.sub_questions[0]?.top_fused_score.toFixed(4) || '0.1770'} · RRF k=60
-                </span>
-
-                <span className="text-xs font-mono text-slate-500">
-                  ({data.sub_questions.length} Atomic Sub-Questions)
+                <span className="text-xs font-sans text-slate-600 dark:text-slate-400">
+                  {data.sub_questions.length} Atomic Sub-Questions Decomposed
                 </span>
               </div>
 
-              <p className="text-xs text-slate-700 dark:text-slate-300 font-sans">
-                Query: <strong className="font-semibold text-slate-900 dark:text-slate-100">"{data.query}"</strong>
-              </p>
-            </div>
-
-            {/* Breakdown Badges & Header Action Buttons */}
-            <div className="flex flex-wrap items-center gap-2">
-              <div className="flex items-center space-x-1 text-xs font-mono">
-                <span className="h-7 px-2 inline-flex items-center rounded-md bg-green-50 dark:bg-green-950/40 text-green-800 dark:text-green-300 border border-green-200 dark:border-green-800 font-semibold">
+              <div className="flex items-center space-x-2 font-mono text-xs">
+                <span className="h-6 px-2 inline-flex items-center rounded bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-green-700 dark:text-green-300">
                   {data.strong_count} Strong
                 </span>
-                <span className="h-7 px-2 inline-flex items-center rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 font-semibold">
+                <span className="h-6 px-2 inline-flex items-center rounded bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-amber-700 dark:text-amber-300">
                   {data.partial_count} Partial
                 </span>
-                <span className="h-7 px-2 inline-flex items-center rounded-md bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800 font-semibold">
+                <span className="h-6 px-2 inline-flex items-center rounded bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-red-700 dark:text-red-300">
                   {data.none_count} None
                 </span>
               </div>
-
-              {/* 3. Action Buttons: Open in Console + Export JSON */}
-              <div className="flex items-center space-x-1.5">
-                <button
-                  type="button"
-                  onClick={() => navigate(`/chat?q=${encodeURIComponent(data.query)}`)}
-                  className="h-7 px-2.5 inline-flex items-center space-x-1 rounded-lg text-xs font-medium bg-[#0F766E] text-white hover:bg-[#115E59] transition-colors cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-teal-600"
-                >
-                  <span>Open in Console</span>
-                  <ArrowUpRight className="w-3.5 h-3.5 stroke-[1.75]" />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleExportJSON}
-                  className="h-7 px-2.5 inline-flex items-center space-x-1 rounded-lg text-xs font-mono text-slate-700 dark:text-slate-300 bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors cursor-pointer shadow-2xs"
-                  title="Export Coverage Map as JSON"
-                >
-                  <Download className="w-3.5 h-3.5 stroke-[1.75]" />
-                  <span>JSON</span>
-                </button>
-              </div>
             </div>
+
+            <p className="text-xs font-sans text-slate-700 dark:text-slate-300 leading-relaxed">
+              {data.overall_coverage === 'strong'
+                ? 'High multi-document factual grounding across all decomposed propositions. The hybrid FAISS + Kùzu indices provide strong evidence support.'
+                : data.overall_coverage === 'partial'
+                ? 'Moderate evidence coverage. Some sub-propositions are supported by single-source citations or border-line confidence scores.'
+                : 'Insufficient evidence coverage in current medical index. To safeguard patient accuracy, full multi-hop answer generation is guarded by structured refusal.'}
+            </p>
+
+            {/* Suggested Rephrases for Low Coverage */}
+            {data.suggested_rephrases && data.suggested_rephrases.length > 0 && (
+              <div className="pt-2 border-t border-slate-200/60 dark:border-slate-800/60 space-y-1.5 font-sans">
+                <span className="text-[11px] font-mono text-slate-500 uppercase tracking-wide block">
+                  Suggested Query Rephrases with Established Grounding:
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {data.suggested_rephrases.map((rephrase, rIdx) => (
+                    <button
+                      key={rIdx}
+                      type="button"
+                      onClick={() => {
+                        setQuery(rephrase);
+                        handleEvaluate(rephrase);
+                      }}
+                      className="h-6 px-2.5 rounded-lg text-xs font-mono bg-white dark:bg-[#0F172A] text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] border border-slate-200 dark:border-slate-800 hover:border-teal-300 dark:hover:border-teal-700 transition-colors cursor-pointer"
+                    >
+                      {rephrase}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
-          {/* ── 4. COVERAGE MATRIX TABLE (Mirroring Paper Fig. 4) ── */}
-          <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs overflow-hidden">
-            <button
-              type="button"
+          {/* ── FIGURE 4: INTERACTIVE DENSITY MATRIX ── */}
+          <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] shadow-xs overflow-hidden">
+            <div
               onClick={() => setIsMatrixOpen(!isMatrixOpen)}
-              className="w-full p-3 bg-slate-50/80 dark:bg-slate-900/60 hover:bg-slate-100 dark:hover:bg-slate-900 flex items-center justify-between text-xs font-medium text-slate-800 dark:text-slate-200 transition-colors cursor-pointer border-b border-slate-200 dark:border-slate-800"
+              className="p-4 bg-slate-50/80 dark:bg-slate-900/60 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between cursor-pointer select-none"
             >
               <div className="flex items-center space-x-2">
                 <Table className="w-4 h-4 text-[#0F766E] dark:text-[#14B8A6] stroke-[1.75]" />
-                <span className="font-semibold uppercase tracking-wide">
-                  Evidence Density Matrix (Fig. 4 Multi-Tier Breakdown)
-                </span>
-                <span className="h-5 px-1.5 inline-flex items-center rounded text-[10px] font-mono bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">
-                  {data.sub_questions.length} Rows
-                </span>
+                <h3 className="font-semibold text-xs text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                  Figure 4: Evidence Coverage Matrix (Eq. 7 Decomposed Propositions)
+                </h3>
               </div>
-              {isMatrixOpen ? <ChevronUp className="w-4 h-4 stroke-[1.75]" /> : <ChevronDown className="w-4 h-4 stroke-[1.75]" />}
-            </button>
+              <div className="flex items-center space-x-2">
+                <span className="text-[10px] font-mono text-slate-400">Click row to inspect card</span>
+                {isMatrixOpen ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
+              </div>
+            </div>
 
             {isMatrixOpen && (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs font-sans">
                   <thead className="bg-slate-50 dark:bg-slate-900 text-[11px] font-medium text-slate-500 uppercase tracking-wide border-b border-slate-200 dark:border-slate-800">
                     <tr>
-                      <th className="py-2.5 px-3">#</th>
-                      <th className="py-2.5 px-3">Sub-Question</th>
-                      <th className="py-2.5 px-3">Fused Score (Threshold 0.12)</th>
-                      <th className="py-2.5 px-3">Docs</th>
-                      <th className="py-2.5 px-3">Chunks</th>
-                      <th className="py-2.5 px-3 text-right">Coverage Tier</th>
+                      <th className="py-2.5 px-4 w-12 text-center">#</th>
+                      <th className="py-2.5 px-4">Decomposed Sub-Question</th>
+                      <th className="py-2.5 px-3 font-mono">Fused RRF Score (s)</th>
+                      <th className="py-2.5 px-3 font-mono">Distinct Docs (d)</th>
+                      <th className="py-2.5 px-3">Class</th>
+                      <th className="py-2.5 px-3 font-mono">Eq.(7) Gating Threshold</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 dark:divide-slate-800 font-mono">
-                    {data.sub_questions.map((sq, idx) => {
-                      const isStrong = sq.coverage_class === 'strong';
-                      const isPartial = sq.coverage_class === 'partial';
-                      const scorePct = Math.min(100, Math.round((sq.top_fused_score / 0.20) * 100));
-
+                    {data.sub_questions.map((sub, idx) => {
+                      const cProps = getCoverageClassProps(sub.coverage_class);
                       return (
                         <tr
                           key={idx}
-                          onMouseEnter={() => setHighlightedCard(idx)}
-                          onMouseLeave={() => setHighlightedCard(null)}
-                          onClick={() => {
-                            const el = document.getElementById(`sq-card-${idx}`);
-                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                          }}
-                          className={`hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors cursor-pointer ${
-                            highlightedCard === idx ? 'bg-teal-50/40 dark:bg-teal-950/20' : ''
-                          }`}
+                          onClick={() => scrollToCard(idx)}
+                          className="hover:bg-teal-50/50 dark:hover:bg-teal-950/20 cursor-pointer transition-colors group"
                         >
-                          <td className="py-2.5 px-3 text-slate-400 font-bold">SQ{idx + 1}</td>
-                          <td className="py-2.5 px-3 font-sans font-medium text-slate-900 dark:text-slate-100 max-w-xs truncate" title={sq.sub_question}>
-                            {sq.sub_question}
+                          <td className="py-3 px-4 text-center text-slate-400 font-bold">
+                            q{idx + 1}
                           </td>
-                          {/* Score Bar */}
-                          <td className="py-2.5 px-3">
-                            <div className="space-y-1">
-                              <div className="flex justify-between items-center text-[11px]">
-                                <span className="font-semibold">{sq.top_fused_score.toFixed(4)}</span>
-                                <span className="text-[10px] text-slate-400">target ≥ 0.12</span>
-                              </div>
-                              <div className="h-1.5 w-32 rounded-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                          <td className="py-3 px-4 font-sans font-medium text-slate-900 dark:text-slate-100 group-hover:text-[#0F766E] dark:group-hover:text-[#14B8A6]">
+                            {sub.sub_question}
+                          </td>
+                          <td className="py-3 px-3">
+                            <div className="flex items-center space-x-2">
+                              <span className="tabular-nums font-semibold">{sub.top_fused_score.toFixed(4)}</span>
+                              <div className="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                                 <div
-                                  className={`h-full rounded-full ${
-                                    isStrong ? 'bg-[#16A34A]' : isPartial ? 'bg-[#D97706]' : 'bg-[#DC2626]'
+                                  className={`h-full ${
+                                    sub.coverage_class === 'strong'
+                                      ? 'bg-[#16A34A]'
+                                      : sub.coverage_class === 'partial'
+                                      ? 'bg-[#D97706]'
+                                      : 'bg-[#DC2626]'
                                   }`}
-                                  style={{ width: `${scorePct}%` }}
+                                  style={{ width: `${Math.min(100, (sub.top_fused_score / 0.25) * 100)}%` }}
                                 />
                               </div>
                             </div>
                           </td>
-                          <td className="py-2.5 px-3 tabular-nums">{sq.distinct_doc_count} docs</td>
-                          <td className="py-2.5 px-3 tabular-nums">{sq.evidence_count} chunks</td>
-                          <td className="py-2.5 px-3 text-right">
+                          <td className="py-3 px-3 tabular-nums">
+                            {sub.distinct_doc_count} docs
+                          </td>
+                          <td className="py-3 px-3">
                             <span
-                              className={`h-6 px-2 inline-flex items-center rounded text-[10px] font-semibold uppercase border ${
-                                isStrong
-                                  ? 'bg-green-50 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800'
-                                  : isPartial
-                                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800'
-                                  : 'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
+                              className={`h-5 px-2 inline-flex items-center rounded text-[10px] font-semibold uppercase ${
+                                sub.coverage_class === 'strong'
+                                  ? 'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
+                                  : sub.coverage_class === 'partial'
+                                  ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+                                  : 'bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
                               }`}
                             >
-                              {sq.coverage_class}
+                              {sub.coverage_class}
                             </span>
+                          </td>
+                          <td className="py-3 px-3 text-[11px] text-slate-500">
+                            {sub.coverage_class === 'strong'
+                              ? 's ≥ 0.12 ∧ d ≥ 2 (Pass)'
+                              : sub.coverage_class === 'partial'
+                              ? '0.03 ≤ s < 0.12 (Caution)'
+                              : 's < 0.03 ∨ d = 0 (Refusal)'}
                           </td>
                         </tr>
                       );
@@ -702,180 +685,131 @@ export const CoveragePage: React.FC = () => {
             )}
           </div>
 
-          {/* ── 5. SUB-QUESTION DETAIL CARDS ── */}
+          {/* ── SUB-QUESTION DETAILED ACCORDION CARDS ── */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
-                Sub-Question Evidence Details
+                Atomic Sub-Question Evidence Profiles ({data.sub_questions.length})
               </h3>
               <span className="text-[11px] font-mono text-slate-500">
-                Detailed Hybrid Grounding & Provenance
+                Hybrid Document Provenance
               </span>
             </div>
 
-            {data.sub_questions.map((sq, idx) => {
-              const covProps = getCoverageClassProps(sq.coverage_class);
-              const isOpen = !!openAccordion[idx];
-              const isStrong = sq.coverage_class === 'strong';
-              const isPartial = sq.coverage_class === 'partial';
-              const isNone = sq.coverage_class === 'none';
+            <div className="space-y-3">
+              {data.sub_questions.map((sub, idx) => {
+                const isOpen = !!openAccordion[idx];
+                const isTarget = highlightedCard === idx;
 
-              return (
-                <div
-                  key={idx}
-                  id={`sq-card-${idx}`}
-                  className={`rounded-lg border bg-white dark:bg-[#0F172A] shadow-xs overflow-hidden transition-all ${
-                    highlightedCard === idx ? 'ring-2 ring-teal-500' : ''
-                  } ${
-                    isNone
-                      ? 'border-l-4 border-l-[#DC2626] border-slate-200 dark:border-slate-800'
-                      : isPartial
-                      ? 'border-l-4 border-l-[#D97706] border-slate-200 dark:border-slate-800'
-                      : 'border-slate-200 dark:border-slate-800'
-                  }`}
-                >
-                  {/* Header */}
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion(idx)}
-                    className="w-full p-4 flex items-center justify-between text-left hover:bg-slate-50/60 dark:hover:bg-slate-900/40 transition-colors cursor-pointer"
+                return (
+                  <div
+                    key={idx}
+                    id={`subq-card-${idx}`}
+                    className={`rounded-2xl border transition-all ${
+                      isTarget
+                        ? 'ring-2 ring-[#0F766E] dark:ring-[#14B8A6] shadow-lg'
+                        : 'border-slate-200/90 dark:border-slate-800/90 shadow-xs'
+                    } ${
+                      sub.coverage_class === 'strong'
+                        ? 'border-l-4 border-l-[#16A34A]'
+                        : sub.coverage_class === 'partial'
+                        ? 'border-l-4 border-l-[#D97706]'
+                        : 'border-l-4 border-l-[#DC2626]'
+                    } bg-white dark:bg-[#0F172A] p-4 sm:p-5 space-y-3`}
                   >
-                    <div className="flex items-start space-x-3 pr-4">
-                      <span
-                        className={`h-6 px-2 inline-flex items-center rounded text-[10px] font-mono font-semibold uppercase border shrink-0 mt-0.5 ${
-                          isStrong
-                            ? 'bg-green-50 dark:bg-green-950/40 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800'
-                            : isPartial
-                            ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border-amber-200 dark:border-amber-800'
-                            : 'bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
-                        }`}
-                      >
-                        SQ{idx + 1} · {covProps.label}
-                      </span>
-                      <div>
-                        <h4 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-slate-100 leading-snug font-sans">
-                          {sq.sub_question}
+                    {/* Header */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div className="flex items-center space-x-2">
+                        <span className="w-6 h-6 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono font-bold text-xs flex items-center justify-center">
+                          q{idx + 1}
+                        </span>
+                        <h4 className="font-semibold text-xs sm:text-[13.5px] text-slate-900 dark:text-slate-100 font-sans">
+                          {sub.sub_question}
                         </h4>
-                        <div className="flex flex-wrap items-center gap-2 mt-1 text-[11px] font-mono text-slate-500">
-                          <span>Top Score: {sq.top_fused_score.toFixed(4)}</span>
-                          <span>•</span>
-                          <span>{sq.distinct_doc_count} Distinct Documents</span>
-                          <span>•</span>
-                          <span>{sq.evidence_count} Chunks</span>
-                        </div>
+                      </div>
+
+                      <div className="flex items-center space-x-2 font-mono text-xs">
+                        <span
+                          className={`h-5 px-2 inline-flex items-center rounded text-[10px] font-semibold uppercase ${
+                            sub.coverage_class === 'strong'
+                              ? 'bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800'
+                              : sub.coverage_class === 'partial'
+                              ? 'bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800'
+                              : 'bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'
+                          }`}
+                        >
+                          {sub.coverage_class}
+                        </span>
+                        <span className="text-slate-500">Score: {sub.top_fused_score.toFixed(4)}</span>
+                        <button
+                          type="button"
+                          onClick={() => toggleAccordion(idx)}
+                          className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                        >
+                          {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                        </button>
                       </div>
                     </div>
 
-                    <div className="text-slate-400 shrink-0">
-                      {isOpen ? <ChevronUp className="w-4 h-4 stroke-[1.75]" /> : <ChevronDown className="w-4 h-4 stroke-[1.75]" />}
-                    </div>
-                  </button>
-
-                  {/* 6. PARTIAL / NONE STATES: SUGGESTED REPHRASES CHIPS */}
-                  {isOpen && (
-                    <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/30 space-y-3 animate-fade-in text-xs font-sans">
-                      {(isPartial || isNone) && sq.suggested_rephrase && (
-                        <div className="p-3 rounded-lg bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800/80 space-y-2">
-                          <div className="flex items-center justify-between">
-                            <span className="text-[10px] font-mono font-semibold text-[#D97706] uppercase tracking-wide">
-                              Suggested Query Rephrase (Turn Refusal to Guidance)
-                            </span>
-                            <div className="flex items-center space-x-1.5">
-                              <button
-                                type="button"
-                                onClick={() => handleCopyText(sq.suggested_rephrase!, `sq_${idx}`)}
-                                className="h-6 px-2 inline-flex items-center space-x-1 rounded bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-600 dark:text-slate-400 hover:text-slate-900 cursor-pointer shadow-2xs"
-                              >
-                                {copiedIndex === `sq_${idx}` ? <Check className="w-3 h-3 text-[#16A34A]" /> : <Copy className="w-3 h-3" />}
-                                <span>{copiedIndex === `sq_${idx}` ? 'Copied' : 'Copy'}</span>
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  navigate(`/chat?q=${encodeURIComponent(sq.suggested_rephrase!)}`)
-                                }
-                                className="h-6 px-2 inline-flex items-center space-x-1 rounded bg-[#0F766E] text-white text-[11px] font-medium hover:bg-[#115E59] transition-colors cursor-pointer shadow-2xs focus-visible:ring-2 focus-visible:ring-teal-600"
-                              >
-                                <span>Send rephrase to Console</span>
-                                <ArrowRight className="w-3 h-3" />
-                              </button>
-                            </div>
+                    {isOpen && (
+                      <div className="space-y-3 pt-2 border-t border-slate-100 dark:border-slate-800 animate-fade-in font-sans text-xs">
+                        {/* Metrics Bar */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 font-mono text-[11px] bg-slate-50 dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-800">
+                          <div>
+                            <span className="text-[10px] text-slate-500 uppercase block font-sans">Fused RRF Score</span>
+                            <span className="font-semibold text-slate-900 dark:text-slate-100">{sub.top_fused_score.toFixed(4)}</span>
                           </div>
-                          <p className="font-mono text-xs text-slate-800 dark:text-slate-200">
-                            "{sq.suggested_rephrase}"
-                          </p>
+                          <div>
+                            <span className="text-[10px] text-slate-500 uppercase block font-sans">Distinct Documents</span>
+                            <span className="font-semibold text-slate-900 dark:text-slate-100">{sub.distinct_doc_count} source files</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-slate-500 uppercase block font-sans">Evidence Chunks</span>
+                            <span className="font-semibold text-slate-900 dark:text-slate-100">{sub.evidence_count} chunks</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] text-slate-500 uppercase block font-sans">Gating Decision</span>
+                            <span className="font-semibold text-[#0F766E] dark:text-[#14B8A6]">{sub.coverage_class === 'none' ? 'Refuse speculative' : 'Permit synthesis'}</span>
+                          </div>
                         </div>
-                      )}
 
-                      {/* 5. Reformatted Top Evidence Sources */}
-                      {sq.top_citations && sq.top_citations.length > 0 ? (
-                        <div className="space-y-2">
-                          <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wide block">
-                            Top Evidence Sources ({sq.top_citations.length}):
-                          </span>
-                          <div className="space-y-2">
-                            {sq.top_citations.map((cite, cIdx) => {
-                              const cat = extractCategory(cite);
-                              const docId = extractDocId(cite, cIdx);
-                              const cleanSnippet = cleanSnippetText(cite);
-
-                              return (
+                        {/* Top Citations */}
+                        {sub.top_citations && sub.top_citations.length > 0 && (
+                          <div className="space-y-1.5">
+                            <span className="text-[10px] font-mono text-slate-500 uppercase tracking-wide block">
+                              Top Grounded Citations:
+                            </span>
+                            <div className="space-y-1">
+                              {sub.top_citations.map((cit, cIdx) => (
                                 <div
                                   key={cIdx}
-                                  className="p-3 rounded-lg bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 space-y-1.5 shadow-xs"
+                                  className="p-2.5 rounded-xl bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-700 dark:text-slate-300 font-sans"
                                 >
-                                  <div className="flex flex-wrap items-center justify-between gap-1.5">
-                                    <div className="flex items-center space-x-1.5">
-                                      <span className={`h-5 px-1.5 inline-flex items-center rounded text-[9px] font-mono font-semibold border ${cat.cls}`}>
-                                        {cat.label}
-                                      </span>
-                                      <span className="h-5 px-1.5 inline-flex items-center rounded text-[10px] font-mono text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                                        {docId}
-                                      </span>
-                                      <button
-                                        type="button"
-                                        onClick={() => handleCopyText(docId, `doc_${idx}_${cIdx}`)}
-                                        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
-                                        title="Copy Document ID"
-                                      >
-                                        {copiedIndex === `doc_${idx}_${cIdx}` ? <Check className="w-3 h-3 text-[#16A34A]" /> : <Copy className="w-3 h-3" />}
-                                      </button>
-                                    </div>
-
-                                    <span className="text-[10px] font-mono text-[#0F766E] dark:text-[#14B8A6] font-semibold">
-                                      Score: {sq.top_fused_score.toFixed(4)}
-                                    </span>
-                                  </div>
-
-                                  <p className="text-slate-700 dark:text-slate-300 text-xs leading-relaxed font-sans">
-                                    "{cleanSnippet}"
-                                  </p>
+                                  {cit}
                                 </div>
-                              );
-                            })}
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      ) : (
-                        <div className="p-4 text-center text-xs font-mono text-slate-500 rounded-lg border border-dashed border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A]">
-                          No retrieval chunks met minimum RRF threshold ($s &lt; 0.03$) for this sub-question.
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                        )}
 
-          {/* ── 7. FOOTER STRIP: EQ.(7) CHIPS & MEDICAL DISCLAIMER ── */}
-          <div className="p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-slate-500 uppercase text-[10px] font-sans">Threshold Reference Eq.(7):</span>
-              <span className="text-[#16A34A]">Strong: s ≥ 0.12 ∧ d ≥ 2</span>
-              <span className="text-slate-300 dark:text-slate-700">·</span>
-              <span className="text-[#D97706]">Partial: 0.03 ≤ s &lt; 0.12</span>
-              <span className="text-slate-300 dark:text-slate-700">·</span>
-              <span className="text-[#DC2626]">None: s &lt; 0.03 ∨ d = 0</span>
+                        {/* Action Links */}
+                        <div className="pt-2 flex items-center justify-between">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              navigate(`/chat?q=${encodeURIComponent(sub.sub_question)}`)
+                            }
+                            className="inline-flex items-center space-x-1 text-xs font-medium text-[#0F766E] dark:text-[#14B8A6] hover:underline cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600"
+                          >
+                            <span>Query this sub-question in Console</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 stroke-[1.75]" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
 

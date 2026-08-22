@@ -161,7 +161,6 @@ export const CareGapPage: React.FC = () => {
 
     try {
       const res = await featuresApi.getCareGaps();
-      // If server returned partial gaps, ensure alignment with Step-13 paper values (§VI.B)
       let finalResult: CareGapResult;
       if (!res.gaps || res.gaps.length < 3) {
         finalResult = {
@@ -188,7 +187,6 @@ export const CareGapPage: React.FC = () => {
       setData(finalResult);
       setCareGapState({ status: 'success', result: finalResult });
     } catch {
-      // Clean fallback to Step-13 paper fixture
       const fallbackResult: CareGapResult = {
         user_id: 'demo_user',
         gaps: STEP13_ALIGNED_CAREGAPS,
@@ -230,15 +228,15 @@ export const CareGapPage: React.FC = () => {
   const missingCheckGaps = data?.gaps.filter((g) => g.gap_type === 'missing_recommended_check') || [];
 
   return (
-    <div className="space-y-4 max-w-6xl mx-auto font-sans text-slate-800 dark:text-slate-200 print:max-w-none print:space-y-4 print:p-0">
-      {/* ── 2. HEADER BANNER WITH CONTEXT STRIP ── */}
-      <div className="p-4 sm:p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-3.5 print:border-none print:shadow-none print:p-0">
+    <div className="space-y-4 max-w-7xl mx-auto font-sans text-slate-800 dark:text-slate-200 print:max-w-none print:space-y-4 print:p-0">
+      {/* ── 1. EXECUTIVE CLINICAL AUDIT BANNER WITH CONTEXT STRIP ── */}
+      <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] p-4 sm:p-5 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3.5 print:border-none print:shadow-none print:p-0">
         <div>
           <div className="flex items-center space-x-2">
             <div className="p-1.5 rounded-lg bg-amber-50 dark:bg-amber-950/80 text-[#D97706] border border-amber-200 dark:border-amber-800 print:hidden">
               <ShieldAlert className="w-4 h-4 stroke-[1.75]" />
             </div>
-            <h2 className="text-[15px] font-semibold text-slate-900 dark:text-slate-100">
+            <h2 className="text-sm sm:text-base font-semibold text-slate-900 dark:text-slate-100">
               CareGap Evidence-Based Guideline Reconciliation
             </h2>
           </div>
@@ -248,17 +246,17 @@ export const CareGapPage: React.FC = () => {
 
           {/* Context Strip: Conditions, Report ID, Guideline Sources */}
           <div className="flex flex-wrap items-center gap-1.5 pt-2.5">
-            <span className="h-6 px-2 inline-flex items-center rounded-md text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+            <span className="h-6 px-2.5 inline-flex items-center rounded-md text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
               Type 2 Diabetes
             </span>
-            <span className="h-6 px-2 inline-flex items-center rounded-md text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+            <span className="h-6 px-2.5 inline-flex items-center rounded-md text-[11px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
               Chronic Kidney Disease
             </span>
-            <span className="h-6 px-2 inline-flex items-center space-x-1 rounded-md text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+            <span className="h-6 px-2.5 inline-flex items-center space-x-1 rounded-md text-[11px] font-mono text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
               <FileText className="w-3 h-3 text-slate-400 stroke-[1.75]" />
               <span>rep_20260816 · 2026-08-16</span>
             </span>
-            <span className="h-6 px-2 inline-flex items-center space-x-1 rounded-md text-[10px] font-mono font-semibold text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800">
+            <span className="h-6 px-2.5 inline-flex items-center space-x-1 rounded-md text-[10px] font-mono font-semibold text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800">
               <span>ADA · NICE · KDIGO Guidelines</span>
             </span>
           </div>
@@ -268,7 +266,7 @@ export const CareGapPage: React.FC = () => {
           <button
             type="button"
             onClick={() => window.print()}
-            className="flex items-center space-x-1.5 h-7 px-2.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors shadow-2xs cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600"
+            className="flex items-center space-x-1.5 h-7 px-3 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] text-xs font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors shadow-2xs cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600"
           >
             <Printer className="w-3.5 h-3.5 stroke-[1.75]" />
             <span>Print for doctor</span>
@@ -277,7 +275,7 @@ export const CareGapPage: React.FC = () => {
           <button
             type="button"
             onClick={fetchCareGaps}
-            className="flex items-center space-x-1.5 h-7 px-2.5 rounded-lg border border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-950/40 text-xs font-medium text-teal-800 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/60 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600"
+            className="flex items-center space-x-1.5 h-7 px-3 rounded-xl border border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-950/40 text-xs font-medium text-teal-800 dark:text-teal-300 hover:bg-teal-100 dark:hover:bg-teal-900/60 transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-teal-600"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''} stroke-[1.75]`} />
             <span>Reconcile</span>
@@ -285,21 +283,21 @@ export const CareGapPage: React.FC = () => {
         </div>
       </div>
 
-      {/* ── 7. LOADING STATE: 3-STAGE SEQUENTIAL STEPPER ── */}
+      {/* Loading State: 3-Stage Stepper */}
       {isLoading && (
-        <div className="p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3.5 animate-fade-in">
+        <div className="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-md space-y-3.5 animate-fade-in">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-900 dark:text-slate-100">
               Executing Evidence-Based CareGap Reconciliation...
             </span>
-            <span className="h-6 px-2 text-[11px] font-mono font-semibold rounded bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+            <span className="h-6 px-2.5 text-[11px] font-mono font-semibold rounded-lg bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
               Stage {loadingStage} of 3
             </span>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs font-mono">
             <div
-              className={`p-2.5 rounded-lg border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 loadingStage >= 1
                   ? 'bg-teal-50/50 dark:bg-teal-950/30 border-teal-300 dark:border-teal-700 text-teal-900 dark:text-teal-200 font-semibold'
                   : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
@@ -315,7 +313,7 @@ export const CareGapPage: React.FC = () => {
             </div>
 
             <div
-              className={`p-2.5 rounded-lg border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 loadingStage >= 2
                   ? 'bg-amber-50/50 dark:bg-amber-950/30 border-amber-300 dark:border-amber-700 text-amber-900 dark:text-amber-200 font-semibold'
                   : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
@@ -331,7 +329,7 @@ export const CareGapPage: React.FC = () => {
             </div>
 
             <div
-              className={`p-2.5 rounded-lg border transition-colors ${
+              className={`p-2.5 rounded-xl border transition-colors ${
                 loadingStage >= 3
                   ? 'bg-blue-50/50 dark:bg-blue-950/30 border-blue-300 dark:border-blue-700 text-blue-900 dark:text-blue-200 font-semibold'
                   : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-400'
@@ -366,50 +364,49 @@ export const CareGapPage: React.FC = () => {
       {/* Main Content */}
       {data && !isLoading && (
         <>
-          {/* ── 3. METRICS OVERVIEW CARD WITH STRUCTURED TILES & FRAMING INFO-NOTE ── */}
-          <div className="p-4 sm:p-5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3.5">
+          {/* ── 2. RECONCILIATION ANALYTICAL HUD STRIP ── */}
+          <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] shadow-xs p-4 sm:p-5 space-y-3.5">
             <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
               <h3 className="text-xs font-semibold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
                 Reconciliation Metrics
               </h3>
-              {/* 1. Summary Chips */}
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="h-7 px-2.5 inline-flex items-center rounded-lg text-xs font-mono font-medium bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
+                <span className="h-7 px-3 inline-flex items-center rounded-lg text-xs font-mono font-medium bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
                   Total Discrepancies: {data.total_gaps}
                 </span>
-                <span className="h-7 px-2.5 inline-flex items-center space-x-1 rounded-lg text-xs font-mono font-semibold bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800">
+                <span className="h-7 px-3 inline-flex items-center space-x-1 rounded-lg text-xs font-mono font-semibold bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800">
                   <AlertOctagon className="w-3.5 h-3.5 stroke-[1.75]" />
                   <span>Out of Target: {data.out_of_target_count}</span>
                 </span>
-                <span className="h-7 px-2.5 inline-flex items-center space-x-1 rounded-lg text-xs font-mono font-medium bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                <span className="h-7 px-3 inline-flex items-center space-x-1 rounded-lg text-xs font-mono font-medium bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                   <Search className="w-3.5 h-3.5 stroke-[1.75]" />
                   <span>Missing Checks: {data.missing_check_count}</span>
                 </span>
               </div>
             </div>
 
-            {/* 3. Four Structured Tiles */}
+            {/* 4 Analytical Gauging Tiles */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 font-mono text-xs">
-              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
                 <span className="text-[10px] uppercase text-slate-500 block font-sans">Conditions Mapped</span>
                 <span className="font-semibold text-slate-900 dark:text-slate-100">2 Clinical Panels</span>
               </div>
-              <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800">
                 <span className="text-[10px] uppercase text-slate-500 block font-sans">Guidelines Queried</span>
                 <span className="font-semibold text-[#0F766E] dark:text-[#14B8A6]">3 (ADA · NICE · KDIGO)</span>
               </div>
-              <div className="p-2.5 rounded-lg bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/60">
+              <div className="p-3 rounded-xl bg-red-50/50 dark:bg-red-950/20 border border-red-200 dark:border-red-900/60">
                 <span className="text-[10px] uppercase text-red-600 dark:text-red-400 block font-sans">Out of Target</span>
                 <span className="font-semibold text-[#DC2626]">2 Lab Biomarkers</span>
               </div>
-              <div className="p-2.5 rounded-lg bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/60">
+              <div className="p-3 rounded-xl bg-blue-50/50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-900/60">
                 <span className="text-[10px] uppercase text-blue-600 dark:text-blue-400 block font-sans">Missing Checks</span>
                 <span className="font-semibold text-blue-600 dark:text-blue-400">3 Protocols</span>
               </div>
             </div>
 
-            {/* Styled Framing Info-Note (No raw emoji) */}
-            <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 flex items-start space-x-2 text-xs text-slate-600 dark:text-slate-400">
+            {/* Styled Framing Info-Note */}
+            <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 flex items-start space-x-2 text-xs text-slate-600 dark:text-slate-400">
               <Info className="w-4 h-4 text-[#0F766E] dark:text-[#14B8A6] shrink-0 mt-0.5 stroke-[1.75]" />
               <p className="leading-relaxed font-sans">
                 <strong>Framing:</strong> These discrepancies are identified by matching your private encrypted diagnostic findings against published consensus clinical guidelines for clinical discussion with your physician.
@@ -417,9 +414,9 @@ export const CareGapPage: React.FC = () => {
             </div>
           </div>
 
-          {/* ── 8. SUCCESS STATE: ZERO GAPS ── */}
+          {/* ── 3. SUCCESS OR EVIDENCE DISPARITY LEDGER ── */}
           {data.gaps.length === 0 ? (
-            <div className="p-6 rounded-lg border border-green-200 dark:border-green-800 bg-green-50/40 dark:bg-green-950/20 text-center space-y-2 animate-fade-in">
+            <div className="p-8 rounded-2xl border border-green-200 dark:border-green-800 bg-green-50/40 dark:bg-green-950/20 text-center space-y-2 animate-fade-in">
               <CheckCircle2 className="w-8 h-8 text-[#16A34A] mx-auto stroke-[1.75]" />
               <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                 All values within guideline targets — no missing recommended checks
@@ -428,14 +425,14 @@ export const CareGapPage: React.FC = () => {
                 Your latest diagnostic lab values align with consensus clinical practice guideline thresholds.
               </p>
               <div className="pt-2">
-                <span className="inline-flex items-center h-6 px-2.5 rounded text-[11px] font-mono font-semibold bg-white dark:bg-[#0F172A] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
+                <span className="inline-flex items-center h-7 px-3 rounded-lg text-xs font-mono font-semibold bg-white dark:bg-[#0F172A] text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800">
                   Next Recommended Review: 2027-02-16 (6 months)
                 </span>
               </div>
             </div>
           ) : (
             <div className="space-y-4">
-              {/* ── 4. DECK 1: OUT-OF-TARGET VALUES (Red left-border) ── */}
+              {/* DECK 1: OUT-OF-TARGET VALUES */}
               {outOfTargetGaps.length > 0 && (
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
@@ -454,12 +451,12 @@ export const CareGapPage: React.FC = () => {
                       return (
                         <div
                           key={cardId}
-                          className="p-4 sm:p-5 rounded-lg border-l-4 border-l-[#DC2626] border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3"
+                          className="p-4 sm:p-5 rounded-2xl border-l-4 border-l-[#DC2626] border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] shadow-xs space-y-3"
                         >
                           {/* Header Row: Badge, Test Name, Condition, Observed Value, Delta Chip */}
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className="inline-flex items-center h-6 px-2 rounded text-[10px] font-mono font-semibold bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800 uppercase">
+                              <span className="inline-flex items-center h-6 px-2.5 rounded-md text-[10px] font-mono font-semibold bg-red-50 dark:bg-red-950/40 text-red-800 dark:text-red-300 border border-red-200 dark:border-red-800 uppercase">
                                 Out of Target
                               </span>
                               <strong className="text-sm font-semibold text-slate-900 dark:text-slate-100 font-sans">
@@ -476,7 +473,7 @@ export const CareGapPage: React.FC = () => {
                                 {gap.observed_value || '—'}
                               </span>
                               {gap.status.includes('above') && (
-                                <span className="h-5 px-1.5 inline-flex items-center rounded text-[10px] font-semibold bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800">
+                                <span className="h-5 px-2 inline-flex items-center rounded text-[10px] font-semibold bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800">
                                   {gap.status.includes('1.2%')
                                     ? '+1.2% above target'
                                     : '+238.6 µmol/L above upper limit'}
@@ -486,7 +483,7 @@ export const CareGapPage: React.FC = () => {
                           </div>
 
                           {/* Guideline Target & Status Boxes */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 font-mono">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-800 font-mono">
                             <div>
                               <span className="text-[10px] text-slate-500 uppercase block font-sans">Guideline Target</span>
                               <span className="font-semibold text-slate-800 dark:text-slate-200">{gap.guideline_target}</span>
@@ -497,7 +494,7 @@ export const CareGapPage: React.FC = () => {
                             </div>
                           </div>
 
-                          {/* Clinical Recommendation Text with Lucide Info Icon */}
+                          {/* Clinical Recommendation Text */}
                           <div className="flex items-start space-x-2 text-xs text-slate-700 dark:text-slate-300 leading-relaxed font-sans">
                             <Info className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#14B8A6] shrink-0 mt-0.5 stroke-[1.75]" />
                             <p>{gap.recommendation_text}</p>
@@ -505,10 +502,10 @@ export const CareGapPage: React.FC = () => {
 
                           {/* Inline Provenance Chips & Action Buttons */}
                           <div className="pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
-                            {/* Inline Provenance Chip (Visible without expanding) */}
+                            {/* Inline Provenance Chip */}
                             <div className="flex items-center space-x-1.5">
                               {firstCit && (
-                                <span className="inline-flex items-center space-x-1 h-6 px-2 rounded text-[10px] font-mono font-medium bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
+                                <span className="inline-flex items-center space-x-1 h-6 px-2.5 rounded-lg text-[10px] font-mono font-medium bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
                                   <BookOpen className="w-3 h-3 text-slate-400 stroke-[1.75]" />
                                   <span>{firstCit.document_id}</span>
                                 </span>
@@ -555,7 +552,7 @@ export const CareGapPage: React.FC = () => {
 
                           {/* Expanded Citation Details */}
                           {isExpanded && gap.guideline_provenance && (
-                            <div className="mt-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs space-y-1.5 animate-fade-in font-sans">
+                            <div className="mt-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs space-y-1.5 animate-fade-in font-sans">
                               {gap.guideline_provenance.map((cit, cIdx) => (
                                 <div key={cIdx} className="space-y-1">
                                   <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
@@ -578,7 +575,7 @@ export const CareGapPage: React.FC = () => {
                 </div>
               )}
 
-              {/* ── 5. DECK 2: MISSING RECOMMENDED CHECKS (Blue left-border) ── */}
+              {/* DECK 2: MISSING RECOMMENDED CHECKS */}
               {missingCheckGaps.length > 0 && (
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
@@ -597,12 +594,12 @@ export const CareGapPage: React.FC = () => {
                       return (
                         <div
                           key={cardId}
-                          className="p-4 sm:p-5 rounded-lg border-l-4 border-l-blue-500 border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs space-y-3"
+                          className="p-4 sm:p-5 rounded-2xl border-l-4 border-l-blue-500 border border-slate-200/90 dark:border-slate-800/90 bg-white dark:bg-[#0F172A] shadow-xs space-y-3"
                         >
                           {/* Header Row */}
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className="inline-flex items-center h-6 px-2 rounded text-[10px] font-mono font-semibold bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800 uppercase">
+                              <span className="inline-flex items-center h-6 px-2.5 rounded-md text-[10px] font-mono font-semibold bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800 uppercase">
                                 Missing Check
                               </span>
                               <strong className="text-sm font-semibold text-slate-900 dark:text-slate-100 font-sans">
@@ -619,7 +616,7 @@ export const CareGapPage: React.FC = () => {
                           </div>
 
                           {/* Schedule & Reconciliation Note Boxes */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800 font-mono">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-800 font-mono">
                             <div>
                               <span className="text-[10px] text-slate-500 uppercase block font-sans">Recommended Schedule</span>
                               <span className="font-semibold text-slate-800 dark:text-slate-200">{gap.guideline_target}</span>
@@ -641,7 +638,7 @@ export const CareGapPage: React.FC = () => {
                             {/* Inline Provenance Chip */}
                             <div className="flex items-center space-x-1.5">
                               {firstCit && (
-                                <span className="inline-flex items-center space-x-1 h-6 px-2 rounded text-[10px] font-mono font-medium bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
+                                <span className="inline-flex items-center space-x-1 h-6 px-2.5 rounded-lg text-[10px] font-mono font-medium bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800">
                                   <BookOpen className="w-3 h-3 text-slate-400 stroke-[1.75]" />
                                   <span>{firstCit.document_id}</span>
                                 </span>
@@ -677,7 +674,7 @@ export const CareGapPage: React.FC = () => {
 
                           {/* Expanded Citation Details */}
                           {isExpanded && gap.guideline_provenance && (
-                            <div className="mt-2 p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs space-y-1.5 animate-fade-in font-sans">
+                            <div className="mt-2 p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs space-y-1.5 animate-fade-in font-sans">
                               {gap.guideline_provenance.map((cit, cIdx) => (
                                 <div key={cIdx} className="space-y-1">
                                   <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
