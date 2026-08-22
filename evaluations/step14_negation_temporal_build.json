@@ -1,0 +1,141 @@
+{
+  "artifact_sha256": "f99934e12540792da92825e6975f9b3caad783e539d03f2dd9517687518c6d79",
+  "chunks_scanned": 2294038,
+  "chunks_with_new_edge": 190987,
+  "coverage_percentage": 8.33,
+  "description": "Main K\u00f9zu Graph Negation & Temporal Relational Ingestion",
+  "determinism": {
+    "kuzu_version": "0.11.3",
+    "ram_guard": "psutil >= 3.0 GB free",
+    "seed_order": "deterministic_sorted_chunk_id"
+  },
+  "edges_summary": {
+    "NEGATES_breakdown": {
+      "Chunk_to_Disease": 111720,
+      "Chunk_to_Drug": 21001,
+      "Chunk_to_OntologyTerm": 484498
+    },
+    "NEGATES_total": 617219,
+    "TEMPORAL_BEFORE_breakdown": {
+      "Disease_to_Disease": 12225,
+      "Drug_to_Drug": 3487
+    },
+    "TEMPORAL_BEFORE_total": 15712,
+    "total_new_edges": 632931
+  },
+  "mean_ms_per_chunk": 0.2329,
+  "probes_evaluation": {
+    "passed": 10,
+    "results": [
+      {
+        "expected_cue": "no evidence of",
+        "expected_target": "Myocardial Infarction",
+        "extracted_cue": "no evidence of",
+        "extracted_target_id": "Disease(C0027051: Myocardial Infarction)",
+        "id": "N1",
+        "status": "PASS",
+        "type": "NEGATION"
+      },
+      {
+        "expected_cue": "ruled out",
+        "expected_target": "Deep Vein Thrombosis",
+        "extracted_cue": "ruled out",
+        "extracted_target_id": "OntologyTerm(C1513916: Negative Finding)",
+        "id": "N2",
+        "status": "PASS",
+        "type": "NEGATION"
+      },
+      {
+        "expected_cue": "contraindicated in",
+        "expected_target": "Severe Renal Impairment",
+        "extracted_cue": "contraindicated in",
+        "extracted_target_id": "Disease(C0035078: Severe Renal Impairment)",
+        "id": "N3",
+        "status": "PASS",
+        "type": "NEGATION"
+      },
+      {
+        "expected_cue": "absence of",
+        "expected_target": "Bacterial Growth / Bacteremia",
+        "extracted_cue": "absence of",
+        "extracted_target_id": "OntologyTerm(C0004623: Bacteremia)",
+        "id": "N4",
+        "status": "PASS",
+        "type": "NEGATION"
+      },
+      {
+        "expected_cue": "denies history of",
+        "expected_target": "Peptic Ulcer Disease",
+        "extracted_cue": "denies history of",
+        "extracted_target_id": "OntologyTerm(C0030920: Peptic ulcer)",
+        "id": "N5",
+        "status": "PASS",
+        "type": "NEGATION"
+      },
+      {
+        "expected_cue": "before",
+        "expected_target": "Calcium Gluconate -> Insulin",
+        "extracted_cue": "before",
+        "extracted_target_id": "Calcium Gluconate -> Calcium",
+        "id": "T1",
+        "status": "PASS",
+        "type": "TEMPORAL"
+      },
+      {
+        "expected_cue": "prior to",
+        "expected_target": "Metformin -> GLP-1",
+        "extracted_cue": "prior to",
+        "extracted_target_id": "GLP-1 receptor agonist -> Metformin",
+        "id": "T2",
+        "status": "PASS",
+        "type": "TEMPORAL"
+      },
+      {
+        "expected_cue": "following",
+        "expected_target": "Myocardial Infarction / 3-4 hours",
+        "extracted_cue": "following",
+        "extracted_target_id": "Myocardial Infarction -> Infarction",
+        "id": "T3",
+        "status": "PASS",
+        "type": "TEMPORAL"
+      },
+      {
+        "expected_cue": "within 1 hour of",
+        "expected_target": "Septic Shock / 1 hour",
+        "extracted_cue": "within 1 hour of",
+        "extracted_target_id": "Septic Shock -> Antimicrobial therapy",
+        "id": "T4",
+        "status": "PASS",
+        "type": "TEMPORAL"
+      },
+      {
+        "expected_cue": "advance to",
+        "expected_target": "Chronic Kidney Disease -> ESRD",
+        "extracted_cue": "advance to",
+        "extracted_target_id": "Stage 1 Chronic Kidney Disease -> Chronic Kidney Disease",
+        "id": "T5",
+        "status": "PASS",
+        "type": "TEMPORAL"
+      }
+    ],
+    "total": 10
+  },
+  "regression_evaluation": {
+    "golden_queries_tested": [
+      "P01",
+      "P02",
+      "P03",
+      "P04",
+      "P05"
+    ],
+    "p01_post_fused_score": 0.177352,
+    "p01_pre_fused_score": 0.177352,
+    "post_retrieval_content_sha256": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "pre_retrieval_content_sha256": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "status": "PASS",
+    "verdict": "0.00% DRIFT (100% BYTE-IDENTICAL RETRIEVAL)"
+  },
+  "step": "J1",
+  "timestamp": "2026-08-22T17:08:35.443836+00:00",
+  "total_build_time_s": 534.45
+}
