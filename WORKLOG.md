@@ -4,10 +4,10 @@
 | A | Onboarding audit | OpenCode | done | — | |
 | A | J1 preview | Antigravity | done | read-only preview | 2026-08-22 |
 | A | J1 execute + step14 | Antigravity | done | step14_negation_temporal_build.json (f99934e1) | 2026-08-22 |
-| A | Downloads + manifest | OpenCode | partial | data/multimodal/MANIFEST.md (OpenI reports+VQA-RAD+MedMCQA+CLIP+Qwen2-VL done; SLAKE retry pending) | 2026-08-23 |
-| B | J9 OpenI normalize (reports→chunks) | OpenCode | done | data/multimodal/chunks/openi_chunks.jsonl (f59560a3) | 2026-08-23 |
+| A | Downloads + manifest | OpenCode | done | data/multimodal/MANIFEST.md — all 7 artifacts full (OpenI reports, VQA-RAD, MedMCQA, CLIP, Qwen2-VL+mmproj, SLAKE via BoKelvin mirror, IU-Xray sample100) | 2026-08-23 |
+| B | J9 OpenI normalize (reports→chunks) | OpenCode | done | data/multimodal/chunks/openi_chunks.jsonl (b60730ca; supersedes f59560a3 — image_ids extraction fixed) | 2026-08-23 |
 | B | J2/J3 execute | Antigravity | | step15 blocks | |
-| B | VLM + image eval | OpenCode | | step16_image_report | |
+| B | VLM + image eval | OpenCode | done | evaluations/multimodal/step16_image_report.json (3bede101) — merged into J9/J10 row below | 2026-08-23 |
 | C | N=500 + stats | Antigravity | | step15_scaled_eval | |
 | B | J2 graph-consistency verification pass + 3-way ablation | Antigravity | done | step15_verification_ablation.json (e01fe516) | 2026-08-22 |
 | B | J3 relation-aware reranker vs RRF ablation | Antigravity | done | step15_rerank_ablation.json (eda10b8e) | 2026-08-23 |
