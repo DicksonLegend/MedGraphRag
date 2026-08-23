@@ -13,6 +13,13 @@ env/
 # Heavy Datasets & Normalized Documents (Offline Data)
 Datasets/
 
+# Multimodal downloads & derived artifacts (binaries — never snapshot/commit)
+data/
+*.gguf
+*.tgz
+*.zip
+visual_findings.json
+
 # Built Vector Indexes & Graph Database (FAISS, Kùzu, Parquet, JSONL)
 index/
 
