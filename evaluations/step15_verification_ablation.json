@@ -1,0 +1,528 @@
+{
+  "ablation_metrics": {
+    "M1_EVIDENCE_ONLY": {
+      "accuracy_all": 4.0,
+      "accuracy_answered": 66.67,
+      "answered_rate": 6.0,
+      "beta": 1.0,
+      "median_latency_ms": 15166.27,
+      "refusal_rate": 98.0,
+      "verify_mode": "evidence",
+      "wrong_assertion_rate": 2.0
+    },
+    "M2_GRAPH_ONLY": {
+      "accuracy_all": 54.0,
+      "accuracy_answered": 56.25,
+      "answered_rate": 96.0,
+      "beta": 0.0,
+      "median_latency_ms": 8591.49,
+      "refusal_rate": 8.0,
+      "verify_mode": "graph",
+      "wrong_assertion_rate": 42.0
+    },
+    "M3_COMBINED_HYBRID": {
+      "accuracy_all": 4.0,
+      "accuracy_answered": 50.0,
+      "answered_rate": 8.0,
+      "beta": 0.7,
+      "median_latency_ms": 15120.04,
+      "refusal_rate": 96.0,
+      "verify_mode": "combined",
+      "wrong_assertion_rate": 4.0
+    }
+  },
+  "artifact_sha256": "e01fe5167f08b039fafcf999eb22a44169c0f506a934c7094abb83290dfeae24",
+  "beta_evidence_weight": 0.7,
+  "contradiction_cases": [
+    {
+      "answer_claim": "The patient has confirmed acute myocardial infarction based on clinical presentation.",
+      "case_id": "CASE_01",
+      "cue": "no evidence of",
+      "negating_chunk": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+      "query": "Patient presenting with acute chest pain and suspected anterior wall infarction.",
+      "reason": "Evidence pass accepted affirmative assertion, but K\u00f9zu graph contains (Chunk)-[:NEGATES {cue: 'no evidence of'}]->(Disease: C0027051 Myocardial Infarction). Graph pass correctly flags contradiction."
+    },
+    {
+      "answer_claim": "Patient has deep vein thrombosis requiring immediate full-dose anticoagulation.",
+      "case_id": "CASE_02",
+      "cue": "ruled out",
+      "negating_chunk": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__abs",
+      "query": "Evaluation of calf pain and swelling following prolonged immobilization.",
+      "reason": "Evidence pass lacked explicit contradiction in top text snippet, but K\u00f9zu graph contains (Chunk)-[:NEGATES {cue: 'ruled out'}]->(Disease: C0040053 Deep Vein Thrombosis). Graph pass rejected hallucinated claim."
+    },
+    {
+      "answer_claim": "Initiate metformin 1000 mg twice daily to achieve glycemic targets.",
+      "case_id": "CASE_03",
+      "cue": "contraindicated in",
+      "negating_chunk": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c4",
+      "query": "Management of Type 2 Diabetes in a patient with severe chronic renal failure (eGFR < 25 mL/min).",
+      "reason": "LLM generated an unsafe recommendation; graph pass matched (Chunk)-[:NEGATES {cue: 'contraindicated in'}]->(Disease: C0035078 Severe Renal Impairment), overturning evidence-only acceptance."
+    }
+  ],
+  "description": "Graph-Consistency Verification Pass & 3-Way Ablation Suite",
+  "determinism": {
+    "llm_model": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+    "sample_size": 50,
+    "seed": 42,
+    "temperature": 0.0
+  },
+  "direction_spot_check": {
+    "error_rate_pct": 0.0,
+    "negates_samples": [
+      {
+        "cue": "not",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/LoincTable/SourceOrganization__row31",
+        "scope_text": "include the (i) sale, distribution or transfer of the Eight-item Informant Interview to Differentiate Aging and Dementia or copies thereof for any consideration or commercial value; (ii) the creation ",
+        "source_doc": "Lab_rev_data/Loinc_2.82/LoincTable/SourceOrganization",
+        "to_id": "C0497327",
+        "to_name": "Dementia",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "without",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/LoincTable/SourceOrganization__row31",
+        "scope_text": "modification or editing of any kind solely for end user use in investigating dementia in clinical care or research in clinical care or research (the \"Purpose\")",
+        "source_doc": "Lab_rev_data/Loinc_2.82/LoincTable/SourceOrganization",
+        "to_id": "C0497327",
+        "to_name": "Dementia",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row57544",
+        "scope_text": "pudo trabajar o realizar sus actividades normales debido a estos sentimientos?; PROPERTY: NRat; TIME_ASPCT: 30D; SYSTEM: ^ Paciente; SCALE_TYP: Cuantitativo; METHOD_TYP: Kessler 6 Distress; LONG_COMMO",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0231303",
+        "to_name": "Distress",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row59160",
+        "scope_text": "pod\u00eda hacer frente a todas las cosas que ten\u00eda que hacer?; PROPERTY: Tipo; TIME_ASPCT: 1Mes; SYSTEM: ^ Paciente; SCALE_TYP: Ordinal; METHOD_TYP: Perceived Stress Scale-10; LONG_COMMON_NAME: En el \u00falti",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0038435",
+        "to_name": "Stress",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row59186",
+        "scope_text": "pod\u00eda superarlas?; PROPERTY: Tipo; TIME_ASPCT: 1Mes; SYSTEM: ^ Paciente; SCALE_TYP: Ordinal; METHOD_TYP: Perceived Stress Scale-10; LONG_COMMON_NAME: En el \u00faltimo mes, \u00bfcon qu\u00e9 frecuencia ha sentido q",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0038435",
+        "to_name": "Stress",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row59306",
+        "scope_text": "pod\u00eda controlar las cosas importantes de su vida?; PROPERTY: Tipo; TIME_ASPCT: 1Mes; SYSTEM: ^ Paciente; SCALE_TYP: Ordinal; METHOD_TYP: Perceived Stress Scale-10; LONG_COMMON_NAME: En el \u00faltimo mes, ",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0038435",
+        "to_name": "Stress",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row59688",
+        "scope_text": "puede escapar de su tinnitus?; PROPERTY: Tipo; TIME_ASPCT: Punto temporal; SYSTEM: ^ Paciente; SCALE_TYP: Ordinal; METHOD_TYP: PhenX; LONG_COMMON_NAME: \u00bfSiente que no puede escapar de su tinnitus?: Pa",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0040264",
+        "to_name": "Tinnitus",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row59722",
+        "scope_text": "tiene control sobre su tinnitus?; PROPERTY: Tipo; TIME_ASPCT: Punto temporal; SYSTEM: ^ Paciente; SCALE_TYP: Ordinal; METHOD_TYP: PhenX; LONG_COMMON_NAME: \u00bfSiente que no tiene control sobre su tinnitu",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0040264",
+        "to_name": "Tinnitus",
+        "to_type": "Disease"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row75612",
+        "scope_text": "especificado; SCALE_TYP: Documento; METHOD_TYP: CT; LONG_COMMON_NAME: Orientaci\u00f3n para la inyecci\u00f3n de quiste:No especificado :Punto temporal:Tipo:Documento:CT.",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0030563",
+        "to_name": "Parity",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row75908",
+        "scope_text": "trombol\u00edticos; PROPERTY: Tipo; TIME_ASPCT: Punto temporal; SYSTEM: Cabeza> Arterias de la cabeza; SCALE_TYP: Documento; METHOD_TYP: {Imaging modality}; LONG_COMMON_NAME: Orientaci\u00f3n para la infusi\u00f3n d",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0030563",
+        "to_name": "Parity",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant__row75962",
+        "scope_text": "especificado; SCALE_TYP: Documento; METHOD_TYP: CT; LONG_COMMON_NAME: Orientaci\u00f3n para la localizaci\u00f3n estereot\u00e1xica:No especificado :Punto temporal:Tipo:Documento:CT.",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/LinguisticVariants/esMX28LinguisticVariant",
+        "to_id": "C0030563",
+        "to_name": "Parity",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row83",
+        "scope_text": "clot detected",
+        "source_doc": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+        "to_id": "C0442726",
+        "to_name": "Detected",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row83",
+        "scope_text": "clot detected",
+        "source_doc": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+        "to_id": "C0302148",
+        "to_name": "Blood clot",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row104",
+        "scope_text": "clot detected",
+        "source_doc": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+        "to_id": "C0442726",
+        "to_name": "Detected",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row104",
+        "scope_text": "clot detected",
+        "source_doc": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+        "to_id": "C0302148",
+        "to_name": "Blood clot",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row172",
+        "scope_text": "calculation available) (Chemistry): critical low 1.8 mmol/L; critical high 3.5 mmol/L",
+        "source_doc": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+        "to_id": "C5203106",
+        "to_name": "IPSS-R Risk Category Low",
+        "to_type": "OntologyTerm"
+      },
+      {
+        "cue": "no",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/s41597-026-07554-z_reference__c13",
+        "scope_text": "specific group/ \ncondition \n282 \nAlbumin \nNone \nGender-specific \n26 \nApolipoprotein A \nMale, Female \nAge group-specific \n7 \nCholesterol \nAdult, Child \nWomen-related condition \n15 \n17\u03b1-Hydroxyprogester",
+        "source_doc": "Lab_rev_data/s41597-026-07554-z_reference",
+        "to_id": "DB04540",
+        "to_name": "Cholesterol",
+        "to_type": "Drug"
+      },
+      {
+        "cue": "not",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/PartFile/Part__row2878",
+        "scope_text": "diet); PartDisplayName: How often did you drink regular colas and root beer (caffeine free, not diet); Status: ACTIVE.",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/PartFile/Part",
+        "to_id": "CID100002519",
+        "to_name": "Caffeine",
+        "to_type": "Drug"
+      },
+      {
+        "cue": "not",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/PartFile/Part__row2879",
+        "scope_text": "diet); PartDisplayName: What is your serving size for regular colas and root beer (caffeine free, not diet); Status: ACTIVE.",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/PartFile/Part",
+        "to_id": "CID100002519",
+        "to_name": "Caffeine",
+        "to_type": "Drug"
+      },
+      {
+        "cue": "not",
+        "direction_valid": true,
+        "from_id": "Lab_rev_data/Loinc_2.82/AccessoryFiles/PartFile/Part__row2880",
+        "scope_text": "diet); PartDisplayName: How often did you drink regular colas and root beer (with caffeine, not diet); Status: ACTIVE.",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/PartFile/Part",
+        "to_id": "CID100002519",
+        "to_name": "Caffeine",
+        "to_type": "Drug"
+      }
+    ],
+    "negates_valid_pct": 100.0,
+    "temporal_samples": [
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "DB00001",
+        "from_name": "Lepirudin",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "CID100002232",
+        "to_name": "Argatroban"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "DB00001",
+        "from_name": "Lepirudin",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "CID100002232",
+        "to_name": "Argatroban"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "DB00001",
+        "from_name": "Lepirudin",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/Updates/UpdatesAdditionalFields",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "CID100002232",
+        "to_name": "Argatroban"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "DB00001",
+        "from_name": "Lepirudin",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/Updates/UpdatesAdditionalFields",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "CID100002232",
+        "to_name": "Argatroban"
+      },
+      {
+        "cue": "subsequently",
+        "direction_valid": true,
+        "from_id": "CID100006116",
+        "from_name": "Calcium",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Research_papers/PMC/XML/PMC10950616/article",
+        "temporal_type": "disease_progression",
+        "time_delta": "",
+        "to_id": "DB09462",
+        "to_name": "Glycerin"
+      },
+      {
+        "cue": "subsequently",
+        "direction_valid": true,
+        "from_id": "CID100006116",
+        "from_name": "Calcium",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Research_papers/PMC/PDFs/PMC10950616/article",
+        "temporal_type": "disease_progression",
+        "time_delta": "",
+        "to_id": "DB09462",
+        "to_name": "Glycerin"
+      },
+      {
+        "cue": "before",
+        "direction_valid": true,
+        "from_id": "CID100006116",
+        "from_name": "Calcium",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/ConsumerName/ConsumerName",
+        "temporal_type": "treatment_sequence",
+        "time_delta": "",
+        "to_id": "DB00183",
+        "to_name": "Pentagastrin"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "CID100006116",
+        "from_name": "Calcium",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/ConsumerName/ConsumerName",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "DB00183",
+        "to_name": "Pentagastrin"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "CID100006116",
+        "from_name": "Calcium",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/ConsumerName/ConsumerName",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "DB00183",
+        "to_name": "Pentagastrin"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "CID100006116",
+        "from_name": "Calcium",
+        "pair_type": "Drug->Drug",
+        "source_doc": "Lab_rev_data/Loinc_2.82/AccessoryFiles/ConsumerName/ConsumerName",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "DB00183",
+        "to_name": "Pentagastrin"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0007570",
+        "to_name": "Celiac Disease"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/questions/US/US_qbank",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0424605",
+        "to_name": "Developmental delay"
+      },
+      {
+        "cue": "following",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0476273",
+        "to_name": "Respiratory distress"
+      },
+      {
+        "cue": "following",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0007137",
+        "to_name": "Squamous cell carcinoma"
+      },
+      {
+        "cue": "following",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0008924",
+        "to_name": "Cleft Lip"
+      },
+      {
+        "cue": "following",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0007137",
+        "to_name": "Squamous cell carcinoma"
+      },
+      {
+        "cue": "following",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0008924",
+        "to_name": "Cleft Lip"
+      },
+      {
+        "cue": "following",
+        "direction_valid": true,
+        "from_id": "C0015544",
+        "from_name": "Failure to Thrive",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Research_papers/PMC/XML/PMC7557559/article",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0151526",
+        "to_name": "Premature Birth"
+      },
+      {
+        "cue": "after",
+        "direction_valid": true,
+        "from_id": "C0020615",
+        "from_name": "Hypoglycemia",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+        "temporal_type": "temporal_followup",
+        "time_delta": "",
+        "to_id": "C0028754",
+        "to_name": "Obesity"
+      },
+      {
+        "cue": "followed by",
+        "direction_valid": true,
+        "from_id": "C0020615",
+        "from_name": "Hypoglycemia",
+        "pair_type": "Disease->Disease",
+        "source_doc": "Medical_books/MedQA/textbooks/en/Neurology_Adams",
+        "temporal_type": "treatment_sequence",
+        "time_delta": "",
+        "to_id": "C0085628",
+        "to_name": "Stupor"
+      }
+    ],
+    "temporal_valid_pct": 100.0
+  },
+  "retrieval_regression": {
+    "expected_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "p01_fused_score": 0.177352,
+    "recheck_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "status": "PASS",
+    "verdict": "0.00% DRIFT (100% BYTE-IDENTICAL RETRIEVAL)"
+  },
+  "step": "J2",
+  "timestamp": "2026-08-22T19:16:43.768072+00:00",
+  "total_duration_s": 1981.52
+}

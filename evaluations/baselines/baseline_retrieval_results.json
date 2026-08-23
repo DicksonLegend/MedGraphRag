@@ -1,0 +1,3914 @@
+{
+  "queries": [
+    "warfarin INR monitoring guidelines atrial fibrillation",
+    "ACE inhibitor hypertension treatment first line",
+    "critical hemoglobin levels anemia transfusion threshold",
+    "troponin elevation myocardial infarction diagnosis",
+    "metformin type 2 diabetes contraindications renal failure",
+    "aspirin dosing secondary prevention coronary artery disease",
+    "direct oral anticoagulant reversal agent andexanet alfa",
+    "sepsis bundle lactate clearance antibiotics timing",
+    "heart failure reduced ejection fraction guideline directed medical therapy",
+    "pneumonia CURB-65 score outpatient management criteria"
+  ],
+  "top_n": 10,
+  "results": {
+    "BM25Retriever": {
+      "warfarin INR monitoring guidelines atrial fibrillation": {
+        "latency_ms": 4399.290635999932,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11046323/article__c21",
+            "document_id": "Research_papers/PMC/PDFs/PMC11046323/article",
+            "fused_score": 8.890262666198462,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/XML/PMC11046323/article__c21",
+            "document_id": "Research_papers/PMC/XML/PMC11046323/article",
+            "fused_score": 8.509435722456926,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_28279251__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_28279251",
+            "fused_score": 6.920441119910446,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak__c1161",
+            "document_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak",
+            "fused_score": 6.836470542316472,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_28279251__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_28279251",
+            "fused_score": 6.625883627098842,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC4536764/article__c26",
+            "document_id": "Research_papers/PMC/PDFs/PMC4536764/article",
+            "fused_score": 6.4685967805717475,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC3913401/article__c2",
+            "document_id": "Research_papers/PMC/PDFs/PMC3913401/article",
+            "fused_score": 6.239265693894714,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC3913401/article__c13",
+            "document_id": "Research_papers/PMC/PDFs/PMC3913401/article",
+            "fused_score": 6.141840552362117,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC3913401/article__c4",
+            "document_id": "Research_papers/PMC/PDFs/PMC3913401/article",
+            "fused_score": 5.430234397689466,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11046323/article__c36",
+            "document_id": "Research_papers/PMC/PDFs/PMC11046323/article",
+            "fused_score": 4.701267721892876,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "ACE inhibitor hypertension treatment first line": {
+        "latency_ms": 53.05958299959457,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c14",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 13.737795175174075,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c16",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 12.415065276548662,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c19",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "fused_score": 11.716223333316169,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c8",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 10.774596174135068,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c15",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 9.06502774569837,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c17",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 8.64325964289029,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c36",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 7.951996240788737,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c34",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 7.373841384781439,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c35",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 6.175334782478991,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/XML/PMC9363242/article__c23",
+            "document_id": "Research_papers/PMC/XML/PMC9363242/article",
+            "fused_score": 5.8770334145179515,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "critical hemoglobin levels anemia transfusion threshold": {
+        "latency_ms": 36.77265299938881,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/XML/PMC10383547/article__c8",
+            "document_id": "Research_papers/PMC/XML/PMC10383547/article",
+            "fused_score": 7.286763431295289,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/XML/PMC5028806/article__c19",
+            "document_id": "Research_papers/PMC/XML/PMC5028806/article",
+            "fused_score": 6.978434928718066,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC10383547/article__c10",
+            "document_id": "Research_papers/PMC/PDFs/PMC10383547/article",
+            "fused_score": 6.8152032975790195,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c2772",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 6.719136972278737,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC5028806/article__c19",
+            "document_id": "Research_papers/PMC/PDFs/PMC5028806/article",
+            "fused_score": 6.56142955891368,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 6.398718929382568,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row2",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 6.398718929382568,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7695235/article__c21",
+            "document_id": "Research_papers/PMC/PDFs/PMC7695235/article",
+            "fused_score": 6.360366593605402,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row162",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 6.338014492795503,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34623079__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34623079",
+            "fused_score": 6.192877738193719,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "troponin elevation myocardial infarction diagnosis": {
+        "latency_ms": 46.6185579998637,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5902",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 7.987264330091613,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5891",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 7.288857231613495,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9504600/article__c5",
+            "document_id": "Research_papers/PMC/PDFs/PMC9504600/article",
+            "fused_score": 7.256741818281935,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/XML/PMC11804249/article__c4",
+            "document_id": "Research_papers/PMC/XML/PMC11804249/article",
+            "fused_score": 7.037079746636847,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8404461/article__c27",
+            "document_id": "Research_papers/PMC/PDFs/PMC8404461/article",
+            "fused_score": 6.905978939386694,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8404461/article__c1",
+            "document_id": "Research_papers/PMC/PDFs/PMC8404461/article",
+            "fused_score": 6.792227300326147,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PMC/XML/PMC6124376/article__c5",
+            "document_id": "Research_papers/PMC/XML/PMC6124376/article",
+            "fused_score": 6.7564258421445,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11804249/article__c25",
+            "document_id": "Research_papers/PMC/PDFs/PMC11804249/article",
+            "fused_score": 6.180492467033838,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11804249/article__c24",
+            "document_id": "Research_papers/PMC/PDFs/PMC11804249/article",
+            "fused_score": 6.093102608899397,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8404461/article__c3",
+            "document_id": "Research_papers/PMC/PDFs/PMC8404461/article",
+            "fused_score": 6.074708703836896,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "metformin type 2 diabetes contraindications renal failure": {
+        "latency_ms": 60.24929999966844,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c46",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 13.457561435667047,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c23",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 13.003010472276717,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c29",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 11.992476064200464,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c31",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 11.066030061571906,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789241550284-eng__c5",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789241550284-eng",
+            "fused_score": 10.663289002131044,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c32",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 10.226660448971929,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789241550284-eng__c14",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789241550284-eng",
+            "fused_score": 10.084736468253807,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c43",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 9.855027139359294,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC10033948/article__c22",
+            "document_id": "Research_papers/PMC/PDFs/PMC10033948/article",
+            "fused_score": 9.783602547573164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c60",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 9.761834611244382,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "aspirin dosing secondary prevention coronary artery disease": {
+        "latency_ms": 43.520052000530995,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/XML/PMC4166862/article__c15",
+            "document_id": "Research_papers/PMC/XML/PMC4166862/article",
+            "fused_score": 8.173791578415628,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/XML/PMC13046606/article__c5",
+            "document_id": "Research_papers/PMC/XML/PMC13046606/article",
+            "fused_score": 6.354771896535748,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC13046606/article__c6",
+            "document_id": "Research_papers/PMC/PDFs/PMC13046606/article",
+            "fused_score": 6.341723096208421,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c2871",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 6.192443329505434,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Metadata/download_log__c1",
+            "document_id": "Research_papers/PubMed/Metadata/download_log",
+            "fused_score": 5.5819826860178825,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/XML/PMC4536764/article__c2",
+            "document_id": "Research_papers/PMC/XML/PMC4536764/article",
+            "fused_score": 5.4575823293643815,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PMC/XML/PMC7543932/article__c8",
+            "document_id": "Research_papers/PMC/XML/PMC7543932/article",
+            "fused_score": 5.448210898569158,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613",
+            "fused_score": 5.365768372009026,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6102__c39",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6102",
+            "fused_score": 5.337051981755408,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC4536764/article__c8",
+            "document_id": "Research_papers/PMC/PDFs/PMC4536764/article",
+            "fused_score": 5.202365002708889,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "direct oral anticoagulant reversal agent andexanet alfa": {
+        "latency_ms": 41.449018999628606,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/XML/PMC12441256/article__c14",
+            "document_id": "Research_papers/PMC/XML/PMC12441256/article",
+            "fused_score": 13.551616774510238,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c303",
+            "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+            "fused_score": 13.127490321142183,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC12441256/article__c16",
+            "document_id": "Research_papers/PMC/PDFs/PMC12441256/article",
+            "fused_score": 12.665285388339829,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8836167/article__c15",
+            "document_id": "Research_papers/PMC/PDFs/PMC8836167/article",
+            "fused_score": 11.96540177130323,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1__c155",
+            "document_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1",
+            "fused_score": 9.671365924576262,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c2331",
+            "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+            "fused_score": 9.210113703299065,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8836167/article__c16",
+            "document_id": "Research_papers/PMC/PDFs/PMC8836167/article",
+            "fused_score": 9.027944373364393,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung__c1161",
+            "document_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung",
+            "fused_score": 8.55179066813448,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung__c1184",
+            "document_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung",
+            "fused_score": 8.179645746738741,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1__c154",
+            "document_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1",
+            "fused_score": 7.1640827366858675,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "sepsis bundle lactate clearance antibiotics timing": {
+        "latency_ms": 50.24993799997901,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c352",
+            "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+            "fused_score": 11.259079353963092,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC6913810/article__c18",
+            "document_id": "Research_papers/PMC/PDFs/PMC6913810/article",
+            "fused_score": 10.911866429358431,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9335427/article__c10",
+            "document_id": "Research_papers/PMC/PDFs/PMC9335427/article",
+            "fused_score": 10.145307398595218,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c296",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 10.036626182222122,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/XML/PMC9536156/article__c4",
+            "document_id": "Research_papers/PMC/XML/PMC9536156/article",
+            "fused_score": 9.873388839665614,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/XML/PMC10246868/article__c2",
+            "document_id": "Research_papers/PMC/XML/PMC10246868/article",
+            "fused_score": 8.662445861621999,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PMC/XML/PMC6913810/article__c4",
+            "document_id": "Research_papers/PMC/XML/PMC6913810/article",
+            "fused_score": 8.616193919407532,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/XML/PMC12090615/article__c11",
+            "document_id": "Research_papers/PMC/XML/PMC12090615/article",
+            "fused_score": 8.459041377464544,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/XML/PMC9536156/article__c5",
+            "document_id": "Research_papers/PMC/XML/PMC9536156/article",
+            "fused_score": 8.419986932861397,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c351",
+            "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+            "fused_score": 7.403598973890404,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "heart failure reduced ejection fraction guideline directed medical therapy": {
+        "latency_ms": 39.89660499973979,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c20",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 13.857418652213045,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_40012353__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_40012353",
+            "fused_score": 13.129778433850571,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c23",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 12.966197960234485,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_40012353__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_40012353",
+            "fused_score": 12.790123121230954,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC12618308/article__c9",
+            "document_id": "Research_papers/PMC/PDFs/PMC12618308/article",
+            "fused_score": 12.539646818501113,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c9",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 11.274293516652062,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c0",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 11.263833573245993,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c10",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 11.19398883156442,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c28",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 10.463550091524924,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8405859/article__c23",
+            "document_id": "Research_papers/PMC/PDFs/PMC8405859/article",
+            "fused_score": 9.769653187560692,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "pneumonia CURB-65 score outpatient management criteria": {
+        "latency_ms": 46.28527299973939,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c82",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 15.21514011683489,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/hhspandemicinfluenzaplan__c298",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/hhspandemicinfluenzaplan",
+            "fused_score": 11.573288799896027,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205__c4",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205",
+            "fused_score": 10.369108389619788,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205__c3",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205",
+            "fused_score": 10.295645160930718,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205__c9",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205",
+            "fused_score": 8.42117578434778,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm685152-H__c40",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm685152-H",
+            "fused_score": 7.769159392133647,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205__c2",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205",
+            "fused_score": 7.655006927884232,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c81",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 7.597389412173712,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6927-H__c24",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6927-H",
+            "fused_score": 6.557829488943666,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c76",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 6.4741765365991775,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      }
+    },
+    "DenseVectorRetriever": {
+      "warfarin INR monitoring guidelines atrial fibrillation": {
+        "latency_ms": 25.10969099967042,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+            "fused_score": 0.6863749027252197,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_38823454",
+            "fused_score": 0.6863749027252197,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38823454",
+            "fused_score": 0.6863749027252197,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Liver_Cirrhosis/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Liver_Cirrhosis/PMID_38823454",
+            "fused_score": 0.6863749027252197,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_38823454",
+            "fused_score": 0.6863749027252197,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c16",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 0.6760666370391846,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207__c13",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207",
+            "fused_score": 0.6753378510475159,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/XML/PMC11046323/article__c20",
+            "document_id": "Research_papers/PMC/XML/PMC11046323/article",
+            "fused_score": 0.6718766093254089,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Metadata/download_log__row125",
+            "document_id": "Research_papers/PubMed/Metadata/download_log",
+            "fused_score": 0.6708870530128479,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Metadata/download_log__row237",
+            "document_id": "Research_papers/PubMed/Metadata/download_log",
+            "fused_score": 0.6687443256378174,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "ACE inhibitor hypertension treatment first line": {
+        "latency_ms": 23.032345999126846,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9363242/article__c5",
+            "document_id": "Research_papers/PMC/PDFs/PMC9363242/article",
+            "fused_score": 0.7634080052375793,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/XML/PMC7873715/article__c5",
+            "document_id": "Research_papers/PMC/XML/PMC7873715/article",
+            "fused_score": 0.7619885206222534,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c14",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+            "fused_score": 0.756138026714325,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c6",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+            "fused_score": 0.7499513030052185,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c1",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 0.7484975457191467,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/XML/PMC7873715/article__c1",
+            "document_id": "Research_papers/PMC/XML/PMC7873715/article",
+            "fused_score": 0.7452594637870789,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141",
+            "fused_score": 0.7433634996414185,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Hyponatremia/PMID_40587141__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Hyponatremia/PMID_40587141",
+            "fused_score": 0.7433634996414185,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c28",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 0.7419443726539612,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392",
+            "fused_score": 0.7407834529876709,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "critical hemoglobin levels anemia transfusion threshold": {
+        "latency_ms": 22.792427000240423,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7071168/article__c13",
+            "document_id": "Research_papers/PMC/PDFs/PMC7071168/article",
+            "fused_score": 0.7540555000305176,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.7415043711662292,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row2",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.7387107014656067,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row81",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.7361340522766113,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row162",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.7359808087348938,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/XML/PMC5028806/article__c11",
+            "document_id": "Research_papers/PMC/XML/PMC5028806/article",
+            "fused_score": 0.7338807582855225,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1133",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.7337474822998047,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1132",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.7327107191085815,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC5028806/article__c2",
+            "document_id": "Research_papers/PMC/PDFs/PMC5028806/article",
+            "fused_score": 0.732495903968811,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c24",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "fused_score": 0.7323130965232849,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "troponin elevation myocardial infarction diagnosis": {
+        "latency_ms": 24.04221399956441,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row98",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.7100562453269958,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC6855329/article__c1",
+            "document_id": "Research_papers/PMC/PDFs/PMC6855329/article",
+            "fused_score": 0.7065967321395874,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5902",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 0.705403208732605,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11804249/article__c30",
+            "document_id": "Research_papers/PMC/PDFs/PMC11804249/article",
+            "fused_score": 0.703025221824646,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/XML/PMC8404461/article__abs",
+            "document_id": "Research_papers/PMC/XML/PMC8404461/article",
+            "fused_score": 0.7023863196372986,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11804249/article__c25",
+            "document_id": "Research_papers/PMC/PDFs/PMC11804249/article",
+            "fused_score": 0.7001273036003113,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Drug_database/meddra_freq__row51168",
+            "document_id": "Drug_database/meddra_freq",
+            "fused_score": 0.6985984444618225,
+            "source_type": "faiss",
+            "category": "drug"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Drug_database/meddra_freq__row47932",
+            "document_id": "Drug_database/meddra_freq",
+            "fused_score": 0.6985984444618225,
+            "source_type": "faiss",
+            "category": "drug"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8404461/article__c38",
+            "document_id": "Research_papers/PMC/PDFs/PMC8404461/article",
+            "fused_score": 0.697604775428772,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c708",
+            "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+            "fused_score": 0.6958532929420471,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "metformin type 2 diabetes contraindications renal failure": {
+        "latency_ms": 22.844142999929318,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c46",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7296974062919617,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c29",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7183243036270142,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c49",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7158951759338379,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c54",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7141949534416199,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c50",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7104300260543823,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c59",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7100878953933716,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c74",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7090023159980774,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c67",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7061536312103271,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c12",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 0.7043008208274841,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c23",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.7035950422286987,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "aspirin dosing secondary prevention coronary artery disease": {
+        "latency_ms": 23.61869200012734,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/XML/PMC7024142/article__c3",
+            "document_id": "Research_papers/PMC/XML/PMC7024142/article",
+            "fused_score": 0.7051093578338623,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6304__c26",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6304",
+            "fused_score": 0.70301353931427,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c2870",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 0.7025412917137146,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_41224205__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_41224205",
+            "fused_score": 0.7023501992225647,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6735-H__c45",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6735-H",
+            "fused_score": 0.6963943839073181,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC4536764/article__c8",
+            "document_id": "Research_papers/PMC/PDFs/PMC4536764/article",
+            "fused_score": 0.6928829550743103,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613",
+            "fused_score": 0.6926257610321045,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9306719/article__c4",
+            "document_id": "Research_papers/PMC/PDFs/PMC9306719/article",
+            "fused_score": 0.6923437118530273,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7382537/article__c16",
+            "document_id": "Research_papers/PMC/PDFs/PMC7382537/article",
+            "fused_score": 0.6919535398483276,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams__c2049",
+            "document_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams",
+            "fused_score": 0.6918187737464905,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "direct oral anticoagulant reversal agent andexanet alfa": {
+        "latency_ms": 23.649970999940706,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421",
+            "fused_score": 0.7031806707382202,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984",
+            "fused_score": 0.696730375289917,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133",
+            "fused_score": 0.6921858191490173,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak__c1161",
+            "document_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak",
+            "fused_score": 0.6865860819816589,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326",
+            "fused_score": 0.6858017444610596,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984",
+            "fused_score": 0.6856395602226257,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326",
+            "fused_score": 0.6848680377006531,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421",
+            "fused_score": 0.6848507523536682,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC12441256/article__c10",
+            "document_id": "Research_papers/PMC/PDFs/PMC12441256/article",
+            "fused_score": 0.6808176636695862,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC12441256/article__c16",
+            "document_id": "Research_papers/PMC/PDFs/PMC12441256/article",
+            "fused_score": 0.6803193092346191,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "sepsis bundle lactate clearance antibiotics timing": {
+        "latency_ms": 27.39507499973115,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655",
+            "fused_score": 0.7107569575309753,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_31990655__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_31990655",
+            "fused_score": 0.7107569575309753,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605",
+            "fused_score": 0.693271279335022,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_28101605__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_28101605",
+            "fused_score": 0.693271279335022,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/XML/PMC9310818/article__abs",
+            "document_id": "Research_papers/PMC/XML/PMC9310818/article",
+            "fused_score": 0.6892485022544861,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c296",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.6888498067855835,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H__c12",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H",
+            "fused_score": 0.6864967346191406,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208",
+            "fused_score": 0.6847653388977051,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_33890208__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_33890208",
+            "fused_score": 0.6847653388977051,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605",
+            "fused_score": 0.6843451857566833,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "heart failure reduced ejection fraction guideline directed medical therapy": {
+        "latency_ms": 26.448163999702956,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503",
+            "fused_score": 0.7590677738189697,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503",
+            "fused_score": 0.7590677738189697,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363500__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363500",
+            "fused_score": 0.7575218081474304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499",
+            "fused_score": 0.7575218081474304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503",
+            "fused_score": 0.7575218081474304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35378257__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35378257",
+            "fused_score": 0.7575218081474304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499",
+            "fused_score": 0.7575218081474304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503",
+            "fused_score": 0.7575218081474304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499",
+            "fused_score": 0.7570921182632446,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499",
+            "fused_score": 0.7570921182632446,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "pneumonia CURB-65 score outpatient management criteria": {
+        "latency_ms": 25.85716900011903,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c82",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.7141345739364624,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508__c56",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508",
+            "fused_score": 0.7113385200500488,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/B-ChronicLiverReview_Final__c52",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/B-ChronicLiverReview_Final",
+            "fused_score": 0.710628092288971,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c78",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 0.7074893116950989,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508__c85",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508",
+            "fused_score": 0.7070052027702332,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c137",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 0.7064458131790161,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/A-Bronchiectasis-Review_Final__c8",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/A-Bronchiectasis-Review_Final",
+            "fused_score": 0.7064167857170105,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508__c93",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508",
+            "fused_score": 0.7062457203865051,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c90",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 0.7059627175331116,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c81",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.7049273252487183,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      }
+    },
+    "HybridRRFRetriever": {
+      "warfarin INR monitoring guidelines atrial fibrillation": {
+        "latency_ms": 41.91435899974749,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_38823454",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38823454",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Liver_Cirrhosis/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Liver_Cirrhosis/PMID_38823454",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_38823454",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c16",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207__c13",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/XML/PMC11046323/article__c20",
+            "document_id": "Research_papers/PMC/XML/PMC11046323/article",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Metadata/download_log__row125",
+            "document_id": "Research_papers/PubMed/Metadata/download_log",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Metadata/download_log__row237",
+            "document_id": "Research_papers/PubMed/Metadata/download_log",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "ACE inhibitor hypertension treatment first line": {
+        "latency_ms": 59.349846999793954,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9363242/article__c5",
+            "document_id": "Research_papers/PMC/PDFs/PMC9363242/article",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/XML/PMC7873715/article__c5",
+            "document_id": "Research_papers/PMC/XML/PMC7873715/article",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c14",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c6",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c1",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/XML/PMC7873715/article__c1",
+            "document_id": "Research_papers/PMC/XML/PMC7873715/article",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Hyponatremia/PMID_40587141__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Hyponatremia/PMID_40587141",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c28",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "critical hemoglobin levels anemia transfusion threshold": {
+        "latency_ms": 40.226661999440694,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7071168/article__c13",
+            "document_id": "Research_papers/PMC/PDFs/PMC7071168/article",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row2",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row81",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row162",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/XML/PMC5028806/article__c11",
+            "document_id": "Research_papers/PMC/XML/PMC5028806/article",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1133",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1132",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC5028806/article__c2",
+            "document_id": "Research_papers/PMC/PDFs/PMC5028806/article",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c24",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "troponin elevation myocardial infarction diagnosis": {
+        "latency_ms": 36.84186200007389,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row98",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC6855329/article__c1",
+            "document_id": "Research_papers/PMC/PDFs/PMC6855329/article",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5902",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11804249/article__c30",
+            "document_id": "Research_papers/PMC/PDFs/PMC11804249/article",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/XML/PMC8404461/article__abs",
+            "document_id": "Research_papers/PMC/XML/PMC8404461/article",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11804249/article__c25",
+            "document_id": "Research_papers/PMC/PDFs/PMC11804249/article",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Drug_database/meddra_freq__row51168",
+            "document_id": "Drug_database/meddra_freq",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "drug"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Drug_database/meddra_freq__row47932",
+            "document_id": "Drug_database/meddra_freq",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "drug"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC8404461/article__c38",
+            "document_id": "Research_papers/PMC/PDFs/PMC8404461/article",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c708",
+            "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "metformin type 2 diabetes contraindications renal failure": {
+        "latency_ms": 47.86721199980093,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c46",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c29",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c49",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c54",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c50",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c59",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c74",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c67",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c12",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c23",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "aspirin dosing secondary prevention coronary artery disease": {
+        "latency_ms": 48.28051500044239,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/XML/PMC7024142/article__c3",
+            "document_id": "Research_papers/PMC/XML/PMC7024142/article",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6304__c26",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6304",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c2870",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_41224205__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_41224205",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6735-H__c45",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6735-H",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC4536764/article__c8",
+            "document_id": "Research_papers/PMC/PDFs/PMC4536764/article",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9306719/article__c4",
+            "document_id": "Research_papers/PMC/PDFs/PMC9306719/article",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7382537/article__c16",
+            "document_id": "Research_papers/PMC/PDFs/PMC7382537/article",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams__c2049",
+            "document_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "direct oral anticoagulant reversal agent andexanet alfa": {
+        "latency_ms": 46.548536000045715,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak__c1161",
+            "document_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC12441256/article__c10",
+            "document_id": "Research_papers/PMC/PDFs/PMC12441256/article",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC12441256/article__c16",
+            "document_id": "Research_papers/PMC/PDFs/PMC12441256/article",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "sepsis bundle lactate clearance antibiotics timing": {
+        "latency_ms": 49.74800000036339,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_31990655__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_31990655",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_28101605__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_28101605",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/XML/PMC9310818/article__abs",
+            "document_id": "Research_papers/PMC/XML/PMC9310818/article",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c296",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H__c12",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_33890208__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Septic_Shock/PMID_33890208",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "heart failure reduced ejection fraction guideline directed medical therapy": {
+        "latency_ms": 40.292476000104216,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363500__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363500",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35378257__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35378257",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35379503",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_35363499",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "pneumonia CURB-65 score outpatient management criteria": {
+        "latency_ms": 46.234247999564104,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c82",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.03278688524590164,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508__c56",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508",
+            "fused_score": 0.03225806451612903,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/B-ChronicLiverReview_Final__c52",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/B-ChronicLiverReview_Final",
+            "fused_score": 0.031746031746031744,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c78",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 0.03125,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508__c85",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508",
+            "fused_score": 0.03076923076923077,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c137",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 0.030303030303030304,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/A-Bronchiectasis-Review_Final__c8",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/A-Bronchiectasis-Review_Final",
+            "fused_score": 0.029850746268656716,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508__c93",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508",
+            "fused_score": 0.029411764705882353,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c90",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 0.028985507246376812,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c81",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.02857142857142857,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      }
+    },
+    "GraphOnlyRetriever": {
+      "warfarin INR monitoring guidelines atrial fibrillation": {
+        "latency_ms": 116.66667300050904,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=1 chunks_from_graph=5 edges_traversed=[]"
+      },
+      "ACE inhibitor hypertension treatment first line": {
+        "latency_ms": 192.89909500002977,
+        "num_items": 0,
+        "items": [],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "critical hemoglobin levels anemia transfusion threshold": {
+        "latency_ms": 60.80713299979834,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_38066889__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_38066889",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_38066889__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_38066889",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_31808874__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_31808874",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=2 chunks_from_graph=5 edges_traversed=[]"
+      },
+      "troponin elevation myocardial infarction diagnosis": {
+        "latency_ms": 32.06382600001234,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_39302533__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_39302533",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=1 chunks_from_graph=5 edges_traversed=[]"
+      },
+      "metformin type 2 diabetes contraindications renal failure": {
+        "latency_ms": 161.29302399986045,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_36808864__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_36808864",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=3 chunks_from_graph=5 edges_traversed=[]"
+      },
+      "aspirin dosing secondary prevention coronary artery disease": {
+        "latency_ms": 115.1930670002912,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_35671766__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_35671766",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_35671766__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_35671766",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_37672261__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_37672261",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_37672261__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_37672261",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_37672261__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_37672261",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=1 chunks_from_graph=5 edges_traversed=[]"
+      },
+      "direct oral anticoagulant reversal agent andexanet alfa": {
+        "latency_ms": 216.25078699980804,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=2 chunks_from_graph=5 edges_traversed=[]"
+      },
+      "sepsis bundle lactate clearance antibiotics timing": {
+        "latency_ms": 135.24220299950684,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=1 chunks_from_graph=5 edges_traversed=[]"
+      },
+      "heart failure reduced ejection fraction guideline directed medical therapy": {
+        "latency_ms": 301.0794760002682,
+        "num_items": 0,
+        "items": [],
+        "graph_stats": "seeds_used=0 entities_reached=0 chunks_from_graph=0 edges_traversed=[]"
+      },
+      "pneumonia CURB-65 score outpatient management criteria": {
+        "latency_ms": 76.09857199986436,
+        "num_items": 5,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_32296816__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_32296816",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_32296816__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_32296816",
+            "fused_score": 0.85,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=0 entities_reached=1 chunks_from_graph=5 edges_traversed=[]"
+      }
+    },
+    "MedGraphRAGRetriever": {
+      "warfarin INR monitoring guidelines atrial fibrillation": {
+        "latency_ms": 200.09246800054825,
+        "num_items": 9,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+            "fused_score": 0.17735234673253986,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c16",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 0.0159,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207__c13",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207",
+            "fused_score": 0.0157,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/XML/PMC11046323/article__c20",
+            "document_id": "Research_papers/PMC/XML/PMC11046323/article",
+            "fused_score": 0.014705882352941176,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row167",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.014492753623188406,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656",
+            "fused_score": 0.013114754098360656,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908",
+            "fused_score": 0.012698412698412698,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292",
+            "fused_score": 0.012307692307692308,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_30986390__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_30986390",
+            "fused_score": 0.011940298507462687,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=4 chunks_from_graph=4 edges_traversed=['DOCUMENT_MENTIONS', 'DRUG_TREATS', 'HAS_CHUNK']"
+      },
+      "ACE inhibitor hypertension treatment first line": {
+        "latency_ms": 204.18084300035844,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c1",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 0.1842,
+            "source_type": "both",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c5",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+            "fused_score": 0.1821,
+            "source_type": "both",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9363242/article__c5",
+            "document_id": "Research_papers/PMC/PDFs/PMC9363242/article",
+            "fused_score": 0.17851465474416295,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/XML/PMC7873715/article__c5",
+            "document_id": "Research_papers/PMC/XML/PMC7873715/article",
+            "fused_score": 0.17724014336917562,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c28",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 0.0152,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_40587141",
+            "fused_score": 0.014925373134328358,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_29357392",
+            "fused_score": 0.014285714285714285,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/XML/PMC11624700/article__c0",
+            "document_id": "Research_papers/PMC/XML/PMC11624700/article",
+            "fused_score": 0.013513513513513514,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c19",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "fused_score": 0.0135,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak__c267",
+            "document_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak",
+            "fused_score": 0.0125,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=0 chunks_from_graph=0 edges_traversed=['HAS_CHUNK']"
+      },
+      "critical hemoglobin levels anemia transfusion threshold": {
+        "latency_ms": 101.88396600005944,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row3",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.1761290322580645,
+            "source_type": "both",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7071168/article__c1",
+            "document_id": "Research_papers/PMC/PDFs/PMC7071168/article",
+            "fused_score": 0.1748097412480974,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c24",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+            "fused_score": 0.0152,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/XML/PMC5028806/article__c11",
+            "document_id": "Research_papers/PMC/XML/PMC5028806/article",
+            "fused_score": 0.015151515151515152,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34623079__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34623079",
+            "fused_score": 0.014084507042253521,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7695235/article__c15",
+            "document_id": "Research_papers/PMC/PDFs/PMC7695235/article",
+            "fused_score": 0.013513513513513514,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6936-H__c87",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6936-H",
+            "fused_score": 0.0135,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Thalassemia/PMID_37531552__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Thalassemia/PMID_37531552",
+            "fused_score": 0.013333333333333334,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Iron_Deficiency_Anemia/PMID_34836263",
+            "fused_score": 0.013114754098360656,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_39145520__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_39145520",
+            "fused_score": 0.012987012987012988,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=2 chunks_from_graph=1 edges_traversed=['DOCUMENT_MENTIONS', 'HAS_CHUNK', 'LABTEST_RELATED_TO']"
+      },
+      "troponin elevation myocardial infarction diagnosis": {
+        "latency_ms": 169.4740439997986,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC6855329/article__c1",
+            "document_id": "Research_papers/PMC/PDFs/PMC6855329/article",
+            "fused_score": 0.17693984306887534,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row98",
+            "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+            "fused_score": 0.01639344262295082,
+            "source_type": "faiss",
+            "category": "lab_reference"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5902",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 0.015873015873015872,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11804249/article__c30",
+            "document_id": "Research_papers/PMC/PDFs/PMC11804249/article",
+            "fused_score": 0.015625,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/XML/PMC8404461/article__abs",
+            "document_id": "Research_papers/PMC/XML/PMC8404461/article",
+            "fused_score": 0.015384615384615385,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Drug_database/meddra_freq__row51168",
+            "document_id": "Drug_database/meddra_freq",
+            "fused_score": 0.014925373134328358,
+            "source_type": "faiss",
+            "category": "drug"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c708",
+            "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+            "fused_score": 0.014285714285714285,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9504600/article__c5",
+            "document_id": "Research_papers/PMC/PDFs/PMC9504600/article",
+            "fused_score": 0.0136986301369863,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+            "fused_score": 0.013114754098360656,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879",
+            "fused_score": 0.012698412698412698,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=1 chunks_from_graph=2 edges_traversed=['DOCUMENT_MENTIONS', 'HAS_CHUNK']"
+      },
+      "metformin type 2 diabetes contraindications renal failure": {
+        "latency_ms": 202.71411100020487,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c46",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+            "fused_score": 0.0172,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c12",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 0.0152,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PMC/XML/PMC9461695/article__c13",
+            "document_id": "Research_papers/PMC/XML/PMC9461695/article",
+            "fused_score": 0.014084507042253521,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_40813129__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_40813129",
+            "fused_score": 0.013888888888888888,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC5375966/article__c13",
+            "document_id": "Research_papers/PMC/PDFs/PMC5375966/article",
+            "fused_score": 0.0136986301369863,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787",
+            "fused_score": 0.013513513513513514,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC11343900/article__c31",
+            "document_id": "Research_papers/PMC/PDFs/PMC11343900/article",
+            "fused_score": 0.013333333333333334,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c2796",
+            "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+            "fused_score": 0.013157894736842105,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+            "fused_score": 0.013114754098360656,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9318510/article__c24",
+            "document_id": "Research_papers/PMC/PDFs/PMC9318510/article",
+            "fused_score": 0.01282051282051282,
+            "source_type": "faiss",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=2 chunks_from_graph=1 edges_traversed=['DOCUMENT_MENTIONS', 'DRUG_TREATS', 'HAS_CHUNK']"
+      },
+      "aspirin dosing secondary prevention coronary artery disease": {
+        "latency_ms": 345.1176670005225,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PMC/XML/PMC7024142/article__c3",
+            "document_id": "Research_papers/PMC/XML/PMC7024142/article",
+            "fused_score": 0.17782201405152226,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6304__c26",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/su6304",
+            "fused_score": 0.0169,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6735-H__c45",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6735-H",
+            "fused_score": 0.0162,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c2870",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 0.015873015873015872,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_41224205__c1",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_41224205",
+            "fused_score": 0.015625,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC4536764/article__c8",
+            "document_id": "Research_papers/PMC/PDFs/PMC4536764/article",
+            "fused_score": 0.015151515151515152,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_40902613",
+            "fused_score": 0.014925373134328358,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC9306719/article__c4",
+            "document_id": "Research_papers/PMC/PDFs/PMC9306719/article",
+            "fused_score": 0.014705882352941176,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC7382537/article__c16",
+            "document_id": "Research_papers/PMC/PDFs/PMC7382537/article",
+            "fused_score": 0.014492753623188406,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams__c2049",
+            "document_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams",
+            "fused_score": 0.014285714285714285,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=0 chunks_from_graph=0 edges_traversed=['HAS_CHUNK']"
+      },
+      "direct oral anticoagulant reversal agent andexanet alfa": {
+        "latency_ms": 369.1542409997055,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_37058421",
+            "fused_score": 0.1783337411304135,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984",
+            "fused_score": 0.17755760368663592,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_34254133",
+            "fused_score": 0.17683191998260492,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak__c1161",
+            "document_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak",
+            "fused_score": 0.015625,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_33857326",
+            "fused_score": 0.015384615384615385,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PMC/PDFs/PMC12441256/article__c10",
+            "document_id": "Research_papers/PMC/PDFs/PMC12441256/article",
+            "fused_score": 0.014492753623188406,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c185",
+            "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+            "fused_score": 0.014084507042253521,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung__c1156",
+            "document_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung",
+            "fused_score": 0.0136986301369863,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1__c155",
+            "document_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1",
+            "fused_score": 0.013513513513513514,
+            "source_type": "faiss",
+            "category": "textbook"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c1321",
+            "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+            "fused_score": 0.013157894736842105,
+            "source_type": "faiss",
+            "category": "textbook"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=1 chunks_from_graph=0 edges_traversed=['HAS_CHUNK']"
+      },
+      "sepsis bundle lactate clearance antibiotics timing": {
+        "latency_ms": 184.1537079999398,
+        "num_items": 10,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_31990655",
+            "fused_score": 0.17766104825675363,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_28101605",
+            "fused_score": 0.17639933166248956,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c296",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.0159,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H__c12",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sepsis-core-elements-H",
+            "fused_score": 0.0157,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Research_papers/PMC/XML/PMC9310818/article__abs",
+            "document_id": "Research_papers/PMC/XML/PMC9310818/article",
+            "fused_score": 0.015384615384615385,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_33890208",
+            "fused_score": 0.014705882352941176,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/hospital-2023-annual-survey-508__c7",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/hospital-2023-annual-survey-508",
+            "fused_score": 0.014,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-NICU-CLABSI-Appendix-508__c21",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-NICU-CLABSI-Appendix-508",
+            "fused_score": 0.0138,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PMC/XML/PMC9536156/article__c5",
+            "document_id": "Research_papers/PMC/XML/PMC9536156/article",
+            "fused_score": 0.0136986301369863,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 10,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Influenza/sepsis__hcp__core-elements__assessment-tool.html__c2",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Influenza/sepsis__hcp__core-elements__assessment-tool.html",
+            "fused_score": 0.0136,
+            "source_type": "faiss",
+            "category": "guideline"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=1 chunks_from_graph=0 edges_traversed=['HAS_CHUNK']"
+      },
+      "heart failure reduced ejection fraction guideline directed medical therapy": {
+        "latency_ms": 343.20948799995676,
+        "num_items": 9,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35379503",
+            "fused_score": 0.17929666842940242,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363500__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363500",
+            "fused_score": 0.17781331438047854,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35363499",
+            "fused_score": 0.17705357142857142,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35378257__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_35378257",
+            "fused_score": 0.17611041926110418,
+            "source_type": "both",
+            "category": "research_paper"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c28",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+            "fused_score": 0.0148,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng__c14",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240033986-eng",
+            "fused_score": 0.0142,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c12",
+            "document_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+            "fused_score": 0.0135,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_40012353__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_40012353",
+            "fused_score": 0.010666666666666668,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_38656292__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Heart_Failure/PMID_38656292",
+            "fused_score": 0.010256410256410256,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=1 chunks_from_graph=2 edges_traversed=['DOCUMENT_MENTIONS', 'HAS_CHUNK']"
+      },
+      "pneumonia CURB-65 score outpatient management criteria": {
+        "latency_ms": 201.86844899944845,
+        "num_items": 9,
+        "items": [
+          {
+            "rank": 1,
+            "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c82",
+            "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+            "fused_score": 0.0172,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 2,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508__c56",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/L-Brief-Summary-of-Findings-on-the-Association-Between-Underlying-COPD-and-Severe-COVID-19-Outcomes-508",
+            "fused_score": 0.0169,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 3,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/B-ChronicLiverReview_Final__c52",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/B-ChronicLiverReview_Final",
+            "fused_score": 0.0167,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 4,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1__c78",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/K-Brief-Summary-of-Findings-on-the-Association-Between-Asthma-and-SevereCOVID-19-Outcomes-508_1",
+            "fused_score": 0.0164,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 5,
+            "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/A-Bronchiectasis-Review_Final__c8",
+            "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/A-Bronchiectasis-Review_Final",
+            "fused_score": 0.0157,
+            "source_type": "faiss",
+            "category": "guideline"
+          },
+          {
+            "rank": 6,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Obstructive_Pulmonary_Disease/PMID_34495549__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Chronic_Obstructive_Pulmonary_Disease/PMID_34495549",
+            "fused_score": 0.014084507042253521,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 7,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_29236286__c0",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_29236286",
+            "fused_score": 0.013888888888888888,
+            "source_type": "faiss",
+            "category": "research_paper"
+          },
+          {
+            "rank": 8,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753",
+            "fused_score": 0.013114754098360656,
+            "source_type": "graph",
+            "category": "research_paper"
+          },
+          {
+            "rank": 9,
+            "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_32296816__abs",
+            "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_32296816",
+            "fused_score": 0.0125,
+            "source_type": "graph",
+            "category": "research_paper"
+          }
+        ],
+        "graph_stats": "seeds_used=5 entities_reached=1 chunks_from_graph=2 edges_traversed=['DOCUMENT_MENTIONS', 'HAS_CHUNK']"
+      }
+    }
+  },
+  "summary": {
+    "BM25Retriever": {
+      "avg_latency_ms": 481.7391616998066,
+      "avg_items": 10.0,
+      "avg_entities_reached": 0.0,
+      "avg_graph_chunks": 0.0,
+      "queries_successful": 10,
+      "queries_total": 10
+    },
+    "DenseVectorRetriever": {
+      "avg_latency_ms": 24.47898919981526,
+      "avg_items": 10.0,
+      "avg_entities_reached": 0.0,
+      "avg_graph_chunks": 0.0,
+      "queries_successful": 10,
+      "queries_total": 10
+    },
+    "HybridRRFRetriever": {
+      "avg_latency_ms": 45.73037169993768,
+      "avg_items": 10.0,
+      "avg_entities_reached": 0.0,
+      "avg_graph_chunks": 0.0,
+      "queries_successful": 10,
+      "queries_total": 10
+    },
+    "GraphOnlyRetriever": {
+      "avg_latency_ms": 140.75938559999486,
+      "avg_items": 4.0,
+      "avg_entities_reached": 1.2,
+      "avg_graph_chunks": 4.0,
+      "queries_successful": 10,
+      "queries_total": 10
+    },
+    "MedGraphRAGRetriever": {
+      "avg_latency_ms": 232.18489850005426,
+      "avg_items": 9.7,
+      "avg_entities_reached": 1.3,
+      "avg_graph_chunks": 1.2,
+      "queries_successful": 10,
+      "queries_total": 10
+    }
+  },
+  "timestamp": 1787463761.8316433
+}

@@ -132,6 +132,14 @@ class RetrievalRequest(BaseModel):
             "If None, all categories are retrieved subject to balancing caps."
         ),
     )
+    rerank_mode: Optional[Literal["rrf", "rel", "hybrid"]] = Field(
+        default=None,
+        description="Reranking mode: 'rrf' (default pure RRF), 'rel' (relational bonus only), or 'hybrid'.",
+    )
+    rerank_gamma: Optional[float] = Field(
+        default=None,
+        description="Weight gamma for relational bonus in hybrid reranking (default 0.15).",
+    )
 
 
 class GraphTraversalStats(BaseModel):

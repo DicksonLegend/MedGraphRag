@@ -8,10 +8,11 @@ Orchestrates the full retrieval pipeline:
   3. Category balancing (suppress lab_reference dominance)
   4. Graph traversal (Kùzu, seeded by top FAISS doc_ids)
   5. RRF fusion (FAISS list + graph list)
+  5.5 Relation-Aware Reranker (additive, behind config flag)
   6. Text loading (O(1) random access into chunks.jsonl)
   7. Pack EvidenceItems + RetrievalResult
 
-Parameterized by `destination` (default "global") — the same code
+Parameterised by `destination` (default "global") — the same code
 will serve per-user private indexes in a future step.
 
 Thread safety: all component singletons (FAISS, Kùzu, embedder) are
@@ -27,6 +28,7 @@ from typing import Any, Dict, List, Optional
 from app.config import settings
 from app.core.retrieval import embedder, faiss_store, graph_store
 from app.core.retrieval.fusion import apply_category_caps, rrf_fuse
+from app.core.retrieval.reranker import rerank_candidates
 from app.core.retrieval.schemas import (
     EvidenceItem,
     GraphTraversalStats,
@@ -119,6 +121,18 @@ class HybridRetrievalService:
             "[Stage 5] Fusion: %d merged, %.1f ms",
             len(fused), latency_breakdown["fuse_ms"],
         )
+
+        # ── Stage 5.5: Relation-Aware Reranker ──────────────────────────────
+        rerank_mode = getattr(request, "rerank_mode", None) or getattr(settings, "retrieval_rerank_mode", "rrf")
+        rerank_gamma = getattr(request, "rerank_gamma", None) if getattr(request, "rerank_gamma", None) is not None else getattr(settings, "retrieval_rerank_gamma", 0.15)
+        if rerank_mode != "rrf":
+            t0 = time.perf_counter()
+            fused = rerank_candidates(fused, request.query, rerank_mode=rerank_mode, gamma=rerank_gamma)
+            latency_breakdown["rerank_ms"] = (time.perf_counter() - t0) * 1000
+            logger.info(
+                "[Stage 5.5] Reranker (%s, gamma=%.2f): %.1f ms",
+                rerank_mode, rerank_gamma, latency_breakdown["rerank_ms"],
+            )
 
         # ── Stage 6: Text Loading ────────────────────────────────────────────
         t0 = time.perf_counter()

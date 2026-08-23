@@ -1,12 +1,11 @@
 """
-MedGraphRAG Backend — Verification Agent (Step 8.2)
-=====================================================
-Orchestrates claim filtering, single-pass faithfulness checking, confidence scoring, and retry gating.
-
-Ensures:
-  - latency_total_ms equals sum(retrieval_ms, context_ms, llm_ms, verification_ms).
-  - retry_count and fallback_used flags are tracked accurately.
-  - Answers are confidence-scored and gated against hallucinations.
+MedGraphRAG Backend — Verification Agent (Step J2)
+===================================================
+Orchestrates:
+  1. Pass 1: Single-pass LLM Faithfulness Checking (phi score)
+  2. Pass 2: Kùzu Knowledge Graph Consistency Checking (S_g score via NEGATES, DRUG_TREATS, TEMPORAL_BEFORE)
+  3. Combined confidence computation V = beta * phi + (1 - beta) * S_g (beta = 0.7)
+  4. Confidence gating and failure-mode retry loop.
 """
 
 from __future__ import annotations
@@ -19,8 +18,9 @@ from app.config import settings
 from app.core.llm.generator import AnswerResult, GeneratorService
 from app.core.retrieval.schemas import RetrievalResult
 from app.core.retrieval.service import HybridRetrievalService
-from app.core.verification.confidence import compute_final_confidence
+from app.core.verification.confidence import compute_combined_verification_score, compute_final_confidence
 from app.core.verification.faithfulness_checker import verify_in_single_pass
+from app.core.verification.graph_checker import check_graph_consistency
 from app.core.verification.retry_gate import RetryGate
 from app.core.verification.schemas import ClaimVerification, VerifiedAnswerResult
 
@@ -36,9 +36,13 @@ class VerificationAgent:
         self,
         generator_service: Optional[GeneratorService] = None,
         retrieval_service: Optional[HybridRetrievalService] = None,
+        verify_mode: Optional[str] = None,
+        beta: Optional[float] = None,
     ) -> None:
         self.generator_service = generator_service or GeneratorService()
         self.retrieval_service = retrieval_service or HybridRetrievalService()
+        self.verify_mode = verify_mode or getattr(settings, "verification_mode", "combined")
+        self.beta = beta if beta is not None else getattr(settings, "verification_beta_evidence", 0.7)
         self.retry_gate = RetryGate(
             generator_service=self.generator_service,
             retrieval_service=self.retrieval_service,
@@ -48,9 +52,11 @@ class VerificationAgent:
         self,
         answer_result: AnswerResult,
         retrieval_result: RetrievalResult,
+        verify_mode: Optional[str] = None,
+        beta: Optional[float] = None,
     ) -> VerifiedAnswerResult:
         """
-        Verify answer faithfulness and gate output based on computed confidence.
+        Verify answer faithfulness and graph consistency, gating output based on computed confidence.
 
         Parameters
         ----------
@@ -64,6 +70,8 @@ class VerificationAgent:
         VerifiedAnswerResult object ready for user delivery.
         """
         t0 = time.perf_counter()
+        mode = verify_mode or self.verify_mode
+        b = beta if beta is not None else self.beta
 
         # ── Edge Case: Malformed or Empty Answer ──────────────────────────────
         if not answer_result.answer_text or not answer_result.answer_text.strip():
@@ -98,17 +106,33 @@ class VerificationAgent:
             )
 
         try:
-            # ── Single-Pass Verification (Stage A + B) ────────────────────────
+            # ── Pass 1: Single-Pass Evidence Faithfulness (phi) ───────────────
             verifications, faithfulness_score, fallback_used = verify_in_single_pass(
                 answer_text=answer_result.answer_text,
                 citations=answer_result.citations,
                 retrieval_result=retrieval_result,
             )
 
-            # ── Stage C: Compute Confidence ─────────────────────────────────
+            # ── Pass 2: Graph Consistency Check (S_g) ─────────────────────────
+            extracted_claims = [v.claim for v in verifications]
+            graph_checks, graph_consistency_score, has_graph_contradiction = check_graph_consistency(
+                claims=extracted_claims,
+                retrieval_result=retrieval_result,
+            )
+
+            # ── Stage C: Compute Combined Confidence ──────────────────────────
             final_confidence, tier = compute_final_confidence(
                 evidence_confidence=answer_result.evidence_confidence,
                 faithfulness_score=faithfulness_score,
+                graph_consistency_score=graph_consistency_score,
+                verify_mode=mode,
+                beta=b,
+            )
+            v_score = compute_combined_verification_score(
+                faithfulness_score=faithfulness_score,
+                graph_consistency_score=graph_consistency_score,
+                verify_mode=mode,
+                beta=b,
             )
 
             verification_ms = (time.perf_counter() - t0) * 1000
@@ -122,7 +146,7 @@ class VerificationAgent:
             v_ms = updated_latency["verification_ms"]
             updated_latency["total_ms"] = round(r_ms + c_ms + l_ms + v_ms, 2)
 
-            has_contradiction = any(v.verdict == "contradicted" for v in verifications)
+            has_contradiction = any(v.verdict == "contradicted" for v in verifications) or has_graph_contradiction
             is_refusal = any(v.verdict == "refusal_valid" for v in verifications)
 
             # ── Stage D: Gate or Trigger Retry ──────────────────────────────
@@ -134,8 +158,8 @@ class VerificationAgent:
 
             if need_retry:
                 logger.info(
-                    "Confidence (%.3f) below threshold or contradiction detected. Triggering RetryGate...",
-                    final_confidence
+                    "Confidence (%.3f) below threshold or contradiction detected (graph=%s). Triggering RetryGate...",
+                    final_confidence, has_graph_contradiction
                 )
                 return self.retry_gate.execute_retry_loop(
                     query=answer_result.query,
@@ -143,7 +167,7 @@ class VerificationAgent:
                     initial_answer=answer_result,
                     initial_retrieval=retrieval_result,
                     initial_claims=verifications,
-                    initial_faithfulness=faithfulness_score,
+                    initial_faithfulness=v_score,
                     initial_confidence=final_confidence,
                     initial_tier=tier,
                     initial_fallback_used=fallback_used,
@@ -167,8 +191,8 @@ class VerificationAgent:
                 answer_text = f"{settings.uncertainty_disclosure}{answer_text}"
 
             logger.info(
-                "Verification complete: status=%s, final_confidence=%.3f (tier=%s, faithfulness=%.3f, verification_ms=%.1f, fallback_used=%s)",
-                status, final_confidence, tier, faithfulness_score, verification_ms, fallback_used
+                "Verification complete: status=%s, final_confidence=%.3f (tier=%s, phi=%.3f, S_g=%.3f, V=%.3f, mode=%s, ms=%.1f)",
+                status, final_confidence, tier, faithfulness_score, graph_consistency_score, v_score, mode, verification_ms
             )
 
             return VerifiedAnswerResult(

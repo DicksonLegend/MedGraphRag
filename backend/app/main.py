@@ -22,7 +22,7 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import auth, features, health, query, report
+from app.api.routes import auth, features, health, query, report, multimodal
 from app.config import settings
 from app.core.retrieval import faiss_store, graph_store
 
@@ -113,3 +113,4 @@ app.include_router(auth.router)
 app.include_router(query.router)
 app.include_router(report.router)
 app.include_router(features.router)
+app.include_router(multimodal.router)

@@ -275,6 +275,18 @@ class Settings(BaseSettings):
         ),
     )
 
+    # ── BM25 sparse retrieval (for baselines) ─────────────────────────────────
+    bm25_candidate_pool: int = Field(
+        default=200,
+        validation_alias="MEDGRAPH_BM25_CANDIDATE_POOL",
+        description="FAISS candidate pool size for per-query BM25 indexing (memory vs recall tradeoff).",
+    )
+    bm25_batch_size: int = Field(
+        default=64,
+        validation_alias="MEDGRAPH_BM25_BATCH_SIZE",
+        description="Batch size for faiss_store.batch_load_chunk_texts (tune for seek efficiency).",
+    )
+
     # ── Category balancing / caps ─────────────────────────────────────────────
     # lab_reference is 71.70% of the index; without a cap it floods every result.
     # These caps apply AFTER FAISS retrieval and BEFORE fusion.
@@ -626,6 +638,42 @@ class Settings(BaseSettings):
         validation_alias="MEDGRAPH_JWT_SECRET",
         description="JWT secret key. If unset, a random per-process key is generated with a loud warning.",
     )
+
+    # ── Multimodal/VLM Settings ──────────────────────────────────────────────
+    vlm_model_path: Optional[str] = Field(
+        default=None,
+        validation_alias="MEDGRAPH_VLM_MODEL_PATH",
+        description="Path to Vision-Language Model (GGUF or HuggingFace). If unset, VLM analysis is disabled.",
+    )
+    vlm_model_type: str = Field(
+        default="llava-med",
+        description="VLM model type: 'llava-med', 'med-flamingo', 'gpt4v', 'custom'.",
+    )
+    vlm_max_tokens: int = Field(
+        default=1024,
+        description="Maximum tokens for VLM generation.",
+    )
+    vlm_temperature: float = Field(
+        default=0.1,
+        description="Temperature for VLM generation (low for medical accuracy).",
+    )
+    vlm_device: str = Field(
+        default="cuda",
+        description="Device for VLM inference: 'cuda' or 'cpu'.",
+    )
+    enable_dicom_support: bool = Field(
+        default=True,
+        description="Enable DICOM medical image format support.",
+    )
+    enable_ocr_fallback: bool = Field(
+        default=True,
+        description="Enable OCR fallback for text extraction from images.",
+    )
+    ocr_engine: str = Field(
+        default="easyocr",
+        description="OCR engine: 'easyocr' or 'pytesseract'.",
+    )
+
     jwt_algorithm: str = Field(
         default="HS256",
         description="JWT signature algorithm.",
