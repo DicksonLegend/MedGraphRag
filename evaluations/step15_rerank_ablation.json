@@ -1,0 +1,311 @@
+{
+  "ablation_metrics": {
+    "M1_RRF_CONTROL": {
+      "accuracy_all": 4.0,
+      "accuracy_answered": 50.0,
+      "answered_rate": 8.0,
+      "avg_citations": 9.78,
+      "gamma": 0.0,
+      "graph_hit_rate_top5_pct": 23.6,
+      "median_latency_ms": 15165.3,
+      "p01_p05_top1_scores": {
+        "P01": 0.177352,
+        "P02": 0.1842,
+        "P03": 0.176129,
+        "P04": 0.17694,
+        "P05": 0.0172
+      },
+      "refusal_rate": 96.0,
+      "rerank_mode": "rrf",
+      "wrong_assertion_rate": 4.0
+    },
+    "M2_REL_ONLY": {
+      "accuracy_all": 6.0,
+      "accuracy_answered": 42.86,
+      "answered_rate": 14.0,
+      "avg_citations": 9.7,
+      "gamma": 1.0,
+      "graph_hit_rate_top5_pct": 35.6,
+      "median_latency_ms": 15375.71,
+      "p01_p05_top1_scores": {
+        "P01": 0.012308,
+        "P02": 0.1821,
+        "P03": 0.17481,
+        "P04": 0.17694,
+        "P05": 0.012308
+      },
+      "refusal_rate": 92.0,
+      "rerank_mode": "rel",
+      "wrong_assertion_rate": 8.0
+    },
+    "M3_HYBRID_RERANK": {
+      "accuracy_all": 6.0,
+      "accuracy_answered": 60.0,
+      "answered_rate": 10.0,
+      "avg_citations": 9.78,
+      "gamma": 0.15,
+      "graph_hit_rate_top5_pct": 37.2,
+      "median_latency_ms": 15249.87,
+      "p01_p05_top1_scores": {
+        "P01": 0.177352,
+        "P02": 0.1821,
+        "P03": 0.17481,
+        "P04": 0.17694,
+        "P05": 0.012308
+      },
+      "refusal_rate": 94.0,
+      "rerank_mode": "hybrid",
+      "wrong_assertion_rate": 4.0
+    }
+  },
+  "artifact_sha256": "eda10b8ef854b2ca25dbf26d5fe8398614f2d10a5c75c903c509eb695cd90faf",
+  "description": "Relation-Aware Reranker vs RRF Ablation Suite",
+  "determinism": {
+    "llm_model": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+    "sample_size": 50,
+    "seed": 42,
+    "temperature": 0.0,
+    "verification_config": "M3_COMBINED (beta=0.7)"
+  },
+  "gamma": 0.15,
+  "relational_probe_rank_shifts": {
+    "P01_warfarin": {
+      "hybrid_top5": [
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+          "doc_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+          "fused_score": 0.1774,
+          "rank": 1
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292",
+          "fused_score": 0.0123,
+          "rank": 2
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_30986390__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_30986390",
+          "fused_score": 0.0119,
+          "rank": 3
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656",
+          "fused_score": 0.0131,
+          "rank": 4
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908",
+          "fused_score": 0.0127,
+          "rank": 5
+        }
+      ],
+      "query": "warfarin INR monitoring guidelines atrial fibrillation",
+      "rank_shifts": [
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+          "doc_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+          "hybrid_rank": 1,
+          "rank_shift": "0",
+          "rrf_rank": 1
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_38656292",
+          "hybrid_rank": 2,
+          "rank_shift": "+6",
+          "rrf_rank": 8
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_30986390__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_30986390",
+          "hybrid_rank": 3,
+          "rank_shift": "+6",
+          "rrf_rank": 9
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_36356656",
+          "hybrid_rank": 4,
+          "rank_shift": "+2",
+          "rrf_rank": 6
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Atrial_Fibrillation/PMID_39374908",
+          "hybrid_rank": 5,
+          "rank_shift": "+2",
+          "rrf_rank": 7
+        }
+      ],
+      "rrf_top5": [
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+          "doc_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+          "fused_score": 0.1774,
+          "rank": 1
+        },
+        {
+          "category": "guideline",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c16",
+          "doc_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+          "fused_score": 0.0159,
+          "rank": 2
+        },
+        {
+          "category": "guideline",
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207__c13",
+          "doc_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5207",
+          "fused_score": 0.0157,
+          "rank": 3
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PMC/XML/PMC11046323/article__c20",
+          "doc_id": "Research_papers/PMC/XML/PMC11046323/article",
+          "fused_score": 0.0147,
+          "rank": 4
+        },
+        {
+          "category": "lab_reference",
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row167",
+          "doc_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "fused_score": 0.0145,
+          "rank": 5
+        }
+      ]
+    },
+    "P05_metformin": {
+      "hybrid_top5": [
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_36808864__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_36808864",
+          "fused_score": 0.0123,
+          "rank": 1
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787__c0",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787",
+          "fused_score": 0.0135,
+          "rank": 2
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+          "fused_score": 0.0131,
+          "rank": 3
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+          "fused_score": 0.0127,
+          "rank": 4
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_35963508__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_35963508",
+          "fused_score": 0.0118,
+          "rank": 5
+        }
+      ],
+      "query": "metformin type 2 diabetes contraindications renal failure",
+      "rank_shifts": [
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_36808864__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_36808864",
+          "hybrid_rank": 1,
+          "rank_shift": "+98",
+          "rrf_rank": ">10"
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787__c0",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787",
+          "hybrid_rank": 2,
+          "rank_shift": "+4",
+          "rrf_rank": 6
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+          "hybrid_rank": 3,
+          "rank_shift": "+6",
+          "rrf_rank": 9
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+          "hybrid_rank": 4,
+          "rank_shift": "+95",
+          "rrf_rank": ">10"
+        },
+        {
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_35963508__abs",
+          "doc_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_35963508",
+          "hybrid_rank": 5,
+          "rank_shift": "+94",
+          "rrf_rank": ">10"
+        }
+      ],
+      "rrf_top5": [
+        {
+          "category": "guideline",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c46",
+          "doc_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+          "fused_score": 0.0172,
+          "rank": 1
+        },
+        {
+          "category": "guideline",
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213__c12",
+          "doc_id": "Clinical_practice_guidlines/Nice_guidlines/hypertension-in-adults-diagnosis-and-management-pdf-66141722710213",
+          "fused_score": 0.0152,
+          "rank": 2
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PMC/XML/PMC9461695/article__c13",
+          "doc_id": "Research_papers/PMC/XML/PMC9461695/article",
+          "fused_score": 0.0141,
+          "rank": 3
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_40813129__c0",
+          "doc_id": "Research_papers/PubMed/Abstracts/Chronic_Kidney_Disease/PMID_40813129",
+          "fused_score": 0.0139,
+          "rank": 4
+        },
+        {
+          "category": "research_paper",
+          "chunk_id": "Research_papers/PMC/PDFs/PMC5375966/article__c13",
+          "doc_id": "Research_papers/PMC/PDFs/PMC5375966/article",
+          "fused_score": 0.0137,
+          "rank": 5
+        }
+      ]
+    }
+  },
+  "retrieval_regression": {
+    "expected_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "p01_fused_score": 0.177352,
+    "recheck_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "status": "PASS",
+    "verdict": "0.00% DRIFT (100% BYTE-IDENTICAL RETRIEVAL)"
+  },
+  "step": "J3",
+  "timestamp": "2026-08-23T10:09:35.728438+00:00",
+  "total_duration_s": 2210.3
+}

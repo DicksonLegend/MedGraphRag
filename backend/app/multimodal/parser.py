@@ -326,7 +326,12 @@ def analyze_medical_image_with_vlm(
     # The actual VLM call would go here
 
     logger.info("VLM analysis requested for image %s (modality: %s)", image.image_id, image.modality)
-    logger.warning("VLM backend not yet integrated - returning placeholder")
+    from app.multimodal.device import resolve_vlm_device
+    _device = resolve_vlm_device()
+    logger.warning(
+        "VLM backend not yet integrated (device=%s) - returning placeholder",
+        _device,
+    )
 
     # Placeholder result structure
     result = ImageAnalysisResult(

@@ -1,0 +1,203 @@
+{
+  "stage": "J6_ir_metrics",
+  "qrel_policy": "PROXY lexical-overlap weak supervision (see header); not publication-grade",
+  "summary": {
+    "P@5": 0.42,
+    "R@5": 0.5098,
+    "MRR": 0.6833,
+    "nDCG@10": 0.6372,
+    "queries": 10,
+    "peak_rss_mb": 2791,
+    "wall_seconds": 5.98
+  },
+  "per_query": [
+    {
+      "query": "warfarin INR monitoring guidelines atrial fibrillation",
+      "grades": [
+        0.4,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.4,
+        0.4,
+        0.0
+      ],
+      "P@5": 0.2,
+      "R@5": 0.3333,
+      "MRR": 1.0,
+      "nDCG@10": 0.7737
+    },
+    {
+      "query": "ACE inhibitor hypertension treatment first line",
+      "grades": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.4,
+        0.0,
+        0.0
+      ],
+      "P@5": 0.0,
+      "R@5": 0.0,
+      "MRR": 0.0,
+      "nDCG@10": 0.3803
+    },
+    {
+      "query": "critical hemoglobin levels anemia transfusion threshold",
+      "grades": [
+        0.4,
+        0.0,
+        0.0,
+        0.4,
+        0.4,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P@5": 0.6,
+      "R@5": 1.0,
+      "MRR": 1.0,
+      "nDCG@10": 0.8529
+    },
+    {
+      "query": "troponin elevation myocardial infarction diagnosis",
+      "grades": [
+        0.0,
+        0.4,
+        0.4,
+        1.0,
+        0.4,
+        0.4,
+        0.4,
+        1.0,
+        0.0,
+        0.4
+      ],
+      "P@5": 0.8,
+      "R@5": 0.5,
+      "MRR": 0.5,
+      "nDCG@10": 0.6506
+    },
+    {
+      "query": "metformin type 2 diabetes contraindications renal failure",
+      "grades": [
+        1.0,
+        0.4,
+        0.4,
+        0.4,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "P@5": 0.8,
+      "R@5": 0.8,
+      "MRR": 1.0,
+      "nDCG@10": 0.8843
+    },
+    {
+      "query": "aspirin dosing secondary prevention coronary artery disease",
+      "grades": [
+        0.0,
+        0.0,
+        0.4,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.4,
+        0.0,
+        0.4
+      ],
+      "P@5": 0.2,
+      "R@5": 0.25,
+      "MRR": 0.3333,
+      "nDCG@10": 0.4578
+    },
+    {
+      "query": "direct oral anticoagulant reversal agent andexanet alfa",
+      "grades": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P@5": 0.0,
+      "R@5": 0.0,
+      "MRR": 0.0,
+      "nDCG@10": 0.0
+    },
+    {
+      "query": "sepsis bundle lactate clearance antibiotics timing",
+      "grades": [
+        0.4,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.4,
+        0.0
+      ],
+      "P@5": 0.2,
+      "R@5": 0.5,
+      "MRR": 1.0,
+      "nDCG@10": 0.7977
+    },
+    {
+      "query": "heart failure reduced ejection fraction guideline directed medical therapy",
+      "grades": [
+        0.4,
+        0.4,
+        0.4,
+        0.4,
+        1.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "P@5": 1.0,
+      "R@5": 0.7143,
+      "MRR": 1.0,
+      "nDCG@10": 0.6974
+    },
+    {
+      "query": "pneumonia CURB-65 score outpatient management criteria",
+      "grades": [
+        0.4,
+        0.0,
+        0.0,
+        0.4,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "P@5": 0.4,
+      "R@5": 1.0,
+      "MRR": 1.0,
+      "nDCG@10": 0.8772
+    }
+  ],
+  "timestamp": "2026-08-23T15:48:18+0530"
+}

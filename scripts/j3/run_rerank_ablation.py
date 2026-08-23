@@ -247,7 +247,7 @@ def run_mode_evaluation(
             logger.info("  [%s] Processed %d/%d questions | Latency=%.1f ms", mode_name, q_idx + 1, len(questions), dur_ms)
 
     # Compute P01-P05 top-1 scores under this mode
-    from scripts.j1.run_regression import REGRESSION_QUERIES
+    from scripts.j1.run_regression import GOLDEN_QUERIES as REGRESSION_QUERIES
     p_top1_scores: Dict[str, float] = {}
     for p_item in REGRESSION_QUERIES:
         p_req = RetrievalRequest(
