@@ -61,7 +61,8 @@ def main() -> None:
             except ET.ParseError as e:
                 print(f"WARN parse {member.name}: {e}", flush=True)
                 continue
-            img_ids = [i.text.strip() for i in tree.iter("imageName") if i.text]
+            img_ids = [i.get("id").strip() for i in tree.iter("parentImage")
+                       if i.get("id")]
             offset = 0
             for tag in SECTION_TAGS:
                 node = tree.find(f".//AbstractText[@Label='{tag}']")
