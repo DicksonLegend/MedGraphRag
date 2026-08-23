@@ -1,0 +1,220 @@
+{
+  "stage": "J6_ir_metrics_v2",
+  "qrel_policy": "user-adjudicated graded qrels (single assessor); gains 1.0/0.4/0.0",
+  "summary": {
+    "P@5": 0.18,
+    "R@5": 0.5397,
+    "R@5_queries_used": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q6",
+      "Q7"
+    ],
+    "MRR": 0.3533,
+    "nDCG@10": 0.3769,
+    "N_queries": 10
+  },
+  "per_query": {
+    "Q1": {
+      "query": "A 21-year-old male presents to his primary care provider for fatigue. He reports",
+      "gains": [
+        0.4,
+        0,
+        0,
+        0,
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 2,
+      "P@5": 0.4,
+      "R@5": 1.0,
+      "MRR": 1.0,
+      "nDCG@10": 0.8503
+    },
+    "Q2": {
+      "query": "A 56-year-old man with a history of hypertension presents to his physician with ",
+      "gains": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1.0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 1,
+      "P@5": 0.0,
+      "R@5": 0.0,
+      "MRR": 0.1667,
+      "nDCG@10": 0.3562
+    },
+    "Q3": {
+      "query": "A 47-year-old woman seeks evaluation at your office because she has had postcoit",
+      "gains": [
+        0,
+        0,
+        0,
+        0,
+        0.4,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 1,
+      "P@5": 0.2,
+      "R@5": 1.0,
+      "MRR": 0.2,
+      "nDCG@10": 0.3869
+    },
+    "Q4": {
+      "query": "A 36-year-old man undergoes open reduction and internal fixation of a left femur",
+      "gains": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0.4,
+        0,
+        0,
+        0,
+        0.4
+      ],
+      "rel_total": 2,
+      "P@5": 0.0,
+      "R@5": 0.0,
+      "MRR": 0.1667,
+      "nDCG@10": 0.3956
+    },
+    "Q5": {
+      "query": "A 59-year-old man is brought to the emergency department with a history of black",
+      "gains": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 0,
+      "P@5": 0.0,
+      "R@5": "excluded(no rel)",
+      "MRR": 0.0,
+      "nDCG@10": 0.0
+    },
+    "Q6": {
+      "query": "A 30-year-old man presents to his primary care physician with complaints of exce",
+      "gains": [
+        0.4,
+        0,
+        0,
+        0.4,
+        0,
+        0.4,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 3,
+      "P@5": 0.4,
+      "R@5": 0.6667,
+      "MRR": 1.0,
+      "nDCG@10": 0.8385
+    },
+    "Q7": {
+      "query": "A 58-year-old white man with hypertension and type 2 diabetes mellitus comes to ",
+      "gains": [
+        0.4,
+        0.4,
+        0.4,
+        0,
+        0.4,
+        0,
+        0,
+        0.4,
+        0.4,
+        0.4
+      ],
+      "rel_total": 7,
+      "P@5": 0.8,
+      "R@5": 0.5714,
+      "MRR": 1.0,
+      "nDCG@10": 0.941
+    },
+    "Q8": {
+      "query": "A 46-year-old woman comes to the physician because of severe muscle and joint pa",
+      "gains": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 0,
+      "P@5": 0.0,
+      "R@5": "excluded(no rel)",
+      "MRR": 0.0,
+      "nDCG@10": 0.0
+    },
+    "Q9": {
+      "query": "A 40-year-old businessman who was previously well is brought into the emergency ",
+      "gains": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 0,
+      "P@5": 0.0,
+      "R@5": "excluded(no rel)",
+      "MRR": 0.0,
+      "nDCG@10": 0.0
+    },
+    "Q10": {
+      "query": "A 29-year-old man is brought to the emergency department by a concerned neighbor",
+      "gains": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "rel_total": 0,
+      "P@5": 0.0,
+      "R@5": "excluded(no rel)",
+      "MRR": 0.0,
+      "nDCG@10": 0.0
+    }
+  },
+  "timestamp": "2026-08-23T21:12:02+0530"
+}

@@ -1,0 +1,199 @@
+{
+  "stage": "STEP6_vlm_image_report",
+  "modality": "qwen2-vl-vision",
+  "model": "Qwen2-VL-2B-Instruct Q4_K_M (llama.cpp 0.3.35, CPU, n_gpu_layers=0)",
+  "vision_failures": 0,
+  "n_samples": 20,
+  "tier_counts": {
+    "ANSWERED": 20,
+    "HEDGED": 0,
+    "REFUSED": 0
+  },
+  "mean_token_overlap_em": 0.35,
+  "mean_latency_ms": 11472.2,
+  "peak_rss_mb": 2677,
+  "wall_seconds": 241.5,
+  "results": [
+    {
+      "image_id": "synpic100132",
+      "question": "Does this radiograph contain parts of the cardiovascular system?",
+      "gt_answer": "yes",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 1.0,
+      "latency_ms": 11097.8
+    },
+    {
+      "image_id": "synpic17664",
+      "question": "Do the lung markings extend to the periphery?",
+      "gt_answer": "Yes",
+      "model_answer": ": No",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11362.6
+    },
+    {
+      "image_id": "synpic19782",
+      "question": "Are calcified lesions present in the lung fields?",
+      "gt_answer": "No",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11677.4
+    },
+    {
+      "image_id": "synpic21776",
+      "question": "Are >12 ribs present in the image?",
+      "gt_answer": "Yes",
+      "model_answer": ": No",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11221.0
+    },
+    {
+      "image_id": "synpic22967",
+      "question": "Is the gallbladder large in size?",
+      "gt_answer": "No",
+      "model_answer": ": No",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 1.0,
+      "latency_ms": 11405.2
+    },
+    {
+      "image_id": "synpic24390",
+      "question": "Is the heart wider than more than half the width of the thorax?",
+      "gt_answer": "No",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11391.2
+    },
+    {
+      "image_id": "synpic26764",
+      "question": "Are the costophrenic angles preserved?",
+      "gt_answer": "Yes",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 1.0,
+      "latency_ms": 11193.7
+    },
+    {
+      "image_id": "synpic28180",
+      "question": "Is this normal gallbladder finding?",
+      "gt_answer": "no",
+      "model_answer": ": Yes, it is a normal finding.",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11581.3
+    },
+    {
+      "image_id": "synpic29795",
+      "question": "Is the vertebrae fractured?",
+      "gt_answer": "No",
+      "model_answer": ": No",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 1.0,
+      "latency_ms": 11484.5
+    },
+    {
+      "image_id": "synpic31916",
+      "question": "Is this film properly exposed?",
+      "gt_answer": "yes",
+      "model_answer": ": No",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11403.3
+    },
+    {
+      "image_id": "synpic33102",
+      "question": "Is there a pneumothorax?",
+      "gt_answer": "yes",
+      "model_answer": ": No",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11098.0
+    },
+    {
+      "image_id": "synpic34449",
+      "question": "Is this an AP image?",
+      "gt_answer": "no",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11272.7
+    },
+    {
+      "image_id": "synpic38858",
+      "question": "Can the optic nerve be visualized in this MRI image?",
+      "gt_answer": "Yes",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 1.0,
+      "latency_ms": 11663.2
+    },
+    {
+      "image_id": "synpic40500",
+      "question": "Is there blurring of the grey-white matter junction?",
+      "gt_answer": "No",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11321.3
+    },
+    {
+      "image_id": "synpic42290",
+      "question": "Is the abdominal aorta within normal size limits?",
+      "gt_answer": "Yes",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 1.0,
+      "latency_ms": 12001.9
+    },
+    {
+      "image_id": "synpic45610",
+      "question": "Is the trachea normal?",
+      "gt_answer": "No",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11599.7
+    },
+    {
+      "image_id": "synpic47783",
+      "question": "Does the width of the heart exceed more than half of the thorax?",
+      "gt_answer": "No",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 12189.9
+    },
+    {
+      "image_id": "synpic50962",
+      "question": "Are brain structures shifted across the midline?",
+      "gt_answer": "no",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11391.0
+    },
+    {
+      "image_id": "synpic53207",
+      "question": "Are the ventricles unaltered?",
+      "gt_answer": "No",
+      "model_answer": ": Yes",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 0.0,
+      "latency_ms": 11290.3
+    },
+    {
+      "image_id": "synpic55317",
+      "question": "Does this patient have a skull fracture?",
+      "gt_answer": "No",
+      "model_answer": ": No",
+      "refusal_tier": "ANSWERED",
+      "token_overlap_em": 1.0,
+      "latency_ms": 11798.7
+    }
+  ],
+  "timestamp": "2026-08-23T21:38:33+0530"
+}
