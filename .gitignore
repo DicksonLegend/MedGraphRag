@@ -18,7 +18,14 @@ data/
 *.gguf
 *.tgz
 *.zip
+*.safetensors
+*.pth
 visual_findings.json
+
+# Tool-local / junk
+node_modules/
+__MACOSX/
+.serena/
 
 # Built Vector Indexes & Graph Database (FAISS, Kùzu, Parquet, JSONL)
 index/
