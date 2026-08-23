@@ -11,7 +11,7 @@
 | C | N=500 + stats | Antigravity | | step15_scaled_eval | |
 | B | J2 graph-consistency verification pass + 3-way ablation | Antigravity | done | step15_verification_ablation.json (e01fe516) | 2026-08-22 |
 | B | J3 relation-aware reranker vs RRF ablation | Antigravity | done | step15_rerank_ablation.json (eda10b8e) | 2026-08-23 |
-| B | J9 OpenI/VQA-RAD/SLAKE normalize + CheXzero encode | OpenCode | partial | openi_chunks.jsonl (f59560a3) + visual_findings.json (17a3ee96); SLAKE deferred (GDrive quota) | 2026-08-23 |
+| B | J9 OpenI/VQA-RAD/SLAKE normalize + CheXzero encode | OpenCode | partial | openi_chunks.jsonl (f59560a3) + visual_findings.json (17a3ee96); SLAKE downloaded+verified (BoKelvin mirror, 642 imgs); OpenI sample100 deferred (CDN ~33 KB/s; disk-guard aborted) | 2026-08-23 |
 | B | J9 separate report graph build (Image/VisualFinding nodes) | OpenCode | done* | data/multimodal/report_graph/kuzu.db (315 img/4410 find/11211 rpt; cross-links pending NLMCXR sample100) | 2026-08-23 |
 | B | J9/J10 Qwen2-VL-2B endpoints + image-aware /query + refusal | OpenCode | blocked | step16_image_report.json — llama_cpp MISSING in Data_Normalization venv; needs approval to install | 2026-08-23 |
 | C | J4 MedQA-US N=500 scaled eval (overnight batch) | Antigravity | pending | step15_scaled_eval.json | |
