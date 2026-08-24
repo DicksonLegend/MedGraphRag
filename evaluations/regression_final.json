@@ -1,0 +1,40 @@
+{
+  "suite": "Final Journal-Phase Regression Sweep",
+  "timestamp": "2026-08-24T18:38:42+0530",
+  "expected_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+  "actual_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+  "queries": [
+    {
+      "id": "P01",
+      "query": "warfarin INR monitoring guidelines atrial fibrillation",
+      "top_fused_score": 0.177352,
+      "status": "PASS"
+    },
+    {
+      "id": "P02",
+      "query": "ACE inhibitor hypertension treatment first line",
+      "top_fused_score": 0.1842,
+      "status": "PASS"
+    },
+    {
+      "id": "P03",
+      "query": "critical hemoglobin levels anemia transfusion threshold",
+      "top_fused_score": 0.176129,
+      "status": "PASS"
+    },
+    {
+      "id": "P04",
+      "query": "troponin elevation myocardial infarction diagnosis",
+      "top_fused_score": 0.17694,
+      "status": "PASS"
+    },
+    {
+      "id": "P05",
+      "query": "metformin type 2 diabetes contraindications renal failure",
+      "top_fused_score": 0.0172,
+      "status": "PASS"
+    }
+  ],
+  "overall_verdict": "0.00% DRIFT (100% BYTE-IDENTICAL RETRIEVAL)",
+  "artifact_sha256": "86e800df2e039c6d701a8655f66ad27bfd841b43c1710d4b0e1132d71d78cd33"
+}

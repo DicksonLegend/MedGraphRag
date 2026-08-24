@@ -54,3 +54,4 @@ _logs/
 tmp/
 scratch/
 private_store/
+sqlite_mcp_server.db

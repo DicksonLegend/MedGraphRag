@@ -15,16 +15,16 @@
 | B | J9 separate report graph build (Image/VisualFinding nodes) | OpenCode | done | data/multimodal/report_graph/kuzu.db — RD=48 FN=321 IS=5810; sample100 real OpenI ids linked (48/100 studies) | 2026-08-23 |
 | B | J9/J10 Qwen2-VL-2B endpoints + image-aware /query + refusal | OpenCode | done | evaluations/multimodal/step16_image_report.json (3bede101) — llama-cpp-python 0.3.35 CPU build installed (pre-approved); qwen2-vl-vision, 20 VQA-RAD imgs, mean EM 0.35, refusal tiers live | 2026-08-23 |
 | C | J6 IR metrics v2 (user-adjudicated graded qrels) | OpenCode | done | evaluations/multimodal/step17_ir_metrics_v2.json (8a2b8fec): P@5 .18 R@5 .54 MRR .353 nDCG@10 .377 | 2026-08-23 |
-| C | J4 MedQA-US N=500 scaled eval (overnight batch) | Antigravity | pending | step15_scaled_eval.json | |
+| C | J4 MedQA-US N=500 scaled eval (overnight batch) | Antigravity | in-progress | step18_scaled_n500.json (daemon running, chk/50, N=500 seed 42) | 2026-08-23 |
 | C | J5 MedMCQA (+BioASQ optional) external validation | Antigravity | pending | step15_external_eval.json | |
 | C | J6 IR metrics (P@5/R@5/MRR/nDCG@10) + hallucination rates | OpenCode | done* | evaluations/multimodal/step17_ir_metrics.json (bac17814; proxy lexical qrels — NOT publication-grade) | 2026-08-23 |
 | C | J7 task-slice eval (negation/temporal/severity/finding–anatomy) | Antigravity | pending | step15_task_slices.json | |
-| C | J8 baselines suite (BM25/Dense/Hybrid/GraphRAG/MedRAG/Self-RAG) | OpenCode | done | step17_baselines.json N=50 seed-42 (artifact 4a944e70); regression ba1b5121 PASS; pilot baseline_retrieval_results.json retained | 2026-08-23 |
+| C | J8 baselines suite (BM25/Dense/Hybrid/GraphRAG/MedRAG/Self-RAG) | OpenCode | done | step17_baselines.json N=50 seed-42 (artifact 4a944e70); regression ba1b5121 PASS; pilot baseline_retrieval_results.json retained (file sha cad0cc20…; no embedded artifact field — that field exists only in step17_baselines.json) | 2026-08-23 |
 | C | J4-stats bootstrap CIs (1000 resamples, seed 42) | Antigravity | pending | step15_bootstrap_ci.json | |
 | D | J11 multi-turn clinician workflows | OpenCode | pending | step18_multiturn.json | |
 | D | J12 batched verification (latency fix) | Antigravity | pending | step15_batched_verify.json | |
 | D | J13 compute comparison table vs baselines | Antigravity | pending | step15_compute_table.json | |
-| D | Regression sweep (step12/13 values unchanged post-J1–J3) | Antigravity | pending | regression_final.json | |
+| D | Regression sweep (step12/13 values unchanged post-J1–J3) | OpenCode | done | evaluations/regression_final.json — actual==expected ba1b5121, 5/5 PASS, 0.00% DRIFT (artifact 86e800df) | 2026-08-23 |
 | E | J14 ethics/data-availability/AI-disclosure sections | Antigravity | pending | journal_paper/main.tex §updates | |
 | E | J14 UI screenshot (`fig:ui`) for journal | Antigravity | pending | figures/fig_ui.png | |
 | E | J16 citations (AMG-RAG, Rethinking-RAG, MediGRAF-Frontiers) | Antigravity | pending | references.bib updates | |
