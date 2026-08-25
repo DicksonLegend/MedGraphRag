@@ -1,0 +1,2256 @@
+{
+  "stage": "PHASE2_retrieval",
+  "config": "MedGraphRAGRetriever (HybridRetrievalService), top_n=10, destination=global \u2014 same as step17_baselines",
+  "n_queries": 30,
+  "deterministic_rerun_match": true,
+  "regression_check": {
+    "method": "scripts/j1/run_regression.py + verify_drift.extract_retrieval_signature",
+    "p01_top_fused_score": 0.177352,
+    "p01_expected": 0.177352,
+    "signature_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "expected_hash": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
+    "pass": true
+  },
+  "queries": [
+    {
+      "query_id": "Q1",
+      "query": "A 21-year-old male presents to his primary care provider for fatigue. He reports that he graduated f",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6914-H__c62",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6914-H",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/appx16-4-rubella-wrsh-2019-508__c5",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/appx16-4-rubella-wrsh-2019-508",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7018-H__c51",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7018-H",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm655051__c27",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm655051",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5005__c26",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5005",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7417-H__c5",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7417-H",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7318-H__c14",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7318-H",
+          "category": "guideline",
+          "fused_score": 0.015
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Medical_books/MedQA/questions/US/US_qbank__c3363",
+          "document_id": "Medical_books/MedQA/questions/US/US_qbank",
+          "category": "textbook",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Medical_books/MedQA/questions/US/train__c2955",
+          "document_id": "Medical_books/MedQA/questions/US/train",
+          "category": "textbook",
+          "fused_score": 0.013889
+        }
+      ]
+    },
+    {
+      "query_id": "Q2",
+      "query": "A 56-year-old man with a history of hypertension presents to his physician with progressive fatigue",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Medical_books/MedQA/questions/US/train__c714",
+          "document_id": "Medical_books/MedQA/questions/US/train",
+          "category": "textbook",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Medical_books/MedQA/questions/US/US_qbank__c4628",
+          "document_id": "Medical_books/MedQA/questions/US/US_qbank",
+          "category": "textbook",
+          "fused_score": 0.016129
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Medical_books/MedQA/questions/US/test__c114",
+          "document_id": "Medical_books/MedQA/questions/US/test",
+          "category": "textbook",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train__c7444",
+          "document_id": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train",
+          "category": "textbook",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_dev__c113",
+          "document_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_dev",
+          "category": "textbook",
+          "fused_score": 0.015152
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train__c585",
+          "document_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train",
+          "category": "textbook",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602",
+          "category": "guideline",
+          "fused_score": 0.0148
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197",
+          "category": "research_paper",
+          "fused_score": 0.0125
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_37450490__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_37450490",
+          "category": "research_paper",
+          "fused_score": 0.012121
+        }
+      ]
+    },
+    {
+      "query_id": "Q3",
+      "query": "A 47-year-old woman seeks evaluation at your office because she has had postcoital vaginal bleeding",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5713__c30",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5713",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr73-02__c7",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr73-02",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4402__c35",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4402",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr74-3__c3",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr74-3",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5309__c30",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5309",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5609__c36",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5609",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Drug_database/meddra_freq__row40390",
+          "document_id": "Drug_database/meddra_freq",
+          "category": "drug",
+          "fused_score": 0.015385
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr70-17__c116",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr70-17",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4702__c58",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4702",
+          "category": "guideline",
+          "fused_score": 0.015
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/vsrr020__c5",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/vsrr020",
+          "category": "guideline",
+          "fused_score": 0.0148
+        }
+      ]
+    },
+    {
+      "query_id": "Q4",
+      "query": "A 36-year-old man undergoes open reduction and internal fixation of a left femur fracture sustained",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5951__c5",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5951",
+          "category": "guideline",
+          "fused_score": 0.1858
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5307__c43",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5307",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6601__c9",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6601",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5616__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5616",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad291__c30",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad291",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pediatrics_Nelson__c1274",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pediatrics_Nelson",
+          "category": "textbook",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad385__c39",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad385",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Drug_database/meddra_freq__row55495",
+          "document_id": "Drug_database/meddra_freq",
+          "category": "drug",
+          "fused_score": 0.013889
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Medical_books/OpenStax/AnatomyandPhysiology-OP__c402",
+          "document_id": "Medical_books/OpenStax/AnatomyandPhysiology-OP",
+          "category": "textbook",
+          "fused_score": 0.013514
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        }
+      ]
+    },
+    {
+      "query_id": "Q5",
+      "query": "A 59-year-old man is brought to the emergency department with a history of black, tarry stools but d",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad323__c47",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad323",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad092acc__c23",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad092acc",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad140__c11",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad140",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad372__c28",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad372",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/2023-Physicians-mcod-handbook__c6",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/2023-Physicians-mcod-handbook",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad320__c79",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad320",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad322__c69",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad322",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad304__c21",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad304",
+          "category": "guideline",
+          "fused_score": 0.015
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1932",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC11786524/article__c11",
+          "document_id": "Research_papers/PMC/PDFs/PMC11786524/article",
+          "category": "research_paper",
+          "fused_score": 0.013699
+        }
+      ]
+    },
+    {
+      "query_id": "Q6",
+      "query": "A 30-year-old man presents to his primary care physician with complaints of excessive fatigue and we",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/HIV/mmwr__preview__mmwrhtml__00023199.htm__c5",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/HIV/mmwr__preview__mmwrhtml__00023199.htm",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Medical_books/MedQA/questions/US/US_qbank__c3363",
+          "document_id": "Medical_books/MedQA/questions/US/US_qbank",
+          "category": "textbook",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Medical_books/MedQA/questions/US/train__c1447",
+          "document_id": "Medical_books/MedQA/questions/US/train",
+          "category": "textbook",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm655051__c27",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm655051",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Medical_books/MedQA/questions/US/test__c114",
+          "document_id": "Medical_books/MedQA/questions/US/test",
+          "category": "textbook",
+          "fused_score": 0.015385
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train__c6683",
+          "document_id": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train",
+          "category": "textbook",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/appx16-4-rubella-wrsh-2019-508__c5",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/appx16-4-rubella-wrsh-2019-508",
+          "category": "guideline",
+          "fused_score": 0.014
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train__c4327",
+          "document_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train",
+          "category": "textbook",
+          "fused_score": 0.013889
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6732-H__c23",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6732-H",
+          "category": "guideline",
+          "fused_score": 0.0138
+        }
+      ]
+    },
+    {
+      "query_id": "Q7",
+      "query": "A 58-year-old white man with hypertension and type 2 diabetes mellitus comes to the physic",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/ss4202__c13",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/ss4202",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5235__c4",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5235",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6218__c20",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6218",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/mm5107__c16",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/mm5107",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6309__c17",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6309",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad361__c102",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad361",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PMC/XML/PMC10800050/article__c8",
+          "document_id": "Research_papers/PMC/XML/PMC10800050/article",
+          "category": "research_paper",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6303__c114",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6303",
+          "category": "guideline",
+          "fused_score": 0.0148
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC11805688/article__c9",
+          "document_id": "Research_papers/PMC/PDFs/PMC11805688/article",
+          "category": "research_paper",
+          "fused_score": 0.013889
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        }
+      ]
+    },
+    {
+      "query_id": "Q8",
+      "query": "A 46-year-old woman comes to the physician because of severe muscle and joint pain for 5 months. The",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Medical_books/MedQA/questions/US/US_qbank__c5082",
+          "document_id": "Medical_books/MedQA/questions/US/US_qbank",
+          "category": "textbook",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train__c7059",
+          "document_id": "Medical_books/MedQA/questions/US/4_options/phrases_no_exclude_train",
+          "category": "textbook",
+          "fused_score": 0.016129
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Medical_books/MedQA/questions/US/train__c1862",
+          "document_id": "Medical_books/MedQA/questions/US/train",
+          "category": "textbook",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad302__c71",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad302",
+          "category": "guideline",
+          "fused_score": 0.0148
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5335__c7",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5335",
+          "category": "guideline",
+          "fused_score": 0.0146
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_39264197",
+          "category": "research_paper",
+          "fused_score": 0.0125
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_37450490__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_37450490",
+          "category": "research_paper",
+          "fused_score": 0.012121
+        }
+      ]
+    },
+    {
+      "query_id": "Q9",
+      "query": "A 40-year-old businessman who was previously well is brought into the emergency department by his as",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad304__c22",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad304",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad351__c64",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad351",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7318-H__c14",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7318-H",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad358__c16",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad358",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6937-H__c84",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6937-H",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad271__c8",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad271",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6922-H__c45",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6922-H",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5946__c76",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5946",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6220__c6",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6220",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5941__c78",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm5941",
+          "category": "guideline",
+          "fused_score": 0.015
+        }
+      ]
+    },
+    {
+      "query_id": "Q10",
+      "query": "A 29-year-old man is brought to the emergency department by a concerned neighbor. The patient appear",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad271__c8",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad271",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7318-H__c14",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7318-H",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad275__c8",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad275",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6937-H__c84",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6937-H",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad358__c16",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad358",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad245__c1",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad245",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6914-H__c62",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6914-H",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad304__c22",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ad304",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm4525__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm4525",
+          "category": "guideline",
+          "fused_score": 0.0148
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train__c3383",
+          "document_id": "Medical_books/MedQA/questions/US/metamap_extracted_phrases/train/phrases_train",
+          "category": "textbook",
+          "fused_score": 0.014286
+        }
+      ]
+    },
+    {
+      "query_id": "Q11",
+      "query": "elderly man exertional syncope systolic ejection murmur radiating to carotids aortic stenosis severity workup echocardiography",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Drug_database/meddra_freq__row82417",
+          "document_id": "Drug_database/meddra_freq",
+          "category": "drug",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c410",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "category": "textbook",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1435",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.014286
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639",
+          "category": "research_paper",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685__c1",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-heart-failure-in-adults-diagnosis-and-management-pdf-66141541311685",
+          "category": "guideline",
+          "fused_score": 0.014
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Medical_books/MedQA/questions/US/train__c378",
+          "document_id": "Medical_books/MedQA/questions/US/train",
+          "category": "textbook",
+          "fused_score": 0.013699
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC9660017/article__c21",
+          "document_id": "Research_papers/PMC/PDFs/PMC9660017/article",
+          "category": "research_paper",
+          "fused_score": 0.013514
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step2__c358",
+          "document_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step2",
+          "category": "textbook",
+          "fused_score": 0.013158
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Sepsis/PMID_40163133",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Medical_books/MedQA/questions/US/US_qbank__c1125",
+          "document_id": "Medical_books/MedQA/questions/US/US_qbank",
+          "category": "textbook",
+          "fused_score": 0.012987
+        }
+      ]
+    },
+    {
+      "query_id": "Q12",
+      "query": "acute ST elevation myocardial infarction primary percutaneous coronary intervention door to balloon time guideline reperfusion aspirin",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_34895950__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_34895950",
+          "category": "research_paper",
+          "fused_score": 0.177661
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_35671766__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Coronary_Artery_Disease/PMID_35671766",
+          "category": "research_paper",
+          "fused_score": 0.177325
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC11356482/article__c24",
+          "document_id": "Research_papers/PMC/PDFs/PMC11356482/article",
+          "category": "research_paper",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_40549394__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_40549394",
+          "category": "research_paper",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PMC/XML/PMC7382537/article__c10",
+          "document_id": "Research_papers/PMC/XML/PMC7382537/article",
+          "category": "research_paper",
+          "fused_score": 0.014706
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c703",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+          "category": "textbook",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c5916",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "category": "textbook",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_36356656",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_34709879",
+          "category": "research_paper",
+          "fused_score": 0.012698
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_39302533__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Myocardial_Infarction/PMID_39302533",
+          "category": "research_paper",
+          "fused_score": 0.012308
+        }
+      ]
+    },
+    {
+      "query_id": "Q13",
+      "query": "young woman weight loss heat intolerance fine tremor exophthalmos Graves disease diagnosis TSH receptor antibodies thyroid uptake scan",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperthyroidism/PMID_36480280__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperthyroidism/PMID_36480280",
+          "category": "research_paper",
+          "fused_score": 0.177206
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Thyroid_Storm/PMID_35235281__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Thyroid_Storm/PMID_35235281",
+          "category": "research_paper",
+          "fused_score": 0.17611
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperthyroidism/PMID_40834371__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperthyroidism/PMID_40834371",
+          "category": "research_paper",
+          "fused_score": 0.175592
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperthyroidism/PMID_29950539__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperthyroidism/PMID_29950539",
+          "category": "research_paper",
+          "fused_score": 0.175108
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1807",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/HIV/rr6304__c34",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/HIV/rr6304",
+          "category": "guideline",
+          "fused_score": 0.015
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins__c1205",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pathology_Robbins",
+          "category": "textbook",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/thyroid-disease-assessment-and-management-pdf-66141781496773__c3",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/thyroid-disease-assessment-and-management-pdf-66141781496773",
+          "category": "guideline",
+          "fused_score": 0.0144
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Thyroid_Storm/PMID_36848916__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Thyroid_Storm/PMID_36848916",
+          "category": "research_paper",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC9947226/article__c7",
+          "document_id": "Research_papers/PMC/PDFs/PMC9947226/article",
+          "category": "research_paper",
+          "fused_score": 0.013333
+        }
+      ]
+    },
+    {
+      "query_id": "Q14",
+      "query": "diabetic ketoacidosis management intravenous regular insulin infusion fluid resuscitation potassium correction thresholds bicarbonate controversy",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PMC/XML/PMC5375966/article__c2",
+          "document_id": "Research_papers/PMC/XML/PMC5375966/article",
+          "category": "research_paper",
+          "fused_score": 0.177352
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_31530688__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_31530688",
+          "category": "research_paper",
+          "fused_score": 0.176519
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Metabolic_Acidosis/PMID_32409703__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Metabolic_Acidosis/PMID_32409703",
+          "category": "research_paper",
+          "fused_score": 0.176
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_31142480__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_31142480",
+          "category": "research_paper",
+          "fused_score": 0.015385
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PMC/XML/PMC10416834/article__c3",
+          "document_id": "Research_papers/PMC/XML/PMC10416834/article",
+          "category": "research_paper",
+          "fused_score": 0.015152
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC10012093/article__c16",
+          "document_id": "Research_papers/PMC/PDFs/PMC10012093/article",
+          "category": "research_paper",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787__c0",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_37419787",
+          "category": "research_paper",
+          "fused_score": 0.014706
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c8538",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "category": "textbook",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-1-diabetes-in-adults-diagnosis-and-management-pdf-1837276469701__c26",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-1-diabetes-in-adults-diagnosis-and-management-pdf-1837276469701",
+          "category": "guideline",
+          "fused_score": 0.0144
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC12639725/article__c7",
+          "document_id": "Research_papers/PMC/PDFs/PMC12639725/article",
+          "category": "research_paper",
+          "fused_score": 0.014286
+        }
+      ]
+    },
+    {
+      "query_id": "Q15",
+      "query": "returning traveler high fever rigors splenomegaly thick thin blood smear malaria plasmodium species identification treatment",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5005__c26",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5005",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602__c64",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4602",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6205__c3",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6205",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/B09514-eng__c324",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/B09514-eng",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6312__c26",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6312",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5907__c32",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5907",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5606__c72",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5606",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6102__c10",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6102",
+          "category": "guideline",
+          "fused_score": 0.0146
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pediatrics_Nelson__c797",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pediatrics_Nelson",
+          "category": "textbook",
+          "fused_score": 0.014286
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC5496604/article__c37",
+          "document_id": "Research_papers/PMC/PDFs/PMC5496604/article",
+          "category": "research_paper",
+          "fused_score": 0.014085
+        }
+      ]
+    },
+    {
+      "query_id": "Q16",
+      "query": "community acquired pneumonia CURB-65 score outpatient amoxicillin doxycycline first line antibiotic duration five days guidance",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205__c12",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.137-toi-annual-facility-survey__c9",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.137-toi-annual-facility-survey",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c158",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/9789240107243-eng__c219",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/9789240107243-eng",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Influenza/PMID_29987137__c0",
+          "document_id": "Research_papers/PubMed/Abstracts/Influenza/PMID_29987137",
+          "category": "research_paper",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC6947898/article__c44",
+          "document_id": "Research_papers/PMC/PDFs/PMC6947898/article",
+          "category": "research_paper",
+          "fused_score": 0.013699
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c3122",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "category": "textbook",
+          "fused_score": 0.013514
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_30168753",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_29236286__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_29236286",
+          "category": "research_paper",
+          "fused_score": 0.012987
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_35210170__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Pneumonia/PMID_35210170",
+          "category": "research_paper",
+          "fused_score": 0.012821
+        }
+      ]
+    },
+    {
+      "query_id": "Q17",
+      "query": "metformin lactic acidosis risk iodinated contrast withholding criteria eGFR threshold 30 acute illness sick day rules",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row36",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493__c51",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/type-2-diabetes-in-adults-management-pdf-1837338615493",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC5375966/article__c13",
+          "document_id": "Research_papers/PMC/PDFs/PMC5375966/article",
+          "category": "research_paper",
+          "fused_score": 0.016129
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hyperkalemia/PMID_33160639",
+          "category": "research_paper",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_31530688__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetic_Ketoacidosis/PMID_31530688",
+          "category": "research_paper",
+          "fused_score": 0.015152
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PMC/XML/PMC11343900/article__c26",
+          "document_id": "Research_papers/PMC/XML/PMC11343900/article",
+          "category": "research_paper",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC10107355/article__c2",
+          "document_id": "Research_papers/PMC/PDFs/PMC10107355/article",
+          "category": "research_paper",
+          "fused_score": 0.014706
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Metabolic_Acidosis/PMID_32409703__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Metabolic_Acidosis/PMID_32409703",
+          "category": "research_paper",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173__c12",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/chronic-kidney-disease-assessment-and-management-pdf-66143713055173",
+          "category": "guideline",
+          "fused_score": 0.0144
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC10012093/article__c0",
+          "document_id": "Research_papers/PMC/PDFs/PMC10012093/article",
+          "category": "research_paper",
+          "fused_score": 0.014085
+        }
+      ]
+    },
+    {
+      "query_id": "Q18",
+      "query": "vancomycin AUC guided dosing trough monitoring targets nephrotoxicity MRSA coverage infusion related red man syndrome",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/saar-2017-2018-508__c5",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/saar-2017-2018-508",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.137-toi-annual-facility-survey__c9",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.137-toi-annual-facility-survey",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row158",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205__c19",
+          "document_id": "Clinical_practice_guidlines/Nice_guidlines/pneumonia-diagnosis-and-management-pdf-66144010347205",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/pcsmanual_2023__c321",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/pcsmanual_2023",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/toi-57.150-ltac__c20",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/toi-57.150-ltac",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/pcsmanual_2022_508__c307",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/pcsmanual_2022_508",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Global-Stewardship-Tool-508__c13",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Global-Stewardship-Tool-508",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/stewardship-resource-limited-508__c22",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/stewardship-resource-limited-508",
+          "category": "guideline",
+          "fused_score": 0.0148
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2022-AU-Report-508__c3",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2022-AU-Report-508",
+          "category": "guideline",
+          "fused_score": 0.0146
+        }
+      ]
+    },
+    {
+      "query_id": "Q19",
+      "query": "anaphylaxis intramuscular epinephrine 0.5 mg 1:1000 concentration anterolateral thigh airway management repeat dosing adults",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/summary-2023-06-21-23-508__c26",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/summary-2023-06-21-23-508",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Influenza/mmwr__volumes__73__rr__rr7305a1.htm__c8",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Influenza/mmwr__volumes__73__rr__rr7305a1.htm",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC6818355/article__c17",
+          "document_id": "Research_papers/PMC/PDFs/PMC6818355/article",
+          "category": "research_paper",
+          "fused_score": 0.016129
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/vaccines__hcp__imz-best-practices__preventing-managing-adverse-reactions.html__c2",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/vaccines__hcp__imz-best-practices__preventing-managing-adverse-reactions.html",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Drug_database/meddra_all_se__row29375",
+          "document_id": "Drug_database/meddra_all_se",
+          "category": "drug",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/general-recs__c79",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/general-recs",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC10522175/article__c7",
+          "document_id": "Research_papers/PMC/PDFs/PMC10522175/article",
+          "category": "research_paper",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng__c175",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/WHO-2019-nCoV-SARI-toolkit-2022.1-eng",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr7101a1-H__c7",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr7101a1-H",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/2023-child__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/2023-child",
+          "category": "guideline",
+          "fused_score": 0.015
+        }
+      ]
+    },
+    {
+      "query_id": "Q20",
+      "query": "acetaminophen overdose N acetylcysteine protocol Rumack Matthew nomogram hepatotoxicity risk four hour level treatment threshold",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row37",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr6505__c22",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr6505",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2018-cdc-drug-surveillance-report__c2",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2018-cdc-drug-surveillance-report",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2017-cdc-drug-surveillance-report__c28",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2017-cdc-drug-surveillance-report",
+          "category": "guideline",
+          "fused_score": 0.015
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7415-H__c10",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm7415-H",
+          "category": "guideline",
+          "fused_score": 0.0148
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/nvsr65_10__c33",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/nvsr65_10",
+          "category": "guideline",
+          "fused_score": 0.0146
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/SUDORS_Coding_Manual_OD2A_v6.3b_Feb2025__c32",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/SUDORS_Coding_Manual_OD2A_v6.3b_Feb2025",
+          "category": "guideline",
+          "fused_score": 0.0144
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_28242110__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_28242110",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_34655535__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Peptic_Ulcer_Disease/PMID_34655535",
+          "category": "research_paper",
+          "fused_score": 0.012698
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+          "category": "research_paper",
+          "fused_score": 0.0125
+        }
+      ]
+    },
+    {
+      "query_id": "Q21",
+      "query": "acute appendicitis Alvarado score diagnostic accuracy laparoscopic versus open appendectomy perforation risk imaging children ultrasound",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PMC/XML/PMC10543156/article__c0",
+          "document_id": "Research_papers/PMC/XML/PMC10543156/article",
+          "category": "research_paper",
+          "fused_score": 0.177149
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Drug_database/meddra_freq__row38335",
+          "document_id": "Drug_database/meddra_freq",
+          "category": "drug",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/rr5314__c159",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/rr5314",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC8815337/article__c16",
+          "document_id": "Research_papers/PMC/PDFs/PMC8815337/article",
+          "category": "research_paper",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sr03-050__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/sr03-050",
+          "category": "guideline",
+          "fused_score": 0.0142
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c3106",
+          "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+          "category": "textbook",
+          "fused_score": 0.013699
+        }
+      ]
+    },
+    {
+      "query_id": "Q22",
+      "query": "surgical site infection prophylaxis cefazolin timing within 60 minutes incision clean contaminated wound classification redosing interval",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-NICU-CLABSI-Appendix-508__c21",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-NICU-CLABSI-Appendix-508",
+          "category": "guideline",
+          "fused_score": 0.0172
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/pscmanual_current__c129",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/pscmanual_current",
+          "category": "guideline",
+          "fused_score": 0.0169
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/9pscssicurrent__c9",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/9pscssicurrent",
+          "category": "guideline",
+          "fused_score": 0.0167
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/hospital-core-elements-508__c32",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/hospital-core-elements-508",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.151_REHABFacSurv_BLANK__c17",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.151_REHABFacSurv_BLANK",
+          "category": "guideline",
+          "fused_score": 0.0159
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-NICU-Saureus-Appendix-508__c51",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-NICU-Saureus-Appendix-508",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-Healthcare-Associated-Pneumonia-H__c131",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/Guideline-Healthcare-Associated-Pneumonia-H",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c3552",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "category": "textbook",
+          "fused_score": 0.015385
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/rr5111__c4",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/rr5111",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.137-toi-annual-facility-survey__c9",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/57.137-toi-annual-facility-survey",
+          "category": "guideline",
+          "fused_score": 0.015
+        }
+      ]
+    },
+    {
+      "query_id": "Q23",
+      "query": "preeclampsia with severe features magnesium sulfate seizure prophylaxis loading dose 4 gram blood pressure targets hydralazine labetalol delivery timing",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypertension/PMID_35066406__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hypertension/PMID_35066406",
+          "category": "research_paper",
+          "fused_score": 0.175541
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Obstentrics_Williams__c1649",
+          "document_id": "Medical_books/MedQA/textbooks/en/Obstentrics_Williams",
+          "category": "textbook",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/nvsr69-13-508__c208",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/nvsr69-13-508",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams__c847",
+          "document_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams",
+          "category": "textbook",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_33779986__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_33779986",
+          "category": "research_paper",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr64_08__c30",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr64_08",
+          "category": "guideline",
+          "fused_score": 0.0142
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/LINK01WK45__c15",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/LINK01WK45",
+          "category": "guideline",
+          "fused_score": 0.014
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/yellow-book__hcp__family-travel__pregnant-travelers.html__c4",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/yellow-book__hcp__family-travel__pregnant-travelers.html",
+          "category": "guideline",
+          "fused_score": 0.0138
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/sr01_062__c145",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/sr01_062",
+          "category": "guideline",
+          "fused_score": 0.0136
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypokalemia/PMID_34278747__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hypokalemia/PMID_34278747",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        }
+      ]
+    },
+    {
+      "query_id": "Q24",
+      "query": "ectopic pregnancy methotrexate candidate criteria ruptured tubal pregnancy hemodynamic instability discriminatory zone beta hcg ultrasound",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak__c1014",
+          "document_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak",
+          "category": "textbook",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6208__c35",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6208",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Obstentrics_Williams__c843",
+          "document_id": "Medical_books/MedQA/textbooks/en/Obstentrics_Williams",
+          "category": "textbook",
+          "fused_score": 0.015385
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6001__c76",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6001",
+          "category": "guideline",
+          "fused_score": 0.0146
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4206__c111",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss4206",
+          "category": "guideline",
+          "fused_score": 0.0144
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5609__c36",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5609",
+          "category": "guideline",
+          "fused_score": 0.0142
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5511__c57",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5511",
+          "category": "guideline",
+          "fused_score": 0.014
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6108__c35",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss6108",
+          "category": "guideline",
+          "fused_score": 0.0138
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5407__c58",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5407",
+          "category": "guideline",
+          "fused_score": 0.0136
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5713__c30",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/ss5713",
+          "category": "guideline",
+          "fused_score": 0.0135
+        }
+      ]
+    },
+    {
+      "query_id": "Q25",
+      "query": "sudden thunderclap headache subarachnoid hemorrhage non contrast CT sensitivity by day lumbar puncture xanthochromia bilirubin workup sequence",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Brain_Tumor/PMID_30926118__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Brain_Tumor/PMID_30926118",
+          "category": "research_paper",
+          "fused_score": 0.177661
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_35959375__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_35959375",
+          "category": "research_paper",
+          "fused_score": 0.177088
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pathoma_Husain__c150",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pathoma_Husain",
+          "category": "textbook",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1288",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PMC/XML/PMC11786524/article__c4",
+          "document_id": "Research_papers/PMC/XML/PMC11786524/article",
+          "category": "research_paper",
+          "fused_score": 0.015385
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC11844069/article__c30",
+          "document_id": "Research_papers/PMC/PDFs/PMC11844069/article",
+          "category": "research_paper",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_40401775__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_40401775",
+          "category": "research_paper",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step2__c202",
+          "document_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step2",
+          "category": "textbook",
+          "fused_score": 0.013889
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Drug_database/meddra_freq__row97146",
+          "document_id": "Drug_database/meddra_freq",
+          "category": "drug",
+          "fused_score": 0.013699
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Diabetes_Mellitus_Type_1/PMID_39493778",
+          "category": "research_paper",
+          "fused_score": 0.013115
+        }
+      ]
+    },
+    {
+      "query_id": "Q26",
+      "query": "acute ischemic stroke alteplase thrombolysis 4.5 hour window door to needle goal exclusion checklist blood pressure 185 110 thrombectomy",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC9358302/article__c0",
+          "document_id": "Research_papers/PMC/PDFs/PMC9358302/article",
+          "category": "research_paper",
+          "fused_score": 0.178334
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PMC/XML/PMC8711586/article__abs",
+          "document_id": "Research_papers/PMC/XML/PMC8711586/article",
+          "category": "research_paper",
+          "fused_score": 0.177088
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Research_papers/PMC/XML/PMC4536764/article__c14",
+          "document_id": "Research_papers/PMC/XML/PMC4536764/article",
+          "category": "research_paper",
+          "fused_score": 0.015152
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC10673396/article__c5",
+          "document_id": "Research_papers/PMC/PDFs/PMC10673396/article",
+          "category": "research_paper",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_40197996__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Stroke/PMID_40197996",
+          "category": "research_paper",
+          "fused_score": 0.014706
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC9660017/article__c15",
+          "document_id": "Research_papers/PMC/PDFs/PMC9660017/article",
+          "category": "research_paper",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr72-14__c94",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/nvsr72-14",
+          "category": "guideline",
+          "fused_score": 0.0144
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams__c1965",
+          "document_id": "Medical_books/MedQA/textbooks/en/Neurology_Adams",
+          "category": "textbook",
+          "fused_score": 0.014286
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c4352",
+          "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+          "category": "textbook",
+          "fused_score": 0.013333
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c9136",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "category": "textbook",
+          "fused_score": 0.013158
+        }
+      ]
+    },
+    {
+      "query_id": "Q27",
+      "query": "hyponatremia differential diagnosis urine osmolality urine sodium hypovolemic euvolemic hypervolemic SIADH treatment hypertonic saline rate",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_27156758__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_27156758",
+          "category": "research_paper",
+          "fused_score": 0.177661
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Metabolic_Alkalosis/PMID_32829662__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Metabolic_Alkalosis/PMID_32829662",
+          "category": "research_paper",
+          "fused_score": 0.177088
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row36",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_32382841__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_32382841",
+          "category": "research_paper",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_36868726__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_36868726",
+          "category": "research_paper",
+          "fused_score": 0.015385
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_35918296__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Hypernatremia/PMID_35918296",
+          "category": "research_paper",
+          "fused_score": 0.015152
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PMC/XML/PMC4744950/article__c0",
+          "document_id": "Research_papers/PMC/XML/PMC4744950/article",
+          "category": "research_paper",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Research_papers/PMC/XML/PMC11893709/article__c4",
+          "document_id": "Research_papers/PMC/XML/PMC11893709/article",
+          "category": "research_paper",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PMC/XML/PMC11828805/article__c0",
+          "document_id": "Research_papers/PMC/XML/PMC11828805/article",
+          "category": "research_paper",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison__c1071",
+          "document_id": "Medical_books/MedQA/textbooks/en/InternalMed_Harrison",
+          "category": "textbook",
+          "fused_score": 0.013889
+        }
+      ]
+    },
+    {
+      "query_id": "Q28",
+      "query": "warfarin INR target mechanical mitral valve 3.0 bridging low molecular weight heparin perioperative CHADS2VASc hasbled bleeding risk monitoring",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_34352278__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_34352278",
+          "category": "research_paper",
+          "fused_score": 0.178334
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Deep_Vein_Thrombosis/PMID_31340984",
+          "category": "research_paper",
+          "fused_score": 0.176399
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row99",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.016129
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454__c1",
+          "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_38823454",
+          "category": "research_paper",
+          "fused_score": 0.015625
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Research_papers/PMC/XML/PMC7543932/article__c8",
+          "document_id": "Research_papers/PMC/XML/PMC7543932/article",
+          "category": "research_paper",
+          "fused_score": 0.014493
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_35953217__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Pulmonary_Embolism/PMID_35953217",
+          "category": "research_paper",
+          "fused_score": 0.014286
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC4715858/article__c47",
+          "document_id": "Research_papers/PMC/PDFs/PMC4715858/article",
+          "category": "research_paper",
+          "fused_score": 0.014085
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2017-cdc-drug-surveillance-report__c56",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/2017-cdc-drug-surveillance-report",
+          "category": "guideline",
+          "fused_score": 0.014
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak__c1161",
+          "document_id": "Medical_books/MedQA/textbooks/en/Gynecology_Novak",
+          "category": "textbook",
+          "fused_score": 0.013699
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz__c2368",
+          "document_id": "Medical_books/MedQA/textbooks/en/Surgery_Schwartz",
+          "category": "textbook",
+          "fused_score": 0.013514
+        }
+      ]
+    },
+    {
+      "query_id": "Q29",
+      "query": "febrile seizure simple versus complex classification lumbar puncture indications under 12 months workup guidelines parental counseling recurrence",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Epilepsy/PMID_34215386__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Epilepsy/PMID_34215386",
+          "category": "research_paper",
+          "fused_score": 0.178334
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_35959375__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Malaria/PMID_35959375",
+          "category": "research_paper",
+          "fused_score": 0.177723
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr5903__c28",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr5903",
+          "category": "guideline",
+          "fused_score": 0.0164
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/mmwr__preview__mmwrhtml__rr5903a1.htm__c26",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/mmwr__preview__mmwrhtml__rr5903a1.htm",
+          "category": "guideline",
+          "fused_score": 0.0162
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row1289",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.015873
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Clinical_practice_guidlines/Who_IRIS/B09514-eng__c745",
+          "document_id": "Clinical_practice_guidlines/Who_IRIS/B09514-eng",
+          "category": "guideline",
+          "fused_score": 0.0157
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Tuberculosis/mmwr__preview__mmwrhtml__00046738.htm__c33",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Tuberculosis/mmwr__preview__mmwrhtml__00046738.htm",
+          "category": "guideline",
+          "fused_score": 0.0154
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6822-H__c41",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/mm6822-H",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/mmwr__volumes__71__wr__mm7137a3.htm__c14",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Vaccines/mmwr__volumes__71__wr__mm7137a3.htm",
+          "category": "guideline",
+          "fused_score": 0.0146
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr7205a1-H__c35",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Vaccines/rr7205a1-H",
+          "category": "guideline",
+          "fused_score": 0.0144
+        }
+      ]
+    },
+    {
+      "query_id": "Q30",
+      "query": "serotonin syndrome clonus hyperthermia tramadol SSRI interaction cyproheptadine benzodiazepine management severity criteria hunter",
+      "items": [
+        {
+          "rank": 1,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Epilepsy/PMID_34215386__abs",
+          "document_id": "Research_papers/PubMed/Abstracts/Epilepsy/PMID_34215386",
+          "category": "research_paper",
+          "fused_score": 0.175774
+        },
+        {
+          "rank": 2,
+          "chunk_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED__row129",
+          "document_id": "Lab_rev_data/Consolidated_Lab_Critical_Values_Dataset_CLEANED",
+          "category": "lab_reference",
+          "fused_score": 0.016393
+        },
+        {
+          "rank": 3,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/rr5904__c34",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Tuberculosis/rr5904",
+          "category": "guideline",
+          "fused_score": 0.0152
+        },
+        {
+          "rank": 4,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung__c810",
+          "document_id": "Medical_books/MedQA/textbooks/en/Pharmacology_Katzung",
+          "category": "textbook",
+          "fused_score": 0.014925
+        },
+        {
+          "rank": 5,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Tuberculosis/mmwr__preview__mmwrhtml__rr5211a1.htm__c330",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/JSON/Tuberculosis/mmwr__preview__mmwrhtml__rr5211a1.htm",
+          "category": "guideline",
+          "fused_score": 0.0148
+        },
+        {
+          "rank": 6,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC12013068/article__c0",
+          "document_id": "Research_papers/PMC/PDFs/PMC12013068/article",
+          "category": "research_paper",
+          "fused_score": 0.014706
+        },
+        {
+          "rank": 7,
+          "chunk_id": "Research_papers/PMC/PDFs/PMC8761033/article__c1",
+          "document_id": "Research_papers/PMC/PDFs/PMC8761033/article",
+          "category": "research_paper",
+          "fused_score": 0.014286
+        },
+        {
+          "rank": 8,
+          "chunk_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1__c200",
+          "document_id": "Medical_books/MedQA/textbooks/en/First_Aid_Step1",
+          "category": "textbook",
+          "fused_score": 0.013889
+        },
+        {
+          "rank": 9,
+          "chunk_id": "Research_papers/PubMed/Abstracts/Autism_Spectrum_Disorder/PMID_37039129__c1",
+          "document_id": "Research_papers/PubMed/Abstracts/Autism_Spectrum_Disorder/PMID_37039129",
+          "category": "research_paper",
+          "fused_score": 0.013699
+        },
+        {
+          "rank": 10,
+          "chunk_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/AskMe-Stickers-P__c0",
+          "document_id": "Clinical_practice_guidlines/CDC_Clinical_guidlines/CDC/PDFs/Influenza/AskMe-Stickers-P",
+          "category": "guideline",
+          "fused_score": 0.0135
+        }
+      ]
+    }
+  ],
+  "timestamp": "2026-08-25T22:11:16+0530",
+  "artifact_sha256": "2e23ef8991a1bd3b0b7737293f0e0ad3fe0c12b0d6bc3bde79d0474bbce12c83"
+}

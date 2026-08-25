@@ -1,0 +1,37 @@
+{
+  "description": "Phase 2 IR evaluation query set: Q1-Q10 carried over verbatim from step17 grading sheet (user-adjudicated); Q11-Q30 newly authored MedQA-style clinical queries covering diverse specialties and question types.",
+  "seed_note": "Q11-Q30 are authored content, not sampled; retrieval determinism is verified separately in phase2_retrieval.json.",
+  "queries": [
+    {"id": "Q1",  "topic": "general/internal", "type": "diagnosis-workup", "query": "A 21-year-old male presents to his primary care provider for fatigue. He reports that he graduated f"},
+    {"id": "Q2",  "topic": "cardiology", "type": "diagnosis", "query": "A 56-year-old man with a history of hypertension presents to his physician with progressive fatigue"},
+    {"id": "Q3",  "topic": "gynecology", "type": "diagnosis", "query": "A 47-year-old woman seeks evaluation at your office because she has had postcoital vaginal bleeding"},
+    {"id": "Q4",  "topic": "orthopedics/surgery", "type": "treatment", "query": "A 36-year-old man undergoes open reduction and internal fixation of a left femur fracture sustained"},
+    {"id": "Q5",  "topic": "gastroenterology/emergency", "type": "diagnosis", "query": "A 59-year-old man is brought to the emergency department with a history of black, tarry stools but d"},
+    {"id": "Q6",  "topic": "general/internal", "type": "diagnosis", "query": "A 30-year-old man presents to his primary care physician with complaints of excessive fatigue and we"},
+    {"id": "Q7",  "topic": "endocrinology", "type": "diagnosis", "query": "A 58-year-old white man with hypertension and type 2 diabetes mellitus comes to the physic"},
+    {"id": "Q8",  "topic": "rheumatology", "type": "diagnosis", "query": "A 46-year-old woman comes to the physician because of severe muscle and joint pain for 5 months. The"},
+    {"id": "Q9",  "topic": "emergency", "type": "diagnosis", "query": "A 40-year-old businessman who was previously well is brought into the emergency department by his as"},
+    {"id": "Q10", "topic": "emergency/psychiatry", "type": "diagnosis", "query": "A 29-year-old man is brought to the emergency department by a concerned neighbor. The patient appear"},
+
+    {"id": "Q11", "topic": "cardiology", "type": "diagnosis-workup", "query": "elderly man exertional syncope systolic ejection murmur radiating to carotids aortic stenosis severity workup echocardiography"},
+    {"id": "Q12", "topic": "cardiology", "type": "first-line treatment", "query": "acute ST elevation myocardial infarction primary percutaneous coronary intervention door to balloon time guideline reperfusion aspirin"},
+    {"id": "Q13", "topic": "endocrinology", "type": "diagnosis-lab interpretation", "query": "young woman weight loss heat intolerance fine tremor exophthalmos Graves disease diagnosis TSH receptor antibodies thyroid uptake scan"},
+    {"id": "Q14", "topic": "endocrinology/emergency", "type": "management protocol", "query": "diabetic ketoacidosis management intravenous regular insulin infusion fluid resuscitation potassium correction thresholds bicarbonate controversy"},
+    {"id": "Q15", "topic": "infectious disease", "type": "diagnosis", "query": "returning traveler high fever rigors splenomegaly thick thin blood smear malaria plasmodium species identification treatment"},
+    {"id": "Q16", "topic": "infectious disease/pulmonology", "type": "first-line treatment", "query": "community acquired pneumonia CURB-65 score outpatient amoxicillin doxycycline first line antibiotic duration five days guidance"},
+    {"id": "Q17", "topic": "pharmacology/nephrology", "type": "contraindications", "query": "metformin lactic acidosis risk iodinated contrast withholding criteria eGFR threshold 30 acute illness sick day rules"},
+    {"id": "Q18", "topic": "pharmacology/ID", "type": "dosing-monitoring", "query": "vancomycin AUC guided dosing trough monitoring targets nephrotoxicity MRSA coverage infusion related red man syndrome"},
+    {"id": "Q19", "topic": "emergency/allergy", "type": "first-line treatment dosing", "query": "anaphylaxis intramuscular epinephrine 0.5 mg 1:1000 concentration anterolateral thigh airway management repeat dosing adults"},
+    {"id": "Q20", "topic": "emergency/toxicology", "type": "management protocol", "query": "acetaminophen overdose N acetylcysteine protocol Rumack Matthew nomogram hepatotoxicity risk four hour level treatment threshold"},
+    {"id": "Q21", "topic": "surgery", "type": "diagnosis-management", "query": "acute appendicitis Alvarado score diagnostic accuracy laparoscopic versus open appendectomy perforation risk imaging children ultrasound"},
+    {"id": "Q22", "topic": "surgery/perioperative", "type": "prophylaxis", "query": "surgical site infection prophylaxis cefazolin timing within 60 minutes incision clean contaminated wound classification redosing interval"},
+    {"id": "Q23", "topic": "obstetrics", "type": "management protocol", "query": "preeclampsia with severe features magnesium sulfate seizure prophylaxis loading dose 4 gram blood pressure targets hydralazine labetalol delivery timing"},
+    {"id": "Q24", "topic": "obstetrics/gynecology", "type": "diagnosis-management", "query": "ectopic pregnancy methotrexate candidate criteria ruptured tubal pregnancy hemodynamic instability discriminatory zone beta hcg ultrasound"},
+    {"id": "Q25", "topic": "neurology/emergency", "type": "diagnosis-workup", "query": "sudden thunderclap headache subarachnoid hemorrhage non contrast CT sensitivity by day lumbar puncture xanthochromia bilirubin workup sequence"},
+    {"id": "Q26", "topic": "neurology/emergency", "type": "first-line treatment contraindications", "query": "acute ischemic stroke alteplase thrombolysis 4.5 hour window door to needle goal exclusion checklist blood pressure 185 110 thrombectomy"},
+    {"id": "Q27", "topic": "laboratory interpretation/nephrology", "type": "lab interpretation", "query": "hyponatremia differential diagnosis urine osmolality urine sodium hypovolemic euvolemic hypervolemic SIADH treatment hypertonic saline rate"},
+    {"id": "Q28", "topic": "pharmacology/cardiology", "type": "lab-drug management", "query": "warfarin INR target mechanical mitral valve 3.0 bridging low molecular weight heparin perioperative CHADS2VASc hasbled bleeding risk monitoring"},
+    {"id": "Q29", "topic": "pediatrics/neurology", "type": "workup-guideline", "query": "febrile seizure simple versus complex classification lumbar puncture indications under 12 months workup guidelines parental counseling recurrence"},
+    {"id": "Q30", "topic": "psychiatry/pharmacology", "type": "management-interaction", "query": "serotonin syndrome clonus hyperthermia tramadol SSRI interaction cyproheptadine benzodiazepine management severity criteria hunter"}
+  ]
+}
