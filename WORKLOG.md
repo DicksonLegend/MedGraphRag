@@ -24,7 +24,7 @@
 | C | J4-stats bootstrap CIs (1000 resamples, seed 42) | Antigravity | pending | step15_bootstrap_ci.json | |
 | D | J11 multi-turn clinician workflows | OpenCode | pending | step18_multiturn.json | |
 | D | J12 batched verification (latency fix) | Antigravity | pending | step15_batched_verify.json | |
-| D | J13 compute comparison table vs baselines | Antigravity | pending | step15_compute_table.json | |
+| D | J13 compute comparison table vs baselines | Antigravity | done | step15_compute_table.json (f6baecda) — Latency CIs + LaTeX + Pareto frontier | 2026-08-25 |
 | D | Regression sweep (step12/13 values unchanged post-J1–J3) | OpenCode | done | evaluations/regression_final.json — actual==expected ba1b5121, 5/5 PASS, 0.00% DRIFT (artifact 86e800df) | 2026-08-23 |
 | D | Phase-2 IR upgrade prep (rubric + 30 queries + retrieval + blank dual-grader sheet + metrics script) | OpenCode | done awaiting human grades | phase2_relevance_rubric.md · phase2_queries.json · phase2_retrieval.json (regression ba1b5121 PASS, deterministic rerun ✓, sha-body 2e23ef89) · phase2_grading_sheet.tsv 294 rows · compute_phase2_metrics.py (NOT run) | 2026-08-23 |
 | E | J14 ethics/data-availability/AI-disclosure sections | Antigravity | pending | journal_paper/main.tex §updates | |

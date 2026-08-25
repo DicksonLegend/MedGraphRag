@@ -7,7 +7,7 @@
       "entities_reached": 4,
       "id": "P01",
       "items_count": 9,
-      "latency_ms": 8126.26,
+      "latency_ms": 12105.28,
       "query": "warfarin INR monitoring guidelines atrial fibrillation",
       "retrieved_items": [
         {
@@ -136,7 +136,7 @@
       "entities_reached": 0,
       "id": "P02",
       "items_count": 10,
-      "latency_ms": 236.28,
+      "latency_ms": 202.55,
       "query": "ACE inhibitor hypertension treatment first line",
       "retrieved_items": [
         {
@@ -278,7 +278,7 @@
       "entities_reached": 2,
       "id": "P03",
       "items_count": 10,
-      "latency_ms": 115.71,
+      "latency_ms": 97.77,
       "query": "critical hemoglobin levels anemia transfusion threshold",
       "retrieved_items": [
         {
@@ -420,7 +420,7 @@
       "entities_reached": 1,
       "id": "P04",
       "items_count": 10,
-      "latency_ms": 163.1,
+      "latency_ms": 176.99,
       "query": "troponin elevation myocardial infarction diagnosis",
       "retrieved_items": [
         {
@@ -562,7 +562,7 @@
       "entities_reached": 2,
       "id": "P05",
       "items_count": 10,
-      "latency_ms": 199.95,
+      "latency_ms": 195.97,
       "query": "metformin type 2 diabetes contraindications renal failure",
       "retrieved_items": [
         {
@@ -701,6 +701,6 @@
     }
   ],
   "retrieval_content_sha256": "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac",
-  "sha256": "8d0345e3cd0afa896774269b4ad58986b1aa6a9faca637382e201aa83b284c5d",
+  "sha256": "8436819d138fd7067f5dc59f7b2877f8829577ba4eb3da7b92c43657e6e91860",
   "suite": "J1 Golden Queries P01-P05 Regression Suite"
 }

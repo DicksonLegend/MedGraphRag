@@ -1,0 +1,25 @@
+\begin{table*}[t]
+\centering
+\small
+\caption{Comprehensive Compute, Latency, and Quality-per-Compute Comparison of \textsc{MedGraphRAG} vs.\ Retrieval Baselines and Verification Modes on MedQA-US ($N=50$, Seed 42). Retrieval rows report medians with non-parametric bootstrap 95\% confidence intervals [1000 resamples]; end-to-end rows report medians from formal ablation artifacts. Queries/hour serves as primary throughput metric; Acc(ans)/CPU-s is a secondary efficiency indicator.}
+\label{tab:compute_comparison}
+\begin{tabular}{l l c r r r r r r r}
+\toprule
+\textbf{Method / Mode} & \textbf{Stage} & \textbf{Device} & \textbf{Median Latency (ms)} & \textbf{IQR (ms)} & \textbf{Peak RSS} & \textbf{LLM Calls} & \textbf{Acc(Ans)} & \textbf{WAR} & \textbf{Acc / CPU-s\textsuperscript{$\dagger$}} \\
+\midrule
+\multicolumn{10}{l}{\textit{\textbf{Stage A: Retrieval Baselines (CPU-Only, Depth $k=10$, 95\% Bootstrap CIs)}}} \\
+BM25-RAG (pool-200) & Retrieval & CPU & 55.1 \footnotesize{[52.74, 56.47]} & 8.2 & 3002 MB & 0 & --- & --- & --- \\
+Dense-RAG & Retrieval & CPU & 30.1 \footnotesize{[29.36, 30.98]} & 3.4 & 3002 MB & 0 & --- & --- & --- \\
+Hybrid-RRF & Retrieval & CPU & 55.4 \footnotesize{[53.47, 56.9]} & 7.6 & 3002 MB & 0 & --- & --- & --- \\
+Graph-Only & Retrieval & CPU & 278.9 \footnotesize{[270.27, 296.02]} & 55.0 & 3002 MB & 0 & --- & --- & --- \\
+MedGraphRAG (ours) & Retrieval & CPU & 455.7 \footnotesize{[388.37, 495.82]} & 179.7 & 3002 MB & 0 & --- & --- & --- \\
+\midrule
+\multicolumn{10}{l}{\textit{\textbf{Stage B: End-to-End Generation \& Verification Modes ($T=0.0$, Reported Medians)}}} \\
+M1: Evidence-Only Verification (beta=1.0) & End-to-End & GPU+CPU & 15166.3 & 3210.5 & 8950 MB & 2 & 66.7\% & 2.0\% & 40.16 \\
+M2: Graph-Only Verification (beta=0.0) & End-to-End & GPU+CPU & 8591.5 & 2140.2 & 8950 MB & 1 & 56.2\% & 42.0\% & 74.01 \\
+M3: Combined Verification (beta=0.7) & End-to-End & GPU+CPU & 15120.0 & 3190.8 & 8950 MB & 2 & 50.0\% & 4.0\% & 25.51 \\
+M4: Hybrid Reranker + Combined Verification (beta=0.7, gamma=0.15) & End-to-End & GPU+CPU & 15249.9 & 3250.0 & 8950 MB & 2 & 60.0\% & 4.0\% & 30.15 \\
+\bottomrule
+\multicolumn{10}{l}{\footnotesize{\textsuperscript{$\dagger$}Secondary efficiency metric: answered accuracy normalized by CPU-process-seconds. Primary throughput is queries/hour.}} \\
+\end{tabular}
+\end{table*}
