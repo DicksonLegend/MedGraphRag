@@ -10,6 +10,7 @@
 | B | VLM + image eval | OpenCode | done | evaluations/multimodal/step16_image_report.json (3bede101) — merged into J9/J10 row below | 2026-08-23 |
 | C | N=500 + stats | Antigravity | | step15_scaled_eval | |
 | B | J2 graph-consistency verification pass + 3-way ablation | Antigravity | done | step15_verification_ablation.json (e01fe516) | 2026-08-22 |
+| B | Phase 1 verification autopsy (J2 paradox resolution) | Antigravity | done | evaluations/phase1_verification_autopsy.json (9be1bdf6) — Type A=0, Precision=100%, McNemar p=1.00 (non-sig) | 2026-08-25 |
 | B | J3 relation-aware reranker vs RRF ablation | Antigravity | done | step15_rerank_ablation.json (eda10b8e) | 2026-08-23 |
 | B | J9 OpenI/VQA-RAD/SLAKE normalize + CheXzero encode | OpenCode | done | openi_chunks.jsonl (b60730ca, image_ids fixed) + visual_findings_v2.json (67f169e6, BiomedCLIP, mean AUC 0.680>0.65) | 2026-08-23 |
 | B | J9 separate report graph build (Image/VisualFinding nodes) | OpenCode | done | data/multimodal/report_graph/kuzu.db — RD=48 FN=321 IS=5810; sample100 real OpenI ids linked (48/100 studies) | 2026-08-23 |
