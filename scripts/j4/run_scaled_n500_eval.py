@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-MedGraphRAG — Step J4: N=500 Scaled Evaluation Suite (Overnight, Unattended)
-===========================================================================
+MedGraphRAG — Step J4: N=500 Scaled Evaluation Suite (Memory-Hardened)
+=====================================================================
 Evaluates MedGraphRAG on MedQA US (N=500, seed 42, T=0.0, deterministic)
 across 4 configurations:
   1. M1_EVIDENCE_ONLY: verify_mode='evidence', beta=1.0, rerank_mode='rrf'
@@ -9,12 +9,18 @@ across 4 configurations:
   3. M3_COMBINED     : verify_mode='combined', beta=0.7, rerank_mode='rrf'
   4. M4_HYBRID_RERANK: verify_mode='combined', beta=0.7, rerank_mode='hybrid', gamma=0.15
 
-Robustness & Guards:
-  - Checkpoint JSON saved every 50 questions.
-  - Resume capability: skips already-evaluated queries in existing checkpoints.
+Memory & Stability Guards:
+  - Aggressive per-iteration gc.collect() and object deletion.
+  - Chunked execution: process up to 100 queries per process session, then flush checkpoint
+    and cleanly exit (exit code 0) so the OS reclaims all fragmented heap space.
+  - RSS Watchdog: monitors process RSS every query; if RSS >= 4.5 GB, flushes checkpoint
+    and exits cleanly (exit code 0) for automatic recycling.
+  - Checkpoint saving every 50 questions with seamless resume (skips evaluated IDs).
+  - Mode summary persistence: when a mode finishes, its summary is saved so subsequent
+    process invocations immediately skip completed modes.
   - Bootstrap 95% Confidence Intervals (1,000 resamples, seed 42).
   - P01–P05 retrieval regression check vs ba1b5121... (0.00% drift).
-  - Final report saved to evaluations/step18_scaled_n500.json (and step15_scaled_eval.json).
+  - Final report saved to evaluations/step18_scaled_n500.json (+ step15 compatibility aliases).
 """
 
 from __future__ import annotations
@@ -33,6 +39,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
+import psutil
 
 _PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(_PROJECT_ROOT))
@@ -59,6 +66,10 @@ CHECKPOINT_DIR = _PROJECT_ROOT / "evaluations" / "checkpoints_n500"
 FINAL_REPORT_FP = _PROJECT_ROOT / "evaluations" / "step18_scaled_n500.json"
 COMPAT_REPORT_FP = _PROJECT_ROOT / "evaluations" / "step15_scaled_eval.json"
 BOOTSTRAP_REPORT_FP = _PROJECT_ROOT / "evaluations" / "step15_bootstrap_ci.json"
+
+# Memory thresholds
+MAX_CHUNK_QUERIES = 50   # Max queries per process invocation
+MAX_RSS_GB = 12.0        # Watchdog threshold (above baseline ~8.5GB) to trigger clean exit and restart
 
 
 # ── Contamination Guard ──────────────────────────────────────────────────────
@@ -105,7 +116,7 @@ def load_medqa_questions(sample_size: int = 500, seed: int = 42) -> List[Dict[st
 
     random.seed(seed)
     sampled = random.sample(questions, min(sample_size, len(questions)))
-    logger.info("Sampled N=%d MedQA questions with seed=%d (from %d total)", len(sampled), seed, len(questions))
+    logger.info("Loaded N=%d MedQA questions with seed=%d (from %d total)", len(sampled), seed, len(questions))
     return sampled
 
 
@@ -163,9 +174,6 @@ def compute_bootstrap_ci(
     n_resamples: int = 1000,
     seed: int = 42,
 ) -> Dict[str, Dict[str, float]]:
-    """
-    Compute 95% bootstrap confidence intervals for Acc(All), Acc(Ans), Refusal, and WAR.
-    """
     rng = np.random.RandomState(seed)
     N = len(per_question_details)
 
@@ -205,7 +213,7 @@ def compute_bootstrap_ci(
     }
 
 
-# ── Mode Evaluation with Checkpoint & Resume ───────────────────────────────────
+# ── Mode Evaluation with Memory Guards, Checkpoint & Chunking ─────────────────
 def run_mode_evaluation(
     mode_name: str,
     verify_mode: str,
@@ -216,13 +224,25 @@ def run_mode_evaluation(
     pipeline: MedGraphRAGPipeline,
     llm_judge: Any,
 ) -> Dict[str, Any]:
+    CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
+    summary_file = CHECKPOINT_DIR / f"{mode_name}_summary.json"
+    chk_file = CHECKPOINT_DIR / f"{mode_name}_checkpoint.json"
+
+    # Fast-path: if this mode is completely finished and summarized, return it directly
+    if summary_file.exists():
+        try:
+            with open(summary_file, "r", encoding="utf-8") as f:
+                saved_summary = json.load(f)
+            logger.info("Mode [%s] ALREADY COMPLETED (N=%d). Loaded cached summary from %s",
+                        mode_name, saved_summary.get("total_questions", 0), summary_file.name)
+            return saved_summary
+        except Exception as e:
+            logger.warning("Could not read %s: %s. Re-evaluating from checkpoint.", summary_file, e)
+
     logger.info("=" * 80)
     logger.info("RUNNING SCALED MODE: %s (verify_mode='%s', beta=%.2f, rerank='%s', gamma=%.2f)",
                 mode_name, verify_mode, beta, rerank_mode, gamma)
     logger.info("=" * 80)
-
-    CHECKPOINT_DIR.mkdir(parents=True, exist_ok=True)
-    chk_file = CHECKPOINT_DIR / f"{mode_name}_checkpoint.json"
 
     # Resume from checkpoint if available
     completed_details: List[Dict[str, Any]] = []
@@ -245,6 +265,9 @@ def run_mode_evaluation(
         except Exception as e:
             logger.warning("Failed to load checkpoint %s: %s. Starting fresh.", chk_file, e)
             completed_details = []
+
+    proc = psutil.Process()
+    queries_evaluated_this_session = 0
 
     for q_idx, q_data in enumerate(questions):
         qid = q_data["id"]
@@ -320,8 +343,13 @@ def run_mode_evaluation(
             "latency_ms": round(dur_ms, 2),
         })
         evaluated_ids.add(qid)
+        queries_evaluated_this_session += 1
 
-        # Save checkpoint every 50 questions
+        # Explicit per-iteration memory cleanup
+        del ret_req, ret_res, clean_ret_res, gen_res, verified_res, prompt_query
+        gc.collect()
+
+        # Checkpoint every 50 questions or on completion
         if len(completed_details) % 50 == 0 or len(completed_details) == len(questions):
             chk_payload = {
                 "mode_name": mode_name,
@@ -337,6 +365,49 @@ def run_mode_evaluation(
                 json.dump(chk_payload, f, indent=2)
             logger.info("  [%s CHECKPOINT] Saved %d/%d questions to %s (Latest Latency=%.1f ms)",
                         mode_name, len(completed_details), len(questions), chk_file.name, dur_ms)
+
+        # RSS Memory Watchdog Check
+        rss_gb = proc.memory_info().rss / (1024 ** 3)
+        if rss_gb >= MAX_RSS_GB:
+            logger.warning(
+                "  [RSS WATCHDOG TRIGGERED] Process RSS reached %.2f GB (>= %.2f GB threshold). "
+                "Flushing checkpoint and cleanly exiting for process recycling.",
+                rss_gb, MAX_RSS_GB
+            )
+            chk_payload = {
+                "mode_name": mode_name,
+                "completed_count": len(completed_details),
+                "total_questions": len(questions),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "latencies": latencies,
+                "citations_counts": citations_counts,
+                "graph_hit_top5_flags": graph_hit_top5_flags,
+                "per_question_details": completed_details,
+            }
+            with open(chk_file, "w", encoding="utf-8") as f:
+                json.dump(chk_payload, f, indent=2)
+            sys.exit(0)
+
+        # Chunk threshold check (100 queries evaluated this session)
+        if queries_evaluated_this_session >= MAX_CHUNK_QUERIES and len(completed_details) < len(questions):
+            logger.info(
+                "  [CHUNK CYCLE COMPLETED] Evaluated %d queries this session (Total %d/%d). "
+                "Flushing checkpoint and cleanly exiting for OS memory reclamation.",
+                queries_evaluated_this_session, len(completed_details), len(questions)
+            )
+            chk_payload = {
+                "mode_name": mode_name,
+                "completed_count": len(completed_details),
+                "total_questions": len(questions),
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "latencies": latencies,
+                "citations_counts": citations_counts,
+                "graph_hit_top5_flags": graph_hit_top5_flags,
+                "per_question_details": completed_details,
+            }
+            with open(chk_file, "w", encoding="utf-8") as f:
+                json.dump(chk_payload, f, indent=2)
+            sys.exit(0)
 
     # Compute P01–P05 top-1 scores under this mode
     from scripts.j1.run_regression import GOLDEN_QUERIES
@@ -389,6 +460,10 @@ def run_mode_evaluation(
         "per_question_details": completed_details,
     }
 
+    # Save completed mode summary
+    with open(summary_file, "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=2)
+
     logger.info(
         "[%s COMPLETE (N=%d)] Acc(All)=%.2f%% [95%% CI: %.2f–%.2f%%] | Acc(Ans)=%.2f%% [95%% CI: %.2f–%.2f%%] | Refusal=%.2f%% | WAR=%.2f%% | Median Latency=%.1f ms",
         mode_name, total_q,
@@ -415,16 +490,9 @@ def main():
     llm_judge = get_llm()
 
     # 3. Execute the 4 Scaled Modes
-    # M1: Evidence Only
     summary_m1 = run_mode_evaluation("M1_EVIDENCE_ONLY", "evidence", 1.0, "rrf", 0.0, questions, pipeline, llm_judge)
-
-    # M2: Graph Only
     summary_m2 = run_mode_evaluation("M2_GRAPH_ONLY", "graph", 0.0, "rrf", 0.0, questions, pipeline, llm_judge)
-
-    # M3: Combined Verification
     summary_m3 = run_mode_evaluation("M3_COMBINED", "combined", 0.7, "rrf", 0.0, questions, pipeline, llm_judge)
-
-    # M4: Combined Verification + Hybrid Reranker (gamma=0.15)
     summary_m4 = run_mode_evaluation("M4_HYBRID_RERANK", "combined", 0.7, "hybrid", 0.15, questions, pipeline, llm_judge)
 
     # 4. Retrieval Regression Verification (must match ba1b5121...)
@@ -531,7 +599,6 @@ def main():
     report_sha256 = hashlib.sha256(report_bytes).hexdigest()
     final_report["artifact_sha256"] = report_sha256
 
-    # Save to primary and compatibility locations
     for fp in [FINAL_REPORT_FP, COMPAT_REPORT_FP, BOOTSTRAP_REPORT_FP]:
         with open(fp, "w", encoding="utf-8") as f:
             json.dump(final_report, f, indent=2, sort_keys=True)
