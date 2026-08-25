@@ -67,9 +67,9 @@ FINAL_REPORT_FP = _PROJECT_ROOT / "evaluations" / "step18_scaled_n500.json"
 COMPAT_REPORT_FP = _PROJECT_ROOT / "evaluations" / "step15_scaled_eval.json"
 BOOTSTRAP_REPORT_FP = _PROJECT_ROOT / "evaluations" / "step15_bootstrap_ci.json"
 
-# Memory thresholds
-MAX_CHUNK_QUERIES = 50   # Max queries per process invocation
-MAX_RSS_GB = 12.0        # Watchdog threshold (above baseline ~8.5GB) to trigger clean exit and restart
+# Memory & Chunking Guards
+MAX_CHUNK_QUERIES = 50          # Evaluate in controlled chunks of 50 questions per process
+RSS_WATCHDOG_LIMIT_MB = 11500   # 11.5 GB limit (safely below 12.0 GB ceiling)
 
 
 # ── Contamination Guard ──────────────────────────────────────────────────────
@@ -348,6 +348,12 @@ def run_mode_evaluation(
         # Explicit per-iteration memory cleanup
         del ret_req, ret_res, clean_ret_res, gen_res, verified_res, prompt_query
         gc.collect()
+        try:
+            import torch
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+        except ImportError:
+            pass
 
         # Checkpoint every 50 questions or on completion
         if len(completed_details) % 50 == 0 or len(completed_details) == len(questions):
@@ -366,13 +372,13 @@ def run_mode_evaluation(
             logger.info("  [%s CHECKPOINT] Saved %d/%d questions to %s (Latest Latency=%.1f ms)",
                         mode_name, len(completed_details), len(questions), chk_file.name, dur_ms)
 
-        # RSS Memory Watchdog Check
-        rss_gb = proc.memory_info().rss / (1024 ** 3)
-        if rss_gb >= MAX_RSS_GB:
+        # RSS Memory Watchdog Check (11.5 GB limit)
+        rss_mb = proc.memory_info().rss / (1024 * 1024)
+        if rss_mb >= RSS_WATCHDOG_LIMIT_MB:
             logger.warning(
-                "  [RSS WATCHDOG TRIGGERED] Process RSS reached %.2f GB (>= %.2f GB threshold). "
+                "  [RSS WATCHDOG TRIGGERED] Process RSS reached %.1f MB (>= %d MB limit). "
                 "Flushing checkpoint and cleanly exiting for process recycling.",
-                rss_gb, MAX_RSS_GB
+                rss_mb, RSS_WATCHDOG_LIMIT_MB
             )
             chk_payload = {
                 "mode_name": mode_name,
@@ -388,12 +394,12 @@ def run_mode_evaluation(
                 json.dump(chk_payload, f, indent=2)
             sys.exit(0)
 
-        # Chunk threshold check (100 queries evaluated this session)
+        # Chunk threshold check (50 queries evaluated this session)
         if queries_evaluated_this_session >= MAX_CHUNK_QUERIES and len(completed_details) < len(questions):
             logger.info(
                 "  [CHUNK CYCLE COMPLETED] Evaluated %d queries this session (Total %d/%d). "
-                "Flushing checkpoint and cleanly exiting for OS memory reclamation.",
-                queries_evaluated_this_session, len(completed_details), len(questions)
+                "Final RSS: %.1f MB (stable). Flushing checkpoint and cleanly exiting for OS memory reclamation.",
+                queries_evaluated_this_session, len(completed_details), len(questions), rss_mb
             )
             chk_payload = {
                 "mode_name": mode_name,
