@@ -37,13 +37,21 @@ class TokenResponse(BaseModel):
     ephemeral: bool = False
 
 
+from app.core.auth.passwords import (
+    LoginThrottler,
+    get_dev_hint_credentials,
+    get_user_credential_store,
+    verify_password,
+)
+
+
 @router.post("/auth/login", response_model=TokenResponse)
 @router.post("/api/v1/auth/login", response_model=TokenResponse)
 async def login(
     request: Request,
     body: Optional[LoginRequest] = Body(None),
 ) -> TokenResponse:
-    """Authenticate user against configured credentials."""
+    """Authenticate user with salted scrypt/argon2 verification and per-IP/account throttling."""
     username = ""
     password = ""
 
@@ -65,22 +73,49 @@ async def login(
             detail="Username and password are required",
         )
 
-    pwd_hash = hashlib.sha256(password.encode("utf-8")).hexdigest()
-    expected_hash = settings.demo_users.get(username)
+    # 1. Rate Limiting Check (5 failures -> 60s cooldown)
+    client_ip = request.client.host if request.client else "unknown"
+    lockout_rem = LoginThrottler.check_throttle(client_ip, username)
+    if lockout_rem is not None:
+        logger.warning("Rate-limited login attempt from %s for username %s (%ds remaining)", client_ip, username, lockout_rem)
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail=f"Too many failed login attempts. Please wait {lockout_rem} seconds before retrying.",
+        )
 
-    if not expected_hash or pwd_hash != expected_hash:
-        logger.warning("Failed login attempt for username: %s", username)
+    # 2. Salted Password Verification
+    cred_store = get_user_credential_store()
+    expected_hash = cred_store.get(username)
+
+    if not expected_hash or not verify_password(password, expected_hash):
+        LoginThrottler.record_failure(client_ip, username)
+        logger.warning("Failed login attempt for username: %s from IP %s", username, client_ip)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+    # Successful login: reset failure counter
+    LoginThrottler.record_success(client_ip, username)
     role = "admin" if username == "admin" else "user"
     token = create_access_token(user_id=username, role=role, ephemeral=False)
     logger.info("Successful login for user %s (role=%s)", username, role)
 
     return TokenResponse(token=token, user_id=username, ephemeral=False)
+
+
+@router.get("/auth/dev-hint")
+@router.get("/api/v1/auth/dev-hint")
+async def dev_hint() -> Dict[str, Any]:
+    """Return demo credentials in development environment; 404 in production."""
+    hint = get_dev_hint_credentials()
+    if hint is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Dev hint endpoint is disabled in non-dev environment.",
+        )
+    return hint
 
 
 @router.post("/auth/guest", response_model=TokenResponse)
