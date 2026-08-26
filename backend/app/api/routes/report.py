@@ -236,14 +236,14 @@ async def get_user_report_detail(
             db = kuzu.Database(str(db_path), read_only=True)
             conn = kuzu.Connection(db)
             try:
-                query = f"""
-                MATCH (r:Report {{id: '{report_id}'}})-[:HAS_LAB_VALUE]->(lv:LabValue)
+                query = """
+                MATCH (r:Report {id: $report_id})-[:HAS_LAB_VALUE]->(lv:LabValue)
                 RETURN r.id AS report_id, r.report_date AS report_date, r.filename AS filename,
                        lv.test_name AS test_name, lv.value AS value, lv.unit AS unit,
                        lv.ref_low AS ref_low, lv.ref_high AS ref_high, lv.is_critical AS is_critical
                 ORDER BY lv.test_name ASC
                 """
-                df = conn.execute(query).get_as_df()
+                df = conn.execute(query, {"report_id": report_id}).get_as_df()
                 if not df.empty:
                     first_row = df.iloc[0]
                     lab_values = []

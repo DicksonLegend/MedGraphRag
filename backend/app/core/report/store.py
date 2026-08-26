@@ -140,21 +140,23 @@ def store_private_report(
             # Insert Report node
             try:
                 conn.execute(
-                    f"CREATE (:Report {{id: '{report_id}', report_date: '{report_date}', filename: 'report_{report_id}'}})"
+                    "CREATE (:Report {id: $id, report_date: $report_date, filename: $filename})",
+                    {"id": report_id, "report_date": report_date, "filename": f"report_{report_id}"},
                 )
             except Exception:
                 pass
 
             for idx, asm in enumerate(assessments):
                 node_id = f"{user_id}_lab_{idx}"
-                t_name = asm.normalized_lab_value.canonical_test_name.replace("'", "''")
-                val_s = asm.normalized_lab_value.lab_value.value_raw_str
-                cls_s = asm.classification
+                t_name = asm.normalized_lab_value.canonical_test_name
+                val_s = str(asm.normalized_lab_value.lab_value.value_raw_str)
+                cls_s = str(asm.classification)
                 
                 # Insert legacy node
                 try:
                     conn.execute(
-                        f"CREATE (:PrivateLabValue {{id: '{node_id}', test_name: '{t_name}', val_str: '{val_s}', classification: '{cls_s}'}})"
+                        "CREATE (:PrivateLabValue {id: $id, test_name: $test_name, val_str: $val_str, classification: $classification})",
+                        {"id": node_id, "test_name": t_name, "val_str": val_s, "classification": cls_s},
                     )
                 except Exception:
                     pass
@@ -178,17 +180,27 @@ def store_private_report(
                             pass
 
                 val_num = float(asm.normalized_lab_value.normalized_value)
-                unit_s = asm.normalized_lab_value.normalized_unit.replace("'", "''")
-                is_crit = "true" if asm.is_critical else "false"
+                unit_s = asm.normalized_lab_value.normalized_unit
+                is_crit_bool = bool(asm.is_critical)
                 lv_node_id = f"{user_id}_{report_id}_lv_{idx}"
 
                 # Insert LabValue node and link to Report
                 try:
                     conn.execute(
-                        f"CREATE (:LabValue {{id: '{lv_node_id}', test_name: '{t_name}', value: {val_num}, unit: '{unit_s}', ref_low: {ref_low}, ref_high: {ref_high}, is_critical: {is_crit}}})"
+                        "CREATE (:LabValue {id: $id, test_name: $test_name, value: $value, unit: $unit, ref_low: $ref_low, ref_high: $ref_high, is_critical: $is_critical})",
+                        {
+                            "id": lv_node_id,
+                            "test_name": t_name,
+                            "value": val_num,
+                            "unit": unit_s,
+                            "ref_low": ref_low,
+                            "ref_high": ref_high,
+                            "is_critical": is_crit_bool,
+                        },
                     )
                     conn.execute(
-                        f"MATCH (r:Report {{id: '{report_id}'}}), (lv:LabValue {{id: '{lv_node_id}'}}) CREATE (r)-[:HAS_LAB_VALUE]->(lv)"
+                        "MATCH (r:Report {id: $r_id}), (lv:LabValue {id: $lv_id}) CREATE (r)-[:HAS_LAB_VALUE]->(lv)",
+                        {"r_id": report_id, "lv_id": lv_node_id},
                     )
                 except Exception as lve:
                     logger.debug("Failed inserting LabValue node: %s", lve)
