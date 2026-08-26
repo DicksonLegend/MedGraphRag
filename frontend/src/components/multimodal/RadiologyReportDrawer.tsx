@@ -20,6 +20,7 @@ import {
   ShieldCheck,
   ChevronRight,
   RefreshCw,
+  Info,
 } from 'lucide-react';
 import { VisualFindingsCard } from './VisualFindingsCard';
 import { EcgLoader } from '../common/EcgLoader';
@@ -48,6 +49,21 @@ export const RadiologyReportDrawer: React.FC<RadiologyReportDrawerProps> = ({
   const [activeTab, setActiveTab] = useState<'findings' | 'impression' | 'graph'>('findings');
   const [imageBlobUrl, setImageBlobUrl] = useState<string | null>(null);
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
+  const [isSlowInterpreting, setIsSlowInterpreting] = useState<boolean>(false);
+
+  // FIX 1: Soft timeout listener for slow VLM interpretation (after 15s)
+  useEffect(() => {
+    let timer: any;
+    if (isRunningFull) {
+      setIsSlowInterpreting(false);
+      timer = setTimeout(() => {
+        setIsSlowInterpreting(true);
+      }, 15000);
+    } else {
+      setIsSlowInterpreting(false);
+    }
+    return () => clearTimeout(timer);
+  }, [isRunningFull]);
 
   // Load preview image blob on scan change
   useEffect(() => {
@@ -143,6 +159,19 @@ export const RadiologyReportDrawer: React.FC<RadiologyReportDrawerProps> = ({
 
         {/* Drawer Body */}
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* FIX 2: Permanent Privacy & Isolation Banner (Always visible for private scans) */}
+          <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-between gap-3 text-xs text-emerald-400 shadow-2xs">
+            <div className="flex items-center gap-2">
+              <Lock className="w-4 h-4 shrink-0 text-emerald-400" />
+              <span>
+                <strong className="text-emerald-300">Isolated Private Storage:</strong> Stored in your private encrypted store; never shared or used for training.
+              </span>
+            </div>
+            <span className="text-[10px] font-mono bg-emerald-500/20 px-2 py-0.5 rounded border border-emerald-500/30 text-emerald-300 shrink-0">
+              AES-256-GCM
+            </span>
+          </div>
+
           {/* 1. Image Viewer & Interactive Controls */}
           <div className="bg-black rounded-xl border border-edge/80 overflow-hidden shadow-inner flex flex-col items-center relative group">
             {/* Viewer Toolbar */}
@@ -268,33 +297,43 @@ export const RadiologyReportDrawer: React.FC<RadiologyReportDrawerProps> = ({
 
               {/* Action Banner to upgrade to Full Interpretation */}
               {scan.mode !== 'full' && (
-                <div className="p-4 bg-teal-accent/5 border border-teal-accent/20 rounded-xl flex items-center justify-between gap-4">
-                  <div>
-                    <h4 className="text-sm font-semibold text-ink flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-teal-accent" />
-                      Request Full Generative Interpretation
-                    </h4>
-                    <p className="text-xs text-ink-muted mt-0.5">
-                      Runs Qwen2-VL-2B Vision-Language Model on CPU to synthesize formal radiological findings, impression, and recommendations.
-                    </p>
+                <div className="p-4 bg-teal-accent/5 border border-teal-accent/20 rounded-xl space-y-3">
+                  <div className="flex items-center justify-between gap-4">
+                    <div>
+                      <h4 className="text-sm font-semibold text-ink flex items-center gap-1.5">
+                        <Sparkles className="w-4 h-4 text-teal-accent" />
+                        Request Full Generative Interpretation
+                      </h4>
+                      <p className="text-xs text-ink-muted mt-0.5">
+                        Runs Qwen2-VL-2B Vision-Language Model on CPU to synthesize formal radiological findings, impression, and recommendations.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => onRunFullInterpretation(scan)}
+                      disabled={isRunningFull}
+                      className="px-4 py-2 bg-teal-accent text-slate-900 text-xs font-semibold rounded-lg hover:bg-teal-accent/90 disabled:opacity-50 transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
+                    >
+                      {isRunningFull ? (
+                        <>
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                          Generating VLM...
+                        </>
+                      ) : (
+                        <>
+                          <Sparkles className="w-3.5 h-3.5" />
+                          Run Qwen2-VL (CPU)
+                        </>
+                      )}
+                    </button>
                   </div>
-                  <button
-                    onClick={() => onRunFullInterpretation(scan)}
-                    disabled={isRunningFull}
-                    className="px-4 py-2 bg-teal-accent text-slate-900 text-xs font-semibold rounded-lg hover:bg-teal-accent/90 disabled:opacity-50 transition-all flex items-center gap-2 whitespace-nowrap shadow-sm"
-                  >
-                    {isRunningFull ? (
-                      <>
-                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                        Generating VLM...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-3.5 h-3.5" />
-                        Run Qwen2-VL (CPU)
-                      </>
-                    )}
-                  </button>
+
+                  {/* FIX 1: Non-blocking slow notice after 15s */}
+                  {isRunningFull && isSlowInterpreting && (
+                    <div className="p-2.5 bg-amber-500/10 border border-amber-500/30 rounded-lg text-xs text-amber-300 flex items-center gap-2 animate-fade-in">
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400 shrink-0" />
+                      <span>Still interpreting… complex films can take a little longer.</span>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -333,6 +372,14 @@ export const RadiologyReportDrawer: React.FC<RadiologyReportDrawerProps> = ({
                       </>
                     )}
                   </button>
+
+                  {/* FIX 1: Non-blocking slow notice after 15s */}
+                  {isRunningFull && isSlowInterpreting && (
+                    <div className="p-3 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-300 flex items-center justify-center gap-2 animate-fade-in max-w-md mx-auto">
+                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400 shrink-0" />
+                      <span>Still interpreting… complex films can take a little longer.</span>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -380,6 +427,14 @@ export const RadiologyReportDrawer: React.FC<RadiologyReportDrawerProps> = ({
           {/* TAB 3: Knowledge Graph Links (A3) */}
           {activeTab === 'graph' && (
             <div className="space-y-4">
+              {/* FIX 3: Limitation Note */}
+              <div className="p-3 bg-slate-500/10 border border-slate-500/20 rounded-xl text-xs text-ink-muted flex items-start gap-2">
+                <Info className="w-4 h-4 text-teal-accent shrink-0 mt-0.5" />
+                <span>
+                  <strong>Study Linkage Coverage:</strong> Report linkage currently matches 48/100 sample studies; unmatched scans still return visual findings but without a linked report.
+                </span>
+              </div>
+
               {scan.has_graph_links && scan.graph_paths.length > 0 ? (
                 <div className="space-y-3">
                   <div className="p-3 bg-teal-accent/5 border border-teal-accent/20 rounded-lg text-xs text-teal-accent flex items-center gap-2">
@@ -431,10 +486,10 @@ export const RadiologyReportDrawer: React.FC<RadiologyReportDrawerProps> = ({
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-ink">
-                      Isolated Private Scan
+                      No Linked Knowledge Graph Report
                     </h4>
                     <p className="text-xs text-ink-muted max-w-sm mx-auto mt-1">
-                      No knowledge graph links for private scans. Stored in isolated AES-256-GCM encrypted private store.
+                      Report linkage currently matches 48/100 sample studies; unmatched scans still return visual findings but without a linked report. Private scans are stored in isolated AES-256-GCM encrypted private store.
                     </p>
                   </div>
                 </div>

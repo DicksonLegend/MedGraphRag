@@ -492,13 +492,25 @@ class Qwen2VLEngine:
                 }
             ]
 
+            import concurrent.futures
+
             try:
-                response = self.llm.create_chat_completion(
-                    messages=messages,
-                    max_tokens=300,
-                    temperature=0.1,
-                )
+                with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(
+                        self.llm.create_chat_completion,
+                        messages=messages,
+                        max_tokens=300,
+                        temperature=0.1,
+                    )
+                    response = future.result(timeout=60.0)
                 text = response["choices"][0]["message"]["content"].strip()
+            except concurrent.futures.TimeoutError:
+                logger.warning("Qwen2-VL interpretation reached hard ceiling timeout (60s).")
+                return (
+                    "Generative radiological interpretation reached duration limit (60s). Quantitative zero-shot pathology scores remain available.",
+                    ["Clinical correlation and standard radiology overread advised."],
+                    "HEDGED",
+                )
             except Exception as e:
                 logger.error("Qwen2-VL generation error: %s", e)
                 return (
