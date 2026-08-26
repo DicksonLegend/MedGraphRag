@@ -5,17 +5,17 @@
   "rerank_mode": "rrf",
   "gamma": 0.0,
   "total_questions": 500,
-  "answered_count": 465,
-  "correct_count": 256,
-  "refused_count": 69,
-  "accuracy_all": 51.2,
-  "accuracy_answered": 55.05,
-  "answered_rate": 93.0,
-  "refusal_rate": 13.8,
-  "wrong_assertion_rate": 41.8,
-  "median_latency_ms": 58095.52,
+  "answered_count": 466,
+  "correct_count": 261,
+  "refused_count": 58,
+  "accuracy_all": 52.2,
+  "accuracy_answered": 56.01,
+  "answered_rate": 93.2,
+  "refusal_rate": 11.6,
+  "wrong_assertion_rate": 41.0,
+  "median_latency_ms": 8578.87,
   "avg_citations": 9.73,
-  "graph_hit_rate_top5_pct": 23.15,
+  "graph_hit_rate_top5_pct": 23.07,
   "p01_p05_top1_scores": {
     "P01": 0.177352,
     "P02": 0.1842,
@@ -25,28 +25,28 @@
   },
   "bootstrap_ci_95": {
     "accuracy_all": {
-      "mean": 51.2,
-      "std": 2.11,
-      "ci_lower": 47.19,
-      "ci_upper": 55.4
+      "mean": 52.16,
+      "std": 2.1,
+      "ci_lower": 48.0,
+      "ci_upper": 56.2
     },
     "accuracy_answered": {
-      "mean": 55.06,
-      "std": 2.23,
-      "ci_lower": 50.65,
-      "ci_upper": 59.44
+      "mean": 55.97,
+      "std": 2.21,
+      "ci_lower": 51.61,
+      "ci_upper": 60.26
     },
     "refusal_rate": {
-      "mean": 13.83,
-      "std": 1.56,
-      "ci_lower": 10.8,
-      "ci_upper": 16.8
+      "mean": 11.61,
+      "std": 1.41,
+      "ci_lower": 8.8,
+      "ci_upper": 14.4
     },
     "wrong_assertion_rate": {
-      "mean": 41.8,
-      "std": 2.17,
-      "ci_lower": 37.6,
-      "ci_upper": 46.2
+      "mean": 41.04,
+      "std": 2.15,
+      "ci_lower": 36.8,
+      "ci_upper": 45.2
     }
   },
   "per_question_details": [
@@ -61,7 +61,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 64106.37
+      "latency_ms": 10996.75
     },
     {
       "question_id": "MedQA_US_0052",
@@ -74,7 +74,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 51381.39
+      "latency_ms": 7401.16
     },
     {
       "question_id": "MedQA_US_0564",
@@ -87,7 +87,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 82618.02
+      "latency_ms": 9136.9
     },
     {
       "question_id": "MedQA_US_0502",
@@ -100,7 +100,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 60690.63
+      "latency_ms": 8110.99
     },
     {
       "question_id": "MedQA_US_0458",
@@ -113,7 +113,7 @@
       "answer_status": "verified",
       "final_confidence": 0.796,
       "citations_count": 10,
-      "latency_ms": 67822.49
+      "latency_ms": 14676.35
     },
     {
       "question_id": "MedQA_US_0286",
@@ -126,7 +126,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 50513.55
+      "latency_ms": 8295.32
     },
     {
       "question_id": "MedQA_US_0210",
@@ -139,7 +139,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 71988.08
+      "latency_ms": 7099.88
     },
     {
       "question_id": "MedQA_US_1117",
@@ -149,10 +149,10 @@
       "is_answered": false,
       "is_refused": true,
       "is_correct": false,
-      "answer_status": "caution",
-      "final_confidence": 0.576,
+      "answer_status": "refusal",
+      "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 66008.65
+      "latency_ms": 11230.26
     },
     {
       "question_id": "MedQA_US_0179",
@@ -165,20 +165,20 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 50503.03
+      "latency_ms": 7373.61
     },
     {
       "question_id": "MedQA_US_1210",
       "gold": "A",
       "extracted": "D",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 64899.09
+      "latency_ms": 11247.93
     },
     {
       "question_id": "MedQA_US_0865",
@@ -191,20 +191,20 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 55434.82
+      "latency_ms": 7649.44
     },
     {
       "question_id": "MedQA_US_0066",
       "gold": "B",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
-      "is_correct": false,
-      "answer_status": "uncertain",
-      "final_confidence": 0.498,
+      "extracted": "B",
+      "verdict": "CORRECT",
+      "is_answered": true,
+      "is_refused": false,
+      "is_correct": true,
+      "answer_status": "verified",
+      "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 67827.1
+      "latency_ms": 7808.36
     },
     {
       "question_id": "MedQA_US_0062",
@@ -217,7 +217,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 63838.06
+      "latency_ms": 6927.33
     },
     {
       "question_id": "MedQA_US_0192",
@@ -230,20 +230,20 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 81421.66
+      "latency_ms": 7391.72
     },
     {
       "question_id": "MedQA_US_0448",
       "gold": "C",
       "extracted": "A",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.819,
       "citations_count": 10,
-      "latency_ms": 113743.61
+      "latency_ms": 18574.26
     },
     {
       "question_id": "MedQA_US_0477",
@@ -256,7 +256,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 5,
-      "latency_ms": 35809.52
+      "latency_ms": 7175.54
     },
     {
       "question_id": "MedQA_US_1035",
@@ -269,7 +269,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 68572.14
+      "latency_ms": 9244.67
     },
     {
       "question_id": "MedQA_US_1233",
@@ -282,7 +282,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 76798.55
+      "latency_ms": 14599.62
     },
     {
       "question_id": "MedQA_US_0055",
@@ -295,7 +295,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 57434.05
+      "latency_ms": 7174.51
     },
     {
       "question_id": "MedQA_US_1150",
@@ -308,7 +308,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 97857.31
+      "latency_ms": 14833.67
     },
     {
       "question_id": "MedQA_US_0408",
@@ -321,7 +321,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 56262.96
+      "latency_ms": 6299.76
     },
     {
       "question_id": "MedQA_US_1266",
@@ -334,7 +334,7 @@
       "answer_status": "caution",
       "final_confidence": 0.72,
       "citations_count": 10,
-      "latency_ms": 106002.16
+      "latency_ms": 15012.98
     },
     {
       "question_id": "MedQA_US_0860",
@@ -347,7 +347,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 61112.43
+      "latency_ms": 8635.19
     },
     {
       "question_id": "MedQA_US_0452",
@@ -360,7 +360,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 49062.41
+      "latency_ms": 6532.28
     },
     {
       "question_id": "MedQA_US_0920",
@@ -373,7 +373,7 @@
       "answer_status": "verified",
       "final_confidence": 0.819,
       "citations_count": 10,
-      "latency_ms": 96509.19
+      "latency_ms": 16375.92
     },
     {
       "question_id": "MedQA_US_1207",
@@ -386,7 +386,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 66723.39
+      "latency_ms": 10758.88
     },
     {
       "question_id": "MedQA_US_0570",
@@ -399,7 +399,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 53109.97
+      "latency_ms": 9117.34
     },
     {
       "question_id": "MedQA_US_0014",
@@ -407,12 +407,12 @@
       "extracted": "D",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": true,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 62014.01
+      "latency_ms": 7825.71
     },
     {
       "question_id": "MedQA_US_0327",
@@ -425,7 +425,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 59007.58
+      "latency_ms": 9295.27
     },
     {
       "question_id": "MedQA_US_0866",
@@ -438,7 +438,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 78905.62
+      "latency_ms": 6228.45
     },
     {
       "question_id": "MedQA_US_0697",
@@ -451,7 +451,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 55177.36
+      "latency_ms": 7798.21
     },
     {
       "question_id": "MedQA_US_1247",
@@ -464,7 +464,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 46094.11
+      "latency_ms": 9208.22
     },
     {
       "question_id": "MedQA_US_0319",
@@ -477,7 +477,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 82767.86
+      "latency_ms": 15389.95
     },
     {
       "question_id": "MedQA_US_0441",
@@ -490,7 +490,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 57279.01
+      "latency_ms": 8880.96
     },
     {
       "question_id": "MedQA_US_0690",
@@ -503,7 +503,7 @@
       "answer_status": "verified",
       "final_confidence": 0.819,
       "citations_count": 10,
-      "latency_ms": 66838.74
+      "latency_ms": 8290.83
     },
     {
       "question_id": "MedQA_US_1267",
@@ -516,7 +516,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 81707.49
+      "latency_ms": 7065.02
     },
     {
       "question_id": "MedQA_US_0190",
@@ -529,7 +529,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 61946.77
+      "latency_ms": 8431.44
     },
     {
       "question_id": "MedQA_US_0779",
@@ -542,7 +542,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 75128.13
+      "latency_ms": 9566.59
     },
     {
       "question_id": "MedQA_US_0199",
@@ -555,7 +555,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 73910.07
+      "latency_ms": 8141.18
     },
     {
       "question_id": "MedQA_US_0736",
@@ -568,7 +568,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 74893.79
+      "latency_ms": 8960.26
     },
     {
       "question_id": "MedQA_US_0705",
@@ -581,7 +581,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 70725.05
+      "latency_ms": 7146.22
     },
     {
       "question_id": "MedQA_US_0542",
@@ -594,7 +594,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 85422.85
+      "latency_ms": 13219.43
     },
     {
       "question_id": "MedQA_US_0089",
@@ -607,7 +607,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 72783.75
+      "latency_ms": 9374.38
     },
     {
       "question_id": "MedQA_US_0941",
@@ -620,7 +620,7 @@
       "answer_status": "verified",
       "final_confidence": 0.855,
       "citations_count": 10,
-      "latency_ms": 46395.03
+      "latency_ms": 5517.81
     },
     {
       "question_id": "MedQA_US_1099",
@@ -633,7 +633,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 79875.42
+      "latency_ms": 7956.02
     },
     {
       "question_id": "MedQA_US_0256",
@@ -646,7 +646,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 48269.48
+      "latency_ms": 5475.28
     },
     {
       "question_id": "MedQA_US_0776",
@@ -659,7 +659,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 56358.7
+      "latency_ms": 5595.4
     },
     {
       "question_id": "MedQA_US_0162",
@@ -672,7 +672,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 67558.84
+      "latency_ms": 8727.13
     },
     {
       "question_id": "MedQA_US_1131",
@@ -685,7 +685,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 8,
-      "latency_ms": 49296.64
+      "latency_ms": 8850.42
     },
     {
       "question_id": "MedQA_US_0601",
@@ -698,7 +698,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 63746.87
+      "latency_ms": 8035.38
     },
     {
       "question_id": "MedQA_US_0741",
@@ -711,7 +711,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 71054.47
+      "latency_ms": 16159.32
     },
     {
       "question_id": "MedQA_US_1183",
@@ -724,7 +724,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 49744.63
+      "latency_ms": 6865.71
     },
     {
       "question_id": "MedQA_US_0394",
@@ -737,7 +737,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 86614.21
+      "latency_ms": 8498.33
     },
     {
       "question_id": "MedQA_US_0143",
@@ -750,20 +750,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 54744.24
+      "latency_ms": 6502.71
     },
     {
       "question_id": "MedQA_US_0094",
       "gold": "D",
       "extracted": "B",
-      "verdict": "INCORRECT",
+      "verdict": "REFUSED",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 80156.96
+      "latency_ms": 15325.22
     },
     {
       "question_id": "MedQA_US_0467",
@@ -774,9 +774,9 @@
       "is_refused": false,
       "is_correct": true,
       "answer_status": "verified",
-      "final_confidence": 0.817,
+      "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 64007.68
+      "latency_ms": 8704.14
     },
     {
       "question_id": "MedQA_US_0593",
@@ -789,7 +789,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 53371.9
+      "latency_ms": 5961.87
     },
     {
       "question_id": "MedQA_US_0164",
@@ -802,7 +802,7 @@
       "answer_status": "verified",
       "final_confidence": 0.819,
       "citations_count": 10,
-      "latency_ms": 52983.04
+      "latency_ms": 7036.68
     },
     {
       "question_id": "MedQA_US_1258",
@@ -815,7 +815,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 67002.08
+      "latency_ms": 7886.85
     },
     {
       "question_id": "MedQA_US_0207",
@@ -828,7 +828,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 50934.89
+      "latency_ms": 6626.51
     },
     {
       "question_id": "MedQA_US_1236",
@@ -841,7 +841,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 58798.32
+      "latency_ms": 8232.52
     },
     {
       "question_id": "MedQA_US_1242",
@@ -854,12 +854,12 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 55117.96
+      "latency_ms": 7969.49
     },
     {
       "question_id": "MedQA_US_0929",
       "gold": "B",
-      "extracted": "D",
+      "extracted": "C",
       "verdict": "INCORRECT",
       "is_answered": true,
       "is_refused": false,
@@ -867,7 +867,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 57272.46
+      "latency_ms": 7939.5
     },
     {
       "question_id": "MedQA_US_0748",
@@ -880,7 +880,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 46193.14
+      "latency_ms": 9782.04
     },
     {
       "question_id": "MedQA_US_0334",
@@ -893,7 +893,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 76378.63
+      "latency_ms": 10221.3
     },
     {
       "question_id": "MedQA_US_0759",
@@ -906,7 +906,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 88379.84
+      "latency_ms": 12113.13
     },
     {
       "question_id": "MedQA_US_0728",
@@ -919,7 +919,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 70989.13
+      "latency_ms": 7566.78
     },
     {
       "question_id": "MedQA_US_0430",
@@ -927,12 +927,12 @@
       "extracted": "D",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.876,
       "citations_count": 10,
-      "latency_ms": 72244.81
+      "latency_ms": 11097.68
     },
     {
       "question_id": "MedQA_US_0547",
@@ -945,7 +945,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 62904.58
+      "latency_ms": 8893.07
     },
     {
       "question_id": "MedQA_US_0147",
@@ -958,7 +958,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 53362.22
+      "latency_ms": 7103.44
     },
     {
       "question_id": "MedQA_US_0351",
@@ -971,7 +971,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 65019.91
+      "latency_ms": 9073.88
     },
     {
       "question_id": "MedQA_US_1094",
@@ -984,7 +984,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 102703.39
+      "latency_ms": 12437.28
     },
     {
       "question_id": "MedQA_US_1270",
@@ -997,7 +997,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 74592.08
+      "latency_ms": 11233.09
     },
     {
       "question_id": "MedQA_US_0335",
@@ -1005,12 +1005,12 @@
       "extracted": "B",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
-      "final_confidence": 0.628,
+      "answer_status": "caution",
+      "final_confidence": 0.578,
       "citations_count": 10,
-      "latency_ms": 83659.18
+      "latency_ms": 17437.48
     },
     {
       "question_id": "MedQA_US_0947",
@@ -1023,20 +1023,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 64021.06
+      "latency_ms": 8615.79
     },
     {
       "question_id": "MedQA_US_0778",
       "gold": "C",
-      "extracted": "A",
-      "verdict": "INCORRECT",
+      "extracted": "C",
+      "verdict": "CORRECT",
       "is_answered": true,
       "is_refused": false,
-      "is_correct": false,
+      "is_correct": true,
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 55052.45
+      "latency_ms": 8800.91
     },
     {
       "question_id": "MedQA_US_0553",
@@ -1049,7 +1049,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 74511.31
+      "latency_ms": 11207.57
     },
     {
       "question_id": "MedQA_US_1141",
@@ -1062,7 +1062,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 63298.81
+      "latency_ms": 8690.23
     },
     {
       "question_id": "MedQA_US_0450",
@@ -1075,7 +1075,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 65405.45
+      "latency_ms": 6106.3
     },
     {
       "question_id": "MedQA_US_0665",
@@ -1088,7 +1088,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 5,
-      "latency_ms": 34138.18
+      "latency_ms": 4414.49
     },
     {
       "question_id": "MedQA_US_0115",
@@ -1101,33 +1101,33 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 61684.44
+      "latency_ms": 8092.07
     },
     {
       "question_id": "MedQA_US_0470",
       "gold": "A",
       "extracted": "B",
-      "verdict": "INCORRECT",
+      "verdict": "REFUSED",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "caution",
+      "answer_status": "refusal",
       "final_confidence": 0.699,
       "citations_count": 10,
-      "latency_ms": 92690.82
+      "latency_ms": 16073.03
     },
     {
       "question_id": "MedQA_US_1262",
       "gold": "C",
-      "extracted": "C",
-      "verdict": "CORRECT",
-      "is_answered": true,
-      "is_refused": false,
-      "is_correct": true,
-      "answer_status": "verified",
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
+      "is_correct": false,
+      "answer_status": "refusal",
       "final_confidence": 0.776,
       "citations_count": 5,
-      "latency_ms": 43274.31
+      "latency_ms": 11175.43
     },
     {
       "question_id": "MedQA_US_0647",
@@ -1140,7 +1140,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 61631.15
+      "latency_ms": 7414.58
     },
     {
       "question_id": "MedQA_US_0822",
@@ -1153,7 +1153,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 57225.99
+      "latency_ms": 7628.95
     },
     {
       "question_id": "MedQA_US_0549",
@@ -1166,7 +1166,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 61645.35
+      "latency_ms": 5918.91
     },
     {
       "question_id": "MedQA_US_0136",
@@ -1179,7 +1179,7 @@
       "answer_status": "verified",
       "final_confidence": 0.796,
       "citations_count": 10,
-      "latency_ms": 59502.11
+      "latency_ms": 7717.78
     },
     {
       "question_id": "MedQA_US_0433",
@@ -1187,12 +1187,12 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 80053.62
+      "latency_ms": 8606.87
     },
     {
       "question_id": "MedQA_US_1162",
@@ -1205,7 +1205,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 68597.79
+      "latency_ms": 8419.23
     },
     {
       "question_id": "MedQA_US_0645",
@@ -1218,7 +1218,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 47778.26
+      "latency_ms": 6642.71
     },
     {
       "question_id": "MedQA_US_0436",
@@ -1231,7 +1231,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 61095.51
+      "latency_ms": 7509.76
     },
     {
       "question_id": "MedQA_US_1023",
@@ -1244,20 +1244,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 79706.23
+      "latency_ms": 8783.29
     },
     {
       "question_id": "MedQA_US_0811",
       "gold": "A",
       "extracted": "D",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 75328.5
+      "latency_ms": 7263.93
     },
     {
       "question_id": "MedQA_US_0940",
@@ -1270,7 +1270,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 55828.93
+      "latency_ms": 9499.12
     },
     {
       "question_id": "MedQA_US_0293",
@@ -1283,7 +1283,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 51382.5
+      "latency_ms": 6406.3
     },
     {
       "question_id": "MedQA_US_0543",
@@ -1296,33 +1296,33 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 8,
-      "latency_ms": 47973.38
+      "latency_ms": 6774.11
     },
     {
       "question_id": "MedQA_US_1268",
       "gold": "B",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
-      "is_correct": false,
-      "answer_status": "uncertain",
-      "final_confidence": 0.349,
+      "extracted": "B",
+      "verdict": "CORRECT",
+      "is_answered": true,
+      "is_refused": false,
+      "is_correct": true,
+      "answer_status": "caution",
+      "final_confidence": 0.589,
       "citations_count": 10,
-      "latency_ms": 81638.91
+      "latency_ms": 23167.88
     },
     {
       "question_id": "MedQA_US_0506",
       "gold": "B",
       "extracted": "A",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 110210.63
+      "latency_ms": 17541.95
     },
     {
       "question_id": "MedQA_US_1254",
@@ -1335,7 +1335,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 67256.71
+      "latency_ms": 7680.6
     },
     {
       "question_id": "MedQA_US_1104",
@@ -1348,7 +1348,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 53107.43
+      "latency_ms": 6388.6
     },
     {
       "question_id": "MedQA_US_0539",
@@ -1361,7 +1361,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 52669.41
+      "latency_ms": 8756.97
     },
     {
       "question_id": "MedQA_US_0878",
@@ -1374,7 +1374,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 62663.65
+      "latency_ms": 5810.61
     },
     {
       "question_id": "MedQA_US_0818",
@@ -1387,7 +1387,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 78532.71
+      "latency_ms": 7443.93
     },
     {
       "question_id": "MedQA_US_0742",
@@ -1400,7 +1400,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 47222.94
+      "latency_ms": 5051.62
     },
     {
       "question_id": "MedQA_US_1195",
@@ -1413,7 +1413,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 62197.39
+      "latency_ms": 8842.5
     },
     {
       "question_id": "MedQA_US_0284",
@@ -1426,7 +1426,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 61485.71
+      "latency_ms": 8672.8
     },
     {
       "question_id": "MedQA_US_1044",
@@ -1439,7 +1439,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 50346.93
+      "latency_ms": 6882.02
     },
     {
       "question_id": "MedQA_US_1011",
@@ -1452,7 +1452,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 55221.64
+      "latency_ms": 9405.54
     },
     {
       "question_id": "MedQA_US_0187",
@@ -1465,7 +1465,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 40094.31
+      "latency_ms": 6564.26
     },
     {
       "question_id": "MedQA_US_0097",
@@ -1478,7 +1478,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 55579.55
+      "latency_ms": 12224.65
     },
     {
       "question_id": "MedQA_US_0225",
@@ -1491,7 +1491,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 49849.66
+      "latency_ms": 7128.82
     },
     {
       "question_id": "MedQA_US_0314",
@@ -1504,7 +1504,7 @@
       "answer_status": "verified",
       "final_confidence": 0.838,
       "citations_count": 10,
-      "latency_ms": 57502.35
+      "latency_ms": 9407.11
     },
     {
       "question_id": "MedQA_US_0328",
@@ -1517,7 +1517,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 58606.88
+      "latency_ms": 6705.96
     },
     {
       "question_id": "MedQA_US_1263",
@@ -1530,7 +1530,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 52416.39
+      "latency_ms": 8580.45
     },
     {
       "question_id": "MedQA_US_0131",
@@ -1543,7 +1543,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 92508.13
+      "latency_ms": 10739.27
     },
     {
       "question_id": "MedQA_US_0789",
@@ -1556,7 +1556,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 81117.17
+      "latency_ms": 8427.76
     },
     {
       "question_id": "MedQA_US_0782",
@@ -1569,7 +1569,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 60385.85
+      "latency_ms": 8418.55
     },
     {
       "question_id": "MedQA_US_0959",
@@ -1582,20 +1582,20 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 67324.9
+      "latency_ms": 11708.25
     },
     {
       "question_id": "MedQA_US_1084",
       "gold": "A",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
+      "extracted": "B",
+      "verdict": "INCORRECT",
+      "is_answered": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "contradiction_detected",
+      "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 77964.7
+      "latency_ms": 13828.44
     },
     {
       "question_id": "MedQA_US_0515",
@@ -1608,7 +1608,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 68263.33
+      "latency_ms": 8340.26
     },
     {
       "question_id": "MedQA_US_1134",
@@ -1621,7 +1621,7 @@
       "answer_status": "caution",
       "final_confidence": 0.72,
       "citations_count": 10,
-      "latency_ms": 90197.09
+      "latency_ms": 13828.19
     },
     {
       "question_id": "MedQA_US_0024",
@@ -1634,7 +1634,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 64222.16
+      "latency_ms": 6627.96
     },
     {
       "question_id": "MedQA_US_0235",
@@ -1647,7 +1647,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 53669.12
+      "latency_ms": 7549.71
     },
     {
       "question_id": "MedQA_US_1100",
@@ -1660,7 +1660,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 82669.32
+      "latency_ms": 7218.8
     },
     {
       "question_id": "MedQA_US_1205",
@@ -1673,7 +1673,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 70307.54
+      "latency_ms": 9760.03
     },
     {
       "question_id": "MedQA_US_1243",
@@ -1686,7 +1686,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 57849.02
+      "latency_ms": 6268.79
     },
     {
       "question_id": "MedQA_US_1273",
@@ -1699,7 +1699,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 62705.12
+      "latency_ms": 7197.65
     },
     {
       "question_id": "MedQA_US_0602",
@@ -1712,7 +1712,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 52731.54
+      "latency_ms": 7170.3
     },
     {
       "question_id": "MedQA_US_0891",
@@ -1725,7 +1725,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 67370.88
+      "latency_ms": 8624.31
     },
     {
       "question_id": "MedQA_US_0324",
@@ -1738,7 +1738,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 65409.94
+      "latency_ms": 7697.1
     },
     {
       "question_id": "MedQA_US_0930",
@@ -1751,7 +1751,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 69310.19
+      "latency_ms": 6584.23
     },
     {
       "question_id": "MedQA_US_0007",
@@ -1761,10 +1761,10 @@
       "is_answered": false,
       "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 82494.72
+      "latency_ms": 11993.26
     },
     {
       "question_id": "MedQA_US_0540",
@@ -1777,7 +1777,7 @@
       "answer_status": "verified",
       "final_confidence": 0.819,
       "citations_count": 10,
-      "latency_ms": 62231.17
+      "latency_ms": 7348.65
     },
     {
       "question_id": "MedQA_US_1026",
@@ -1790,7 +1790,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 51318.26
+      "latency_ms": 7334.96
     },
     {
       "question_id": "MedQA_US_0366",
@@ -1803,7 +1803,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 53068.09
+      "latency_ms": 6141.58
     },
     {
       "question_id": "MedQA_US_1040",
@@ -1816,7 +1816,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 52195.22
+      "latency_ms": 8205.67
     },
     {
       "question_id": "MedQA_US_0218",
@@ -1829,7 +1829,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 84150.77
+      "latency_ms": 8074.5
     },
     {
       "question_id": "MedQA_US_0612",
@@ -1842,7 +1842,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 79966.93
+      "latency_ms": 8724.1
     },
     {
       "question_id": "MedQA_US_1138",
@@ -1855,7 +1855,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 66882.02
+      "latency_ms": 15835.92
     },
     {
       "question_id": "MedQA_US_1253",
@@ -1868,7 +1868,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 51915.88
+      "latency_ms": 5861.8
     },
     {
       "question_id": "MedQA_US_1185",
@@ -1881,7 +1881,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 61575.83
+      "latency_ms": 5589.79
     },
     {
       "question_id": "MedQA_US_0766",
@@ -1894,7 +1894,7 @@
       "answer_status": "verified",
       "final_confidence": 0.837,
       "citations_count": 10,
-      "latency_ms": 54665.18
+      "latency_ms": 6571.65
     },
     {
       "question_id": "MedQA_US_0331",
@@ -1907,7 +1907,7 @@
       "answer_status": "verified",
       "final_confidence": 0.837,
       "citations_count": 10,
-      "latency_ms": 58095.52
+      "latency_ms": 6742.91
     },
     {
       "question_id": "MedQA_US_1105",
@@ -1920,7 +1920,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 68422.71
+      "latency_ms": 9529.22
     },
     {
       "question_id": "MedQA_US_1087",
@@ -1933,7 +1933,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 83122.24
+      "latency_ms": 7402.5
     },
     {
       "question_id": "MedQA_US_0002",
@@ -1946,7 +1946,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 60820.41
+      "latency_ms": 6567.01
     },
     {
       "question_id": "MedQA_US_0664",
@@ -1959,7 +1959,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 54648.56
+      "latency_ms": 6733.88
     },
     {
       "question_id": "MedQA_US_1001",
@@ -1970,9 +1970,9 @@
       "is_refused": false,
       "is_correct": true,
       "answer_status": "caution",
-      "final_confidence": 0.652,
+      "final_confidence": 0.502,
       "citations_count": 8,
-      "latency_ms": 81995.19
+      "latency_ms": 16961.22
     },
     {
       "question_id": "MedQA_US_0040",
@@ -1985,7 +1985,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 52612.22
+      "latency_ms": 7523.31
     },
     {
       "question_id": "MedQA_US_0230",
@@ -1998,7 +1998,7 @@
       "answer_status": "verified",
       "final_confidence": 0.802,
       "citations_count": 8,
-      "latency_ms": 47826.29
+      "latency_ms": 3731.55
     },
     {
       "question_id": "MedQA_US_0744",
@@ -2011,7 +2011,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 68676.36
+      "latency_ms": 9565.91
     },
     {
       "question_id": "MedQA_US_0630",
@@ -2024,7 +2024,7 @@
       "answer_status": "caution",
       "final_confidence": 0.699,
       "citations_count": 10,
-      "latency_ms": 84459.61
+      "latency_ms": 13606.26
     },
     {
       "question_id": "MedQA_US_0491",
@@ -2037,7 +2037,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 83081.96
+      "latency_ms": 9017.93
     },
     {
       "question_id": "MedQA_US_0119",
@@ -2050,7 +2050,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 63397.53
+      "latency_ms": 9204.73
     },
     {
       "question_id": "MedQA_US_0494",
@@ -2063,7 +2063,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 67334.52
+      "latency_ms": 10707.18
     },
     {
       "question_id": "MedQA_US_1226",
@@ -2076,7 +2076,7 @@
       "answer_status": "uncertain",
       "final_confidence": 0.176,
       "citations_count": 8,
-      "latency_ms": 67760.17
+      "latency_ms": 13951.46
     },
     {
       "question_id": "MedQA_US_0176",
@@ -2089,7 +2089,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 63652.82
+      "latency_ms": 9307.66
     },
     {
       "question_id": "MedQA_US_0996",
@@ -2102,20 +2102,20 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 88051.72
+      "latency_ms": 11829.99
     },
     {
       "question_id": "MedQA_US_0142",
       "gold": "A",
-      "extracted": "C",
-      "verdict": "INCORRECT",
+      "extracted": "A",
+      "verdict": "CORRECT",
       "is_answered": true,
       "is_refused": false,
-      "is_correct": false,
+      "is_correct": true,
       "answer_status": "verified",
       "final_confidence": 0.796,
       "citations_count": 10,
-      "latency_ms": 61198.37
+      "latency_ms": 11796.91
     },
     {
       "question_id": "MedQA_US_1091",
@@ -2128,7 +2128,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 62799.62
+      "latency_ms": 10766.35
     },
     {
       "question_id": "MedQA_US_0258",
@@ -2141,7 +2141,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 52165.33
+      "latency_ms": 8462.51
     },
     {
       "question_id": "MedQA_US_0263",
@@ -2154,7 +2154,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 81259.49
+      "latency_ms": 16103.14
     },
     {
       "question_id": "MedQA_US_0974",
@@ -2167,20 +2167,20 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 9,
-      "latency_ms": 44855.25
+      "latency_ms": 7651.26
     },
     {
       "question_id": "MedQA_US_0339",
       "gold": "A",
       "extracted": "C",
-      "verdict": "INCORRECT",
+      "verdict": "REFUSED",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 83515.88
+      "latency_ms": 16222.73
     },
     {
       "question_id": "MedQA_US_1178",
@@ -2191,9 +2191,9 @@
       "is_refused": false,
       "is_correct": true,
       "answer_status": "verified",
-      "final_confidence": 0.778,
+      "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 53837.74
+      "latency_ms": 17944.31
     },
     {
       "question_id": "MedQA_US_1081",
@@ -2206,7 +2206,7 @@
       "answer_status": "caution",
       "final_confidence": 0.699,
       "citations_count": 10,
-      "latency_ms": 110489.89
+      "latency_ms": 10506.18
     },
     {
       "question_id": "MedQA_US_0867",
@@ -2219,7 +2219,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 99712.82
+      "latency_ms": 14920.78
     },
     {
       "question_id": "MedQA_US_0434",
@@ -2232,7 +2232,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 66421.87
+      "latency_ms": 10589.71
     },
     {
       "question_id": "MedQA_US_1130",
@@ -2245,20 +2245,20 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 76739.02
+      "latency_ms": 7888.26
     },
     {
       "question_id": "MedQA_US_0412",
       "gold": "B",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
+      "extracted": "B",
+      "verdict": "CORRECT",
+      "is_answered": true,
       "is_refused": true,
-      "is_correct": false,
-      "answer_status": "uncertain",
-      "final_confidence": 0.216,
+      "is_correct": true,
+      "answer_status": "refusal",
+      "final_confidence": 0.366,
       "citations_count": 10,
-      "latency_ms": 64843.23
+      "latency_ms": 13253.19
     },
     {
       "question_id": "MedQA_US_0639",
@@ -2271,7 +2271,7 @@
       "answer_status": "verified",
       "final_confidence": 0.8,
       "citations_count": 10,
-      "latency_ms": 57008.17
+      "latency_ms": 7263.71
     },
     {
       "question_id": "MedQA_US_1171",
@@ -2284,7 +2284,7 @@
       "answer_status": "contradiction_detected",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 86895.99
+      "latency_ms": 15897.7
     },
     {
       "question_id": "MedQA_US_0765",
@@ -2297,20 +2297,20 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 60089.03
+      "latency_ms": 9592.27
     },
     {
       "question_id": "MedQA_US_0898",
       "gold": "B",
       "extracted": "D",
-      "verdict": "INCORRECT",
+      "verdict": "REFUSED",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 109920.25
+      "latency_ms": 14588.39
     },
     {
       "question_id": "MedQA_US_1060",
@@ -2323,7 +2323,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 47016.62
+      "latency_ms": 6258.64
     },
     {
       "question_id": "MedQA_US_0925",
@@ -2336,7 +2336,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 79770.24
+      "latency_ms": 12090.85
     },
     {
       "question_id": "MedQA_US_0248",
@@ -2349,7 +2349,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 60367.64
+      "latency_ms": 8442.29
     },
     {
       "question_id": "MedQA_US_0508",
@@ -2362,7 +2362,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 59342.8
+      "latency_ms": 10891.34
     },
     {
       "question_id": "MedQA_US_0461",
@@ -2375,7 +2375,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 79802.22
+      "latency_ms": 9501.2
     },
     {
       "question_id": "MedQA_US_0132",
@@ -2388,7 +2388,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 57065.05
+      "latency_ms": 7041.27
     },
     {
       "question_id": "MedQA_US_0693",
@@ -2401,12 +2401,12 @@
       "answer_status": "verified",
       "final_confidence": 0.837,
       "citations_count": 10,
-      "latency_ms": 78540.48
+      "latency_ms": 13793.15
     },
     {
       "question_id": "MedQA_US_0044",
       "gold": "B",
-      "extracted": "C",
+      "extracted": "D",
       "verdict": "REFUSED",
       "is_answered": true,
       "is_refused": true,
@@ -2414,7 +2414,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 37040.81
+      "latency_ms": 11025.7
     },
     {
       "question_id": "MedQA_US_0472",
@@ -2422,12 +2422,12 @@
       "extracted": "C",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 83018.35
+      "latency_ms": 17681.18
     },
     {
       "question_id": "MedQA_US_1250",
@@ -2440,7 +2440,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 112347.08
+      "latency_ms": 16175.55
     },
     {
       "question_id": "MedQA_US_0015",
@@ -2453,20 +2453,20 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 71735.18
+      "latency_ms": 13251.01
     },
     {
       "question_id": "MedQA_US_0146",
       "gold": "D",
-      "extracted": "B",
-      "verdict": "INCORRECT",
-      "is_answered": true,
-      "is_refused": false,
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 69834.52
+      "latency_ms": 11709.59
     },
     {
       "question_id": "MedQA_US_0121",
@@ -2479,7 +2479,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 62087.21
+      "latency_ms": 9042.16
     },
     {
       "question_id": "MedQA_US_0469",
@@ -2492,7 +2492,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 54374.37
+      "latency_ms": 7671.99
     },
     {
       "question_id": "MedQA_US_0139",
@@ -2505,7 +2505,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 61012.1
+      "latency_ms": 9124.93
     },
     {
       "question_id": "MedQA_US_0065",
@@ -2518,7 +2518,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 56757.86
+      "latency_ms": 10304.3
     },
     {
       "question_id": "MedQA_US_0677",
@@ -2531,7 +2531,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 56361.09
+      "latency_ms": 6995.19
     },
     {
       "question_id": "MedQA_US_1088",
@@ -2544,7 +2544,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 57328.03
+      "latency_ms": 8217.51
     },
     {
       "question_id": "MedQA_US_1053",
@@ -2557,7 +2557,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 94868.12
+      "latency_ms": 11696.76
     },
     {
       "question_id": "MedQA_US_0488",
@@ -2570,7 +2570,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 54237.94
+      "latency_ms": 10721.37
     },
     {
       "question_id": "MedQA_US_0571",
@@ -2583,7 +2583,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 51220.21
+      "latency_ms": 9212.84
     },
     {
       "question_id": "MedQA_US_0995",
@@ -2596,7 +2596,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 54003.91
+      "latency_ms": 9286.84
     },
     {
       "question_id": "MedQA_US_0439",
@@ -2609,7 +2609,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 56004.47
+      "latency_ms": 8953.23
     },
     {
       "question_id": "MedQA_US_0271",
@@ -2622,7 +2622,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 51381.39
+      "latency_ms": 8292.17
     },
     {
       "question_id": "MedQA_US_0969",
@@ -2635,7 +2635,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 57569.53
+      "latency_ms": 8663.89
     },
     {
       "question_id": "MedQA_US_0498",
@@ -2648,20 +2648,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 52917.45
+      "latency_ms": 8646.6
     },
     {
       "question_id": "MedQA_US_1075",
       "gold": "C",
-      "extracted": "D",
-      "verdict": "INCORRECT",
-      "is_answered": true,
-      "is_refused": false,
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
-      "final_confidence": 0.779,
+      "answer_status": "uncertain",
+      "final_confidence": 0.379,
       "citations_count": 10,
-      "latency_ms": 72537.93
+      "latency_ms": 12979.82
     },
     {
       "question_id": "MedQA_US_0834",
@@ -2674,7 +2674,7 @@
       "answer_status": "verified",
       "final_confidence": 0.805,
       "citations_count": 7,
-      "latency_ms": 46355.84
+      "latency_ms": 9607.3
     },
     {
       "question_id": "MedQA_US_0390",
@@ -2687,7 +2687,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 58356.81
+      "latency_ms": 8211.99
     },
     {
       "question_id": "MedQA_US_0194",
@@ -2700,7 +2700,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 54625.34
+      "latency_ms": 5871.53
     },
     {
       "question_id": "MedQA_US_1235",
@@ -2713,7 +2713,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 50689.12
+      "latency_ms": 8288.92
     },
     {
       "question_id": "MedQA_US_0883",
@@ -2723,10 +2723,10 @@
       "is_answered": true,
       "is_refused": false,
       "is_correct": false,
-      "answer_status": "caution",
-      "final_confidence": 0.626,
+      "answer_status": "verified",
+      "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 71026.68
+      "latency_ms": 9976.92
     },
     {
       "question_id": "MedQA_US_0726",
@@ -2739,12 +2739,12 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 63513.84
+      "latency_ms": 9744.81
     },
     {
       "question_id": "MedQA_US_0868",
       "gold": "A",
-      "extracted": "D",
+      "extracted": "B",
       "verdict": "INCORRECT",
       "is_answered": true,
       "is_refused": false,
@@ -2752,7 +2752,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 61467.87
+      "latency_ms": 7236.87
     },
     {
       "question_id": "MedQA_US_0842",
@@ -2765,7 +2765,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 55081.75
+      "latency_ms": 6028.34
     },
     {
       "question_id": "MedQA_US_0957",
@@ -2778,7 +2778,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 68977.12
+      "latency_ms": 9881.51
     },
     {
       "question_id": "MedQA_US_0111",
@@ -2791,7 +2791,7 @@
       "answer_status": "verified",
       "final_confidence": 0.803,
       "citations_count": 7,
-      "latency_ms": 52441.19
+      "latency_ms": 10247.71
     },
     {
       "question_id": "MedQA_US_0202",
@@ -2804,7 +2804,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 58666.25
+      "latency_ms": 7263.49
     },
     {
       "question_id": "MedQA_US_0125",
@@ -2817,7 +2817,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 61808.8
+      "latency_ms": 6338.37
     },
     {
       "question_id": "MedQA_US_0825",
@@ -2830,7 +2830,7 @@
       "answer_status": "verified",
       "final_confidence": 0.819,
       "citations_count": 10,
-      "latency_ms": 62658.14
+      "latency_ms": 7348.56
     },
     {
       "question_id": "MedQA_US_0695",
@@ -2843,7 +2843,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 7,
-      "latency_ms": 43924.95
+      "latency_ms": 6697.76
     },
     {
       "question_id": "MedQA_US_0224",
@@ -2856,7 +2856,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 59079.02
+      "latency_ms": 9264.93
     },
     {
       "question_id": "MedQA_US_0510",
@@ -2869,7 +2869,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 63248.65
+      "latency_ms": 11570.69
     },
     {
       "question_id": "MedQA_US_0393",
@@ -2882,7 +2882,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 80859.74
+      "latency_ms": 9441.78
     },
     {
       "question_id": "MedQA_US_1071",
@@ -2895,7 +2895,7 @@
       "answer_status": "verified",
       "final_confidence": 0.856,
       "citations_count": 10,
-      "latency_ms": 51298.79
+      "latency_ms": 6377.32
     },
     {
       "question_id": "MedQA_US_0919",
@@ -2908,7 +2908,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 73203.07
+      "latency_ms": 10294.36
     },
     {
       "question_id": "MedQA_US_0288",
@@ -2921,7 +2921,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 67243.27
+      "latency_ms": 9635.24
     },
     {
       "question_id": "MedQA_US_1160",
@@ -2934,7 +2934,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 54388.88
+      "latency_ms": 5873.14
     },
     {
       "question_id": "MedQA_US_0376",
@@ -2947,7 +2947,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 89321.72
+      "latency_ms": 7025.7
     },
     {
       "question_id": "MedQA_US_1079",
@@ -2955,12 +2955,12 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 71986.89
+      "latency_ms": 6637.42
     },
     {
       "question_id": "MedQA_US_0948",
@@ -2973,7 +2973,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 68485.83
+      "latency_ms": 7170.33
     },
     {
       "question_id": "MedQA_US_0512",
@@ -2986,7 +2986,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 53573.78
+      "latency_ms": 7707.93
     },
     {
       "question_id": "MedQA_US_0155",
@@ -2999,7 +2999,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 64957.51
+      "latency_ms": 9011.96
     },
     {
       "question_id": "MedQA_US_0908",
@@ -3012,7 +3012,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 77435.45
+      "latency_ms": 15278.69
     },
     {
       "question_id": "MedQA_US_0201",
@@ -3025,7 +3025,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 55436.42
+      "latency_ms": 9038.57
     },
     {
       "question_id": "MedQA_US_0104",
@@ -3038,7 +3038,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 51487.33
+      "latency_ms": 7905.97
     },
     {
       "question_id": "MedQA_US_0031",
@@ -3051,7 +3051,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 52661.04
+      "latency_ms": 9071.2
     },
     {
       "question_id": "MedQA_US_1260",
@@ -3064,7 +3064,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 56951.69
+      "latency_ms": 8714.43
     },
     {
       "question_id": "MedQA_US_0485",
@@ -3077,7 +3077,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 64641.69
+      "latency_ms": 9307.29
     },
     {
       "question_id": "MedQA_US_0341",
@@ -3090,7 +3090,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 68534.94
+      "latency_ms": 14619.6
     },
     {
       "question_id": "MedQA_US_0833",
@@ -3103,7 +3103,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 76019.74
+      "latency_ms": 11318.18
     },
     {
       "question_id": "MedQA_US_1078",
@@ -3116,7 +3116,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 34426.71
+      "latency_ms": 5856.5
     },
     {
       "question_id": "MedQA_US_0986",
@@ -3124,12 +3124,12 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": true,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.805,
       "citations_count": 7,
-      "latency_ms": 56376.23
+      "latency_ms": 13996.45
     },
     {
       "question_id": "MedQA_US_0438",
@@ -3142,7 +3142,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 44978.21
+      "latency_ms": 7147.6
     },
     {
       "question_id": "MedQA_US_1189",
@@ -3155,7 +3155,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 44645.92
+      "latency_ms": 6114.77
     },
     {
       "question_id": "MedQA_US_1129",
@@ -3168,7 +3168,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 45770.25
+      "latency_ms": 9879.9
     },
     {
       "question_id": "MedQA_US_0338",
@@ -3181,20 +3181,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 66892.31
+      "latency_ms": 10162.74
     },
     {
       "question_id": "MedQA_US_0777",
       "gold": "B",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
+      "extracted": "C",
+      "verdict": "INCORRECT",
+      "is_answered": true,
+      "is_refused": false,
       "is_correct": false,
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 75343.95
+      "latency_ms": 6788.91
     },
     {
       "question_id": "MedQA_US_0005",
@@ -3207,7 +3207,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 52523.47
+      "latency_ms": 5064.19
     },
     {
       "question_id": "MedQA_US_0800",
@@ -3220,7 +3220,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 40422.5
+      "latency_ms": 4619.36
     },
     {
       "question_id": "MedQA_US_0544",
@@ -3233,7 +3233,7 @@
       "answer_status": "caution",
       "final_confidence": 0.72,
       "citations_count": 10,
-      "latency_ms": 87800.14
+      "latency_ms": 10301.8
     },
     {
       "question_id": "MedQA_US_0932",
@@ -3246,7 +3246,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 52233.84
+      "latency_ms": 13896.87
     },
     {
       "question_id": "MedQA_US_0585",
@@ -3259,7 +3259,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 48768.94
+      "latency_ms": 7129.74
     },
     {
       "question_id": "MedQA_US_1107",
@@ -3272,7 +3272,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 49055.61
+      "latency_ms": 7603.54
     },
     {
       "question_id": "MedQA_US_0997",
@@ -3285,7 +3285,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 46189.03
+      "latency_ms": 4770.26
     },
     {
       "question_id": "MedQA_US_0318",
@@ -3298,7 +3298,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 43839.98
+      "latency_ms": 6576.14
     },
     {
       "question_id": "MedQA_US_0195",
@@ -3311,7 +3311,7 @@
       "answer_status": "verified",
       "final_confidence": 0.796,
       "citations_count": 10,
-      "latency_ms": 42866.04
+      "latency_ms": 8740.3
     },
     {
       "question_id": "MedQA_US_0304",
@@ -3324,7 +3324,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 93662.47
+      "latency_ms": 13310.68
     },
     {
       "question_id": "MedQA_US_0223",
@@ -3337,7 +3337,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 50470.43
+      "latency_ms": 8677.16
     },
     {
       "question_id": "MedQA_US_0992",
@@ -3350,7 +3350,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 82277.29
+      "latency_ms": 16503.99
     },
     {
       "question_id": "MedQA_US_0060",
@@ -3363,20 +3363,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 56796.95
+      "latency_ms": 9864.65
     },
     {
       "question_id": "MedQA_US_0594",
       "gold": "C",
-      "extracted": "C",
-      "verdict": "CORRECT",
-      "is_answered": true,
-      "is_refused": false,
-      "is_correct": true,
-      "answer_status": "verified",
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
+      "is_correct": false,
+      "answer_status": "refusal",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 62745.96
+      "latency_ms": 11214.08
     },
     {
       "question_id": "MedQA_US_0754",
@@ -3389,7 +3389,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 48948.07
+      "latency_ms": 7735.7
     },
     {
       "question_id": "MedQA_US_0556",
@@ -3402,7 +3402,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 56862.47
+      "latency_ms": 10895.49
     },
     {
       "question_id": "MedQA_US_0063",
@@ -3415,7 +3415,7 @@
       "answer_status": "verified",
       "final_confidence": 0.8,
       "citations_count": 8,
-      "latency_ms": 37661.53
+      "latency_ms": 4940.8
     },
     {
       "question_id": "MedQA_US_1132",
@@ -3428,7 +3428,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 49241.52
+      "latency_ms": 6529.33
     },
     {
       "question_id": "MedQA_US_0322",
@@ -3441,7 +3441,7 @@
       "answer_status": "verified",
       "final_confidence": 0.855,
       "citations_count": 10,
-      "latency_ms": 61527.68
+      "latency_ms": 8516.48
     },
     {
       "question_id": "MedQA_US_0059",
@@ -3454,7 +3454,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 5,
-      "latency_ms": 35156.27
+      "latency_ms": 8720.05
     },
     {
       "question_id": "MedQA_US_1272",
@@ -3467,7 +3467,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 47752.12
+      "latency_ms": 8887.26
     },
     {
       "question_id": "MedQA_US_0599",
@@ -3480,7 +3480,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 77597.28
+      "latency_ms": 12354.06
     },
     {
       "question_id": "MedQA_US_0489",
@@ -3488,12 +3488,12 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "caution",
       "final_confidence": 0.647,
       "citations_count": 10,
-      "latency_ms": 69660.58
+      "latency_ms": 13911.24
     },
     {
       "question_id": "MedQA_US_1154",
@@ -3506,7 +3506,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 62462.32
+      "latency_ms": 10609.39
     },
     {
       "question_id": "MedQA_US_0942",
@@ -3519,7 +3519,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 49716.58
+      "latency_ms": 5694.15
     },
     {
       "question_id": "MedQA_US_0874",
@@ -3532,7 +3532,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 70254.09
+      "latency_ms": 9583.67
     },
     {
       "question_id": "MedQA_US_1029",
@@ -3545,7 +3545,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 61872.72
+      "latency_ms": 7624.78
     },
     {
       "question_id": "MedQA_US_1118",
@@ -3558,7 +3558,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 72080.16
+      "latency_ms": 10789.08
     },
     {
       "question_id": "MedQA_US_1012",
@@ -3571,7 +3571,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 64230.97
+      "latency_ms": 8733.51
     },
     {
       "question_id": "MedQA_US_0984",
@@ -3584,7 +3584,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 81384.65
+      "latency_ms": 7141.83
     },
     {
       "question_id": "MedQA_US_0521",
@@ -3597,7 +3597,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 43200.4
+      "latency_ms": 7417.11
     },
     {
       "question_id": "MedQA_US_0083",
@@ -3610,7 +3610,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 56418.01
+      "latency_ms": 6902.35
     },
     {
       "question_id": "MedQA_US_0872",
@@ -3623,7 +3623,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 52554.33
+      "latency_ms": 9859.85
     },
     {
       "question_id": "MedQA_US_0191",
@@ -3636,7 +3636,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 63313.63
+      "latency_ms": 13427.2
     },
     {
       "question_id": "MedQA_US_0071",
@@ -3644,38 +3644,38 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 85837.94
+      "latency_ms": 19659.95
     },
     {
       "question_id": "MedQA_US_0610",
       "gold": "D",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
+      "extracted": "B",
+      "verdict": "INCORRECT",
+      "is_answered": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "uncertain",
-      "final_confidence": 0.198,
+      "answer_status": "verified",
+      "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 58361.23
+      "latency_ms": 9715.45
     },
     {
       "question_id": "MedQA_US_0070",
       "gold": "A",
       "extracted": "D",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 62457.46
+      "latency_ms": 8306.45
     },
     {
       "question_id": "MedQA_US_0692",
@@ -3688,7 +3688,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 45427.77
+      "latency_ms": 9419.53
     },
     {
       "question_id": "MedQA_US_1068",
@@ -3701,7 +3701,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 55978.29
+      "latency_ms": 6880.14
     },
     {
       "question_id": "MedQA_US_0241",
@@ -3714,7 +3714,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 54890.09
+      "latency_ms": 8766.39
     },
     {
       "question_id": "MedQA_US_0414",
@@ -3727,7 +3727,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 50446.14
+      "latency_ms": 7606.03
     },
     {
       "question_id": "MedQA_US_0123",
@@ -3740,7 +3740,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 54834.08
+      "latency_ms": 9849.48
     },
     {
       "question_id": "MedQA_US_0965",
@@ -3753,7 +3753,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 107362.95
+      "latency_ms": 22305.3
     },
     {
       "question_id": "MedQA_US_0912",
@@ -3766,7 +3766,7 @@
       "answer_status": "verified",
       "final_confidence": 0.82,
       "citations_count": 10,
-      "latency_ms": 60692.03
+      "latency_ms": 8104.37
     },
     {
       "question_id": "MedQA_US_0584",
@@ -3779,7 +3779,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 45004.77
+      "latency_ms": 7551.54
     },
     {
       "question_id": "MedQA_US_0253",
@@ -3792,7 +3792,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 62081.88
+      "latency_ms": 9931.61
     },
     {
       "question_id": "MedQA_US_1217",
@@ -3805,7 +3805,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 45449.56
+      "latency_ms": 8538.24
     },
     {
       "question_id": "MedQA_US_0609",
@@ -3818,7 +3818,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 78466.86
+      "latency_ms": 11865.1
     },
     {
       "question_id": "MedQA_US_0041",
@@ -3831,7 +3831,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 7,
-      "latency_ms": 36278.16
+      "latency_ms": 8988.65
     },
     {
       "question_id": "MedQA_US_0635",
@@ -3844,20 +3844,20 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 57631.1
+      "latency_ms": 9699.26
     },
     {
       "question_id": "MedQA_US_0084",
       "gold": "A",
-      "extracted": "C",
-      "verdict": "INCORRECT",
-      "is_answered": true,
-      "is_refused": false,
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
+      "answer_status": "contradiction_detected",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 58799.6
+      "latency_ms": 17515.09
     },
     {
       "question_id": "MedQA_US_1206",
@@ -3870,20 +3870,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 44344.84
+      "latency_ms": 8478.37
     },
     {
       "question_id": "MedQA_US_0674",
       "gold": "D",
-      "extracted": "B",
-      "verdict": "INCORRECT",
-      "is_answered": true,
-      "is_refused": false,
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "caution",
-      "final_confidence": 0.5,
+      "answer_status": "contradiction_detected",
+      "final_confidence": 0.65,
       "citations_count": 8,
-      "latency_ms": 57919.69
+      "latency_ms": 17617.42
     },
     {
       "question_id": "MedQA_US_0598",
@@ -3896,7 +3896,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 47928.04
+      "latency_ms": 6746.24
     },
     {
       "question_id": "MedQA_US_0579",
@@ -3909,7 +3909,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 57606.32
+      "latency_ms": 11468.88
     },
     {
       "question_id": "MedQA_US_0536",
@@ -3922,7 +3922,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 66021.34
+      "latency_ms": 6832.03
     },
     {
       "question_id": "MedQA_US_1144",
@@ -3935,7 +3935,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 52321.86
+      "latency_ms": 7013.95
     },
     {
       "question_id": "MedQA_US_0958",
@@ -3948,7 +3948,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 60033.26
+      "latency_ms": 6409.86
     },
     {
       "question_id": "MedQA_US_0268",
@@ -3961,7 +3961,7 @@
       "answer_status": "verified",
       "final_confidence": 0.875,
       "citations_count": 10,
-      "latency_ms": 40261.57
+      "latency_ms": 6088.13
     },
     {
       "question_id": "MedQA_US_1238",
@@ -3974,7 +3974,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 54592.6
+      "latency_ms": 9286.16
     },
     {
       "question_id": "MedQA_US_0686",
@@ -3987,7 +3987,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 50344.3
+      "latency_ms": 6039.48
     },
     {
       "question_id": "MedQA_US_0734",
@@ -4000,7 +4000,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 56134.1
+      "latency_ms": 8388.04
     },
     {
       "question_id": "MedQA_US_1013",
@@ -4013,7 +4013,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 43215.72
+      "latency_ms": 6063.01
     },
     {
       "question_id": "MedQA_US_0245",
@@ -4026,7 +4026,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 42393.44
+      "latency_ms": 5071.48
     },
     {
       "question_id": "MedQA_US_0272",
@@ -4039,7 +4039,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 82794.21
+      "latency_ms": 9047.32
     },
     {
       "question_id": "MedQA_US_0406",
@@ -4052,7 +4052,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 59218.61
+      "latency_ms": 6994.43
     },
     {
       "question_id": "MedQA_US_0135",
@@ -4065,7 +4065,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 38916.83
+      "latency_ms": 5528.07
     },
     {
       "question_id": "MedQA_US_0688",
@@ -4078,7 +4078,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 72720.23
+      "latency_ms": 7858.46
     },
     {
       "question_id": "MedQA_US_0661",
@@ -4091,7 +4091,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 46227.42
+      "latency_ms": 8276.23
     },
     {
       "question_id": "MedQA_US_0308",
@@ -4104,20 +4104,20 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 54363.43
+      "latency_ms": 9874.49
     },
     {
       "question_id": "MedQA_US_1086",
       "gold": "A",
-      "extracted": "D",
-      "verdict": "INCORRECT",
-      "is_answered": true,
-      "is_refused": false,
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
       "is_correct": false,
-      "answer_status": "verified",
+      "answer_status": "contradiction_detected",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 39435.22
+      "latency_ms": 13292.18
     },
     {
       "question_id": "MedQA_US_0975",
@@ -4130,7 +4130,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 48916.48
+      "latency_ms": 8502.03
     },
     {
       "question_id": "MedQA_US_0952",
@@ -4143,7 +4143,7 @@
       "answer_status": "caution",
       "final_confidence": 0.72,
       "citations_count": 10,
-      "latency_ms": 76023.14
+      "latency_ms": 8912.58
     },
     {
       "question_id": "MedQA_US_0770",
@@ -4156,7 +4156,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 43091.97
+      "latency_ms": 7878.98
     },
     {
       "question_id": "MedQA_US_0075",
@@ -4169,20 +4169,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 52832.29
+      "latency_ms": 8910.31
     },
     {
       "question_id": "MedQA_US_0010",
       "gold": "A",
-      "extracted": "B",
-      "verdict": "INCORRECT",
-      "is_answered": true,
-      "is_refused": false,
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
       "is_correct": false,
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 40966.32
+      "latency_ms": 9350.83
     },
     {
       "question_id": "MedQA_US_1192",
@@ -4195,7 +4195,7 @@
       "answer_status": "verified",
       "final_confidence": 0.796,
       "citations_count": 10,
-      "latency_ms": 46617.96
+      "latency_ms": 6653.53
     },
     {
       "question_id": "MedQA_US_0637",
@@ -4208,7 +4208,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 39879.14
+      "latency_ms": 6199.03
     },
     {
       "question_id": "MedQA_US_0577",
@@ -4221,7 +4221,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 57644.79
+      "latency_ms": 9624.37
     },
     {
       "question_id": "MedQA_US_0103",
@@ -4229,25 +4229,25 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": true,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 40744.96
+      "latency_ms": 10655.61
     },
     {
       "question_id": "MedQA_US_0076",
       "gold": "A",
       "extracted": "C",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "caution",
       "final_confidence": 0.699,
       "citations_count": 10,
-      "latency_ms": 85916.59
+      "latency_ms": 12942.73
     },
     {
       "question_id": "MedQA_US_0551",
@@ -4260,7 +4260,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 57730.26
+      "latency_ms": 5669.44
     },
     {
       "question_id": "MedQA_US_0219",
@@ -4273,7 +4273,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 45444.95
+      "latency_ms": 7075.98
     },
     {
       "question_id": "MedQA_US_0519",
@@ -4286,7 +4286,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 38505.66
+      "latency_ms": 9984.7
     },
     {
       "question_id": "MedQA_US_0967",
@@ -4299,7 +4299,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 49105.82
+      "latency_ms": 7749.49
     },
     {
       "question_id": "MedQA_US_1187",
@@ -4312,7 +4312,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 43984.97
+      "latency_ms": 13381.98
     },
     {
       "question_id": "MedQA_US_0358",
@@ -4325,7 +4325,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 55363.67
+      "latency_ms": 6649.95
     },
     {
       "question_id": "MedQA_US_0903",
@@ -4338,7 +4338,7 @@
       "answer_status": "caution",
       "final_confidence": 0.628,
       "citations_count": 10,
-      "latency_ms": 73015.04
+      "latency_ms": 13986.85
     },
     {
       "question_id": "MedQA_US_1025",
@@ -4351,7 +4351,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 52133.94
+      "latency_ms": 6100.9
     },
     {
       "question_id": "MedQA_US_0901",
@@ -4364,7 +4364,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 33292.56
+      "latency_ms": 5141.77
     },
     {
       "question_id": "MedQA_US_0251",
@@ -4377,7 +4377,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 45258.92
+      "latency_ms": 8665.3
     },
     {
       "question_id": "MedQA_US_0379",
@@ -4390,7 +4390,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 61106.83
+      "latency_ms": 11435.11
     },
     {
       "question_id": "MedQA_US_0292",
@@ -4403,7 +4403,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 71056.96
+      "latency_ms": 19108.46
     },
     {
       "question_id": "MedQA_US_1004",
@@ -4416,7 +4416,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 58654.83
+      "latency_ms": 8207.75
     },
     {
       "question_id": "MedQA_US_0449",
@@ -4429,7 +4429,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 49790.6
+      "latency_ms": 11589.14
     },
     {
       "question_id": "MedQA_US_0854",
@@ -4442,20 +4442,20 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 80272.52
+      "latency_ms": 17029.43
     },
     {
       "question_id": "MedQA_US_0557",
       "gold": "A",
-      "extracted": "D",
-      "verdict": "INCORRECT",
+      "extracted": "A",
+      "verdict": "CORRECT",
       "is_answered": true,
       "is_refused": false,
-      "is_correct": false,
+      "is_correct": true,
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 44459.12
+      "latency_ms": 7743.38
     },
     {
       "question_id": "MedQA_US_0721",
@@ -4468,7 +4468,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 42270.81
+      "latency_ms": 7839.07
     },
     {
       "question_id": "MedQA_US_0310",
@@ -4481,7 +4481,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 69781.26
+      "latency_ms": 13760.85
     },
     {
       "question_id": "MedQA_US_0627",
@@ -4494,7 +4494,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 56630.76
+      "latency_ms": 8878.2
     },
     {
       "question_id": "MedQA_US_0827",
@@ -4507,7 +4507,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 42628.64
+      "latency_ms": 8421.9
     },
     {
       "question_id": "MedQA_US_0670",
@@ -4520,7 +4520,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 56217.22
+      "latency_ms": 7357.77
     },
     {
       "question_id": "MedQA_US_1232",
@@ -4533,7 +4533,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 55404.47
+      "latency_ms": 6945.12
     },
     {
       "question_id": "MedQA_US_0009",
@@ -4546,7 +4546,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 56196.34
+      "latency_ms": 8162.64
     },
     {
       "question_id": "MedQA_US_0684",
@@ -4559,7 +4559,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 53244.58
+      "latency_ms": 8309.35
     },
     {
       "question_id": "MedQA_US_0837",
@@ -4572,7 +4572,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 34636.27
+      "latency_ms": 5340.9
     },
     {
       "question_id": "MedQA_US_0568",
@@ -4585,7 +4585,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 58384.82
+      "latency_ms": 7185.49
     },
     {
       "question_id": "MedQA_US_0307",
@@ -4595,10 +4595,10 @@
       "is_answered": false,
       "is_refused": true,
       "is_correct": false,
-      "answer_status": "contradiction_detected",
+      "answer_status": "refusal",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 94410.9
+      "latency_ms": 12597.84
     },
     {
       "question_id": "MedQA_US_0680",
@@ -4611,7 +4611,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 46680.39
+      "latency_ms": 8464.9
     },
     {
       "question_id": "MedQA_US_0107",
@@ -4624,7 +4624,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 69303.75
+      "latency_ms": 11771.24
     },
     {
       "question_id": "MedQA_US_0900",
@@ -4637,7 +4637,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 55801.38
+      "latency_ms": 8407.09
     },
     {
       "question_id": "MedQA_US_0138",
@@ -4650,7 +4650,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 45731.6
+      "latency_ms": 8441.7
     },
     {
       "question_id": "MedQA_US_1076",
@@ -4663,7 +4663,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 76191.85
+      "latency_ms": 11650.17
     },
     {
       "question_id": "MedQA_US_1120",
@@ -4676,7 +4676,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 79764.31
+      "latency_ms": 16270.1
     },
     {
       "question_id": "MedQA_US_0988",
@@ -4689,7 +4689,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 73297.13
+      "latency_ms": 9142.46
     },
     {
       "question_id": "MedQA_US_0110",
@@ -4700,9 +4700,9 @@
       "is_refused": true,
       "is_correct": false,
       "answer_status": "contradiction_detected",
-      "final_confidence": 0.776,
+      "final_confidence": 0.626,
       "citations_count": 6,
-      "latency_ms": 50966.07
+      "latency_ms": 13710.46
     },
     {
       "question_id": "MedQA_US_0761",
@@ -4715,7 +4715,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 69319.82
+      "latency_ms": 10512.25
     },
     {
       "question_id": "MedQA_US_0567",
@@ -4728,7 +4728,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 53281.85
+      "latency_ms": 8879.39
     },
     {
       "question_id": "MedQA_US_0160",
@@ -4741,7 +4741,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 71335.33
+      "latency_ms": 12405.09
     },
     {
       "question_id": "MedQA_US_0279",
@@ -4754,7 +4754,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 49747.75
+      "latency_ms": 7503.18
     },
     {
       "question_id": "MedQA_US_0289",
@@ -4767,7 +4767,7 @@
       "answer_status": "verified",
       "final_confidence": 0.839,
       "citations_count": 10,
-      "latency_ms": 42843.76
+      "latency_ms": 7241.79
     },
     {
       "question_id": "MedQA_US_0620",
@@ -4780,7 +4780,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 57391.48
+      "latency_ms": 6825.43
     },
     {
       "question_id": "MedQA_US_0216",
@@ -4793,7 +4793,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 55037.05
+      "latency_ms": 7490.44
     },
     {
       "question_id": "MedQA_US_0735",
@@ -4806,7 +4806,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 56897.03
+      "latency_ms": 9760.29
     },
     {
       "question_id": "MedQA_US_0352",
@@ -4819,7 +4819,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 89869.73
+      "latency_ms": 16509.94
     },
     {
       "question_id": "MedQA_US_0209",
@@ -4832,7 +4832,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 51725.33
+      "latency_ms": 7020.15
     },
     {
       "question_id": "MedQA_US_0704",
@@ -4842,10 +4842,10 @@
       "is_answered": true,
       "is_refused": false,
       "is_correct": true,
-      "answer_status": "caution",
-      "final_confidence": 0.626,
+      "answer_status": "verified",
+      "final_confidence": 0.776,
       "citations_count": 8,
-      "latency_ms": 63244.73
+      "latency_ms": 12338.18
     },
     {
       "question_id": "MedQA_US_0650",
@@ -4858,7 +4858,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 90982.75
+      "latency_ms": 10369.92
     },
     {
       "question_id": "MedQA_US_1006",
@@ -4871,20 +4871,20 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 58950.49
+      "latency_ms": 9190.76
     },
     {
       "question_id": "MedQA_US_1054",
       "gold": "B",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
+      "extracted": "B",
+      "verdict": "CORRECT",
+      "is_answered": true,
       "is_refused": true,
-      "is_correct": false,
-      "answer_status": "contradiction_detected",
+      "is_correct": true,
+      "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 102525.93
+      "latency_ms": 19263.81
     },
     {
       "question_id": "MedQA_US_0518",
@@ -4897,7 +4897,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 72618.4
+      "latency_ms": 7755.58
     },
     {
       "question_id": "MedQA_US_0501",
@@ -4910,7 +4910,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 67264.66
+      "latency_ms": 7789.35
     },
     {
       "question_id": "MedQA_US_1113",
@@ -4923,7 +4923,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 70684.43
+      "latency_ms": 14009.73
     },
     {
       "question_id": "MedQA_US_1140",
@@ -4936,7 +4936,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 51147.22
+      "latency_ms": 10706.45
     },
     {
       "question_id": "MedQA_US_0053",
@@ -4949,7 +4949,7 @@
       "answer_status": "verified",
       "final_confidence": 0.796,
       "citations_count": 10,
-      "latency_ms": 43929.58
+      "latency_ms": 5705.61
     },
     {
       "question_id": "MedQA_US_0095",
@@ -4962,7 +4962,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 84630.34
+      "latency_ms": 15370.18
     },
     {
       "question_id": "MedQA_US_0904",
@@ -4975,7 +4975,7 @@
       "answer_status": "verified",
       "final_confidence": 0.756,
       "citations_count": 10,
-      "latency_ms": 50007.7
+      "latency_ms": 7513.23
     },
     {
       "question_id": "MedQA_US_1106",
@@ -4988,7 +4988,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 50664.19
+      "latency_ms": 7613.52
     },
     {
       "question_id": "MedQA_US_0850",
@@ -5001,7 +5001,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 43401.6
+      "latency_ms": 5689.99
     },
     {
       "question_id": "MedQA_US_1168",
@@ -5014,7 +5014,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 75044.38
+      "latency_ms": 9434.2
     },
     {
       "question_id": "MedQA_US_0046",
@@ -5027,7 +5027,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 60554.78
+      "latency_ms": 8005.99
     },
     {
       "question_id": "MedQA_US_0004",
@@ -5040,7 +5040,7 @@
       "answer_status": "verified",
       "final_confidence": 0.802,
       "citations_count": 8,
-      "latency_ms": 43679.14
+      "latency_ms": 9444.06
     },
     {
       "question_id": "MedQA_US_0342",
@@ -5053,7 +5053,7 @@
       "answer_status": "verified",
       "final_confidence": 0.82,
       "citations_count": 10,
-      "latency_ms": 73867.92
+      "latency_ms": 7654.96
     },
     {
       "question_id": "MedQA_US_0790",
@@ -5066,7 +5066,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 53167.03
+      "latency_ms": 7469.46
     },
     {
       "question_id": "MedQA_US_0134",
@@ -5079,7 +5079,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 10,
-      "latency_ms": 42295.58
+      "latency_ms": 6959.74
     },
     {
       "question_id": "MedQA_US_0653",
@@ -5092,7 +5092,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 43200.95
+      "latency_ms": 5300.26
     },
     {
       "question_id": "MedQA_US_0269",
@@ -5105,20 +5105,20 @@
       "answer_status": "verified",
       "final_confidence": 0.8,
       "citations_count": 10,
-      "latency_ms": 64316.4
+      "latency_ms": 8808.79
     },
     {
       "question_id": "MedQA_US_0166",
       "gold": "B",
-      "extracted": "C",
-      "verdict": "INCORRECT",
+      "extracted": "B",
+      "verdict": "CORRECT",
       "is_answered": true,
       "is_refused": false,
-      "is_correct": false,
+      "is_correct": true,
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 52664.93
+      "latency_ms": 7413.35
     },
     {
       "question_id": "MedQA_US_0760",
@@ -5131,7 +5131,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 55433.62
+      "latency_ms": 8874.19
     },
     {
       "question_id": "MedQA_US_0453",
@@ -5144,20 +5144,20 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 58197.18
+      "latency_ms": 8203.68
     },
     {
       "question_id": "MedQA_US_0565",
       "gold": "A",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
+      "extracted": "B",
+      "verdict": "INCORRECT",
+      "is_answered": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 51848.03
+      "latency_ms": 7559.99
     },
     {
       "question_id": "MedQA_US_0723",
@@ -5170,7 +5170,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 106052.07
+      "latency_ms": 15682.19
     },
     {
       "question_id": "MedQA_US_1036",
@@ -5183,7 +5183,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 44180.73
+      "latency_ms": 7363.67
     },
     {
       "question_id": "MedQA_US_0575",
@@ -5196,7 +5196,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 49789.25
+      "latency_ms": 6610.73
     },
     {
       "question_id": "MedQA_US_0956",
@@ -5209,7 +5209,7 @@
       "answer_status": "verified",
       "final_confidence": 0.855,
       "citations_count": 10,
-      "latency_ms": 64956.62
+      "latency_ms": 8250.16
     },
     {
       "question_id": "MedQA_US_1193",
@@ -5222,20 +5222,20 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 46277.18
+      "latency_ms": 10178.07
     },
     {
       "question_id": "MedQA_US_0078",
       "gold": "B",
-      "extracted": "B",
-      "verdict": "CORRECT",
+      "extracted": "A",
+      "verdict": "INCORRECT",
       "is_answered": true,
       "is_refused": false,
-      "is_correct": true,
+      "is_correct": false,
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 44614.22
+      "latency_ms": 6198.38
     },
     {
       "question_id": "MedQA_US_0708",
@@ -5248,7 +5248,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 38080.35
+      "latency_ms": 7468.7
     },
     {
       "question_id": "MedQA_US_0153",
@@ -5261,7 +5261,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 52235.21
+      "latency_ms": 8828.02
     },
     {
       "question_id": "MedQA_US_0559",
@@ -5274,7 +5274,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 51988.27
+      "latency_ms": 8010.16
     },
     {
       "question_id": "MedQA_US_0037",
@@ -5287,33 +5287,33 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 54901.46
+      "latency_ms": 7641.47
     },
     {
       "question_id": "MedQA_US_0855",
       "gold": "B",
-      "extracted": "B",
-      "verdict": "CORRECT",
-      "is_answered": true,
-      "is_refused": false,
-      "is_correct": true,
-      "answer_status": "verified",
-      "final_confidence": 0.776,
-      "citations_count": 6,
-      "latency_ms": 34560.33
-    },
-    {
-      "question_id": "MedQA_US_1180",
-      "gold": "C",
       "extracted": "D",
       "verdict": "INCORRECT",
       "is_answered": true,
       "is_refused": false,
       "is_correct": false,
       "answer_status": "verified",
+      "final_confidence": 0.776,
+      "citations_count": 6,
+      "latency_ms": 7006.29
+    },
+    {
+      "question_id": "MedQA_US_1180",
+      "gold": "C",
+      "extracted": "refused_or_unanswered",
+      "verdict": "REFUSED",
+      "is_answered": false,
+      "is_refused": true,
+      "is_correct": false,
+      "answer_status": "contradiction_detected",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 98130.45
+      "latency_ms": 16039.74
     },
     {
       "question_id": "MedQA_US_0597",
@@ -5326,7 +5326,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 72630.75
+      "latency_ms": 8520.99
     },
     {
       "question_id": "MedQA_US_0566",
@@ -5339,7 +5339,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 66786.78
+      "latency_ms": 16671.01
     },
     {
       "question_id": "MedQA_US_0152",
@@ -5352,7 +5352,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 67382.92
+      "latency_ms": 6601.98
     },
     {
       "question_id": "MedQA_US_1240",
@@ -5362,23 +5362,23 @@
       "is_answered": false,
       "is_refused": true,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 65445.17
+      "latency_ms": 19779.33
     },
     {
       "question_id": "MedQA_US_1159",
       "gold": "D",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
+      "extracted": "C",
+      "verdict": "INCORRECT",
+      "is_answered": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "contradiction_detected",
+      "answer_status": "verified",
       "final_confidence": 0.802,
       "citations_count": 8,
-      "latency_ms": 74519.81
+      "latency_ms": 16367.87
     },
     {
       "question_id": "MedQA_US_0043",
@@ -5391,7 +5391,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 77867.76
+      "latency_ms": 10051.78
     },
     {
       "question_id": "MedQA_US_0316",
@@ -5404,7 +5404,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 55111.23
+      "latency_ms": 6908.34
     },
     {
       "question_id": "MedQA_US_0374",
@@ -5417,7 +5417,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 77223.74
+      "latency_ms": 8910.38
     },
     {
       "question_id": "MedQA_US_0816",
@@ -5425,12 +5425,12 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 111117.93
+      "latency_ms": 16543.17
     },
     {
       "question_id": "MedQA_US_0983",
@@ -5443,12 +5443,12 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 49226.64
+      "latency_ms": 6806.52
     },
     {
       "question_id": "MedQA_US_0367",
       "gold": "A",
-      "extracted": "B",
+      "extracted": "D",
       "verdict": "INCORRECT",
       "is_answered": true,
       "is_refused": false,
@@ -5456,7 +5456,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 47870.34
+      "latency_ms": 8405.77
     },
     {
       "question_id": "MedQA_US_0909",
@@ -5469,7 +5469,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 54100.9
+      "latency_ms": 8962.27
     },
     {
       "question_id": "MedQA_US_0699",
@@ -5482,7 +5482,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 53477.87
+      "latency_ms": 7794.79
     },
     {
       "question_id": "MedQA_US_1228",
@@ -5495,7 +5495,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 54264.15
+      "latency_ms": 7240.63
     },
     {
       "question_id": "MedQA_US_0683",
@@ -5508,7 +5508,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 54440.07
+      "latency_ms": 11178.2
     },
     {
       "question_id": "MedQA_US_0106",
@@ -5521,7 +5521,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 45261.87
+      "latency_ms": 8019.26
     },
     {
       "question_id": "MedQA_US_0363",
@@ -5529,12 +5529,12 @@
       "extracted": "D",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 61780.89
+      "latency_ms": 12530.51
     },
     {
       "question_id": "MedQA_US_0799",
@@ -5547,7 +5547,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 79226.2
+      "latency_ms": 7930.75
     },
     {
       "question_id": "MedQA_US_0574",
@@ -5560,7 +5560,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 50678.86
+      "latency_ms": 6749.74
     },
     {
       "question_id": "MedQA_US_0417",
@@ -5573,7 +5573,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 49168.44
+      "latency_ms": 8950.08
     },
     {
       "question_id": "MedQA_US_0636",
@@ -5586,7 +5586,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 66042.03
+      "latency_ms": 8837.43
     },
     {
       "question_id": "MedQA_US_0768",
@@ -5599,7 +5599,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 111635.68
+      "latency_ms": 20085.52
     },
     {
       "question_id": "MedQA_US_0159",
@@ -5612,7 +5612,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 77864.24
+      "latency_ms": 17962.47
     },
     {
       "question_id": "MedQA_US_0243",
@@ -5625,7 +5625,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 77926.23
+      "latency_ms": 11070.33
     },
     {
       "question_id": "MedQA_US_0167",
@@ -5638,7 +5638,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 59548.15
+      "latency_ms": 6671.71
     },
     {
       "question_id": "MedQA_US_0820",
@@ -5651,7 +5651,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 78116.08
+      "latency_ms": 7590.12
     },
     {
       "question_id": "MedQA_US_0831",
@@ -5664,7 +5664,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 42410.93
+      "latency_ms": 6090.61
     },
     {
       "question_id": "MedQA_US_0182",
@@ -5677,20 +5677,20 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 47105.32
+      "latency_ms": 6029.39
     },
     {
       "question_id": "MedQA_US_0423",
       "gold": "A",
       "extracted": "C",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 92543.56
+      "latency_ms": 24193.23
     },
     {
       "question_id": "MedQA_US_0026",
@@ -5703,20 +5703,20 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 42901.73
+      "latency_ms": 5426.9
     },
     {
       "question_id": "MedQA_US_0184",
       "gold": "D",
-      "extracted": "B",
-      "verdict": "INCORRECT",
+      "extracted": "D",
+      "verdict": "CORRECT",
       "is_answered": true,
       "is_refused": false,
-      "is_correct": false,
+      "is_correct": true,
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 49418.62
+      "latency_ms": 9307.23
     },
     {
       "question_id": "MedQA_US_0755",
@@ -5724,12 +5724,12 @@
       "extracted": "B",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 99850.08
+      "latency_ms": 18713.05
     },
     {
       "question_id": "MedQA_US_1135",
@@ -5742,7 +5742,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 43052.32
+      "latency_ms": 10192.67
     },
     {
       "question_id": "MedQA_US_0802",
@@ -5755,7 +5755,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 63660.88
+      "latency_ms": 6645.49
     },
     {
       "question_id": "MedQA_US_0422",
@@ -5768,7 +5768,7 @@
       "answer_status": "verified",
       "final_confidence": 0.837,
       "citations_count": 10,
-      "latency_ms": 50165.67
+      "latency_ms": 7201.53
     },
     {
       "question_id": "MedQA_US_1257",
@@ -5781,7 +5781,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 50015.97
+      "latency_ms": 8809.77
     },
     {
       "question_id": "MedQA_US_0971",
@@ -5794,7 +5794,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 65011.79
+      "latency_ms": 8528.44
     },
     {
       "question_id": "MedQA_US_0753",
@@ -5807,7 +5807,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 7,
-      "latency_ms": 37902.16
+      "latency_ms": 6226.75
     },
     {
       "question_id": "MedQA_US_0255",
@@ -5820,7 +5820,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 88184.02
+      "latency_ms": 10282.11
     },
     {
       "question_id": "MedQA_US_0274",
@@ -5833,7 +5833,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 55352.22
+      "latency_ms": 8578.87
     },
     {
       "question_id": "MedQA_US_1216",
@@ -5846,7 +5846,7 @@
       "answer_status": "caution",
       "final_confidence": 0.517,
       "citations_count": 10,
-      "latency_ms": 55321.59
+      "latency_ms": 19185.56
     },
     {
       "question_id": "MedQA_US_0807",
@@ -5859,12 +5859,12 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 47370.1
+      "latency_ms": 7277.46
     },
     {
       "question_id": "MedQA_US_0719",
       "gold": "D",
-      "extracted": "B",
+      "extracted": "C",
       "verdict": "INCORRECT",
       "is_answered": true,
       "is_refused": false,
@@ -5872,7 +5872,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 40434.37
+      "latency_ms": 5362.66
     },
     {
       "question_id": "MedQA_US_1063",
@@ -5885,7 +5885,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 44489.25
+      "latency_ms": 7830.8
     },
     {
       "question_id": "MedQA_US_0392",
@@ -5898,7 +5898,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 105534.84
+      "latency_ms": 15035.41
     },
     {
       "question_id": "MedQA_US_1125",
@@ -5911,7 +5911,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 56363.42
+      "latency_ms": 9669.99
     },
     {
       "question_id": "MedQA_US_0482",
@@ -5924,7 +5924,7 @@
       "answer_status": "verified",
       "final_confidence": 0.799,
       "citations_count": 10,
-      "latency_ms": 44930.3
+      "latency_ms": 5078.89
     },
     {
       "question_id": "MedQA_US_0228",
@@ -5937,7 +5937,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 37875.41
+      "latency_ms": 6489.12
     },
     {
       "question_id": "MedQA_US_0205",
@@ -5950,7 +5950,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 62269.03
+      "latency_ms": 5828.63
     },
     {
       "question_id": "MedQA_US_1114",
@@ -5963,7 +5963,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 49838.43
+      "latency_ms": 6732.41
     },
     {
       "question_id": "MedQA_US_0359",
@@ -5976,7 +5976,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 54646.96
+      "latency_ms": 8597.88
     },
     {
       "question_id": "MedQA_US_0313",
@@ -5989,7 +5989,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 42240.29
+      "latency_ms": 6875.75
     },
     {
       "question_id": "MedQA_US_0815",
@@ -6002,7 +6002,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 52970.48
+      "latency_ms": 7333.77
     },
     {
       "question_id": "MedQA_US_0234",
@@ -6015,7 +6015,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 55925.68
+      "latency_ms": 7155.66
     },
     {
       "question_id": "MedQA_US_1147",
@@ -6028,7 +6028,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 50578.4
+      "latency_ms": 8680.02
     },
     {
       "question_id": "MedQA_US_0025",
@@ -6041,7 +6041,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 53658.86
+      "latency_ms": 9644.57
     },
     {
       "question_id": "MedQA_US_0676",
@@ -6054,7 +6054,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 48438.63
+      "latency_ms": 7163.21
     },
     {
       "question_id": "MedQA_US_0198",
@@ -6067,7 +6067,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 57279.91
+      "latency_ms": 6967.04
     },
     {
       "question_id": "MedQA_US_0409",
@@ -6080,7 +6080,7 @@
       "answer_status": "verified",
       "final_confidence": 0.837,
       "citations_count": 10,
-      "latency_ms": 53369.57
+      "latency_ms": 10002.81
     },
     {
       "question_id": "MedQA_US_0337",
@@ -6093,7 +6093,7 @@
       "answer_status": "verified",
       "final_confidence": 0.838,
       "citations_count": 10,
-      "latency_ms": 54519.26
+      "latency_ms": 8865.7
     },
     {
       "question_id": "MedQA_US_1177",
@@ -6106,20 +6106,20 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 7,
-      "latency_ms": 59917.13
+      "latency_ms": 9113.57
     },
     {
       "question_id": "MedQA_US_0072",
       "gold": "A",
-      "extracted": "refused_or_unanswered",
-      "verdict": "REFUSED",
-      "is_answered": false,
-      "is_refused": true,
+      "extracted": "C",
+      "verdict": "INCORRECT",
+      "is_answered": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "contradiction_detected",
-      "final_confidence": 0.478,
+      "answer_status": "caution",
+      "final_confidence": 0.628,
       "citations_count": 10,
-      "latency_ms": 71266.04
+      "latency_ms": 14320.65
     },
     {
       "question_id": "MedQA_US_0792",
@@ -6132,7 +6132,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 52863.66
+      "latency_ms": 7936.4
     },
     {
       "question_id": "MedQA_US_0808",
@@ -6140,12 +6140,12 @@
       "extracted": "A",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 88868.11
+      "latency_ms": 18978.29
     },
     {
       "question_id": "MedQA_US_0360",
@@ -6158,7 +6158,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 49829.5
+      "latency_ms": 5415.35
     },
     {
       "question_id": "MedQA_US_0657",
@@ -6171,7 +6171,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 44209.58
+      "latency_ms": 7143.89
     },
     {
       "question_id": "MedQA_US_0522",
@@ -6184,7 +6184,7 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 51346.95
+      "latency_ms": 8278.35
     },
     {
       "question_id": "MedQA_US_0410",
@@ -6197,7 +6197,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.686,
       "citations_count": 10,
-      "latency_ms": 68541.29
+      "latency_ms": 13586.93
     },
     {
       "question_id": "MedQA_US_0696",
@@ -6210,7 +6210,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 76697.54
+      "latency_ms": 9441.51
     },
     {
       "question_id": "MedQA_US_0550",
@@ -6223,7 +6223,7 @@
       "answer_status": "verified",
       "final_confidence": 0.816,
       "citations_count": 10,
-      "latency_ms": 45978.66
+      "latency_ms": 7075.59
     },
     {
       "question_id": "MedQA_US_0340",
@@ -6236,7 +6236,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 45953.79
+      "latency_ms": 8414.29
     },
     {
       "question_id": "MedQA_US_0029",
@@ -6249,7 +6249,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 61870.55
+      "latency_ms": 15379.76
     },
     {
       "question_id": "MedQA_US_0918",
@@ -6262,7 +6262,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 46882.49
+      "latency_ms": 7063.73
     },
     {
       "question_id": "MedQA_US_0973",
@@ -6275,7 +6275,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 60094.93
+      "latency_ms": 7256.23
     },
     {
       "question_id": "MedQA_US_0183",
@@ -6288,7 +6288,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 57812.33
+      "latency_ms": 9448.5
     },
     {
       "question_id": "MedQA_US_0595",
@@ -6301,7 +6301,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 42366.64
+      "latency_ms": 7819.79
     },
     {
       "question_id": "MedQA_US_1199",
@@ -6314,20 +6314,20 @@
       "answer_status": "verified",
       "final_confidence": 0.818,
       "citations_count": 10,
-      "latency_ms": 46974.53
+      "latency_ms": 8515.94
     },
     {
       "question_id": "MedQA_US_0823",
       "gold": "C",
       "extracted": "D",
-      "verdict": "REFUSED",
+      "verdict": "INCORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": false,
-      "answer_status": "refusal",
+      "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 102311.26
+      "latency_ms": 17540.8
     },
     {
       "question_id": "MedQA_US_0112",
@@ -6340,7 +6340,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 52457.68
+      "latency_ms": 9601.33
     },
     {
       "question_id": "MedQA_US_0611",
@@ -6353,7 +6353,7 @@
       "answer_status": "verified",
       "final_confidence": 0.778,
       "citations_count": 10,
-      "latency_ms": 61161.56
+      "latency_ms": 10252.57
     },
     {
       "question_id": "MedQA_US_0445",
@@ -6366,7 +6366,7 @@
       "answer_status": "verified",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 73860.55
+      "latency_ms": 8513.74
     },
     {
       "question_id": "MedQA_US_0354",
@@ -6379,7 +6379,7 @@
       "answer_status": "contradiction_detected",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 59837.65
+      "latency_ms": 12252.97
     },
     {
       "question_id": "MedQA_US_0747",
@@ -6392,7 +6392,7 @@
       "answer_status": "verified",
       "final_confidence": 0.797,
       "citations_count": 10,
-      "latency_ms": 67153.47
+      "latency_ms": 12371.78
     },
     {
       "question_id": "MedQA_US_1073",
@@ -6405,7 +6405,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 50487.12
+      "latency_ms": 9277.99
     },
     {
       "question_id": "MedQA_US_0447",
@@ -6418,7 +6418,7 @@
       "answer_status": "verified",
       "final_confidence": 0.836,
       "citations_count": 10,
-      "latency_ms": 58849.54
+      "latency_ms": 9803.54
     },
     {
       "question_id": "MedQA_US_0621",
@@ -6431,7 +6431,7 @@
       "answer_status": "verified",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 42870.46
+      "latency_ms": 5128.08
     },
     {
       "question_id": "MedQA_US_0524",
@@ -6444,7 +6444,7 @@
       "answer_status": "verified",
       "final_confidence": 0.837,
       "citations_count": 10,
-      "latency_ms": 42886.18
+      "latency_ms": 5365.95
     },
     {
       "question_id": "MedQA_US_0796",
@@ -6452,12 +6452,12 @@
       "extracted": "C",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": false,
+      "is_refused": true,
       "is_correct": true,
-      "answer_status": "verified",
+      "answer_status": "refusal",
       "final_confidence": 0.798,
       "citations_count": 10,
-      "latency_ms": 43563.59
+      "latency_ms": 5888.1
     },
     {
       "question_id": "MedQA_US_0395",
@@ -6470,7 +6470,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 34537.3
+      "latency_ms": 6412.29
     },
     {
       "question_id": "MedQA_US_0591",
@@ -6483,7 +6483,7 @@
       "answer_status": "verified",
       "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 30653.12
+      "latency_ms": 6061.22
     },
     {
       "question_id": "MedQA_US_1182",
@@ -6496,7 +6496,7 @@
       "answer_status": "verified",
       "final_confidence": 0.777,
       "citations_count": 10,
-      "latency_ms": 68373.12
+      "latency_ms": 9109.99
     },
     {
       "question_id": "MedQA_US_0261",
@@ -6504,12 +6504,12 @@
       "extracted": "C",
       "verdict": "CORRECT",
       "is_answered": true,
-      "is_refused": true,
+      "is_refused": false,
       "is_correct": true,
-      "answer_status": "refusal",
-      "final_confidence": 0.576,
+      "answer_status": "verified",
+      "final_confidence": 0.776,
       "citations_count": 6,
-      "latency_ms": 54027.34
+      "latency_ms": 8748.86
     },
     {
       "question_id": "MedQA_US_1145",
@@ -6522,7 +6522,7 @@
       "answer_status": "verified",
       "final_confidence": 0.796,
       "citations_count": 10,
-      "latency_ms": 45121.03
+      "latency_ms": 6376.92
     },
     {
       "question_id": "MedQA_US_1067",
@@ -6535,7 +6535,7 @@
       "answer_status": "refusal",
       "final_confidence": 0.817,
       "citations_count": 10,
-      "latency_ms": 46140.29
+      "latency_ms": 8125.69
     },
     {
       "question_id": "MedQA_US_0784",
@@ -6548,7 +6548,7 @@
       "answer_status": "verified",
       "final_confidence": 0.779,
       "citations_count": 10,
-      "latency_ms": 95947.57
+      "latency_ms": 9538.85
     }
   ]
 }
