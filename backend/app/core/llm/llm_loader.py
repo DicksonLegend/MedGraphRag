@@ -39,11 +39,13 @@ def _ensure_cuda_ld_path() -> None:
             new_ld = ":".join(nvidia_lib_dirs) + (f":{current_ld}" if current_ld else "")
             os.environ["LD_LIBRARY_PATH"] = new_ld
 
-            # Pre-load libcudart and libcublas using ctypes
+            # Pre-load libcudart and libcublas using ctypes (excluding libnvblas)
             for dir_path in nvidia_lib_dirs:
                 cudart_so = list(Path(dir_path).glob("libcudart.so*"))
                 cublas_so = list(Path(dir_path).glob("libcublas.so*"))
                 for lib_file in cudart_so + cublas_so:
+                    if "nvblas" in lib_file.name:
+                        continue
                     try:
                         ctypes.CDLL(str(lib_file), mode=ctypes.RTLD_GLOBAL)
                     except Exception:

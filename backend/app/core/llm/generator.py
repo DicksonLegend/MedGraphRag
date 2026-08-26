@@ -54,6 +54,7 @@ class GeneratorService:
         destination: str = "global",
         top_n: Optional[int] = None,
         category_filter: Optional[List[str]] = None,
+        retrieval_result: Optional[RetrievalResult] = None,
     ) -> AnswerResult:
         """
         Execute full RAG pipeline for a given query.
@@ -68,6 +69,8 @@ class GeneratorService:
             Number of retrieval items to fetch.
         category_filter : list of str, optional
             Category restriction for retrieval.
+        retrieval_result : RetrievalResult, optional
+            Pre-computed retrieval result to avoid redundant retrieval calls.
 
         Returns
         -------
@@ -77,15 +80,19 @@ class GeneratorService:
         latency_breakdown: Dict[str, float] = {}
 
         # ── Stage 1: Hybrid Retrieval ─────────────────────────────────────────
-        t0 = time.perf_counter()
-        retrieval_req = RetrievalRequest(
-            query=query,
-            destination=destination,
-            top_n=top_n,
-            category_filter=category_filter,
-        )
-        retrieval_res: RetrievalResult = self.retrieval_service.retrieve(retrieval_req)
-        latency_breakdown["retrieval_ms"] = (time.perf_counter() - t0) * 1000
+        if retrieval_result is not None:
+            retrieval_res = retrieval_result
+            latency_breakdown["retrieval_ms"] = sum(retrieval_res.latency_breakdown_ms.values()) if retrieval_res.latency_breakdown_ms else 0.0
+        else:
+            t0 = time.perf_counter()
+            retrieval_req = RetrievalRequest(
+                query=query,
+                destination=destination,
+                top_n=top_n,
+                category_filter=category_filter,
+            )
+            retrieval_res: RetrievalResult = self.retrieval_service.retrieve(retrieval_req)
+            latency_breakdown["retrieval_ms"] = (time.perf_counter() - t0) * 1000
 
         # Copy over fine-grained retrieval latency breakdown
         for k, v in retrieval_res.latency_breakdown_ms.items():

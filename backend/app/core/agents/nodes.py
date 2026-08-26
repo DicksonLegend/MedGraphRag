@@ -82,7 +82,31 @@ def query_agent_node(state: MedGraphState) -> Dict[str, Any]:
     pipeline = _get_pipeline()
     retrieval_req = RetrievalRequest(query=query, destination=destination)
     retrieval_res = pipeline.retrieval_service.retrieve(retrieval_req)
-    verified_res: VerifiedAnswerResult = pipeline.answer(query=query, destination=destination)
+    answer_res = pipeline.generator_service.generate(
+        query=query,
+        destination=destination,
+        retrieval_result=retrieval_res,
+    )
+    if settings.pipeline_verification_enabled:
+        verified_res = pipeline.verification_agent.verify(
+            answer_result=answer_res,
+            retrieval_result=retrieval_res,
+        )
+    else:
+        conf = answer_res.evidence_confidence
+        conf_tier = "high" if conf >= 0.7 else ("medium" if conf >= 0.5 else "low")
+        verified_res = VerifiedAnswerResult(
+            **answer_res.model_dump(),
+            answer_status="verified",
+            final_confidence=conf,
+            confidence_tier=conf_tier,
+            faithfulness_score=1.0,
+            verification_ms=0.0,
+            fallback_used=False,
+            claim_verdicts=[],
+            reasoning="Verification skipped via pipeline_verification_enabled=False.",
+            retry_count=0,
+        )
 
     return {"retrieval_result": retrieval_res, "verified_result": verified_res}
 
@@ -100,8 +124,13 @@ def knowledge_agent_node(state: MedGraphState) -> Dict[str, Any]:
     retrieval_req = RetrievalRequest(query=query, destination=destination, top_n=12)
     retrieval_res: RetrievalResult = ret_svc.retrieve(retrieval_req)
 
-    # Step B: Generate RAG answer
-    answer_res: AnswerResult = gen_svc.generate(query=query, destination=destination, top_n=12)
+    # Step B: Generate RAG answer reusing pre-retrieved candidates
+    answer_res: AnswerResult = gen_svc.generate(
+        query=query,
+        destination=destination,
+        top_n=12,
+        retrieval_result=retrieval_res,
+    )
 
     # Step C: Verification & Gating
     verified_res: VerifiedAnswerResult = verif_agent.verify(

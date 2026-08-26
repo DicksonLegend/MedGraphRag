@@ -609,42 +609,42 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
                   <div className="space-y-1 font-mono text-[11px]">
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600 dark:text-slate-400">Router</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">0.45 ms</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">{(lat.router ?? 0).toFixed(2)} ms</span>
                     </div>
                     <div className="h-1 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-slate-400" style={{ width: '4%' }} />
+                      <div className="h-full bg-slate-400" style={{ width: `${routerPct}%` }} />
                     </div>
 
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600 dark:text-slate-400">Retrieval</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">115.20 ms</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">{(lat.retrieval ?? 0).toFixed(2)} ms</span>
                     </div>
                     <div className="h-1 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-blue-500" style={{ width: '15%' }} />
+                      <div className="h-full bg-blue-500" style={{ width: `${retPct}%` }} />
                     </div>
 
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600 dark:text-slate-400">Context</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">4.10 ms</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">{(lat.context ?? 0).toFixed(2)} ms</span>
                     </div>
                     <div className="h-1 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-teal-500" style={{ width: '6%' }} />
+                      <div className="h-full bg-teal-500" style={{ width: `${ctxPct}%` }} />
                     </div>
 
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600 dark:text-slate-400">LLM Synthesis</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">4,820.50 ms</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">{(lat.llm ?? 0).toFixed(2)} ms</span>
                     </div>
                     <div className="h-1 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-emerald-500" style={{ width: '70%' }} />
+                      <div className="h-full bg-emerald-500" style={{ width: `${llmPct}%` }} />
                     </div>
 
                     <div className="flex justify-between items-center">
                       <span className="text-slate-600 dark:text-slate-400">Verification</span>
-                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">1,120.30 ms</span>
+                      <span className="font-semibold text-slate-800 dark:text-slate-200 tabular-nums">{(lat.verification ?? 0).toFixed(2)} ms</span>
                     </div>
                     <div className="h-1 rounded bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-amber-500" style={{ width: '25%' }} />
+                      <div className="h-full bg-amber-500" style={{ width: `${verPct}%` }} />
                     </div>
                   </div>
                 </div>

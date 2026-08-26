@@ -73,13 +73,20 @@ async def lifespan(app: FastAPI):
     if purged > 0:
         logger.info("Startup guest cleanup complete. Purged %d stale guest directories.", purged)
 
-    # 3. Warm up FAISS & Kuzu Singletons (CPU-only, no LLM load)
+    # 3. Warm up FAISS, Kuzu, and LLM Singletons
     try:
         faiss_store.warm_up()
         graph_store.warm_up()
         logger.info("FAISS and Kùzu singletons warmed up successfully.")
     except Exception as e:
         logger.warning("Singleton warmup warning: %s", e)
+
+    try:
+        from app.core.llm.llm_loader import get_llm
+        get_llm()
+        logger.info("Main LLM singleton pre-warmed on GPU successfully.")
+    except Exception as e:
+        logger.warning("LLM GPU preload warning: %s", e)
 
     yield
 

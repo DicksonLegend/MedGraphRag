@@ -70,7 +70,11 @@ class MedGraphRAGPipeline:
         retrieval_res: RetrievalResult = self.retrieval_service.retrieve(retrieval_req)
 
         # ── Step 2: Generation ───────────────────────────────────────────────
-        answer_res: AnswerResult = self.generator_service.generate(query=query, destination=destination)
+        answer_res: AnswerResult = self.generator_service.generate(
+            query=query,
+            destination=destination,
+            retrieval_result=retrieval_res,
+        )
 
         # ── Step 3: Verification & Gating ─────────────────────────────────────
         if settings.pipeline_verification_enabled:
