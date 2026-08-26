@@ -129,6 +129,10 @@ async def analyze_image(
             detail=f"Scan file size exceeds maximum limit of {settings.max_upload_mb} MB.",
         )
 
+    # Magic byte validation (F-06)
+    from app.core.security.validation import validate_file_magic_bytes
+    validate_file_magic_bytes(file_bytes, filename)
+
     service = get_multimodal_service()
     result = service.process_and_store_image(
         file_bytes=file_bytes,
@@ -203,4 +207,7 @@ async def parse_pdf(
     """Extract text, tables, and embedded images from PDF document."""
     content = await file.read()
     filename = file.filename or "document.pdf"
+    from app.core.security.validation import validate_file_magic_bytes, validate_pdf_safety_caps
+    validate_file_magic_bytes(content, filename)
+    validate_pdf_safety_caps(content, max_pages=200)
     return parse_pdf_with_images(content, filename)

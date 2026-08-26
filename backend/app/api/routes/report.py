@@ -72,7 +72,17 @@ async def process_report(
             detail=f"File size exceeds maximum allowed limit of {settings.max_upload_mb} MB.",
         )
 
-    logger.info("Received /report upload from user %s (filename=%s, size=%d bytes)", user_id, filename, len(content))
+    # 3. Magic Byte Sniffing & Safety Validation (F-06)
+    from app.core.security.validation import validate_file_magic_bytes, validate_pdf_safety_caps
+    detected_format = validate_file_magic_bytes(content, filename)
+    if detected_format == "pdf":
+        validate_pdf_safety_caps(content, max_pages=200)
+
+    import hashlib
+    logger.info(
+        "Received /report upload from user %s (ext=%s, size=%d bytes, hash=%s)",
+        user_id, ext, len(content), hashlib.sha256(content).hexdigest()[:8]
+    )
 
     report_payload = {
         "file_bytes": content,
