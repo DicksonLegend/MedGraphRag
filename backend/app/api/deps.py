@@ -100,18 +100,30 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> Dict[str, Any
         raise credentials_exception
 
 
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
+
+
+async def get_current_user_optional(token: Optional[str] = Depends(oauth2_scheme_optional)) -> Optional[Dict[str, Any]]:
+    """Optional JWT authentication for endpoints public in dev but protected in prod."""
+    if not token:
+        return None
+    try:
+        return await get_current_user(token)
+    except HTTPException:
+        return None
+
+
 def purge_guest_user_dir(user_id: str) -> bool:
-    """Purge ephemeral guest store directory private_store/guest_<uuid>/."""
+    """Purge private storage directory for guest_<uuid> upon logout."""
     if not user_id.startswith("guest_"):
         return False
-
     guest_dir = settings.private_store_dir / user_id
-    if guest_dir.exists():
+    if guest_dir.exists() and guest_dir.is_dir():
         try:
             shutil.rmtree(guest_dir)
             logger.info("Purged ephemeral guest directory: %s", guest_dir)
             return True
         except Exception as e:
-            logger.error("Failed to purge guest directory %s: %s", guest_dir, e)
-            return False
+            logger.warning("Failed to purge guest directory %s: %s", guest_dir, e)
+    return False
     return False

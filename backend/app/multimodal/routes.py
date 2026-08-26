@@ -63,11 +63,24 @@ def get_multimodal_service() -> MultimodalService:
 # Endpoints
 # ---------------------------------------------------------------------------
 
+from app.api.deps import get_current_user, get_current_user_optional
+
+
 @router.get("/status")
-async def multimodal_status() -> Dict[str, Any]:
-    """Get multimodal service capabilities and engine health."""
+async def multimodal_status(
+    current_user: Optional[Dict[str, Any]] = Depends(get_current_user_optional),
+) -> Dict[str, Any]:
+    """Get multimodal service capabilities and engine health (requires auth in non-dev)."""
+    is_dev = settings.app_env.lower() in ("dev", "development", "local", "test")
+    if not is_dev and current_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required to view multimodal service status.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
     vlm_available = False
-    vlm_model = "Qwen2-VL-2B-Instruct-Q4_K_M (CPU, 4 threads)"
+    vlm_model = "Qwen2-VL-2B-Instruct" if not is_dev else "Qwen2-VL-2B-Instruct-Q4_K_M (CPU, 4 threads)"
     try:
         from app.multimodal.parser import QWEN2_VL_GGUF, QWEN2_VL_MMPROJ
         if QWEN2_VL_GGUF.exists() and QWEN2_VL_MMPROJ.exists():

@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# MedGraphRAG — Pre-Push Secret Scanner (F-13)
+# ==============================================================================
+# Prevents accidental leakage of cloud credentials, tokens, or private keys.
+# Enable hook with: git config core.hooksPath .githooks
+
+set -e
+
+echo "🔒 [pre-push] Scanning commits for secrets and sensitive material..."
+
+# Patterns to scan for:
+PATTERNS=(
+    "AKIA[0-9A-Z]{16}"
+    "ghp_[0-9a-zA-Z]{36}"
+    "hf_[0-9a-zA-Z]{34}"
+    "-----BEGIN (RSA |EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----"
+)
+
+FOUND=0
+
+# Check tracked files against forbidden patterns
+for pattern in "${PATTERNS[@]}"; do
+    MATCHES=$(git grep -nIE "$pattern" -- ':(exclude).githooks' ':(exclude)SECURITY_AUDIT.md' 2>/dev/null || true)
+    if [ -n "$MATCHES" ]; then
+        echo "❌ [ERROR] Potential secret detected matching pattern: $pattern"
+        echo "$MATCHES"
+        FOUND=1
+    fi
+done
+
+# Check if any .env file is tracked in git
+ENV_FILES=$(git ls-files | grep -E "(^|/)\.env($|\.)" 2>/dev/null || true)
+if [ -n "$ENV_FILES" ]; then
+    echo "❌ [ERROR] Tracked .env file detected in git repository:"
+    echo "$ENV_FILES"
+    FOUND=1
+fi
+
+if [ $FOUND -ne 0 ]; then
+    echo "⛔ Push aborted! Please remove sensitive materials before pushing."
+    exit 1
+fi
+
+echo "✅ [pre-push] Secrets scan clean. Push permitted."
+exit 0
