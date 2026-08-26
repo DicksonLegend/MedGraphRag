@@ -377,6 +377,25 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
         except Exception as exc:
             logger.warning("Discrepancy guardrail check failed in finalize_node (fail-open): %s", exc)
 
+    # Check Epistemic Knowledge-Gap Mapper (F2 - fail-open)
+    knowledge_gaps_data: List[Dict[str, Any]] = []
+    if getattr(settings, "enable_knowledge_gap_mapper", True) and verified:
+        status_val = verified.answer_status
+        phi_val = getattr(verified, "faithfulness_score", None)
+        if status_val in ("refusal", "uncertain", "caution", "contradiction_detected") or (phi_val is not None and phi_val < 0.50):
+            try:
+                from app.core.guardrail.knowledge_gaps import map_knowledge_gaps
+                gaps = map_knowledge_gaps(
+                    query=state.get("query", ""),
+                    retrieved_items=retrieval_res.items if retrieval_res else [],
+                    graph_checks=state.get("graph_checks"),
+                    phi=phi_val,
+                    answer_status=status_val,
+                )
+                knowledge_gaps_data = [g.model_dump() for g in gaps]
+            except Exception as exc:
+                logger.warning("Knowledge-gap mapper check failed in finalize_node (fail-open): %s", exc)
+
     final_response = {
         "route": route,
         "answer_text": verified.answer_text if verified else "",
@@ -386,6 +405,7 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
         "citations": citations_data,
         "graph_paths": graph_paths,
         "discrepancy_alerts": discrepancy_alerts_data,
+        "knowledge_gaps": knowledge_gaps_data,
         "disclaimer_present": (
             "consult your physician" in verified.answer_text.lower() if verified else False
         ),
@@ -401,7 +421,7 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
     }
 
     logger.info(
-        "finalize_node complete for route=%s (total_ms=%.2f, graph_paths=%d, discrepancy_alerts=%d)",
-        route, total_ms, len(graph_paths), len(discrepancy_alerts_data)
+        "finalize_node complete for route=%s (total_ms=%.2f, graph_paths=%d, discrepancy_alerts=%d, knowledge_gaps=%d)",
+        route, total_ms, len(graph_paths), len(discrepancy_alerts_data), len(knowledge_gaps_data)
     )
     return {"final_response": final_response}

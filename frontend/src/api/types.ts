@@ -111,6 +111,14 @@ export interface DiscrepancyAlert {
   recommendation: string;
 }
 
+export interface KnowledgeGap {
+  claim_text: string;
+  gap_type: 'corpus_retrieval' | 'graph_coverage' | 'evidence_faithfulness' | string;
+  detail: string;
+  suggested_queries: string[];
+  suggested_sources: string[];
+}
+
 export interface QueryResponse {
   route: 'medical_query' | 'knowledge_graph' | 'report' | 'out_of_scope' | string;
   answer_text: string;
@@ -120,6 +128,7 @@ export interface QueryResponse {
   citations: CitationMeta[];
   graph_paths: string[];
   discrepancy_alerts?: DiscrepancyAlert[];
+  knowledge_gaps?: KnowledgeGap[];
   disclaimer_present: boolean;
   retry_count: number;
   latency_breakdown: LatencyBreakdown;

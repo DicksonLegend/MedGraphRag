@@ -6,6 +6,7 @@ import { SubwayMap } from '../common/SubwayMap';
 import { ConfidenceRing } from '../common/ConfidenceRing';
 import { DisclaimerFooter } from '../common/DisclaimerFooter';
 import { DiscrepancyAlertBanner } from '../common/DiscrepancyAlertBanner';
+import { KnowledgeGapCard } from '../common/KnowledgeGapCard';
 import { EvidenceGraph3D } from '../graph/EvidenceGraph3D';
 import { getAnswerStatusProps } from '../../lib/utils';
 import {
@@ -216,6 +217,9 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
 
             {/* Cross-Modal Discrepancy Alert Banner (F1) */}
             <DiscrepancyAlertBanner alerts={result.discrepancy_alerts} />
+
+            {/* Epistemic Knowledge-Gap Mapper (F2) */}
+            <KnowledgeGapCard gaps={result.knowledge_gaps} onQueryClick={onFollowUpClick} />
 
             {/* D.4 STRUCTURED REFUSAL STATE OR VERIFIED ANSWER */}
             {isRefused ? (
