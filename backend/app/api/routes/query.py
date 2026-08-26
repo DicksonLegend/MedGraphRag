@@ -52,12 +52,15 @@ async def process_query(
             detail={"error": "forbidden_destination", "detail": "You are not authorized to query another user's private store."},
         )
 
+    import hashlib
+    q_hash = hashlib.sha256(req.query.encode("utf-8")).hexdigest()[:8]
     logger.info(
-        "Received /query from user %s (dest=%s, attached_scan=%s, query=%r)",
+        "Received /query from user %s (dest=%s, attached_scan=%s, query_len=%d, query_hash=%s)",
         user_id,
         dest,
         req.attached_scan_id,
-        req.query[:60],
+        len(req.query),
+        q_hash,
     )
 
     try:
