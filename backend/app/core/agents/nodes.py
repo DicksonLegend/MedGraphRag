@@ -159,6 +159,10 @@ def report_agent_node(state: MedGraphState) -> Dict[str, Any]:
     if not file_bytes and "raw_text" in report_payload:
         file_bytes = str(report_payload["raw_text"]).encode("utf-8")
 
+    if not file_bytes:
+        logger.info("report_agent_node called without file payload; redirecting to query_agent_node for private store retrieval.")
+        return query_agent_node(state)
+
     from app.core.report.service import ReportInterpretationService
     svc = ReportInterpretationService()
 

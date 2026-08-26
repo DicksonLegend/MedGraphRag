@@ -91,8 +91,10 @@ def classify_intent(
             llm_res = generate_chat(messages=messages, max_tokens=20, temperature=0.0)
             raw_route = llm_res.get("text", "").strip().lower()
 
-            for valid_route in ("medical_query", "knowledge_graph", "report", "out_of_scope"):
+            for valid_route in ("knowledge_graph", "medical_query", "report", "out_of_scope"):
                 if valid_route in raw_route:
+                    if valid_route == "report" and not (report_payload and len(report_payload) > 0):
+                        valid_route = "medical_query"
                     latency_ms = (time.perf_counter() - t0) * 1000
                     logger.info("Router decision: route=%s, mechanism=llm_fallback, latency=%.2f ms", valid_route, latency_ms)
                     return valid_route, "llm_fallback", latency_ms

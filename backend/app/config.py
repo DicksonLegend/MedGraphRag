@@ -634,9 +634,9 @@ class Settings(BaseSettings):
 
     # ── Step 11 FastAPI API & Security Settings ──────────────────────────────
     jwt_secret_key: Optional[str] = Field(
-        default=None,
+        default="medgraph-rag-secure-dev-jwt-key-2026-e2e",
         validation_alias="MEDGRAPH_JWT_SECRET",
-        description="JWT secret key. If unset, a random per-process key is generated with a loud warning.",
+        description="JWT secret key. Defaults to stable dev key; set via MEDGRAPH_JWT_SECRET in production.",
     )
 
     # ── Multimodal/VLM Settings ──────────────────────────────────────────────
