@@ -100,12 +100,32 @@ async def lifespan(app: FastAPI):
     logger.info("=== MedGraphRAG FastAPI Service Layer Shutdown ===")
 
 
+is_prod = settings.app_env.lower() in ("production", "prod")
+
 app = FastAPI(
     title="MedGraphRAG Backend API",
     description="Self-Verifying Hybrid Vector-Graph RAG & Diagnostic Report Interpretation Engine",
     version="1.0.0",
     lifespan=lifespan,
+    docs_url=None if is_prod else "/docs",
+    redoc_url=None if is_prod else "/redoc",
+    openapi_url=None if is_prod else "/openapi.json",
 )
+
+
+# Security Headers Middleware (F-08)
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
+    if is_prod:
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    return response
+
 
 # CORS Middleware (Localhost dev)
 app.add_middleware(
