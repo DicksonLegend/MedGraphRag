@@ -13,6 +13,8 @@ from typing import Any, Dict, List, Optional
 from pydantic import BaseModel, Field
 from enum import Enum
 
+from app.core.guardrail.schemas import DiscrepancyAlert
+
 
 class ImageModality(str, Enum):
     """Medical imaging modality types."""
@@ -99,6 +101,7 @@ class ImageAnalysisResult(BaseModel):
     processing_time_ms: float = Field(0.0, description="Processing latency in milliseconds")
     model_used: str = Field("", description="Model identifier used for analysis")
     provenance: List[str] = Field(default_factory=list, description="Provenance for findings")
+    discrepancy_alerts: List[DiscrepancyAlert] = Field(default_factory=list, description="Cross-modal discrepancy alerts")
     created_at: str = Field("", description="ISO timestamp")
 
 

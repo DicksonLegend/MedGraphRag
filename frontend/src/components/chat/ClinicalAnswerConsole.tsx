@@ -5,6 +5,7 @@ import { EvidenceCard } from './EvidenceCard';
 import { SubwayMap } from '../common/SubwayMap';
 import { ConfidenceRing } from '../common/ConfidenceRing';
 import { DisclaimerFooter } from '../common/DisclaimerFooter';
+import { DiscrepancyAlertBanner } from '../common/DiscrepancyAlertBanner';
 import { EvidenceGraph3D } from '../graph/EvidenceGraph3D';
 import { getAnswerStatusProps } from '../../lib/utils';
 import {
@@ -212,6 +213,9 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
                 {citations.length} cited evidence chunks
               </span>
             </div>
+
+            {/* Cross-Modal Discrepancy Alert Banner (F1) */}
+            <DiscrepancyAlertBanner alerts={result.discrepancy_alerts} />
 
             {/* D.4 STRUCTURED REFUSAL STATE OR VERIFIED ANSWER */}
             {isRefused ? (

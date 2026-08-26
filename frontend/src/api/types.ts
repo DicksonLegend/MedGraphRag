@@ -88,6 +88,29 @@ export type AnswerStatus =
 
 export type ConfidenceTier = 'high' | 'medium' | 'low';
 
+export interface DiscrepancyVisualEvidence {
+  label: string;
+  score: number;
+  negated: boolean;
+  neg_score?: number | null;
+}
+
+export interface DiscrepancyTextEvidence {
+  snippet: string;
+  source_id: string;
+  cue?: string | null;
+  category?: string | null;
+}
+
+export interface DiscrepancyAlert {
+  finding: string;
+  visual_evidence: DiscrepancyVisualEvidence;
+  text_evidence: DiscrepancyTextEvidence;
+  graph_provenance?: string | null;
+  severity: 'HIGH' | 'MEDIUM' | string;
+  recommendation: string;
+}
+
 export interface QueryResponse {
   route: 'medical_query' | 'knowledge_graph' | 'report' | 'out_of_scope' | string;
   answer_text: string;
@@ -96,6 +119,7 @@ export interface QueryResponse {
   final_confidence: number;
   citations: CitationMeta[];
   graph_paths: string[];
+  discrepancy_alerts?: DiscrepancyAlert[];
   disclaimer_present: boolean;
   retry_count: number;
   latency_breakdown: LatencyBreakdown;
@@ -326,6 +350,7 @@ export interface ImageAnalysisResult {
   processing_time_ms: number;
   model_used: string;
   provenance: string[];
+  discrepancy_alerts?: DiscrepancyAlert[];
   created_at: string;
 }
 

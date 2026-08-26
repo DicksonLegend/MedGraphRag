@@ -606,6 +606,18 @@ class Settings(BaseSettings):
         description="Warning note when contradictions are detected.",
     )
 
+    # ── Guardrail & Epistemic Settings (F1 & F2) ──────────────────────────────
+    enable_discrepancy_guardrail: bool = Field(
+        default=True,
+        validation_alias="ENABLE_DISCREPANCY_GUARDRAIL",
+        description="Enable cross-modal discrepancy guardrail (F1).",
+    )
+    enable_knowledge_gap_mapper: bool = Field(
+        default=True,
+        validation_alias="ENABLE_KNOWLEDGE_GAP_MAPPER",
+        description="Enable epistemic knowledge-gap mapper (F2).",
+    )
+
     # ── Step 10 Report & Private Store Settings ──────────────────────────────
     private_store_dir: Path = Field(
         default=PROJECT_ROOT / "private_store",

@@ -154,6 +154,37 @@ class MultimodalService:
         # 2. Run analysis (BiomedCLIP triage and/or Qwen2-VL generative interpretation)
         analysis_result = analyze_medical_image_with_vlm(med_img, mode=mode, prompt=custom_prompt)
 
+        # 2b. Check cross-modal discrepancy guardrail (F1 - fail-open)
+        if getattr(settings, "enable_discrepancy_guardrail", True):
+            try:
+                from app.core.guardrail.discrepancy import detect_discrepancies
+                text_evidence_candidates = []
+                for gp in analysis_result.graph_paths:
+                    for rep in gp.matched_reports:
+                        snip = rep.get("text_snippet") if isinstance(rep, dict) else getattr(rep, "text_snippet", "")
+                        r_id = rep.get("report_id") if isinstance(rep, dict) else getattr(rep, "report_id", "openi_report")
+                        if snip:
+                            text_evidence_candidates.append({
+                                "snippet": snip,
+                                "source_id": r_id,
+                                "category": "radiology_report",
+                            })
+                if custom_prompt:
+                    text_evidence_candidates.append({
+                        "snippet": custom_prompt,
+                        "source_id": "user_clinical_note",
+                        "category": "clinical_note",
+                    })
+                if text_evidence_candidates:
+                    alerts = detect_discrepancies(
+                        visual_findings=analysis_result.findings_detailed,
+                        text_evidence=text_evidence_candidates,
+                        graph_ctx=image_id,
+                    )
+                    analysis_result.discrepancy_alerts = alerts
+            except Exception as exc:
+                logger.warning("Discrepancy guardrail check failed in multimodal service (fail-open): %s", exc)
+
         # 3. Store into isolated private store
         scan_dir = self._get_user_scan_dir(user_id, image_id)
 

@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { VisualFindingsCard } from './VisualFindingsCard';
 import { EcgLoader } from '../common/EcgLoader';
+import { DiscrepancyAlertBanner } from '../common/DiscrepancyAlertBanner';
 import { multimodalApi } from '../../api/multimodal';
 import type { ImageAnalysisResult } from '../../api/types';
 
@@ -272,6 +273,9 @@ export const RadiologyReportDrawer: React.FC<RadiologyReportDrawerProps> = ({
               )}
             </button>
           </div>
+
+          {/* Cross-Modal Discrepancy Alerts (F1) */}
+          <DiscrepancyAlertBanner alerts={scan.discrepancy_alerts} />
 
           {/* 3. Tab Contents */}
 

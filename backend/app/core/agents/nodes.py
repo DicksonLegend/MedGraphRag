@@ -343,6 +343,40 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
     v_ms = verified.latency_breakdown.get("verification_ms", 0.0) if verified else 0.0
     total_ms = round(router_ms + r_ms + c_ms + l_ms + v_ms, 2)
 
+    # Check Cross-Modal Discrepancy Guardrail (F1 - fail-open)
+    discrepancy_alerts_data: List[Dict[str, Any]] = []
+    attached_scan_ctx = state.get("attached_scan_context")
+    if getattr(settings, "enable_discrepancy_guardrail", True) and attached_scan_ctx:
+        try:
+            from app.core.guardrail.discrepancy import detect_discrepancies
+            v_findings = attached_scan_ctx.get("findings_detailed", [])
+            # Build text evidence from top-3 retrieved items or citations
+            t_evidence = []
+            if retrieval_res and retrieval_res.items:
+                for item in retrieval_res.items[:3]:
+                    t_evidence.append({
+                        "snippet": item.text,
+                        "source_id": item.chunk_id,
+                        "category": item.category,
+                    })
+            elif citations_data:
+                for c in citations_data[:3]:
+                    t_evidence.append({
+                        "snippet": c.get("snippet", ""),
+                        "source_id": c.get("chunk_id", "citation"),
+                        "category": c.get("category", "clinical"),
+                    })
+
+            if v_findings and t_evidence:
+                alerts = detect_discrepancies(
+                    visual_findings=v_findings,
+                    text_evidence=t_evidence,
+                    graph_ctx=state.get("attached_scan_id"),
+                )
+                discrepancy_alerts_data = [a.model_dump() for a in alerts]
+        except Exception as exc:
+            logger.warning("Discrepancy guardrail check failed in finalize_node (fail-open): %s", exc)
+
     final_response = {
         "route": route,
         "answer_text": verified.answer_text if verified else "",
@@ -351,6 +385,7 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
         "final_confidence": verified.final_confidence if verified else 0.0,
         "citations": citations_data,
         "graph_paths": graph_paths,
+        "discrepancy_alerts": discrepancy_alerts_data,
         "disclaimer_present": (
             "consult your physician" in verified.answer_text.lower() if verified else False
         ),
@@ -365,5 +400,8 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
         },
     }
 
-    logger.info("finalize_node complete for route=%s (total_ms=%.2f, graph_paths=%d)", route, total_ms, len(graph_paths))
+    logger.info(
+        "finalize_node complete for route=%s (total_ms=%.2f, graph_paths=%d, discrepancy_alerts=%d)",
+        route, total_ms, len(graph_paths), len(discrepancy_alerts_data)
+    )
     return {"final_response": final_response}
