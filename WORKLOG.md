@@ -17,6 +17,18 @@
 | B | J9/J10 Qwen2-VL-2B endpoints + image-aware /query + refusal | OpenCode | done | evaluations/multimodal/step16_image_report.json (3bede101) — llama-cpp-python 0.3.35 CPU build installed (pre-approved); qwen2-vl-vision, 20 VQA-RAD imgs, mean EM 0.35, refusal tiers live | 2026-08-23 |
 | B | Multimodal Full Stack Integration (B1–B6, F1–F6, V1–V5) | Antigravity | done | DICOM min-max windowing preview, BiomedCLIP triage (<1.5s), Qwen2-VL-2B CPU generative reports, AES-256-GCM private scan store, dual-tab ReportsPage, chat scan attachment; 0.00% drift PASS | 2026-08-26 |
 | B | Multimodal UX & Robustness Enhancements (Fixes 1–3) | Antigravity | done | 60s VLM soft-timeout + 15s UI notice, permanent private scan isolation banner, 48/100 match rate doc; tsc/vite clean | 2026-08-26 |
+| Sec | F-01 Cypher parameterization + injection tests | Antigravity | done | commit 98c0dd6 (tests/test_private_store_injection.py PASS) | 2026-08-26 |
+| Sec | F-02 HKDF key derivation + 0600 file perms + migration tool | Antigravity | done | commit 913c60f (backend/app/core/report/crypto.py, scripts/migrate_private_store.py) | 2026-08-26 |
+| Sec | F-03 Salted scrypt hashing + rate limiting + dev credentials hint | Antigravity | done | commit 45e7e42 (backend/app/core/auth/passwords.py) | 2026-08-26 |
+| Sec | F-04 Cross-user existence walk removal + uniform 404 | Antigravity | done | commit 876f7e3 (backend/app/multimodal/service.py) | 2026-08-26 |
+| Sec | F-05 Path parameter regex validation + exact match file lookup | Antigravity | done | commit 1903a5c (multimodal/routes.py, report.py, query.py) | 2026-08-26 |
+| Sec | F-06 Magic-byte sniffing + PDF safety caps + requirements.lock | Antigravity | done | commit f4034e1 (backend/app/core/security/validation.py, requirements.lock) | 2026-08-26 |
+| Sec | F-07 Fail-fast JWT non-dev validation + rotation doc | Antigravity | done | commit 888dac9 (README.md, config.py) | 2026-08-26 |
+| Sec | F-08 Production docs disablement + security headers middleware | Antigravity | done | commit b39a85f (backend/app/main.py) | 2026-08-26 |
+| Sec | F-09 Log sanitization for queries, filenames, and PHI payloads | Antigravity | done | commit a5d8efb (query.py, report.py) | 2026-08-26 |
+| Sec | F-10 Frontend token storage review | Antigravity | done (deferred) | sessionStorage accepted; decision recorded in SECURITY_AUDIT.md | 2026-08-26 |
+| Sec | F-11 Dependency lockfile generation | Antigravity | done | commit f4034e1 (requirements.lock, backend/requirements.lock) | 2026-08-26 |
+| Sec | F-12/F-13 Multimodal status protection + pre-push secret scanner | Antigravity | done | commit fa724a4 (.githooks/pre-push, deps.py, multimodal/routes.py) | 2026-08-26 |
 | C | J6 IR metrics v2 (user-adjudicated graded qrels) | OpenCode | done | evaluations/multimodal/step17_ir_metrics_v2.json (8a2b8fec): P@5 .18 R@5 .54 MRR .353 nDCG@10 .377 | 2026-08-23 |
 | C | J4 MedQA-US N=500 scaled eval (overnight batch) | Antigravity | in-progress | step18_scaled_n500.json (daemon running, chk/50, N=500 seed 42) | 2026-08-23 |
 | C | J5 MedMCQA (+BioASQ optional) external validation | Antigravity | pending | step15_external_eval.json | |
