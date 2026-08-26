@@ -189,11 +189,12 @@ class MultimodalService:
         if preview_file.exists():
             return preview_file.read_bytes()
 
-        # 2. Check sample100 benchmark directory for public OpenI test scans
+        # 2. Check sample100 benchmark directory for public OpenI test scans (exact match)
         if SAMPLE100_DIR.exists():
-            for p in SAMPLE100_DIR.glob(f"{image_id}*"):
-                if p.is_file():
-                    _, prev_b = load_standard_image(p.read_bytes())
+            for ext in (".png", ".jpg", ".jpeg", "_0.png"):
+                cand = SAMPLE100_DIR / f"{image_id}{ext}"
+                if cand.is_file():
+                    _, prev_b = load_standard_image(cand.read_bytes())
                     return prev_b
 
         # Uniform 404 (no cross-user existence probe oracle)
@@ -212,14 +213,15 @@ class MultimodalService:
             if data:
                 return data
 
-        # Check sample100
+        # Check sample100 benchmark directory (exact match)
         if SAMPLE100_DIR.exists():
-            for p in SAMPLE100_DIR.glob(f"{image_id}*"):
-                if p.is_file():
-                    file_b = p.read_bytes()
+            for ext in (".png", ".jpg", ".jpeg", "_0.png"):
+                cand = SAMPLE100_DIR / f"{image_id}{ext}"
+                if cand.is_file():
+                    file_b = cand.read_bytes()
                     med_img = MedicalImage(
                         image_id=image_id,
-                        filename=p.name,
+                        filename=cand.name,
                         modality=ImageModality.XRAY,
                         orientation=ImageOrientation.PA,
                         file_bytes_hash=compute_file_hash(file_b),

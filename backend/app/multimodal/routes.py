@@ -140,9 +140,22 @@ async def analyze_image(
     return result
 
 
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    Path as FastApiPath,
+    Response,
+    UploadFile,
+    status,
+)
+
+
 @router.get("/preview/{image_id}")
 async def get_preview(
-    image_id: str,
+    image_id: str = FastApiPath(..., pattern=r"^[A-Za-z0-9._-]{1,80}$", description="Alphanumeric image identifier"),
     current_user: Dict[str, Any] = Depends(get_current_user),
 ) -> Response:
     """
@@ -167,7 +180,7 @@ async def list_scans(
 
 @router.delete("/scans/{image_id}")
 async def delete_scan(
-    image_id: str,
+    image_id: str = FastApiPath(..., pattern=r"^[A-Za-z0-9._-]{1,80}$", description="Alphanumeric image identifier"),
     current_user: Dict[str, Any] = Depends(get_current_user),
 ) -> Dict[str, Any]:
     """Purge a stored scan and its encrypted metadata from the user's private store."""

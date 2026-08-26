@@ -27,7 +27,7 @@ router = APIRouter(tags=["Query RAG Engine"])
 class QueryRequest(BaseModel):
     query: str = Field(..., description="Natural language medical query", example="potassium hyperkalemia ECG changes peaked T waves treatment")
     destination: Optional[str] = Field("global", description="Target destination space ('global' or user's own user_id)")
-    attached_scan_id: Optional[str] = Field(None, description="Optional scan image_id attached to query for multimodal context")
+    attached_scan_id: Optional[str] = Field(None, pattern=r"^[A-Za-z0-9._-]{1,80}$", description="Optional scan image_id attached to query for multimodal context")
 
 
 @router.post("/query")

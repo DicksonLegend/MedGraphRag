@@ -18,7 +18,15 @@ import logging
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    HTTPException,
+    Path as FastApiPath,
+    UploadFile,
+    status,
+)
 from pydantic import BaseModel, Field
 
 from app.api.deps import get_current_user, get_llm_lock
@@ -213,7 +221,7 @@ async def list_user_reports(
 @router.get("/reports/{report_id}", response_model=ReportDetailResponse)
 @router.get("/api/v1/reports/{report_id}", response_model=ReportDetailResponse)
 async def get_user_report_detail(
-    report_id: str,
+    report_id: str = FastApiPath(..., pattern=r"^[A-Za-z0-9._-]{1,80}$", description="Alphanumeric report identifier"),
     current_user: Dict[str, Any] = Depends(get_current_user),
 ) -> ReportDetailResponse:
     """
@@ -274,7 +282,7 @@ async def get_user_report_detail(
 
     # Fallback to decrypted payload if report_id matches
     from app.core.report.store import load_private_decrypted_payload
-    payload = load_private_decrypted_payload(user_id)
+    payload = load_private_decrypted_payload(user_id, report_id=report_id)
     if payload:
         payload_rid = payload.get("report_id", f"rep_{user_id[:8]}")
         if payload_rid == report_id or report_id == "report_meta":
@@ -306,3 +314,39 @@ async def get_user_report_detail(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Report '{report_id}' not found in user private store.",
     )
+
+
+@router.delete("/reports/{report_id}")
+@router.delete("/api/v1/reports/{report_id}")
+async def purge_user_report(
+    report_id: str = FastApiPath(..., pattern=r"^[A-Za-z0-9._-]{1,80}$", description="Alphanumeric report identifier"),
+    current_user: Dict[str, Any] = Depends(get_current_user),
+) -> Dict[str, Any]:
+    """Purge a specific report from the user's private store."""
+    user_id = current_user["user_id"]
+    user_dir = settings.private_store_dir / user_id
+    if not user_dir.exists():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Report {report_id} not found.")
+
+    meta_file = user_dir / "meta" / f"{report_id}.enc"
+    if meta_file.exists():
+        meta_file.unlink()
+
+    db_path = user_dir / "kuzu" / "private_kuzu_db"
+    if db_path.exists():
+        try:
+            import kuzu
+            db = kuzu.Database(str(db_path))
+            conn = kuzu.Connection(db)
+            try:
+                conn.execute(
+                    "MATCH (r:Report {id: $report_id})-[rel:HAS_LAB_VALUE]->(lv:LabValue) DETACH DELETE r, lv",
+                    {"report_id": report_id}
+                )
+            finally:
+                del conn
+                del db
+        except Exception as e:
+            logger.debug("Error deleting Report node in Kùzu: %s", e)
+
+    return {"status": "purged", "report_id": report_id}
