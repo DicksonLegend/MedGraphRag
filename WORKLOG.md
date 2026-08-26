@@ -51,3 +51,17 @@
 | F | AI + similarity checks (Turnitin/iThenticate) | you | pending | — | |
 | F | Repo public flip (at acceptance) | you | pending | github.com/... | |
 | F | Submit | you | pending | — | |
+
+---
+
+## Incidents & Resolutions
+
+### 2026-08-26: CPU-Wheel Incident & GPU CUDA Restoration
+- **Incident Description**: During earlier multimodal setup, a CPU-only wheel of `llama-cpp-python` (version 0.3.35) was installed in `.venv`. This caused LLM inference during the J4 N=500 evaluation to execute on host CPU threads (~30–40s per query) rather than offloading to the NVIDIA RTX 3050 GPU.
+- **Root Cause & Discovery**: `llama_cpp.llama_supports_gpu_offload()` returned `False` due to pre-built CPU binaries lacking CUDA kernels.
+- **Resolution & Fix**:
+  1. Rebuilt/installed `llama-cpp-python` with CUDA acceleration (`GGML_CUDA=1`, CUDA Toolkit 12.4).
+  2. Verified `llama_cpp.llama_supports_gpu_offload() == True` allocating 4.76 GB VRAM on the NVIDIA GeForce RTX 3050 (inference speed: ~2.1s per query, a 15–20x speedup).
+  3. Added strict startup assertion `assert llama_cpp.llama_supports_gpu_offload() == True` in `scripts/j4/run_scaled_n500_eval.py` to abort immediately if GPU offloading is not available.
+  4. Moved all previous CPU checkpoints to `evaluations/checkpoints_n500_cpu_backup/` (retained for scoring comparison).
+  5. Relaunched the clean, memory-hardened N=500 GPU evaluation suite under watchdog supervision across all 4 modes (M1 Evidence, M2 Graph, M3 Combined $\beta=0.7$, M4 Hybrid $\gamma=0.15$).
