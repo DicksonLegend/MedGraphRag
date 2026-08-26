@@ -60,40 +60,57 @@ class MultimodalService:
         self.private_store_root.mkdir(parents=True, exist_ok=True)
 
     def _get_user_scan_dir(self, user_id: str, image_id: str) -> Path:
-        scan_dir = self.private_store_root / user_id / "scans" / image_id
+        from app.core.report.crypto import secure_chmod
+        user_dir = self.private_store_root / user_id
+        scans_dir = user_dir / "scans"
+        scan_dir = scans_dir / image_id
         scan_dir.mkdir(parents=True, exist_ok=True)
+        secure_chmod(user_dir, 0o700)
+        secure_chmod(scans_dir, 0o700)
+        secure_chmod(scan_dir, 0o700)
         return scan_dir
 
-    def _encrypt_and_save_metadata(self, scan_dir: Path, data: Dict[str, Any]) -> None:
+    def _encrypt_and_save_metadata(self, scan_dir: Path, data: Dict[str, Any], user_id: str, image_id: str) -> None:
+        from app.core.report.crypto import derive_private_key, encrypt_payload_gcm, secure_chmod
         payload_bytes = json.dumps(data).encode("utf-8")
-        user_key = AESGCM.generate_key(bit_length=256)
-        aesgcm = AESGCM(user_key)
-        nonce = os.urandom(12)
-        ciphertext = aesgcm.encrypt(nonce, payload_bytes, None)
+        scan_key = derive_private_key(user_id=user_id, item_id=image_id, purpose="scan")
+        encrypted_bytes = encrypt_payload_gcm(scan_key, payload_bytes)
 
-        with open(scan_dir / "metadata.enc", "wb") as f:
-            f.write(nonce + ciphertext)
-        with open(scan_dir / "key.bin", "wb") as f:
-            f.write(user_key)
-
-    def _decrypt_metadata(self, scan_dir: Path) -> Optional[Dict[str, Any]]:
         enc_file = scan_dir / "metadata.enc"
-        key_file = scan_dir / "key.bin"
-        if not enc_file.exists() or not key_file.exists():
+        with open(enc_file, "wb") as f:
+            f.write(encrypted_bytes)
+        secure_chmod(enc_file, 0o600)
+
+    def _decrypt_metadata(self, scan_dir: Path, user_id: str, image_id: str) -> Optional[Dict[str, Any]]:
+        enc_file = scan_dir / "metadata.enc"
+        if not enc_file.exists():
             return None
 
+        from app.core.report.crypto import derive_private_key, decrypt_payload_gcm
+
+        with open(enc_file, "rb") as f:
+            encrypted_data = f.read()
+
+        # 1. Try HKDF derived key
         try:
-            with open(key_file, "rb") as f:
-                user_key = f.read()
-            with open(enc_file, "rb") as f:
-                data = f.read()
-            nonce, ciphertext = data[:12], data[12:]
-            aesgcm = AESGCM(user_key)
-            decrypted = aesgcm.decrypt(nonce, ciphertext, None)
-            return json.loads(decrypted.decode("utf-8"))
-        except Exception as e:
-            logger.warning("Failed decrypting scan metadata in %s: %s", scan_dir, e)
-            return None
+            scan_key = derive_private_key(user_id=user_id, item_id=image_id, purpose="scan")
+            decrypted_bytes = decrypt_payload_gcm(scan_key, encrypted_data)
+            return json.loads(decrypted_bytes.decode("utf-8"))
+        except Exception:
+            pass
+
+        # 2. Legacy fallback: check if key.bin exists on disk
+        key_file = scan_dir / "key.bin"
+        if key_file.exists():
+            try:
+                with open(key_file, "rb") as f:
+                    legacy_key = f.read()
+                decrypted_bytes = decrypt_payload_gcm(legacy_key, encrypted_data)
+                return json.loads(decrypted_bytes.decode("utf-8"))
+            except Exception as e:
+                logger.warning("Failed legacy decrypting scan metadata in %s: %s", scan_dir, e)
+
+        return None
 
     def process_and_store_image(
         self,
@@ -150,7 +167,7 @@ class MultimodalService:
 
         # Encrypt and save structured analysis metadata
         meta_dict = analysis_result.model_dump()
-        self._encrypt_and_save_metadata(scan_dir, meta_dict)
+        self._encrypt_and_save_metadata(scan_dir, meta_dict, user_id=user_id, image_id=image_id)
 
         logger.info(
             "Multimodal: Stored scan %s for user %s (mode=%s, findings=%d)",
@@ -166,29 +183,20 @@ class MultimodalService:
         Serve 8-bit PNG preview bytes for an image_id.
         Enforces user ownership isolation: checks user's private store, or sample100 fallback.
         """
-        # 1. Check user private store
+        # 1. Check user's own private scan store
         user_scan_dir = self.private_store_root / user_id / "scans" / image_id
         preview_file = user_scan_dir / "preview.png"
         if preview_file.exists():
             return preview_file.read_bytes()
 
-        # 2. Check other users' stores to prevent unauthorized cross-user access (403)
-        for other_dir in self.private_store_root.iterdir():
-            if other_dir.is_dir() and other_dir.name != user_id:
-                if (other_dir / "scans" / image_id).exists():
-                    logger.warning("Cross-user preview attempt: user %s requested scan %s", user_id, image_id)
-                    raise HTTPException(
-                        status_code=status.HTTP_403_FORBIDDEN,
-                        detail="Access denied. You do not own this scan.",
-                    )
-
-        # 3. Check sample100 repository for benchmark images
+        # 2. Check sample100 benchmark directory for public OpenI test scans
         if SAMPLE100_DIR.exists():
             for p in SAMPLE100_DIR.glob(f"{image_id}*"):
                 if p.is_file():
                     _, prev_b = load_standard_image(p.read_bytes())
                     return prev_b
 
+        # Uniform 404 (no cross-user existence probe oracle)
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Scan preview not found for image_id: {image_id}",
@@ -200,7 +208,7 @@ class MultimodalService:
         """
         scan_dir = self.private_store_root / user_id / "scans" / image_id
         if scan_dir.exists():
-            data = self._decrypt_metadata(scan_dir)
+            data = self._decrypt_metadata(scan_dir, user_id=user_id, image_id=image_id)
             if data:
                 return data
 
@@ -231,7 +239,7 @@ class MultimodalService:
         results: List[ImageAnalysisResult] = []
         for s_dir in user_scans_dir.iterdir():
             if s_dir.is_dir():
-                meta = self._decrypt_metadata(s_dir)
+                meta = self._decrypt_metadata(s_dir, user_id=user_id, image_id=s_dir.name)
                 if meta:
                     try:
                         results.append(ImageAnalysisResult(**meta))
