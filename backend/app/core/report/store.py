@@ -210,9 +210,18 @@ def store_private_report(
     except Exception as ke:
         logger.warning("Private Kuzu DB lock or creation warning for user %s: %s", user_id, ke)
 
-    # 3. Save AES-256-GCM Encrypted Meta Payload at Rest
+    from app.core.report.crypto import (
+        derive_private_key,
+        encrypt_payload_gcm,
+        decrypt_payload_gcm,
+        secure_chmod,
+    )
+
+    # 3. Save AES-256-GCM Encrypted Meta Payload at Rest (HKDF-derived key, no key on disk)
     meta_payload = {
         "user_id": user_id,
+        "report_id": report_id,
+        "report_date": report_date,
         "n_values": len(lab_values),
         "assessments": [a.model_dump() for a in assessments],
         "explanations": [e.model_dump() for e in explanations],
@@ -220,48 +229,79 @@ def store_private_report(
     }
     payload_json = json.dumps(meta_payload).encode("utf-8")
 
-    # Derive AES-256-GCM Key per user
-    user_key = AESGCM.generate_key(bit_length=256)
-    aesgcm = AESGCM(user_key)
-    nonce = os.urandom(12)
-    ciphertext = aesgcm.encrypt(nonce, payload_json, None)
+    # Derive AES-256-GCM Key per report on the fly via HKDF-SHA256
+    report_key = derive_private_key(user_id=user_id, item_id=report_id, purpose="report")
+    encrypted_bytes = encrypt_payload_gcm(report_key, payload_json)
 
-    # Store encrypted payload & key file
-    encrypted_file = meta_dir / "report_payload.enc"
-    with open(encrypted_file, "wb") as f:
-        f.write(nonce + ciphertext)
+    # Store per-report encrypted file (fixes overwrite bug) + update latest pointer
+    secure_chmod(user_dir, 0o700)
+    secure_chmod(meta_dir, 0o700)
 
-    key_file = meta_dir / "user_key.key"
-    with open(key_file, "wb") as f:
-        f.write(user_key)
+    report_enc_file = meta_dir / f"{report_id}.enc"
+    with open(report_enc_file, "wb") as f:
+        f.write(encrypted_bytes)
+    secure_chmod(report_enc_file, 0o600)
+
+    # Latest report payload copy
+    latest_enc_file = meta_dir / "report_payload.enc"
+    with open(latest_enc_file, "wb") as f:
+        f.write(encrypted_bytes)
+    secure_chmod(latest_enc_file, 0o600)
 
     logger.info(
-        "Private Store AES-256-GCM: User %s report encrypted & saved to %s (AES-256-GCM active)",
-        user_id, encrypted_file
+        "Private Store AES-256-GCM: User %s report %s encrypted & saved (HKDF active, key not written to disk)",
+        user_id, report_id
     )
 
     return user_dir
 
 
-def load_private_decrypted_payload(user_id: str) -> Optional[Dict[str, Any]]:
-    """Decrypt and load per-user private payload using AES-256-GCM."""
+def load_private_decrypted_payload(user_id: str, report_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    """
+    Decrypt and load per-user private payload using AES-256-GCM.
+    Uses HKDF key derivation with seamless fallback to legacy on-disk user_key.key.
+    """
     user_dir = settings.private_store_dir / user_id
     meta_dir = user_dir / "meta"
-    encrypted_file = meta_dir / "report_payload.enc"
-    key_file = meta_dir / "user_key.key"
-
-    if not encrypted_file.exists() or not key_file.exists():
+    if not meta_dir.exists():
         return None
 
-    with open(key_file, "rb") as f:
-        user_key = f.read()
+    from app.core.report.crypto import (
+        derive_private_key,
+        decrypt_payload_gcm,
+    )
 
-    with open(encrypted_file, "rb") as f:
-        blob = f.read()
+    # 1. Determine target file to decrypt
+    target_files = []
+    if report_id:
+        target_files.append((report_id, meta_dir / f"{report_id}.enc"))
+    target_files.append((report_id or "latest", meta_dir / "report_payload.enc"))
 
-    nonce = blob[:12]
-    ciphertext = blob[12:]
+    for rid_candidate, enc_file in target_files:
+        if not enc_file.exists():
+            continue
 
-    aesgcm = AESGCM(user_key)
-    decrypted_bytes = aesgcm.decrypt(nonce, ciphertext, None)
-    return json.loads(decrypted_bytes.decode("utf-8"))
+        with open(enc_file, "rb") as f:
+            encrypted_data = f.read()
+
+        # Try HKDF derivation with candidate report_id if available
+        if rid_candidate and rid_candidate != "latest":
+            try:
+                hkdf_key = derive_private_key(user_id=user_id, item_id=rid_candidate, purpose="report")
+                decrypted_bytes = decrypt_payload_gcm(hkdf_key, encrypted_data)
+                return json.loads(decrypted_bytes.decode("utf-8"))
+            except Exception:
+                pass
+
+        # 2. Legacy Fallback: check if meta/user_key.key exists on disk (zero data loss)
+        legacy_key_file = meta_dir / "user_key.key"
+        if legacy_key_file.exists():
+            try:
+                with open(legacy_key_file, "rb") as f:
+                    legacy_key = f.read()
+                decrypted_bytes = decrypt_payload_gcm(legacy_key, encrypted_data)
+                return json.loads(decrypted_bytes.decode("utf-8"))
+            except Exception:
+                pass
+
+    return None

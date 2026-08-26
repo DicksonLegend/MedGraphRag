@@ -695,10 +695,43 @@ class Settings(BaseSettings):
         description="Demo username -> sha256(password) lookup table.",
     )
 
+    app_env: str = Field(
+        default="dev",
+        validation_alias="APP_ENV",
+        description="Application environment: 'dev', 'test', 'staging', 'production'.",
+    )
+    master_encryption_key: Optional[str] = Field(
+        default=None,
+        validation_alias="MEDGRAPH_MASTER_KEY",
+        description="Master encryption key (256-bit) for HKDF private store key derivation.",
+    )
+
+    def get_effective_master_key(self) -> bytes:
+        """Return MEDGRAPH_MASTER_KEY or fail-fast in non-dev environments."""
+        import hashlib
+        if self.master_encryption_key:
+            return hashlib.sha256(self.master_encryption_key.encode("utf-8")).digest()
+
+        is_dev = self.app_env.lower() in ("dev", "development", "local", "test")
+        if not is_dev:
+            raise RuntimeError(
+                "FATAL: MEDGRAPH_MASTER_KEY environment variable is UNSET in non-dev environment. "
+                "Set a secure 256-bit master key to enable private store encryption."
+            )
+        return hashlib.sha256(b"medgraph-master-encryption-key-dev-2026").digest()
+
     def get_effective_jwt_secret(self) -> str:
-        """Return MEDGRAPH_JWT_SECRET or generate a loud-warning per-process random key."""
+        """Return MEDGRAPH_JWT_SECRET or fail-fast in non-dev environments."""
         if self.jwt_secret_key:
             return self.jwt_secret_key
+
+        is_dev = self.app_env.lower() in ("dev", "development", "local", "test")
+        if not is_dev:
+            raise RuntimeError(
+                "FATAL: MEDGRAPH_JWT_SECRET environment variable is UNSET in non-dev environment. "
+                "Set a secure JWT secret key to start the API."
+            )
+
         if not hasattr(self, "_generated_random_jwt_secret"):
             import secrets
             logger.warning(
