@@ -52,6 +52,7 @@ export interface LogoutResponse {
 export interface QueryRequest {
   query: string;
   destination?: string;
+  attached_scan_id?: string;
 }
 
 export interface CitationMeta {
@@ -256,4 +257,92 @@ export interface ApiError {
   status: number;
   message: string;
   detail?: string | { error?: string; detail?: string };
+}
+
+// ============================================================================
+// 9. Multimodal Medical Imaging Schemas
+// ============================================================================
+export type ImageModality =
+  | 'xray'
+  | 'ct'
+  | 'mri'
+  | 'ultrasound'
+  | 'pathology'
+  | 'dermatology'
+  | 'oct'
+  | 'fundus'
+  | 'endoscopy'
+  | 'unknown';
+
+export type ImageOrientation =
+  | 'AP'
+  | 'PA'
+  | 'LATERAL'
+  | 'OBLIQUE'
+  | 'AXIAL'
+  | 'CORONAL'
+  | 'SAGITTAL'
+  | 'UNKNOWN';
+
+export interface VisualFinding {
+  label: string;
+  confidence: number;
+  negated: boolean;
+  location?: string | null;
+  severity?: string | null;
+  auc_reference?: number | null;
+}
+
+export interface MatchedReport {
+  report_id: string;
+  section: string;
+  text_snippet: string;
+}
+
+export interface KnowledgeGraphPath {
+  source_image_id: string;
+  finding_label: string;
+  finding_negated: boolean;
+  matched_reports: MatchedReport[];
+}
+
+export interface ImageAnalysisResult {
+  image_id: string;
+  filename: string;
+  modality: ImageModality;
+  orientation: ImageOrientation;
+  body_part?: string | null;
+  mode: 'triage' | 'full';
+  findings: string[];
+  findings_detailed: VisualFinding[];
+  impression: string;
+  recommendations: string[];
+  confidence_scores: Record<string, number>;
+  refusal_tier: 'ANSWERED' | 'HEDGED' | 'REFUSED';
+  has_graph_links: boolean;
+  graph_paths: KnowledgeGraphPath[];
+  graph_notice?: string | null;
+  preview_url: string;
+  processing_time_ms: number;
+  model_used: string;
+  provenance: string[];
+  created_at: string;
+}
+
+export interface MultimodalCapabilities {
+  image_formats: string[];
+  dicom_support: boolean;
+  pdf_support: boolean;
+  biomedclip_triage: boolean;
+  vlm_analysis: boolean;
+  vlm_model: string;
+  report_graph_links: boolean;
+  private_encryption: string;
+}
+
+export interface MultimodalStatusResponse {
+  service: string;
+  version: string;
+  capabilities: MultimodalCapabilities;
+  supported_modalities: ImageModality[];
 }

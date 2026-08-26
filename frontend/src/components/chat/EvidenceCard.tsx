@@ -11,6 +11,7 @@ import {
   Activity,
   FileText,
   FileSpreadsheet,
+  Image as ImageIcon,
 } from 'lucide-react';
 
 interface EvidenceCardProps {
@@ -30,6 +31,8 @@ export const EvidenceCard: React.FC<EvidenceCardProps> = ({
 
   const getCategoryIcon = (cat?: string) => {
     const c = (cat || '').toLowerCase();
+    if (c.includes('scan') || c.includes('radiology') || c.includes('imaging'))
+      return <ImageIcon className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#14B8A6] stroke-[1.75]" />;
     if (c.includes('guideline')) return <BookOpen className="w-3.5 h-3.5 text-[#0F766E] dark:text-[#14B8A6] stroke-[1.75]" />;
     if (c.includes('drug') || c.includes('med')) return <Pill className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 stroke-[1.75]" />;
     if (c.includes('lab') || c.includes('clinical') || c.includes('ecg'))
@@ -41,6 +44,8 @@ export const EvidenceCard: React.FC<EvidenceCardProps> = ({
 
   const getCategoryBadgeClass = (cat?: string) => {
     const c = (cat || '').toLowerCase();
+    if (c.includes('scan') || c.includes('radiology') || c.includes('imaging'))
+      return 'bg-teal-50 dark:bg-teal-950/40 text-teal-800 dark:text-teal-300 border-teal-200 dark:border-teal-800';
     if (c.includes('guideline')) return 'bg-teal-50 dark:bg-teal-950/40 text-teal-800 dark:text-teal-300 border-teal-200 dark:border-teal-800';
     if (c.includes('drug')) return 'bg-blue-50 dark:bg-blue-950/40 text-blue-800 dark:text-blue-300 border-blue-200 dark:border-blue-800';
     if (c.includes('research') || c.includes('paper') || c.includes('pubmed'))
@@ -52,6 +57,14 @@ export const EvidenceCard: React.FC<EvidenceCardProps> = ({
 
   const getSourceTypeIcon = (srcType?: string) => {
     const st = srcType?.toLowerCase();
+    if (st === 'multimodal_scan') {
+      return (
+        <span className="inline-flex items-center space-x-1 h-7 px-2 rounded-lg text-xs font-mono font-medium text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800">
+          <ImageIcon className="w-3.5 h-3.5 stroke-[1.75]" />
+          <span>Patient Scan</span>
+        </span>
+      );
+    }
     if (st === 'both') {
       return (
         <span className="inline-flex items-center space-x-1 h-7 px-2 rounded-lg text-xs font-mono font-medium text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/40 border border-teal-200 dark:border-teal-800">

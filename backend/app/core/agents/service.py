@@ -36,9 +36,10 @@ class AgentOrchestrator:
         user_id: Optional[str] = None,
         destination: str = "global",
         report_payload: Optional[Dict[str, Any]] = None,
+        attached_scan_id: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        Execute full multi-agent LangGraph workflow for a given query or report payload.
+        Execute full multi-agent LangGraph workflow for a given query, report payload, or scan attachment.
 
         Parameters
         ----------
@@ -50,6 +51,8 @@ class AgentOrchestrator:
             Target index destination (default 'global' or 'private_store/<user_id>').
         report_payload : dict, optional
             Optional lab report payload dict.
+        attached_scan_id : str, optional
+            Optional scan image_id attached to query for multimodal context.
 
         Returns
         -------
@@ -61,11 +64,25 @@ class AgentOrchestrator:
         if user_id and destination == "global":
             destination = f"private_store/{user_id}"
 
+        # Fetch scan context if attached_scan_id provided
+        attached_scan_context = None
+        if attached_scan_id and user_id:
+            try:
+                from app.multimodal.service import MultimodalService
+                svc = MultimodalService()
+                attached_scan_context = svc.get_scan_context(user_id=user_id, image_id=attached_scan_id)
+                if attached_scan_context:
+                    logger.info("Attached scan context loaded for scan %s (user %s)", attached_scan_id, user_id)
+            except Exception as e:
+                logger.warning("Failed loading attached scan context for %s: %s", attached_scan_id, e)
+
         initial_state = {
             "query": query,
             "user_id": user_id,
             "destination": destination,
             "report_payload": report_payload,
+            "attached_scan_id": attached_scan_id,
+            "attached_scan_context": attached_scan_context,
             "latency_ms": {},
         }
 
@@ -73,7 +90,7 @@ class AgentOrchestrator:
         thread_id = f"{user_id}_{uuid.uuid4().hex[:8]}" if user_id else f"thread_{uuid.uuid4().hex[:8]}"
         config = {"configurable": {"thread_id": thread_id}}
 
-        logger.info("AgentOrchestrator invoking graph for query %r (destination=%s, user_id=%s)", query, destination, user_id)
+        logger.info("AgentOrchestrator invoking graph for query %r (destination=%s, user_id=%s, scan=%s)", query, destination, user_id, attached_scan_id)
         final_state = self.graph.invoke(initial_state, config=config)
 
         return final_state.get("final_response", {})

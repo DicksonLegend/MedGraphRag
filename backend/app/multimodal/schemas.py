@@ -40,6 +40,24 @@ class ImageOrientation(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
+class VisualFinding(BaseModel):
+    """Detailed visual finding with confidence and clinical negation state."""
+    label: str = Field(..., description="Pathology finding label")
+    confidence: float = Field(..., ge=0.0, le=1.0, description="Softmax confidence probability (0..1)")
+    negated: bool = Field(False, description="True if finding is absent/negated")
+    location: Optional[str] = Field(None, description="Anatomical location if localized")
+    severity: Optional[str] = Field(None, description="Severity grade (mild/moderate/severe)")
+    auc_reference: Optional[float] = Field(None, description="BiomedCLIP benchmark validation AUC")
+
+
+class KnowledgeGraphPath(BaseModel):
+    """Knowledge graph linkage from report_graph Kùzu DB."""
+    source_image_id: str
+    finding_label: str
+    finding_negated: bool
+    matched_reports: List[Dict[str, Any]] = Field(default_factory=list, description="Cross-linked reports from OpenI")
+
+
 class MedicalImage(BaseModel):
     """Medical image with metadata for VLM processing."""
     image_id: str = Field(..., description="Unique identifier for this image")
@@ -56,21 +74,32 @@ class MedicalImage(BaseModel):
     image_shape: Optional[List[int]] = Field(None, description="Image dimensions [H, W, C]")
     file_bytes_hash: str = Field(..., description="SHA-256 hash of original image bytes")
     image_bytes: Optional[bytes] = Field(None, description="Raw image bytes (not stored in DB)")
+    preview_bytes: Optional[bytes] = Field(None, description="8-bit PNG preview bytes")
     needs_review: bool = Field(False, description="True if image quality/confidence is low")
 
 
 class ImageAnalysisResult(BaseModel):
     """Result of VLM/ML analysis on a medical image."""
     image_id: str
+    filename: str = ""
+    modality: ImageModality = ImageModality.XRAY
+    orientation: ImageOrientation = ImageOrientation.UNKNOWN
+    body_part: Optional[str] = "Chest"
+    mode: str = Field("triage", description="'triage' (fast zero-shot) or 'full' (generative VLM)")
     findings: List[str] = Field(default_factory=list, description="List of detected findings")
-    findings_detailed: List[Dict[str, Any]] = Field(default_factory=list, description="Detailed findings with locations")
-    impression: str = Field("", description="Overall impression/summary")
+    findings_detailed: List[VisualFinding] = Field(default_factory=list, description="Detailed findings with locations & confidences")
+    impression: str = Field("", description="Overall radiological impression/summary")
     recommendations: List[str] = Field(default_factory=list, description="Follow-up recommendations")
     confidence_scores: Dict[str, float] = Field(default_factory=dict, description="Per-finding confidence scores")
-    modality: ImageModality
+    refusal_tier: str = Field("ANSWERED", description="ANSWERED, HEDGED, or REFUSED")
+    has_graph_links: bool = Field(False, description="True if matched in report_graph/kuzu.db")
+    graph_paths: List[KnowledgeGraphPath] = Field(default_factory=list, description="Linked knowledge graph paths")
+    graph_notice: Optional[str] = Field(None, description="Notice regarding graph links")
+    preview_url: str = Field("", description="URL endpoint to fetch 8-bit PNG preview")
     processing_time_ms: float = Field(0.0, description="Processing latency in milliseconds")
     model_used: str = Field("", description="Model identifier used for analysis")
     provenance: List[str] = Field(default_factory=list, description="Provenance for findings")
+    created_at: str = Field("", description="ISO timestamp")
 
 
 class PDFDocument(BaseModel):

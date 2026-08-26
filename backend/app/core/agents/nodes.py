@@ -86,6 +86,7 @@ def query_agent_node(state: MedGraphState) -> Dict[str, Any]:
         query=query,
         destination=destination,
         retrieval_result=retrieval_res,
+        attached_scan_context=state.get("attached_scan_context"),
     )
     if settings.pipeline_verification_enabled:
         verified_res = pipeline.verification_agent.verify(
@@ -130,6 +131,7 @@ def knowledge_agent_node(state: MedGraphState) -> Dict[str, Any]:
         destination=destination,
         top_n=12,
         retrieval_result=retrieval_res,
+        attached_scan_context=state.get("attached_scan_context"),
     )
 
     # Step C: Verification & Gating

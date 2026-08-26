@@ -27,6 +27,7 @@ router = APIRouter(tags=["Query RAG Engine"])
 class QueryRequest(BaseModel):
     query: str = Field(..., description="Natural language medical query", example="potassium hyperkalemia ECG changes peaked T waves treatment")
     destination: Optional[str] = Field("global", description="Target destination space ('global' or user's own user_id)")
+    attached_scan_id: Optional[str] = Field(None, description="Optional scan image_id attached to query for multimodal context")
 
 
 @router.post("/query")
@@ -51,7 +52,13 @@ async def process_query(
             detail={"error": "forbidden_destination", "detail": "You are not authorized to query another user's private store."},
         )
 
-    logger.info("Received /query from user %s (dest=%s, query=%r)", user_id, dest, req.query[:60])
+    logger.info(
+        "Received /query from user %s (dest=%s, attached_scan=%s, query=%r)",
+        user_id,
+        dest,
+        req.attached_scan_id,
+        req.query[:60],
+    )
 
     try:
         # Single-flight serialization lock to prevent concurrent LLM execution
@@ -63,22 +70,27 @@ async def process_query(
                 query=req.query,
                 user_id=user_id,
                 destination=dest,
+                attached_scan_id=req.attached_scan_id,
             )
+
+            # Security Logging
+            status_str = response.get("answer_status", "unknown")
+            route_str = response.get("route", "medical_query")
+            lat_ms = response.get("latency_breakdown", {}).get("total", 0.0)
+            logger.info("Query execution complete for user %s (route=%s, status=%s, total_ms=%.2f)", user_id, route_str, status_str, lat_ms)
+
             return response
     except Exception as e:
         logger.error("Query execution failed for user %s: %s", user_id, e, exc_info=True)
         return {
             "route": "medical_query",
-            "answer_text": (
-                f"An error occurred while processing your query.\n\n"
-                "This is information, not medical advice — consult your physician."
-            ),
+            "answer_text": "An internal error occurred while processing your clinical query. Please try again later.",
             "answer_status": "error",
             "confidence_tier": "low",
             "final_confidence": 0.0,
             "citations": [],
             "graph_paths": [],
             "disclaimer_present": True,
-            "error": "query_processing_error",
-            "detail": "Failed to process query cleanly.",
+            "retry_count": 0,
+            "latency_breakdown": {"total": 0.0},
         }

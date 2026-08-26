@@ -3,8 +3,9 @@
  * Enforces contract-first requests, Bearer token injection, 401 redirects & 403 handling.
  */
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000';
-const API_PREFIX = '/api/v1';
+export const API_BASE = import.meta.env.VITE_API_BASE || 'http://127.0.0.1:8000';
+export const API_BASE_URL = API_BASE;
+export const API_PREFIX = '/api/v1';
 
 export class ApiRequestError extends Error {
   status: number;

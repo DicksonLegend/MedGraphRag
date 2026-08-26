@@ -21,6 +21,8 @@ class MedGraphState(TypedDict, total=False):
     user_id: Optional[str]
     destination: str
     report_payload: Optional[Dict[str, Any]]
+    attached_scan_id: Optional[str]
+    attached_scan_context: Optional[Dict[str, Any]]
     route: str  # 'medical_query' | 'knowledge_graph' | 'report' | 'out_of_scope'
     retrieval_result: Optional[RetrievalResult]
     verified_result: Optional[VerifiedAnswerResult]

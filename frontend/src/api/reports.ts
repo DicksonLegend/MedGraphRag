@@ -23,4 +23,10 @@ export const reportsApi = {
       method: 'GET',
     });
   },
+
+  purgeReport: async (reportId: string): Promise<{ status: string; report_id: string }> => {
+    return apiClient<{ status: string; report_id: string }>(`/reports/${reportId}`, {
+      method: 'DELETE',
+    });
+  },
 };

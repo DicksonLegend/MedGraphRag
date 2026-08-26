@@ -88,6 +88,13 @@ async def lifespan(app: FastAPI):
     except Exception as e:
         logger.warning("LLM GPU preload warning: %s", e)
 
+    try:
+        from app.multimodal.parser import BiomedCLIPEngine
+        BiomedCLIPEngine.get_instance()
+        logger.info("BiomedCLIP triage engine pre-warmed on CPU successfully.")
+    except Exception as e:
+        logger.warning("BiomedCLIP preload warning: %s", e)
+
     yield
 
     logger.info("=== MedGraphRAG FastAPI Service Layer Shutdown ===")

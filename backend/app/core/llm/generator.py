@@ -55,26 +55,10 @@ class GeneratorService:
         top_n: Optional[int] = None,
         category_filter: Optional[List[str]] = None,
         retrieval_result: Optional[RetrievalResult] = None,
+        attached_scan_context: Optional[Dict[str, Any]] = None,
     ) -> AnswerResult:
         """
-        Execute full RAG pipeline for a given query.
-
-        Parameters
-        ----------
-        query : str
-            Natural language question.
-        destination : str
-            Target index destination (default 'global').
-        top_n : int, optional
-            Number of retrieval items to fetch.
-        category_filter : list of str, optional
-            Category restriction for retrieval.
-        retrieval_result : RetrievalResult, optional
-            Pre-computed retrieval result to avoid redundant retrieval calls.
-
-        Returns
-        -------
-        AnswerResult object with generated answer, citations, confidence, and metrics.
+        Execute full RAG pipeline for a given query with optional attached scan context.
         """
         t_start = time.perf_counter()
         latency_breakdown: Dict[str, float] = {}
@@ -101,6 +85,37 @@ class GeneratorService:
         # ── Stage 2: Context Assembly ────────────────────────────────────────
         t0 = time.perf_counter()
         context_pkg: ContextPackage = build_context(retrieval_res)
+
+        if attached_scan_context:
+            scan_id = attached_scan_context.get("image_id", "Patient_Scan")
+            findings = attached_scan_context.get("findings", [])
+            impression = attached_scan_context.get("impression", "")
+            modality = attached_scan_context.get("modality", "X-ray")
+            scan_evidence = (
+                f"\n\n--- ATTACHED PATIENT SCAN [{scan_id}] ---\n"
+                f"Modality: {modality}\n"
+                f"Detected Findings: {', '.join(findings) if findings else 'None'}\n"
+                f"Radiological Impression: {impression}\n"
+                "---------------------------------------------\n"
+                "Please synthesize the clinical answer taking into account both the literature evidence above and the patient's attached scan findings.\n"
+            )
+            context_pkg.user_prompt += scan_evidence
+
+            # Append scan to citations
+            scan_meta = CitationMeta(
+                label="[Scan]",
+                chunk_id=f"scan_{scan_id[:8]}",
+                document_id=f"patient_scan_{scan_id[:8]}",
+                source=f"Attached Patient Scan ({attached_scan_context.get('filename', 'scan.png')})",
+                category="radiology_scan",
+                chunk_type="image_findings",
+                title=f"Attached Medical Scan ({modality})",
+                snippet=impression[:200] if impression else f"Detected findings: {', '.join(findings)}",
+                fused_score=1.0,
+                source_type="multimodal_scan",
+            )
+            context_pkg.citations.append(scan_meta)
+
         latency_breakdown["context_ms"] = (time.perf_counter() - t0) * 1000
 
         # ── Stage 3: LLM Generation ──────────────────────────────────────────
