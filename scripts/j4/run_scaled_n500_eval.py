@@ -485,47 +485,98 @@ def run_mode_evaluation(
 def main():
     t0 = time.time()
     logger.info("=" * 80)
-    logger.info("MedGraphRAG — Step J4: N=500 Scaled Evaluation Suite")
+    logger.info("MedGraphRAG — Step J4: N=500 Scaled Evaluation Suite (GPU Accelerated)")
     logger.info("=" * 80)
 
-    # 1. Load N=500 MedQA US questions (seed 42)
+    # 1. Assert llama_cpp GPU offload support (fail-fast if missing)
+    import llama_cpp
+    if not llama_cpp.llama_supports_gpu_offload():
+        logger.error("FATAL: llama_cpp.llama_supports_gpu_offload() is False! Aborting GPU run.")
+        sys.exit(1)
+    assert llama_cpp.llama_supports_gpu_offload() is True, "llama_cpp GPU offload support missing!"
+    logger.info("✅ GPU Offload Support Verified: llama_supports_gpu_offload() == True")
+
+    # 2. Pre-Run Retrieval Regression Verification (must match ba1b5121...)
+    from scripts.j1.run_regression import run_regression_suite
+    from scripts.j1.verify_drift import extract_retrieval_signature
+    pre_reg_payload = run_regression_suite(_PROJECT_ROOT / "evaluations" / "j4_pre_drift_check.json")
+    pre_sig = extract_retrieval_signature(pre_reg_payload)
+    pre_hash = hashlib.sha256(json.dumps(pre_sig, indent=2, sort_keys=True).encode("utf-8")).hexdigest()
+    expected_hash = "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac"
+    if pre_hash != expected_hash:
+        logger.error("FATAL: Pre-run drift check FAILED! Hash %s != expected %s. Aborting.", pre_hash, expected_hash)
+        sys.exit(1)
+    logger.info("✅ Pre-run drift verification PASS: %s (0.00%% drift)", pre_hash)
+
+    # 3. Load N=500 MedQA US questions (seed 42)
     questions = load_medqa_questions(sample_size=500, seed=42)
 
-    # 2. Pipeline & LLM Judge
+    # 4. Pipeline & LLM Judge
     pipeline = MedGraphRAGPipeline()
     llm_judge = get_llm()
 
-    # 3. Execute the 4 Scaled Modes
+    # 5. Execute the 4 Scaled Modes (M1, M2, M3, M4)
     summary_m1 = run_mode_evaluation("M1_EVIDENCE_ONLY", "evidence", 1.0, "rrf", 0.0, questions, pipeline, llm_judge)
     summary_m2 = run_mode_evaluation("M2_GRAPH_ONLY", "graph", 0.0, "rrf", 0.0, questions, pipeline, llm_judge)
     summary_m3 = run_mode_evaluation("M3_COMBINED", "combined", 0.7, "rrf", 0.0, questions, pipeline, llm_judge)
     summary_m4 = run_mode_evaluation("M4_HYBRID_RERANK", "combined", 0.7, "hybrid", 0.15, questions, pipeline, llm_judge)
 
-    # 4. Retrieval Regression Verification (must match ba1b5121...)
-    from scripts.j1.run_regression import run_regression_suite
+    # 6. Post-Run Retrieval Regression Verification
     temp_reg_fp = _PROJECT_ROOT / "evaluations" / "j4_regression_recheck.json"
     reg_payload = run_regression_suite(temp_reg_fp)
-
-    from scripts.j1.verify_drift import extract_retrieval_signature
     recheck_sig = extract_retrieval_signature(reg_payload)
     recheck_bytes = json.dumps(recheck_sig, indent=2, sort_keys=True).encode("utf-8")
     recheck_hash = hashlib.sha256(recheck_bytes).hexdigest()
-
-    expected_hash = "ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac"
     drift_verdict = "0.00% DRIFT (100% BYTE-IDENTICAL RETRIEVAL)" if recheck_hash == expected_hash else f"DRIFT DETECTED: {recheck_hash} != {expected_hash}"
 
     total_duration_s = round(time.time() - t0, 2)
 
-    # 5. Build Final Scaled Report
+    # 7. Bonus: Compare M1 GPU answers vs CPU Backup answers
+    cpu_backup_file = _PROJECT_ROOT / "evaluations" / "checkpoints_n500_cpu_backup" / "M1_EVIDENCE_ONLY_summary.json"
+    gpu_vs_cpu_comparison = {}
+    if cpu_backup_file.exists():
+        try:
+            with open(cpu_backup_file, "r", encoding="utf-8") as f:
+                cpu_summary = json.load(f)
+            cpu_details = {q["question_id"]: q for q in cpu_summary.get("per_question_details", [])}
+            gpu_details = {q["question_id"]: q for q in summary_m1.get("per_question_details", [])}
+
+            total_compared = 0
+            exact_matches = 0
+            for q_id, gpu_q in gpu_details.items():
+                if q_id in cpu_details:
+                    total_compared += 1
+                    if gpu_q.get("pred_answer") == cpu_details[q_id].get("pred_answer"):
+                        exact_matches += 1
+
+            match_rate = round((exact_matches / total_compared) * 100.0, 2) if total_compared > 0 else 0.0
+            gpu_vs_cpu_comparison = {
+                "total_compared": total_compared,
+                "exact_matches": exact_matches,
+                "match_rate_pct": match_rate,
+                "cpu_m1_accuracy_all": cpu_summary.get("accuracy_all"),
+                "gpu_m1_accuracy_all": summary_m1.get("accuracy_all"),
+            }
+            logger.info(
+                "⚡ [BONUS COMPARISON] M1 GPU vs CPU Backup Match Rate: %d/%d (%.2f%%)",
+                exact_matches, total_compared, match_rate
+            )
+        except Exception as cmp_err:
+            logger.warning("Could not compare GPU vs CPU backup: %s", cmp_err)
+
+    # 8. Build Final Scaled Report
     final_report = {
         "step": "J4",
-        "description": "N=500 Scaled Evaluation Suite on MedQA-US with Bootstrap 95% CIs",
+        "description": "N=500 Scaled Evaluation Suite on MedQA-US with Bootstrap 95% CIs (Restored GPU Clean Run)",
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "total_duration_s": total_duration_s,
         "sample_size": 500,
         "seed": 42,
         "temperature": 0.0,
+        "device": "gpu",
+        "n_gpu_layers": -1,
         "llm_model": "bartowski/Qwen2.5-7B-Instruct-GGUF",
+        "m1_gpu_vs_cpu_comparison": gpu_vs_cpu_comparison,
         "ablation_metrics": {
             "M1_EVIDENCE_ONLY": {
                 "verify_mode": summary_m1["verify_mode"],
@@ -591,6 +642,12 @@ def main():
                 "bootstrap_ci_95": summary_m4["bootstrap_ci_95"],
                 "p01_p05_top1_scores": summary_m4["p01_p05_top1_scores"],
             },
+        },
+        "per_query_records": {
+            "M1_EVIDENCE_ONLY": summary_m1["per_question_details"],
+            "M2_GRAPH_ONLY": summary_m2["per_question_details"],
+            "M3_COMBINED": summary_m3["per_question_details"],
+            "M4_HYBRID_RERANK": summary_m4["per_question_details"],
         },
         "retrieval_regression": {
             "status": "PASS",
