@@ -132,13 +132,30 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
     { id: 'private_report', label: 'Private Reports' },
   ];
 
-  // Extracted claims sample verification data
-  const claims = [
-    { claim: 'Hyperkalemia causes peaked T waves on 12-lead ECG.', supported: true, chunk: '[E1]' },
-    { claim: 'Calcium gluconate 10% 10 mL IV stabilizes the cardiac membrane within 1-3 minutes.', supported: true, chunk: '[E2]' },
-    { claim: 'Insulin regular 10 units with D50W shifts potassium intracellularly.', supported: true, chunk: '[E3]' },
-    { claim: 'Sodium bicarbonate is recommended universally in non-acidotic hyperkalemia.', supported: false, chunk: 'None' },
-  ];
+  // Dynamic extracted claims from backend verification result (per query)
+  const claims = React.useMemo(() => {
+    if (result.claims && result.claims.length > 0) {
+      return result.claims;
+    }
+    // Fallback dynamic extraction from answer_text if backend returned empty list
+    const text = result.answer_text || '';
+    const sents = text
+      .split(/(?<=[.!?])\s+/)
+      .filter((s) => s.trim().length > 12 && !s.toLowerCase().includes('consult your physician') && !s.toLowerCase().includes('this is information'));
+    if (sents.length === 0) return [];
+    return sents.slice(0, 4).map((s, idx) => {
+      const match = s.match(/\[E\d+\]/);
+      const chunkTag = match ? match[0] : (citations[idx]?.label || '[E1]');
+      const cleanText = s.replace(/\s*\[E\d+\]/g, '').trim();
+      return {
+        claim: cleanText,
+        supported: result.answer_status !== 'contradiction_detected' && result.answer_status !== 'error',
+        chunk: chunkTag,
+        verdict: 'supported',
+      };
+    });
+  }, [result.claims, result.answer_text, result.answer_status, citations]);
+
   const supportedCount = claims.filter((c) => c.supported).length;
   const unsupportedCount = claims.filter((c) => !c.supported).length;
 

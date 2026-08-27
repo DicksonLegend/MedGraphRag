@@ -119,6 +119,14 @@ export interface KnowledgeGap {
   suggested_sources: string[];
 }
 
+export interface ClaimVerificationItem {
+  claim: string;
+  supported: boolean;
+  verdict?: 'supported' | 'contradicted' | 'not_mentioned' | 'refusal_valid' | string;
+  chunk: string;
+  explanation?: string;
+}
+
 export interface QueryResponse {
   route: 'medical_query' | 'knowledge_graph' | 'report' | 'out_of_scope' | string;
   answer_text: string;
@@ -127,6 +135,7 @@ export interface QueryResponse {
   final_confidence: number;
   citations: CitationMeta[];
   graph_paths: string[];
+  claims?: ClaimVerificationItem[];
   discrepancy_alerts?: DiscrepancyAlert[];
   knowledge_gaps?: KnowledgeGap[];
   disclaimer_present: boolean;

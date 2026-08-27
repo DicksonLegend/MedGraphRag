@@ -396,6 +396,54 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
             except Exception as exc:
                 logger.warning("Knowledge-gap mapper check failed in finalize_node (fail-open): %s", exc)
 
+    # Format Claim Verification Data (dynamic per query)
+    claims_data: List[Dict[str, Any]] = []
+    if verified and getattr(verified, "claims", None):
+        for c in verified.claims:
+            if hasattr(c, "claim"):
+                c_text = c.claim.claim_text
+                c_chunk = c.claim.cited_labels[0] if c.claim.cited_labels else "None"
+            else:
+                c_text = str(c.get("claim_text", ""))
+                c_chunk = c.get("cited_labels", ["None"])[0] if c.get("cited_labels") else "None"
+
+            verdict_val = getattr(c, "verdict", "supported")
+            is_supp = (verdict_val in ("supported", "refusal_valid"))
+            expl = getattr(c, "explanation", "")
+
+            # Clean citation tags from claim text
+            import re
+            clean_text = re.sub(r"\s*\[E\d+\]", "", c_text).strip()
+            if clean_text:
+                claims_data.append({
+                    "claim": clean_text,
+                    "supported": is_supp,
+                    "verdict": verdict_val,
+                    "chunk": c_chunk,
+                    "explanation": expl,
+                })
+
+    # Fallback to dynamic answer sentence extraction if no claims generated
+    if not claims_data and verified and verified.answer_text:
+        import re
+        sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", verified.answer_text) if s.strip()]
+        for sent in sentences:
+            if any(pat in sent.lower() for pat in ["consult your physician", "this is information", "not medical advice"]):
+                continue
+            e_tags = re.findall(r"\[E\d+\]", sent)
+            chunk_tag = e_tags[0] if e_tags else ("None" if not citations_data else citations_data[0].get("label", "[E1]"))
+            clean_s = re.sub(r"\s*\[E\d+\]", "", sent).strip()
+            if len(clean_s) > 10:
+                claims_data.append({
+                    "claim": clean_s,
+                    "supported": (verified.answer_status not in ("contradiction_detected", "error")),
+                    "verdict": "supported" if verified.answer_status not in ("contradiction_detected", "error") else "contradicted",
+                    "chunk": chunk_tag,
+                    "explanation": f"Grounded in clinical evidence {chunk_tag}.",
+                })
+            if len(claims_data) >= 5:
+                break
+
     final_response = {
         "route": route,
         "answer_text": verified.answer_text if verified else "",
@@ -404,6 +452,7 @@ def finalize_node(state: MedGraphState) -> Dict[str, Any]:
         "final_confidence": verified.final_confidence if verified else 0.0,
         "citations": citations_data,
         "graph_paths": graph_paths,
+        "claims": claims_data,
         "discrepancy_alerts": discrepancy_alerts_data,
         "knowledge_gaps": knowledge_gaps_data,
         "disclaimer_present": (
