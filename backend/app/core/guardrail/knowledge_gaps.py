@@ -120,18 +120,17 @@ def map_knowledge_gaps(
                 if len(synonyms) > 1:
                     suggested_q.append(f"{synonyms[1]} evidence summary")
             else:
-                suggested_q.append(f"clinical diagnosis and therapy for {primary_concept}")
-                suggested_q.append(f"guidelines regarding {primary_concept}")
+                suggested_q.append(f"clinical diagnosis and treatment guidelines for {primary_concept}")
+                suggested_q.append(f"clinical management protocol for {primary_concept}")
 
             gaps.append(
                 KnowledgeGap(
                     claim_text=query,
                     gap_type="corpus_retrieval",
                     detail=(
-                        f"Top fused retrieval score ({top_score:.4f}) is below relevance threshold (0.02). "
-                        f"The indexed corpus lacks high-density textual evidence for '{primary_concept}'."
+                        f"The medical database currently has limited indexed guideline documents specifically addressing '{primary_concept}'."
                     ),
-                    suggested_queries=suggested_q[:3],
+                    suggested_queries=suggested_q[:2],
                     suggested_sources=[
                         "PubMed Central Clinical Practice Guidelines",
                         "UpToDate / DynaMed Evidence Summaries",
@@ -149,7 +148,7 @@ def map_knowledge_gaps(
                 r = graph_checks.get("reason", "")
                 if v == "neutral" or "no direct graph assertion" in r.lower() or "missing" in r.lower():
                     is_graph_gap = True
-                    graph_detail = r
+                    graph_detail = f"The medical knowledge graph does not have a verified direct treatment connection linking '{primary_concept}' to this specific inquiry."
             elif isinstance(graph_checks, list):
                 for gc in graph_checks:
                     if isinstance(gc, dict):
@@ -157,28 +156,27 @@ def map_knowledge_gaps(
                         r = gc.get("reason", "")
                         if v == "neutral" or "no direct graph assertion" in r.lower():
                             is_graph_gap = True
-                            graph_detail = r
+                            graph_detail = f"The medical knowledge graph does not have a verified direct treatment connection linking '{primary_concept}' to this specific inquiry."
                             break
 
         # If answer was refused/uncertain and graph did not provide multi-hop path
         if not is_graph_gap and answer_status in ("refusal", "uncertain") and not is_retrieval_gap:
-            # Check if graph hit rate was 0
             is_graph_gap = True
-            graph_detail = f"Knowledge graph lacks relational assertion linking '{primary_concept}' via NEGATES/TEMPORAL/INDICATES."
+            graph_detail = f"The medical knowledge graph does not have a verified clinical link connecting '{primary_concept}' directly to this specific protocol."
 
         if is_graph_gap:
             suggested_g_q = []
             if synonyms:
-                suggested_g_q.append(f"mechanism of action and indications for {synonyms[0]}")
+                suggested_g_q.append(f"clinical management and treatment guidelines for {synonyms[0]}")
             else:
-                suggested_g_q.append(f"relational indications for {primary_concept}")
+                suggested_g_q.append(f"clinical treatment and indications for {primary_concept}")
 
             gaps.append(
                 KnowledgeGap(
                     claim_text=query,
                     gap_type="graph_coverage",
                     detail=(
-                        graph_detail or f"Graph lacks explicit relational assertion linking '{primary_concept}' to clinical outcomes."
+                        graph_detail or f"The knowledge graph lacks a verified relationship linking '{primary_concept}' to standard clinical protocols."
                     ),
                     suggested_queries=suggested_g_q,
                     suggested_sources=[
@@ -196,12 +194,11 @@ def map_knowledge_gaps(
                     claim_text=query,
                     gap_type="evidence_faithfulness",
                     detail=(
-                        f"Retrieved evidence faithfulness score (φ = {phi:.2f} < 0.50) indicates pipeline claims "
-                        f"are unsupported or contradict the retrieved text."
+                        f"The retrieved medical documents discuss related topics, but do not contain enough verified evidence to safely prove the complete answer (grounding confidence φ = {phi:.2f})."
                     ),
                     suggested_queries=[
-                        f"consult primary source document '{top_source}' directly",
-                        f"verify '{primary_concept}' with authoritative specialty consensus",
+                        f"clinical practice guidelines for {primary_concept}",
+                        f"standard treatment protocol and indications for {primary_concept}",
                     ],
                     suggested_sources=[f"Direct review of source: {top_source}"],
                 )

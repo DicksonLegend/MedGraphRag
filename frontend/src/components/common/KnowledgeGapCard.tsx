@@ -16,7 +16,7 @@ export const KnowledgeGapCard: React.FC<KnowledgeGapCardProps> = ({ gaps, onQuer
     switch (gapType) {
       case 'corpus_retrieval':
         return {
-          label: 'Corpus Retrieval Boundary',
+          label: 'Limited Document Coverage',
           icon: <Database className="w-3.5 h-3.5" />,
           colorClass: 'bg-indigo-50/90 dark:bg-indigo-950/40 text-indigo-950 dark:text-indigo-200 border-indigo-200 dark:border-indigo-700/50',
           tagClass: 'bg-indigo-100 text-indigo-800 border-indigo-300 dark:bg-indigo-500/20 dark:text-indigo-300 dark:border-indigo-500/40',
@@ -24,7 +24,7 @@ export const KnowledgeGapCard: React.FC<KnowledgeGapCardProps> = ({ gaps, onQuer
         };
       case 'graph_coverage':
         return {
-          label: 'Graph Relation Boundary',
+          label: 'Knowledge Graph Gap',
           icon: <GitFork className="w-3.5 h-3.5" />,
           colorClass: 'bg-teal-50/90 dark:bg-teal-950/40 text-teal-950 dark:text-teal-200 border-teal-200 dark:border-teal-700/50',
           tagClass: 'bg-teal-100 text-teal-800 border-teal-300 dark:bg-teal-500/20 dark:text-teal-300 dark:border-teal-500/40',
@@ -32,7 +32,7 @@ export const KnowledgeGapCard: React.FC<KnowledgeGapCardProps> = ({ gaps, onQuer
         };
       case 'evidence_faithfulness':
         return {
-          label: 'Faithfulness & Support Gap',
+          label: 'Incomplete Evidence Support',
           icon: <ShieldAlert className="w-3.5 h-3.5" />,
           colorClass: 'bg-rose-50/90 dark:bg-rose-950/40 text-rose-950 dark:text-rose-200 border-rose-200 dark:border-rose-700/50',
           tagClass: 'bg-rose-100 text-rose-800 border-rose-300 dark:bg-rose-500/20 dark:text-rose-300 dark:border-rose-500/40',
@@ -40,7 +40,7 @@ export const KnowledgeGapCard: React.FC<KnowledgeGapCardProps> = ({ gaps, onQuer
         };
       default:
         return {
-          label: 'Epistemic Uncertainty',
+          label: 'Knowledge Uncertainty',
           icon: <Compass className="w-3.5 h-3.5" />,
           colorClass: 'bg-slate-50 dark:bg-slate-900/60 text-slate-900 dark:text-slate-200 border-slate-200 dark:border-slate-700/50',
           tagClass: 'bg-slate-200 text-slate-800 border-slate-300 dark:bg-slate-700/30 dark:text-slate-300 dark:border-slate-600/40',
@@ -59,7 +59,7 @@ export const KnowledgeGapCard: React.FC<KnowledgeGapCardProps> = ({ gaps, onQuer
             key={idx}
             className={`p-4 rounded-xl border ${badge.colorClass} shadow-xs space-y-3 transition-all duration-200`}
             role="region"
-            aria-label="Epistemic Knowledge Gap Analysis"
+            aria-label="Clinical Knowledge Gap Analysis"
           >
             {/* Header */}
             <div className="flex items-center justify-between gap-2">
@@ -69,7 +69,7 @@ export const KnowledgeGapCard: React.FC<KnowledgeGapCardProps> = ({ gaps, onQuer
                 </div>
                 <div>
                   <span className="text-[10px] font-mono font-bold tracking-wider uppercase text-slate-500 dark:text-slate-400 block">
-                    Epistemic Diagnostic
+                    Knowledge Diagnostic
                   </span>
                   <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-slate-100">
                     {badge.label}
