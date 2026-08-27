@@ -370,7 +370,7 @@ export const ReportsPage: React.FC = () => {
                     Critical Alerts
                   </span>
                   <p className="text-xs font-mono font-semibold text-[#DC2626] truncate mt-0.5">
-                    {criticalReportsCount} critical range
+                    {criticalReportsCount} critical report{criticalReportsCount === 1 ? '' : 's'}
                   </p>
                 </div>
               </div>

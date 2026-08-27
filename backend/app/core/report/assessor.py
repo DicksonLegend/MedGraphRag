@@ -48,7 +48,7 @@ REFERENCE_RANGES_DB: Dict[str, Dict[str, Any]] = {
         "normal_low": 53.0,
         "normal_high": 115.0,
         "critical_low": None,
-        "critical_high": 354.0,
+        "critical_high": 180.0,
         "provenance": "Consolidated_Lab_Critical_Values_Dataset / Creatinine_Ref_v1",
     },
     "Sodium": {

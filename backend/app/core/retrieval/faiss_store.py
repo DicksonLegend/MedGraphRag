@@ -118,7 +118,7 @@ def warm_up() -> None:
 def _build_private_user_snippet(user_id: str) -> str:
     """
     Extract structured lab values and reports from the user's private Kùzu database,
-    falling back to decrypted metadata payloads if needed.
+    synthesizing the latest current values per test across all report types and full history.
     """
     user_dir = settings.private_store_dir / user_id
     db_path = user_dir / "kuzu" / "private_kuzu_db"
@@ -130,20 +130,78 @@ def _build_private_user_snippet(user_id: str) -> str:
             try:
                 query = """
                 MATCH (r:Report)-[:HAS_LAB_VALUE]->(lv:LabValue)
-                RETURN r.id AS report_id, r.report_date AS report_date,
+                RETURN r.id AS report_id, r.report_date AS report_date, r.filename AS filename,
                        lv.test_name AS test_name, lv.value AS value, lv.unit AS unit,
                        lv.ref_low AS ref_low, lv.ref_high AS ref_high, lv.is_critical AS is_critical
-                ORDER BY r.report_date DESC, lv.test_name ASC
+                ORDER BY r.report_date DESC, r.id DESC, lv.test_name ASC
                 """
                 df = conn.execute(query).get_as_df()
                 if not df.empty:
+                    # 1. Compile latest values and history per unique test across all reports
+                    latest_per_test = {}
+                    history_per_test = {}
+                    for _, row in df.iterrows():
+                        t_name = str(row["test_name"])
+                        r_date = str(row["report_date"])
+                        val = float(row["value"])
+                        unit = str(row["unit"])
+                        r_low = row["ref_low"]
+                        r_high = row["ref_high"]
+                        is_crit = (
+                            bool(row["is_critical"])
+                            or (r_high is not None and val > r_high)
+                            or (r_low is not None and val < r_low)
+                        )
+
+                        if t_name not in latest_per_test:
+                            latest_per_test[t_name] = {
+                                "value": val,
+                                "unit": unit,
+                                "report_date": r_date,
+                                "report_id": str(row["report_id"]),
+                                "ref_low": r_low,
+                                "ref_high": r_high,
+                                "is_critical": is_crit,
+                            }
+                        if t_name not in history_per_test:
+                            history_per_test[t_name] = []
+                        history_per_test[t_name].append((r_date, val, unit, is_crit))
+
                     lines = [f"=== PATIENT PRIVATE DIAGNOSTIC LAB REPORTS ({user_id}) ==="]
-                    grouped = df.groupby(["report_id", "report_date"], sort=False)
-                    for (r_id, r_date), group in grouped:
-                        lines.append(f"\nReport {r_id} (Date: {r_date}):")
+                    lines.append("\n--- LATEST / CURRENT LAB VALUES (Most Recent Status) ---")
+                    for t_name, info in sorted(latest_per_test.items()):
+                        crit = " [CRITICAL ALERT / OUT OF RANGE]" if info["is_critical"] else " [NORMAL]"
+                        ref_str = (
+                            f" (Ref: {info['ref_low']} - {info['ref_high']})"
+                            if info.get("ref_low") is not None and info.get("ref_high") is not None and info["ref_high"] < 9000
+                            else ""
+                        )
+                        prior_note = ""
+                        priors = [p for p in history_per_test[t_name] if p[0] != info["report_date"]]
+                        if priors:
+                            p_date, p_val, p_unit, _ = priors[0]
+                            prior_note = f"; Prior on {p_date} was {p_val} {p_unit}"
+                        lines.append(f"  • {t_name}: {info['value']} {info['unit']}{ref_str}{crit} (Latest from {info['report_date']}{prior_note})")
+
+                    lines.append("\n--- ALL UPLOADED REPORTS (Longitudinal History) ---")
+                    grouped = df.groupby(["report_id", "report_date", "filename"], sort=False)
+                    for (r_id, r_date, fname), group in grouped:
+                        lines.append(f"\nReport {r_id} (Date: {r_date}, File: {fname}):")
                         for _, row in group.iterrows():
-                            crit = " [CRITICAL ALERT]" if row["is_critical"] else ""
-                            ref_str = f" (Ref: {row['ref_low']} - {row['ref_high']})" if row.get("ref_low") is not None and row.get("ref_high") is not None and row["ref_high"] < 9000 else ""
+                            val = float(row["value"])
+                            r_high = row.get("ref_high")
+                            r_low = row.get("ref_low")
+                            is_crit = (
+                                bool(row["is_critical"])
+                                or (r_high is not None and val > r_high)
+                                or (r_low is not None and val < r_low)
+                            )
+                            crit = " [CRITICAL ALERT]" if is_crit else ""
+                            ref_str = (
+                                f" (Ref: {r_low} - {r_high})"
+                                if r_low is not None and r_high is not None and r_high < 9000
+                                else ""
+                            )
                             lines.append(f"  - {row['test_name']}: {row['value']} {row['unit']}{ref_str}{crit}")
                     return "\n".join(lines)
             finally:

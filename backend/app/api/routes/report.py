@@ -177,30 +177,38 @@ async def list_user_reports(
             db = kuzu.Database(str(db_path), read_only=True)
             conn = kuzu.Connection(db)
             try:
-                # Implicit grouping via aggregation in Kùzu Cypher
                 query = """
                 MATCH (r:Report)-[:HAS_LAB_VALUE]->(lv:LabValue)
                 RETURN r.id AS report_id, r.report_date AS report_date, r.filename AS filename,
-                       count(lv) AS n_lab_values,
-                       sum(CASE WHEN lv.is_critical THEN 1 ELSE 0 END) AS n_critical
-                ORDER BY report_date DESC
+                       lv.test_name AS test_name, lv.value AS value, lv.unit AS unit,
+                       lv.ref_low AS ref_low, lv.ref_high AS ref_high, lv.is_critical AS is_critical
+                ORDER BY r.report_date DESC, r.id DESC
                 """
                 df = conn.execute(query).get_as_df()
-                for _, row in df.iterrows():
-                    rid = str(row["report_id"])
-                    if rid not in seen_ids:
-                        seen_ids.add(rid)
-                        n_crit = int(row.get("n_critical", 0))
-                        n_lv = int(row.get("n_lab_values", 0))
-                        reports.append(
-                            ReportSummaryItem(
-                                report_id=rid,
-                                report_date=str(row.get("report_date", "")),
-                                filename=str(row.get("filename", f"report_{rid}")),
-                                n_lab_values=n_lv,
-                                critical_flag=(n_crit > 0),
+                if not df.empty:
+                    grouped = df.groupby(["report_id", "report_date", "filename"], sort=False)
+                    for (rid, r_date, fname), group in grouped:
+                        rid_str = str(rid)
+                        if rid_str not in seen_ids:
+                            seen_ids.add(rid_str)
+                            has_crit = False
+                            for _, r_val in group.iterrows():
+                                is_crit = bool(r_val["is_critical"])
+                                val = float(r_val["value"])
+                                r_high = r_val.get("ref_high")
+                                r_low = r_val.get("ref_low")
+                                if is_crit or (r_high is not None and val > r_high) or (r_low is not None and val < r_low):
+                                    has_crit = True
+                                    break
+                            reports.append(
+                                ReportSummaryItem(
+                                    report_id=rid_str,
+                                    report_date=str(r_date),
+                                    filename=str(fname or f"report_{rid_str}"),
+                                    n_lab_values=len(group),
+                                    critical_flag=has_crit,
+                                )
                             )
-                        )
             finally:
                 del conn
                 del db
