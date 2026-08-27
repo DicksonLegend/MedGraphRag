@@ -163,6 +163,41 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
   const supportedCount = claims.filter((c) => c.supported).length;
   const unsupportedCount = claims.filter((c) => !c.supported).length;
 
+  // Dynamic contextual suggested follow-ups
+  const dynamicFollowUps = React.useMemo(() => {
+    if (result.answer_status === 'out_of_scope') {
+      return [
+        { label: '↳ Try: Hyperkalemia ECG & Treatment', query: 'What are the immediate ECG changes and treatment steps for acute severe hyperkalemia?' },
+        { label: '↳ Try: Warfarin INR Monitoring Protocol', query: 'What is the target INR range and monitoring protocol for warfarin anticoagulation in atrial fibrillation?' },
+        { label: '↳ Try: Pneumonia Antibiotic Regimen', query: 'What are the diagnostic criteria and initial antibiotic regimen for community-acquired pneumonia in adults?' },
+      ];
+    }
+
+    const list: { label: string; query?: string; action?: () => void }[] = [];
+
+    // Prioritize queries from Epistemic Knowledge Gaps if present
+    if (result.knowledge_gaps && result.knowledge_gaps.length > 0) {
+      result.knowledge_gaps.forEach((g) => {
+        if (g.suggested_queries && g.suggested_queries.length > 0) {
+          g.suggested_queries.forEach((sq) => {
+            if (list.length < 3) {
+              list.push({ label: `↳ ${sq}`, query: sq });
+            }
+          });
+        }
+      });
+    }
+
+    if (list.length < 3) {
+      list.push({
+        label: '↳ Inspect multi-hop knowledge graph provenance',
+        action: () => setActiveTab('graph'),
+      });
+    }
+
+    return list.slice(0, 3);
+  }, [result.answer_status, result.knowledge_gaps]);
+
   return (
     <div className="rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0F172A] shadow-xs overflow-hidden animate-fade-in font-sans text-slate-800 dark:text-slate-200">
       {/* ── D.1 TOP TELEMETRY HEADER BAR ── */}
@@ -184,23 +219,17 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
             <span>{totalSeconds} s end-to-end</span>
           </span>
 
-          {/* Status Verdict Pill */}
-          <div className="relative group">
-            <span
-              className={`inline-flex items-center space-x-1 h-7 px-2.5 text-xs font-mono font-semibold rounded-lg border cursor-help ${statusProps.badgeClass}`}
-            >
-              <span>{statusProps.label}</span>
-              <HelpCircle className="w-3.5 h-3.5 opacity-70 stroke-[1.75]" />
-            </span>
-            <div className="absolute left-0 top-full mt-1.5 hidden group-hover:block z-50 w-72 p-2.5 rounded-lg bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 shadow-xl text-xs font-sans text-slate-700 dark:text-slate-300 leading-relaxed">
-              <strong>Status Verdict:</strong> Claim-level verification across cited evidence chunks.
-            </div>
-          </div>
+          {/* D.1 Answer Status Pill */}
+          <span
+            className={`inline-flex items-center h-7 px-2.5 rounded-lg text-xs font-medium border shadow-2xs ${statusProps.badgeClass}`}
+          >
+            {statusProps.label}
+          </span>
         </div>
 
-        {/* Right Side Header: 3D Graph Trigger & Confidence Dial */}
+        {/* Right Action Chips */}
         <div className="flex items-center space-x-2">
-          {/* 3D Graph Trigger (28px height secondary chip) */}
+          {/* 3D Graph Trigger Button */}
           <button
             type="button"
             onClick={() => setIs3DGraphOpen(true)}
@@ -254,28 +283,32 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
                   <strong>Clinical Assertion Declined:</strong> {cleanAnswerText(result.answer_text) || `Insufficient factual support in verified corpus (faithfulness score φ = ${result.final_confidence.toFixed(2)} < 0.50 threshold). The system refuses to assert ungrounded clinical statements.`}
                 </p>
 
-                {/* Rephrase Suggestion Chips */}
-                <div className="space-y-1 pt-0.5">
-                  <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">
-                    Suggested Clarifications:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => onFollowUpClick?.('Provide specific guideline dosing for renal adjustment')}
-                      className="h-7 px-2.5 inline-flex items-center text-xs font-mono bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] rounded-lg transition-colors cursor-pointer"
-                    >
-                      Query with specific UMLS clinical terminology
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => onFollowUpClick?.('Expand query scope to multi-hop guideline traversal')}
-                      className="h-7 px-2.5 inline-flex items-center text-xs font-mono bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] rounded-lg transition-colors cursor-pointer"
-                    >
-                      Expand scope to multi-hop guideline traversal
-                    </button>
+                {/* Contextual Clarification / Action Chips */}
+                {result.answer_status !== 'out_of_scope' && (
+                  <div className="space-y-1 pt-0.5">
+                    <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block">
+                      Suggested Actions:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {result.knowledge_gaps?.[0]?.suggested_queries?.[0] && (
+                        <button
+                          type="button"
+                          onClick={() => onFollowUpClick?.(result.knowledge_gaps![0].suggested_queries![0])}
+                          className="h-7 px-2.5 inline-flex items-center text-xs font-mono bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-teal-800 dark:text-teal-300 hover:bg-teal-50 dark:hover:bg-slate-900 rounded-lg transition-colors cursor-pointer shadow-2xs"
+                        >
+                          ↳ {result.knowledge_gaps[0].suggested_queries[0]}
+                        </button>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => setActiveTab('graph')}
+                        className="h-7 px-2.5 inline-flex items-center text-xs font-sans bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] rounded-lg transition-colors cursor-pointer shadow-2xs"
+                      >
+                        Inspect knowledge graph entities
+                      </button>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             ) : (
               /* Synthesized Answer (Verified or Caution / Hedged) */
@@ -347,35 +380,32 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
               )}
             </div>
 
-            {/* Suggested Follow-Up Inquiries (Unified 28px chips) */}
-            <div className="space-y-1.5 pt-0.5">
-              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block uppercase tracking-wide">
-                Suggested follow-up inquiries
-              </span>
-              <div className="flex flex-wrap gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => onFollowUpClick?.('What are the second-line medication protocols?')}
-                  className="h-7 px-2.5 inline-flex items-center rounded-lg text-xs font-sans bg-white dark:bg-[#0F172A] hover:bg-slate-50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] transition-colors cursor-pointer"
-                >
-                  ↳ Check dosing & administration protocols
-                </button>
-                <button
-                  type="button"
-                  onClick={() => onFollowUpClick?.('Show renal and metabolic guideline reconciliation')}
-                  className="h-7 px-2.5 inline-flex items-center rounded-lg text-xs font-sans bg-white dark:bg-[#0F172A] hover:bg-slate-50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] transition-colors cursor-pointer"
-                >
-                  ↳ Reconcile renal guideline contraindications
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('graph')}
-                  className="h-7 px-2.5 inline-flex items-center rounded-lg text-xs font-sans bg-white dark:bg-[#0F172A] hover:bg-slate-50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] transition-colors cursor-pointer"
-                >
-                  ↳ Inspect multi-hop knowledge graph provenance
-                </button>
+            {/* Suggested Follow-Up Inquiries (Unified 28px dynamic chips) */}
+            {dynamicFollowUps.length > 0 && (
+              <div className="space-y-1.5 pt-0.5">
+                <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 block uppercase tracking-wide">
+                  {result.answer_status === 'out_of_scope' ? 'Suggested Medical Inquiries' : 'Suggested Follow-Up Inquiries'}
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {dynamicFollowUps.map((item, fIdx) => (
+                    <button
+                      key={fIdx}
+                      type="button"
+                      onClick={() => {
+                        if (item.query) {
+                          onFollowUpClick?.(item.query);
+                        } else if (item.action) {
+                          item.action();
+                        }
+                      }}
+                      className="h-7 px-2.5 inline-flex items-center rounded-lg text-xs font-sans bg-white dark:bg-[#0F172A] hover:bg-teal-50/50 dark:hover:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-[#0F766E] dark:hover:text-[#14B8A6] transition-colors cursor-pointer shadow-2xs"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Left-Pane Balance: Compact Retrieval Breakdown Mini-Table */}
             <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 font-mono text-[11px] space-y-1">
