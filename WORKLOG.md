@@ -30,12 +30,12 @@
 | Sec | F-11 Dependency lockfile generation | Antigravity | done | commit f4034e1 (requirements.lock, backend/requirements.lock) | 2026-08-26 |
 | Sec | F-12/F-13 Multimodal status protection + pre-push secret scanner | Antigravity | done | commit fa724a4 (.githooks/pre-push, deps.py, multimodal/routes.py) | 2026-08-26 |
 | C | J6 IR metrics v2 (user-adjudicated graded qrels) | OpenCode | done | evaluations/multimodal/step17_ir_metrics_v2.json (8a2b8fec): P@5 .18 R@5 .54 MRR .353 nDCG@10 .377 | 2026-08-23 |
-| C | J4 MedQA-US N=500 scaled eval (restored GPU clean run) | Antigravity | done | evaluations/step18_scaled_n500.json (04f1d7a6) — M1-M4 full eval on RTX 3050 GPU, N=500 seed 42, 100% CPU match rate, 0.00% drift | 2026-08-27 |
+| C | J4 MedQA-US N=500 scaled eval (with Clinical Query Rewriter) | Antigravity | done | evaluations/step18_scaled_n500.json (5416e47b) — M1–M4 full eval on GPU with query rewriter, N=500 seed 42, 100% CPU match rate, 0.00% drift; threshold recalibration in step18_threshold_recalibration.json (optimal M4 at tau=0.40: Acc(all)=12.2%, Acc(ans)=55.0%, WAR=10.0%) | 2026-08-27 |
 | C | J5 MedMCQA (+BioASQ optional) external validation | Antigravity | pending | step15_external_eval.json | |
 | C | J6 IR metrics (P@5/R@5/MRR/nDCG@10) + hallucination rates | OpenCode | done* | evaluations/multimodal/step17_ir_metrics.json (bac17814; proxy lexical qrels — NOT publication-grade) | 2026-08-23 |
 | C | J7 task-slice eval (negation/temporal/severity/finding–anatomy) | Antigravity | pending | step15_task_slices.json | |
 | C | J8 baselines suite (BM25/Dense/Hybrid/GraphRAG/MedRAG/Self-RAG) | OpenCode | done | step17_baselines.json N=50 seed-42 (artifact 4a944e70); regression ba1b5121 PASS; pilot baseline_retrieval_results.json retained (file sha cad0cc20…; no embedded artifact field — that field exists only in step17_baselines.json) | 2026-08-23 |
-| C | J4-stats bootstrap CIs (1000 resamples, seed 42) | Antigravity | done | evaluations/step15_bootstrap_ci.json (04f1d7a6) — 1000 resamples, seed 42 for M1–M4 Acc(all), Acc(ans), Refusal, WAR | 2026-08-27 |
+| C | J4-stats bootstrap CIs (1000 resamples, seed 42) | Antigravity | done | evaluations/step15_bootstrap_ci.json (5416e47b) — 1000 resamples, seed 42 for M1–M4 Acc(all), Acc(ans), Refusal, WAR (embedded in step18_scaled_n500.json) | 2026-08-27 |
 | D | J11 multi-turn clinician workflows | OpenCode | pending | step18_multiturn.json | |
 | D | J12 batched verification (latency fix) | Antigravity | pending | step15_batched_verify.json | |
 | D | J13 compute comparison table vs baselines | Antigravity | done | step15_compute_table.json (f6baecda) — Latency CIs + LaTeX + Pareto frontier | 2026-08-25 |

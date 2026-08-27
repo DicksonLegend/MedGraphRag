@@ -1,0 +1,695 @@
+{
+  "description": "N=500 Refusal Threshold Recalibration & Pareto Frontier",
+  "optimal_points": {
+    "M1_EVIDENCE_ONLY": {
+      "threshold": 0.45,
+      "accuracy_all": 9.6,
+      "accuracy_answered": 51.06,
+      "wrong_assertion_rate": 9.2,
+      "refusal_rate": 81.2,
+      "answered_count": 94,
+      "correct_count": 48,
+      "meets_war_constraint": true
+    },
+    "M2_GRAPH_ONLY": {
+      "threshold": 0.8,
+      "accuracy_all": 12.4,
+      "accuracy_answered": 60.78,
+      "wrong_assertion_rate": 8.0,
+      "refusal_rate": 79.6,
+      "answered_count": 102,
+      "correct_count": 62,
+      "meets_war_constraint": true
+    },
+    "M3_COMBINED": {
+      "threshold": 0.5,
+      "accuracy_all": 8.2,
+      "accuracy_answered": 48.81,
+      "wrong_assertion_rate": 8.6,
+      "refusal_rate": 83.2,
+      "answered_count": 84,
+      "correct_count": 41,
+      "meets_war_constraint": true
+    },
+    "M4_HYBRID_RERANK": {
+      "threshold": 0.4,
+      "accuracy_all": 12.2,
+      "accuracy_answered": 54.95,
+      "wrong_assertion_rate": 10.0,
+      "refusal_rate": 77.8,
+      "answered_count": 111,
+      "correct_count": 61,
+      "meets_war_constraint": true
+    }
+  },
+  "frontiers": {
+    "M1_EVIDENCE_ONLY": [
+      {
+        "threshold": 0.1,
+        "accuracy_all": 46.4,
+        "accuracy_answered": 53.7,
+        "wrong_assertion_rate": 40.0,
+        "refusal_rate": 13.6,
+        "answered_count": 432,
+        "correct_count": 232,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.15,
+        "accuracy_all": 46.4,
+        "accuracy_answered": 53.83,
+        "wrong_assertion_rate": 39.8,
+        "refusal_rate": 13.8,
+        "answered_count": 431,
+        "correct_count": 232,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.2,
+        "accuracy_all": 45.4,
+        "accuracy_answered": 54.31,
+        "wrong_assertion_rate": 38.2,
+        "refusal_rate": 16.4,
+        "answered_count": 418,
+        "correct_count": 227,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.25,
+        "accuracy_all": 44.0,
+        "accuracy_answered": 53.66,
+        "wrong_assertion_rate": 38.0,
+        "refusal_rate": 18.0,
+        "answered_count": 410,
+        "correct_count": 220,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.3,
+        "accuracy_all": 44.0,
+        "accuracy_answered": 53.79,
+        "wrong_assertion_rate": 37.8,
+        "refusal_rate": 18.2,
+        "answered_count": 409,
+        "correct_count": 220,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.35,
+        "accuracy_all": 43.0,
+        "accuracy_answered": 53.62,
+        "wrong_assertion_rate": 37.2,
+        "refusal_rate": 19.8,
+        "answered_count": 401,
+        "correct_count": 215,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.37,
+        "accuracy_all": 19.0,
+        "accuracy_answered": 52.78,
+        "wrong_assertion_rate": 17.0,
+        "refusal_rate": 64.0,
+        "answered_count": 180,
+        "correct_count": 95,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.4,
+        "accuracy_all": 9.6,
+        "accuracy_answered": 48.48,
+        "wrong_assertion_rate": 10.2,
+        "refusal_rate": 80.2,
+        "answered_count": 99,
+        "correct_count": 48,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.45,
+        "accuracy_all": 9.6,
+        "accuracy_answered": 51.06,
+        "wrong_assertion_rate": 9.2,
+        "refusal_rate": 81.2,
+        "answered_count": 94,
+        "correct_count": 48,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.5,
+        "accuracy_all": 7.8,
+        "accuracy_answered": 51.32,
+        "wrong_assertion_rate": 7.4,
+        "refusal_rate": 84.8,
+        "answered_count": 76,
+        "correct_count": 39,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.55,
+        "accuracy_all": 7.6,
+        "accuracy_answered": 57.58,
+        "wrong_assertion_rate": 5.6,
+        "refusal_rate": 86.8,
+        "answered_count": 66,
+        "correct_count": 38,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.6,
+        "accuracy_all": 6.4,
+        "accuracy_answered": 57.14,
+        "wrong_assertion_rate": 4.8,
+        "refusal_rate": 88.8,
+        "answered_count": 56,
+        "correct_count": 32,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.65,
+        "accuracy_all": 4.8,
+        "accuracy_answered": 63.16,
+        "wrong_assertion_rate": 2.8,
+        "refusal_rate": 92.4,
+        "answered_count": 38,
+        "correct_count": 24,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.7,
+        "accuracy_all": 3.2,
+        "accuracy_answered": 59.26,
+        "wrong_assertion_rate": 2.2,
+        "refusal_rate": 94.6,
+        "answered_count": 27,
+        "correct_count": 16,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.75,
+        "accuracy_all": 3.0,
+        "accuracy_answered": 62.5,
+        "wrong_assertion_rate": 1.8,
+        "refusal_rate": 95.2,
+        "answered_count": 24,
+        "correct_count": 15,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.8,
+        "accuracy_all": 1.0,
+        "accuracy_answered": 55.56,
+        "wrong_assertion_rate": 0.8,
+        "refusal_rate": 98.2,
+        "answered_count": 9,
+        "correct_count": 5,
+        "meets_war_constraint": true
+      }
+    ],
+    "M2_GRAPH_ONLY": [
+      {
+        "threshold": 0.1,
+        "accuracy_all": 53.0,
+        "accuracy_answered": 55.91,
+        "wrong_assertion_rate": 41.8,
+        "refusal_rate": 5.2,
+        "answered_count": 474,
+        "correct_count": 265,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.15,
+        "accuracy_all": 53.0,
+        "accuracy_answered": 55.91,
+        "wrong_assertion_rate": 41.8,
+        "refusal_rate": 5.2,
+        "answered_count": 474,
+        "correct_count": 265,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.2,
+        "accuracy_all": 53.0,
+        "accuracy_answered": 56.03,
+        "wrong_assertion_rate": 41.6,
+        "refusal_rate": 5.4,
+        "answered_count": 473,
+        "correct_count": 265,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.25,
+        "accuracy_all": 52.8,
+        "accuracy_answered": 55.93,
+        "wrong_assertion_rate": 41.6,
+        "refusal_rate": 5.6,
+        "answered_count": 472,
+        "correct_count": 264,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.3,
+        "accuracy_all": 52.8,
+        "accuracy_answered": 55.93,
+        "wrong_assertion_rate": 41.6,
+        "refusal_rate": 5.6,
+        "answered_count": 472,
+        "correct_count": 264,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.35,
+        "accuracy_all": 52.6,
+        "accuracy_answered": 55.96,
+        "wrong_assertion_rate": 41.4,
+        "refusal_rate": 6.0,
+        "answered_count": 470,
+        "correct_count": 263,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.37,
+        "accuracy_all": 52.4,
+        "accuracy_answered": 55.86,
+        "wrong_assertion_rate": 41.4,
+        "refusal_rate": 6.2,
+        "answered_count": 469,
+        "correct_count": 262,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.4,
+        "accuracy_all": 52.4,
+        "accuracy_answered": 55.98,
+        "wrong_assertion_rate": 41.2,
+        "refusal_rate": 6.4,
+        "answered_count": 468,
+        "correct_count": 262,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.45,
+        "accuracy_all": 52.4,
+        "accuracy_answered": 55.98,
+        "wrong_assertion_rate": 41.2,
+        "refusal_rate": 6.4,
+        "answered_count": 468,
+        "correct_count": 262,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.5,
+        "accuracy_all": 51.8,
+        "accuracy_answered": 55.7,
+        "wrong_assertion_rate": 41.2,
+        "refusal_rate": 7.0,
+        "answered_count": 465,
+        "correct_count": 259,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.55,
+        "accuracy_all": 51.8,
+        "accuracy_answered": 55.82,
+        "wrong_assertion_rate": 41.0,
+        "refusal_rate": 7.2,
+        "answered_count": 464,
+        "correct_count": 259,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.6,
+        "accuracy_all": 51.6,
+        "accuracy_answered": 56.21,
+        "wrong_assertion_rate": 40.2,
+        "refusal_rate": 8.2,
+        "answered_count": 459,
+        "correct_count": 258,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.65,
+        "accuracy_all": 51.6,
+        "accuracy_answered": 57.21,
+        "wrong_assertion_rate": 38.6,
+        "refusal_rate": 9.8,
+        "answered_count": 451,
+        "correct_count": 258,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.7,
+        "accuracy_all": 50.6,
+        "accuracy_answered": 57.89,
+        "wrong_assertion_rate": 36.8,
+        "refusal_rate": 12.6,
+        "answered_count": 437,
+        "correct_count": 253,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.75,
+        "accuracy_all": 49.8,
+        "accuracy_answered": 58.31,
+        "wrong_assertion_rate": 35.6,
+        "refusal_rate": 14.6,
+        "answered_count": 427,
+        "correct_count": 249,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.8,
+        "accuracy_all": 12.4,
+        "accuracy_answered": 60.78,
+        "wrong_assertion_rate": 8.0,
+        "refusal_rate": 79.6,
+        "answered_count": 102,
+        "correct_count": 62,
+        "meets_war_constraint": true
+      }
+    ],
+    "M3_COMBINED": [
+      {
+        "threshold": 0.1,
+        "accuracy_all": 47.2,
+        "accuracy_answered": 54.63,
+        "wrong_assertion_rate": 39.2,
+        "refusal_rate": 13.6,
+        "answered_count": 432,
+        "correct_count": 236,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.15,
+        "accuracy_all": 47.2,
+        "accuracy_answered": 54.63,
+        "wrong_assertion_rate": 39.2,
+        "refusal_rate": 13.6,
+        "answered_count": 432,
+        "correct_count": 236,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.2,
+        "accuracy_all": 47.2,
+        "accuracy_answered": 54.63,
+        "wrong_assertion_rate": 39.2,
+        "refusal_rate": 13.6,
+        "answered_count": 432,
+        "correct_count": 236,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.25,
+        "accuracy_all": 47.0,
+        "accuracy_answered": 54.52,
+        "wrong_assertion_rate": 39.2,
+        "refusal_rate": 13.8,
+        "answered_count": 431,
+        "correct_count": 235,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.3,
+        "accuracy_all": 47.0,
+        "accuracy_answered": 54.78,
+        "wrong_assertion_rate": 38.8,
+        "refusal_rate": 14.2,
+        "answered_count": 429,
+        "correct_count": 235,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.35,
+        "accuracy_all": 46.6,
+        "accuracy_answered": 55.21,
+        "wrong_assertion_rate": 37.8,
+        "refusal_rate": 15.6,
+        "answered_count": 422,
+        "correct_count": 233,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.37,
+        "accuracy_all": 23.8,
+        "accuracy_answered": 55.09,
+        "wrong_assertion_rate": 19.4,
+        "refusal_rate": 56.8,
+        "answered_count": 216,
+        "correct_count": 119,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.4,
+        "accuracy_all": 12.4,
+        "accuracy_answered": 53.45,
+        "wrong_assertion_rate": 10.8,
+        "refusal_rate": 76.8,
+        "answered_count": 116,
+        "correct_count": 62,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.45,
+        "accuracy_all": 10.8,
+        "accuracy_answered": 51.43,
+        "wrong_assertion_rate": 10.2,
+        "refusal_rate": 79.0,
+        "answered_count": 105,
+        "correct_count": 54,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.5,
+        "accuracy_all": 8.2,
+        "accuracy_answered": 48.81,
+        "wrong_assertion_rate": 8.6,
+        "refusal_rate": 83.2,
+        "answered_count": 84,
+        "correct_count": 41,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.55,
+        "accuracy_all": 7.6,
+        "accuracy_answered": 56.72,
+        "wrong_assertion_rate": 5.8,
+        "refusal_rate": 86.6,
+        "answered_count": 67,
+        "correct_count": 38,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.6,
+        "accuracy_all": 6.4,
+        "accuracy_answered": 58.18,
+        "wrong_assertion_rate": 4.6,
+        "refusal_rate": 89.0,
+        "answered_count": 55,
+        "correct_count": 32,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.65,
+        "accuracy_all": 4.8,
+        "accuracy_answered": 60.0,
+        "wrong_assertion_rate": 3.2,
+        "refusal_rate": 92.0,
+        "answered_count": 40,
+        "correct_count": 24,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.7,
+        "accuracy_all": 3.2,
+        "accuracy_answered": 59.26,
+        "wrong_assertion_rate": 2.2,
+        "refusal_rate": 94.6,
+        "answered_count": 27,
+        "correct_count": 16,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.75,
+        "accuracy_all": 3.0,
+        "accuracy_answered": 62.5,
+        "wrong_assertion_rate": 1.8,
+        "refusal_rate": 95.2,
+        "answered_count": 24,
+        "correct_count": 15,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.8,
+        "accuracy_all": 1.0,
+        "accuracy_answered": 55.56,
+        "wrong_assertion_rate": 0.8,
+        "refusal_rate": 98.2,
+        "answered_count": 9,
+        "correct_count": 5,
+        "meets_war_constraint": true
+      }
+    ],
+    "M4_HYBRID_RERANK": [
+      {
+        "threshold": 0.1,
+        "accuracy_all": 45.2,
+        "accuracy_answered": 53.3,
+        "wrong_assertion_rate": 39.6,
+        "refusal_rate": 15.2,
+        "answered_count": 424,
+        "correct_count": 226,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.15,
+        "accuracy_all": 45.2,
+        "accuracy_answered": 53.3,
+        "wrong_assertion_rate": 39.6,
+        "refusal_rate": 15.2,
+        "answered_count": 424,
+        "correct_count": 226,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.2,
+        "accuracy_all": 45.2,
+        "accuracy_answered": 53.3,
+        "wrong_assertion_rate": 39.6,
+        "refusal_rate": 15.2,
+        "answered_count": 424,
+        "correct_count": 226,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.25,
+        "accuracy_all": 45.0,
+        "accuracy_answered": 53.19,
+        "wrong_assertion_rate": 39.6,
+        "refusal_rate": 15.4,
+        "answered_count": 423,
+        "correct_count": 225,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.3,
+        "accuracy_all": 44.8,
+        "accuracy_answered": 53.21,
+        "wrong_assertion_rate": 39.4,
+        "refusal_rate": 15.8,
+        "answered_count": 421,
+        "correct_count": 224,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.35,
+        "accuracy_all": 44.0,
+        "accuracy_answered": 53.01,
+        "wrong_assertion_rate": 39.0,
+        "refusal_rate": 17.0,
+        "answered_count": 415,
+        "correct_count": 220,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.37,
+        "accuracy_all": 22.8,
+        "accuracy_answered": 54.55,
+        "wrong_assertion_rate": 19.0,
+        "refusal_rate": 58.2,
+        "answered_count": 209,
+        "correct_count": 114,
+        "meets_war_constraint": false
+      },
+      {
+        "threshold": 0.4,
+        "accuracy_all": 12.2,
+        "accuracy_answered": 54.95,
+        "wrong_assertion_rate": 10.0,
+        "refusal_rate": 77.8,
+        "answered_count": 111,
+        "correct_count": 61,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.45,
+        "accuracy_all": 10.0,
+        "accuracy_answered": 51.02,
+        "wrong_assertion_rate": 9.6,
+        "refusal_rate": 80.4,
+        "answered_count": 98,
+        "correct_count": 50,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.5,
+        "accuracy_all": 8.8,
+        "accuracy_answered": 53.01,
+        "wrong_assertion_rate": 7.8,
+        "refusal_rate": 83.4,
+        "answered_count": 83,
+        "correct_count": 44,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.55,
+        "accuracy_all": 8.2,
+        "accuracy_answered": 58.57,
+        "wrong_assertion_rate": 5.8,
+        "refusal_rate": 86.0,
+        "answered_count": 70,
+        "correct_count": 41,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.6,
+        "accuracy_all": 6.4,
+        "accuracy_answered": 56.14,
+        "wrong_assertion_rate": 5.0,
+        "refusal_rate": 88.6,
+        "answered_count": 57,
+        "correct_count": 32,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.65,
+        "accuracy_all": 5.4,
+        "accuracy_answered": 60.0,
+        "wrong_assertion_rate": 3.6,
+        "refusal_rate": 91.0,
+        "answered_count": 45,
+        "correct_count": 27,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.7,
+        "accuracy_all": 3.8,
+        "accuracy_answered": 63.33,
+        "wrong_assertion_rate": 2.2,
+        "refusal_rate": 94.0,
+        "answered_count": 30,
+        "correct_count": 19,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.75,
+        "accuracy_all": 3.4,
+        "accuracy_answered": 68.0,
+        "wrong_assertion_rate": 1.6,
+        "refusal_rate": 95.0,
+        "answered_count": 25,
+        "correct_count": 17,
+        "meets_war_constraint": true
+      },
+      {
+        "threshold": 0.8,
+        "accuracy_all": 1.0,
+        "accuracy_answered": 62.5,
+        "wrong_assertion_rate": 0.6,
+        "refusal_rate": 98.4,
+        "answered_count": 8,
+        "correct_count": 5,
+        "meets_war_constraint": true
+      }
+    ]
+  }
+}

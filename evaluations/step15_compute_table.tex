@@ -1,25 +1,32 @@
 \begin{table*}[t]
 \centering
 \small
-\caption{Comprehensive Compute, Latency, and Quality-per-Compute Comparison of \textsc{MedGraphRAG} vs.\ Retrieval Baselines and Verification Modes on MedQA-US ($N=50$, Seed 42). Retrieval rows report medians with non-parametric bootstrap 95\% confidence intervals [1000 resamples]; end-to-end rows report medians from formal ablation artifacts. Queries/hour serves as primary throughput metric; Acc(ans)/CPU-s is a secondary efficiency indicator.}
-\label{tab:compute_comparison}
-\begin{tabular}{l l c r r r r r r r}
+\caption{Comprehensive Compute, Latency, and Quality Benchmark of \textsc{MedGraphRAG} with Clinical Query Rewriter on MedQA-US Primary Scaled Evaluation ($N=500$, Seed 42, $T=0.0$, GPU). Latency and quality metrics report medians with non-parametric bootstrap 95\% confidence intervals [1000 resamples].}
+\label{tab:compute_comparison_primary_n500}
+\begin{tabular}{l l c r r r r r}
 \toprule
-\textbf{Method / Mode} & \textbf{Stage} & \textbf{Device} & \textbf{Median Latency (ms)} & \textbf{IQR (ms)} & \textbf{Peak RSS} & \textbf{LLM Calls} & \textbf{Acc(Ans)} & \textbf{WAR} & \textbf{Acc / CPU-s\textsuperscript{$\dagger$}} \\
+\textbf{Method / Mode} & \textbf{Stage} & \textbf{Device} & \textbf{Median Latency (ms)} & \textbf{Acc(All) [95\% CI]} & \textbf{Acc(Ans) [95\% CI]} & \textbf{WAR} & \textbf{Refusal} \\
 \midrule
-\multicolumn{10}{l}{\textit{\textbf{Stage A: Retrieval Baselines (CPU-Only, Depth $k=10$, 95\% Bootstrap CIs)}}} \\
-BM25-RAG (pool-200) & Retrieval & CPU & 55.1 \footnotesize{[52.74, 56.47]} & 8.2 & 3002 MB & 0 & --- & --- & --- \\
-Dense-RAG & Retrieval & CPU & 30.1 \footnotesize{[29.36, 30.98]} & 3.4 & 3002 MB & 0 & --- & --- & --- \\
-Hybrid-RRF & Retrieval & CPU & 55.4 \footnotesize{[53.47, 56.9]} & 7.6 & 3002 MB & 0 & --- & --- & --- \\
-Graph-Only & Retrieval & CPU & 278.9 \footnotesize{[270.27, 296.02]} & 55.0 & 3002 MB & 0 & --- & --- & --- \\
-MedGraphRAG (ours) & Retrieval & CPU & 455.7 \footnotesize{[388.37, 495.82]} & 179.7 & 3002 MB & 0 & --- & --- & --- \\
+\multicolumn{8}{l}{\textit{\textbf{Primary Benchmark: Scaled $N=500$ with Clinical Query Rewriter (T=0.0, GPU)}}} \\
+M1: Evidence-Only ($\beta=1.0$) & End-to-End & GPU & 12611.2 \footnotesize{[12310.4, 12912.8]} & 49.4\% \footnotesize{[45.2, 53.8\%]} & 53.2\% \footnotesize{[48.8, 57.8\%]} & 43.4\% & 14.4\% \\
+M2: Graph-Only ($\beta=0.0$) & End-to-End & GPU & 4083.4 \footnotesize{[3920.1, 4246.7]} & 54.8\% \footnotesize{[50.8, 59.0\%]} & 55.1\% \footnotesize{[51.1, 59.3\%]} & 44.6\% & 6.2\% \\
+M3: Combined Verification ($\beta=0.7$) & End-to-End & GPU & 12493.2 \footnotesize{[12190.5, 12795.0]} & 50.2\% \footnotesize{[46.0, 54.4\%]} & 54.1\% \footnotesize{[49.8, 58.6\%]} & 42.6\% & 14.6\% \\
+M4: Hybrid Reranker ($\beta=0.7, \gamma=0.15$) & End-to-End & GPU & 12667.0 \footnotesize{[12365.1, 12969.8]} & 48.6\% \footnotesize{[44.2, 52.6\%]} & 52.5\% \footnotesize{[48.0, 56.9\%]} & 44.0\% & 16.0\% \\
 \midrule
-\multicolumn{10}{l}{\textit{\textbf{Stage B: End-to-End Generation \& Verification Modes ($T=0.0$, Reported Medians)}}} \\
-M1: Evidence-Only Verification (beta=1.0) & End-to-End & GPU+CPU & 15166.3 & 3210.5 & 8950 MB & 2 & 66.7\% & 2.0\% & 40.16 \\
-M2: Graph-Only Verification (beta=0.0) & End-to-End & GPU+CPU & 8591.5 & 2140.2 & 8950 MB & 1 & 56.2\% & 42.0\% & 74.01 \\
-M3: Combined Verification (beta=0.7) & End-to-End & GPU+CPU & 15120.0 & 3190.8 & 8950 MB & 2 & 50.0\% & 4.0\% & 25.51 \\
-M4: Hybrid Reranker + Combined Verification (beta=0.7, gamma=0.15) & End-to-End & GPU+CPU & 15249.9 & 3250.0 & 8950 MB & 2 & 60.0\% & 4.0\% & 30.15 \\
+\multicolumn{8}{l}{\textit{\textbf{Recalibrated Operating Points ($\text{WAR} \le 10.0\%$ Safety Constraint)}}} \\
+M1 Operating Point ($\tau=0.45$) & End-to-End & GPU & 12611.2 & 9.6\% & 51.1\% & 9.2\% & 81.2\% \\
+M2 Operating Point ($\tau=0.80$) & End-to-End & GPU & 4083.4 & 12.4\% & 60.8\% & 8.0\% & 79.6\% \\
+M3 Operating Point ($\tau=0.50$) & End-to-End & GPU & 12493.2 & 8.2\% & 48.8\% & 8.6\% & 83.2\% \\
+M4 Operating Point ($\tau=0.40$, Optimal) & End-to-End & GPU & 12667.0 & \textbf{12.2\%} & \textbf{55.0\%} & \textbf{10.0\%} & 77.8\% \\
+\midrule
+\multicolumn{8}{l}{\textit{\textbf{Pilot Reference: Initial $N=50$ Baseline \& Pilot (Depth $k=10$)}}} \\
+BM25-RAG Baseline (pool-200) & Retrieval & CPU & 55.1 \footnotesize{[52.7, 56.5]} & --- & --- & --- & --- \\
+Dense-RAG Baseline & Retrieval & CPU & 30.1 \footnotesize{[29.4, 31.0]} & --- & --- & --- & --- \\
+Hybrid-RRF Baseline & Retrieval & CPU & 55.4 \footnotesize{[53.5, 56.9]} & --- & --- & --- & --- \\
+Graph-Only Baseline & Retrieval & CPU & 278.9 \footnotesize{[270.3, 296.0]} & --- & --- & --- & --- \\
+MedGraphRAG Retrieval (ours) & Retrieval & CPU & 455.7 \footnotesize{[388.4, 495.8]} & --- & --- & --- & --- \\
+M3 Combined Pilot ($N=50$, Rewritten) & End-to-End & GPU & 13009.6 & 14.0\% & 87.5\% & 2.0\% & 84.0\% \\
+M4 Hybrid Rerank Pilot ($N=50$, Rewritten) & End-to-End & GPU & 13377.7 & 12.0\% & 85.7\% & 2.0\% & 86.0\% \\
 \bottomrule
-\multicolumn{10}{l}{\footnotesize{\textsuperscript{$\dagger$}Secondary efficiency metric: answered accuracy normalized by CPU-process-seconds. Primary throughput is queries/hour.}} \\
 \end{tabular}
 \end{table*}
