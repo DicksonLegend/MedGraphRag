@@ -163,6 +163,8 @@ export interface LabValueDetailItem {
   ref_low?: number | null;
   ref_high?: number | null;
   is_critical: boolean;
+  prior_value?: number | null;
+  prior_date?: string | null;
 }
 
 export interface ReportDetailResponse {

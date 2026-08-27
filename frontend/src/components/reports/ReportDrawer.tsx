@@ -81,22 +81,32 @@ export const ReportDrawer: React.FC<ReportDrawerProps> = ({
 
   const criticalCount = evaluatedValues.filter((v) => v.computed.isOutOfRange).length;
 
-  // Simulated longitudinal delta helper
-  const getPriorDelta = (testName: string, value: number) => {
-    const t = testName.toLowerCase();
-    if (t.includes('creatinine')) {
-      return { delta: '↑ +22.90/mo', trend: 'worsening', color: 'text-[#DC2626]' };
+  // Dynamic longitudinal delta helper using real previous report measurements
+  const getPriorDelta = (lv: typeof evaluatedValues[0]) => {
+    if (lv.prior_value === null || lv.prior_value === undefined || !lv.prior_date) {
+      return { delta: '—', color: 'text-slate-400 dark:text-slate-500 font-normal' };
     }
-    if (t.includes('potassium')) {
-      return { delta: '↑ +0.40/mo', trend: 'caution', color: 'text-[#D97706]' };
+    const diff = lv.value - lv.prior_value;
+    if (Math.abs(diff) < 0.001) {
+      return { delta: '→ Stable', color: 'text-slate-500 dark:text-slate-400 font-normal' };
     }
-    if (t.includes('hba1c') || t.includes('a1c')) {
-      return { delta: '↑ +0.60/mo', trend: 'worsening', color: 'text-[#DC2626]' };
+    const sign = diff > 0 ? '+' : '';
+    const formattedDiff = `${sign}${diff.toFixed(1)}`;
+    const isWorse = lv.computed.isOutOfRange;
+    const isBetter =
+      !lv.computed.isOutOfRange &&
+      ((lv.ref_high && lv.prior_value > lv.ref_high) || (lv.ref_low && lv.prior_value < lv.ref_low));
+
+    if (isWorse) {
+      return { delta: `↑ ${formattedDiff} (${lv.prior_date})`, color: 'text-[#DC2626] font-semibold' };
     }
-    if (t.includes('glucose')) {
-      return { delta: '↓ -0.80/mo', trend: 'improving', color: 'text-[#16A34A]' };
+    if (isBetter) {
+      return { delta: `↓ ${formattedDiff} (${lv.prior_date})`, color: 'text-[#16A34A] font-semibold' };
     }
-    return { delta: '—', trend: 'stable', color: 'text-slate-400' };
+    return {
+      delta: `${diff > 0 ? '↑' : '↓'} ${formattedDiff} (${lv.prior_date})`,
+      color: 'text-slate-600 dark:text-slate-400 font-normal',
+    };
   };
 
   return (
@@ -218,7 +228,7 @@ export const ReportDrawer: React.FC<ReportDrawerProps> = ({
                         </tr>
                       ) : (
                         evaluatedValues.map((lv, idx) => {
-                          const prior = getPriorDelta(lv.test_name, lv.value);
+                          const prior = getPriorDelta(lv);
                           return (
                             <tr
                               key={idx}
@@ -247,18 +257,18 @@ export const ReportDrawer: React.FC<ReportDrawerProps> = ({
                                 <span className={prior.color}>{prior.delta}</span>
                               </td>
                               {/* Status Chip */}
-                              <td className="py-2.5 px-3 text-right">
+                              <td className="py-2.5 px-3 text-right whitespace-nowrap">
                                 <span
-                                  className={`inline-flex items-center space-x-1 h-5 px-1.5 rounded text-[10px] font-semibold border ${lv.computed.badgeClass}`}
+                                  className={`inline-flex items-center justify-center space-x-1.5 h-6 px-2.5 rounded-md text-[11px] font-semibold whitespace-nowrap border shrink-0 ${lv.computed.badgeClass}`}
                                 >
                                   {lv.computed.isCritical ? (
-                                    <AlertOctagon className="w-2.5 h-2.5 stroke-[1.75]" />
+                                    <AlertOctagon className="w-3 h-3 shrink-0 stroke-[1.75]" />
                                   ) : lv.computed.isOutOfRange ? (
-                                    <AlertTriangle className="w-2.5 h-2.5 stroke-[1.75]" />
+                                    <AlertTriangle className="w-3 h-3 shrink-0 stroke-[1.75]" />
                                   ) : (
-                                    <CheckCircle2 className="w-2.5 h-2.5 stroke-[1.75]" />
+                                    <CheckCircle2 className="w-3 h-3 shrink-0 stroke-[1.75]" />
                                   )}
-                                  <span>{lv.computed.label}</span>
+                                  <span className="whitespace-nowrap">{lv.computed.label}</span>
                                 </span>
                               </td>
                             </tr>

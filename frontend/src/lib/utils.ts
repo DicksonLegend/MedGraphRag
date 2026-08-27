@@ -180,7 +180,7 @@ export function computeLabValueStatus(
     const isSevere = value >= ref_high * 1.5;
     return {
       status: isSevere ? 'critical_high' : 'high',
-      label: isSevere ? 'Critical · High' : 'High',
+      label: isSevere ? 'Critical High' : 'High',
       isCritical: isSevere,
       isOutOfRange: true,
       colorClass: isSevere ? 'text-[#DC2626] font-semibold' : 'text-[#D97706] font-semibold',
@@ -194,7 +194,7 @@ export function computeLabValueStatus(
     const isSevere = value <= ref_low * 0.7;
     return {
       status: isSevere ? 'critical_low' : 'low',
-      label: isSevere ? 'Critical · Low' : 'Low',
+      label: isSevere ? 'Critical Low' : 'Low',
       isCritical: isSevere,
       isOutOfRange: true,
       colorClass: isSevere ? 'text-[#DC2626] font-semibold' : 'text-[#D97706] font-semibold',

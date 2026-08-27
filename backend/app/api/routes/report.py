@@ -142,6 +142,8 @@ class LabValueDetailItem(BaseModel):
     ref_low: Optional[float] = None
     ref_high: Optional[float] = None
     is_critical: bool = False
+    prior_value: Optional[float] = None
+    prior_date: Optional[str] = None
 
 
 class ReportDetailResponse(BaseModel):
@@ -263,7 +265,8 @@ async def get_user_report_detail(
             conn = kuzu.Connection(db)
             try:
                 query = """
-                MATCH (r:Report {id: $report_id})-[:HAS_LAB_VALUE]->(lv:LabValue)
+                MATCH (r:Report)-[:HAS_LAB_VALUE]->(lv:LabValue)
+                WHERE r.id = $report_id
                 RETURN r.id AS report_id, r.report_date AS report_date, r.filename AS filename,
                        lv.test_name AS test_name, lv.value AS value, lv.unit AS unit,
                        lv.ref_low AS ref_low, lv.ref_high AS ref_high, lv.is_critical AS is_critical
@@ -272,18 +275,49 @@ async def get_user_report_detail(
                 df = conn.execute(query, {"report_id": report_id}).get_as_df()
                 if not df.empty:
                     first_row = df.iloc[0]
+                    curr_date = str(first_row["report_date"])
+
+                    # Fetch prior lab values strictly before this report date
+                    priors_dict: Dict[str, tuple[float, str]] = {}
+                    try:
+                        priors_query = """
+                        MATCH (r:Report)-[:HAS_LAB_VALUE]->(lv:LabValue)
+                        WHERE r.report_date < $cdate
+                        RETURN lv.test_name AS test_name, lv.value AS value, r.report_date AS report_date
+                        ORDER BY r.report_date DESC
+                        """
+                        pdf = conn.execute(priors_query, {"cdate": curr_date}).get_as_df()
+                        for _, prow in pdf.iterrows():
+                            t_name = str(prow["test_name"])
+                            if t_name not in priors_dict:
+                                priors_dict[t_name] = (float(prow["value"]), str(prow["report_date"]))
+                    except Exception as pe:
+                        logger.debug("Prior delta query note: %s", pe)
+
                     lab_values = []
                     for _, row in df.iterrows():
+                        t_name = str(row["test_name"])
+                        val = float(row["value"])
                         r_low = float(row["ref_low"]) if row["ref_low"] is not None and row["ref_low"] > 0 else None
                         r_high = float(row["ref_high"]) if row["ref_high"] is not None and row["ref_high"] < 9000 else None
+
+                        p_val, p_date = priors_dict.get(t_name, (None, None))
+                        is_crit = (
+                            bool(row["is_critical"])
+                            or (r_high is not None and val > r_high)
+                            or (r_low is not None and val < r_low)
+                        )
+
                         lab_values.append(
                             LabValueDetailItem(
-                                test_name=str(row["test_name"]),
-                                value=float(row["value"]),
+                                test_name=t_name,
+                                value=val,
                                 unit=str(row["unit"]),
                                 ref_low=r_low,
                                 ref_high=r_high,
-                                is_critical=bool(row["is_critical"]),
+                                is_critical=is_crit,
+                                prior_value=p_val,
+                                prior_date=p_date,
                             )
                         )
                     return ReportDetailResponse(
