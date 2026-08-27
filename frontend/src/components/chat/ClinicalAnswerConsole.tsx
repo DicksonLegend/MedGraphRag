@@ -25,6 +25,7 @@ import {
   ChevronDown,
   ChevronUp,
   AlertOctagon,
+  AlertTriangle,
   ShieldCheck,
   Search,
 } from 'lucide-react';
@@ -68,10 +69,13 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
   const citations = result.citations || [];
   const graphPaths = result.graph_paths || [];
   const statusProps = getAnswerStatusProps(result.answer_status);
-  const isRefused =
+  const isTrueRefusal =
     result.answer_status === 'refusal' ||
-    result.answer_status === 'out_of_scope' ||
-    (result.final_confidence < 0.5 && result.answer_status !== 'verified');
+    result.answer_status === 'out_of_scope';
+  const isCaution =
+    result.answer_status === 'caution' ||
+    result.answer_status === 'uncertain' ||
+    (result.final_confidence < 0.5 && !isTrueRefusal);
 
   // Handle citation click from text: switch tab and scroll into view
   const handleCitationClick = (label: string) => {
@@ -238,8 +242,8 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
             {/* Epistemic Knowledge-Gap Mapper (F2) */}
             <KnowledgeGapCard gaps={result.knowledge_gaps} onQueryClick={onFollowUpClick} />
 
-            {/* D.4 STRUCTURED REFUSAL STATE OR VERIFIED ANSWER */}
-            {isRefused ? (
+            {/* D.4 STRUCTURED REFUSAL STATE OR SYNTHESIZED ANSWER */}
+            {isTrueRefusal ? (
               <div className="p-3.5 rounded-lg border-l-4 border-l-[#DC2626] border border-slate-200 dark:border-slate-800 bg-red-50/30 dark:bg-red-950/20 space-y-2.5">
                 <div className="flex items-center space-x-1.5 text-[#DC2626] font-semibold text-xs uppercase tracking-wide">
                   <AlertOctagon className="w-4 h-4 stroke-[1.75]" />
@@ -247,36 +251,8 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
                 </div>
 
                 <p className="text-[13.5px] text-slate-800 dark:text-slate-200 leading-relaxed font-sans">
-                  <strong>Clinical Assertion Declined:</strong> Insufficient factual support in verified corpus (faithfulness score φ = {result.final_confidence.toFixed(2)} &lt; 0.50 threshold). The system refuses to assert ungrounded clinical statements.
+                  <strong>Clinical Assertion Declined:</strong> {cleanAnswerText(result.answer_text) || `Insufficient factual support in verified corpus (faithfulness score φ = ${result.final_confidence.toFixed(2)} < 0.50 threshold). The system refuses to assert ungrounded clinical statements.`}
                 </p>
-
-                {/* CoverageMap Mini-Bars */}
-                <div className="p-2.5 rounded bg-white dark:bg-[#0F172A] border border-slate-200 dark:border-slate-800 space-y-1.5 font-mono text-[11px]">
-                  <span className="text-[10px] uppercase font-medium text-slate-500 dark:text-slate-400 block tracking-wide">
-                    CoverageMap Sub-Question Grounding:
-                  </span>
-                  <div className="space-y-1">
-                    <div>
-                      <div className="flex justify-between text-slate-700 dark:text-slate-300 mb-0.5">
-                        <span>Sub-Question 1: Primary mechanism</span>
-                        <span className="text-[#D97706] font-semibold">0.1774 (Partial)</span>
-                      </div>
-                      <div className="h-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden">
-                        <div className="h-full bg-[#D97706] rounded-full" style={{ width: '45%' }} />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between text-slate-700 dark:text-slate-300 mb-0.5">
-                        <span>Sub-Question 2: Dosing & contraindications</span>
-                        <span className="text-[#DC2626] font-semibold">0.0210 (None)</span>
-                      </div>
-                      <div className="h-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 overflow-hidden">
-                        <div className="h-full bg-[#DC2626] rounded-full" style={{ width: '8%' }} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
                 {/* Rephrase Suggestion Chips */}
                 <div className="space-y-1 pt-0.5">
@@ -302,13 +278,26 @@ export const ClinicalAnswerConsole: React.FC<ClinicalAnswerConsoleProps> = ({
                 </div>
               </div>
             ) : (
-              /* Verified Answer Text (No inner disclaimer) */
-              <div className="bg-slate-50/70 dark:bg-slate-900/60 p-4 rounded-lg border border-slate-200 dark:border-slate-800 text-[13.5px] leading-[1.45] text-slate-900 dark:text-slate-100 font-sans">
-                <MarkdownAnswer
-                  content={cleanAnswerText(result.answer_text)}
-                  citations={citations}
-                  onCitationClick={handleCitationClick}
-                />
+              /* Synthesized Answer (Verified or Caution / Hedged) */
+              <div className="space-y-3">
+                {isCaution && (
+                  <div className="p-3 rounded-lg border-l-4 border-l-amber-500 border border-amber-200 dark:border-amber-900/50 bg-amber-50/40 dark:bg-amber-950/20 space-y-1 text-xs text-amber-900 dark:text-amber-200">
+                    <div className="flex items-center space-x-1.5 font-semibold text-amber-800 dark:text-amber-300">
+                      <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 stroke-[1.75]" />
+                      <span>Limited Corpus Grounding (Confidence φ = {result.final_confidence.toFixed(2)})</span>
+                    </div>
+                    <p className="text-[12px] leading-relaxed text-amber-800/90 dark:text-amber-300/90">
+                      Synthesized from available biomedical evidence chunks. Please corroborate critical recommendations with clinical guidelines.
+                    </p>
+                  </div>
+                )}
+                <div className="bg-slate-50/70 dark:bg-slate-900/60 p-4 rounded-lg border border-slate-200 dark:border-slate-800 text-[13.5px] leading-[1.45] text-slate-900 dark:text-slate-100 font-sans">
+                  <MarkdownAnswer
+                    content={cleanAnswerText(result.answer_text)}
+                    citations={citations}
+                    onCitationClick={handleCitationClick}
+                  />
+                </div>
               </div>
             )}
 
