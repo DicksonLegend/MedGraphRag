@@ -126,27 +126,37 @@ def extract_answer_choice(
     options: Dict[str, str],
     llm_judge: Any,
 ) -> Tuple[str, bool]:
-    lower_text = answer_text.lower()
+    # Strip standard disclaimers and uncertainty headers before inspecting choice
+    cleaned = answer_text
+    cleaned = re.sub(r'⚠️.*?guidance\.\s*', '', cleaned, flags=re.DOTALL)
+    cleaned = re.sub(r'This is information, not medical advice.*?physician\.', '', cleaned, flags=re.IGNORECASE)
+    cleaned = cleaned.strip()
+
+    lower_text = cleaned.lower()
     refusal_triggers = [
         "does not contain specific",
         "insufficient evidence",
         "cannot answer",
-        "consult your physician",
         "no information provided",
+        "evidence provided does not",
     ]
-    if any(trigger in lower_text for trigger in refusal_triggers) and not re.search(r'\b[A-D]\b', answer_text[:30]):
+    if any(trigger in lower_text for trigger in refusal_triggers) and not re.search(r'\b[A-D]\b', cleaned[:30]):
         return "refused_or_unanswered", False
 
-    prefix = answer_text[:60]
+    prefix = cleaned[:60]
     match = re.search(r'\b([A-D])\b', prefix)
     if match:
         return match.group(1), False
+
+    alt_match = re.search(r'(?:option|choice|answer)\s*[:\s\-]*([A-D])\b', cleaned, re.IGNORECASE)
+    if alt_match:
+        return alt_match.group(1).upper(), False
 
     if llm_judge is not None:
         try:
             judge_prompt = (
                 f"Given the medical question answer and options below, output ONLY the single letter choice (A, B, C, or D).\n\n"
-                f"Answer snippet: {answer_text[:200]}\n"
+                f"Answer snippet: {cleaned[:200]}\n"
                 f"Options: A) {options.get('A', '')} B) {options.get('B', '')} C) {options.get('C', '')} D) {options.get('D', '')}\n\n"
                 f"Letter choice:"
             )
@@ -290,9 +300,13 @@ def run_mode_evaluation(
 
         t0 = time.perf_counter()
 
-        # Step 1: Retrieval
+        # Step 0: Clinical Query Rewriting
+        from app.core.retrieval.query_rewrite import rewrite_clinical_query
+        rewritten_q = rewrite_clinical_query(raw_query=q_text, max_words=30, llm_instance=llm_judge)
+
+        # Step 1: Retrieval with Rewritten Query
         ret_req = RetrievalRequest(
-            query=prompt_query,
+            query=rewritten_q,
             destination="global",
             top_n=settings.retrieval_top_n,
             rerank_mode=rerank_mode,
@@ -306,8 +320,12 @@ def run_mode_evaluation(
         g_hits = sum(1 for item in top5_items if item.source_type in ("graph", "both"))
         graph_hit_top5_flags.append(g_hits / max(1, len(top5_items)))
 
-        # Step 2: Generation (T=0.0)
-        gen_res = pipeline.generator_service.generate(query=prompt_query, destination="global")
+        # Step 2: Generation with Full Prompt and Evidence
+        gen_res = pipeline.generator_service.generate(
+            query=prompt_query,
+            destination="global",
+            retrieval_result=clean_ret_res,
+        )
 
         # Step 3: Verification
         verified_res: VerifiedAnswerResult = pipeline.verification_agent.verify(
@@ -331,16 +349,23 @@ def run_mode_evaluation(
 
         completed_details.append({
             "question_id": qid,
+            "question_text": q_text,
+            "rewritten_query": rewritten_q,
+            "options": opts,
             "gold": gold,
-            "extracted": extracted,
+            "pred": extracted,
             "verdict": verdict,
+            "is_correct": is_correct,
             "is_answered": is_answered,
             "is_refused": is_refused,
-            "is_correct": is_correct,
+            "judge_used": judge_used,
             "answer_status": verified_res.answer_status,
             "final_confidence": verified_res.final_confidence,
+            "faithfulness_score": verified_res.faithfulness_score,
+            "confidence_tier": verified_res.confidence_tier,
             "citations_count": len(verified_res.citations),
             "latency_ms": round(dur_ms, 2),
+            "answer_text_preview": verified_res.answer_text[:120],
         })
         evaluated_ids.add(qid)
         queries_evaluated_this_session += 1

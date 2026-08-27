@@ -65,11 +65,24 @@ class HybridRetrievalService:
         top_n = request.top_n or settings.retrieval_top_n
         latency_breakdown: Dict[str, float] = {}
 
+        # ── Stage 0: Clinical Query Rewriting (for narrative vignettes) ──────
+        search_query = request.query
+        if getattr(settings, "enable_query_rewriting", True):
+            try:
+                from app.core.retrieval.query_rewrite import rewrite_clinical_query
+                search_query = rewrite_clinical_query(
+                    raw_query=request.query,
+                    max_words=getattr(settings, "query_rewrite_max_words", 30),
+                )
+            except Exception as exc:
+                logger.warning("Query rewrite hook failed in retrieve() (fail-open): %s", exc)
+                search_query = request.query
+
         # ── Stage 1: Query Embedding ─────────────────────────────────────────
         t0 = time.perf_counter()
-        query_vec = embedder.embed_query(request.query)
+        query_vec = embedder.embed_query(search_query)
         latency_breakdown["embed_ms"] = (time.perf_counter() - t0) * 1000
-        logger.info("[Stage 1] Embed: %.1f ms", latency_breakdown["embed_ms"])
+        logger.info("[Stage 1] Embed: %.1f ms (query='%s')", latency_breakdown["embed_ms"], search_query[:60])
 
         # ── Stage 2: FAISS Search ────────────────────────────────────────────
         t0 = time.perf_counter()

@@ -84,7 +84,7 @@ class GeneratorService:
 
         # ── Stage 2: Context Assembly ────────────────────────────────────────
         t0 = time.perf_counter()
-        context_pkg: ContextPackage = build_context(retrieval_res)
+        context_pkg: ContextPackage = build_context(retrieval_res, query=query)
 
         if attached_scan_context:
             scan_id = attached_scan_context.get("image_id", "Patient_Scan")

@@ -617,6 +617,21 @@ class Settings(BaseSettings):
         validation_alias="ENABLE_KNOWLEDGE_GAP_MAPPER",
         description="Enable epistemic knowledge-gap mapper (F2).",
     )
+    enable_query_rewriting: bool = Field(
+        default=True,
+        validation_alias="ENABLE_QUERY_REWRITING",
+        description="Enable LLM clinical query rewriting for narrative vignettes.",
+    )
+    query_rewrite_max_words: int = Field(
+        default=30,
+        validation_alias="QUERY_REWRITE_MAX_WORDS",
+        description="Maximum words in rewritten clinical retrieval query.",
+    )
+    query_rewrite_length_threshold: int = Field(
+        default=25,
+        validation_alias="QUERY_REWRITE_LENGTH_THRESHOLD",
+        description="Word count threshold above which query rewriting triggers.",
+    )
 
     # ── Step 10 Report & Private Store Settings ──────────────────────────────
     private_store_dir: Path = Field(

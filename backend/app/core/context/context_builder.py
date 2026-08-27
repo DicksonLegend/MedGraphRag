@@ -60,6 +60,7 @@ def estimate_tokens(text: str) -> int:
 
 def build_context(
     retrieval_result: RetrievalResult,
+    query: Optional[str] = None,
     max_evidence: Optional[int] = None,
     max_tokens: Optional[int] = None,
 ) -> ContextPackage:
@@ -128,18 +129,19 @@ def build_context(
         )
 
     # Construct user prompt with query and formatted evidence blocks
+    prompt_query = query if (query is not None and query.strip()) else retrieval_result.query
     if evidence_blocks:
         formatted_evidence = "\n\n".join(evidence_blocks)
         user_prompt = (
             f"EVIDENCE:\n{formatted_evidence}\n\n"
-            f"QUESTION:\n{retrieval_result.query}\n\n"
+            f"QUESTION:\n{prompt_query}\n\n"
             f"INSTRUCTIONS:\n"
             f"Answer the question based strictly on the provided evidence blocks [E1], [E2], etc. "
             f"Cite every factual statement using [E#]. If evidence is insufficient, state that clearly."
         )
     else:
         user_prompt = (
-            f"QUESTION:\n{retrieval_result.query}\n\n"
+            f"QUESTION:\n{prompt_query}\n\n"
             f"NOTE: No relevant evidence was found for this query."
         )
 

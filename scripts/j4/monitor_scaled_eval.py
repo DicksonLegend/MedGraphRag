@@ -88,7 +88,9 @@ def main():
         logger.info("Starting Runner Cycle #%d. Current State: [%s]", cycle_count, get_checkpoint_status())
 
         # Spawn runner process
-        proc = subprocess.Popen([PYTHON_EXEC, RUNNER_SCRIPT], cwd=str(_PROJECT_ROOT))
+        runner_env = dict(os.environ)
+        runner_env["PYTHONPATH"] = f"{_PROJECT_ROOT}/backend:{_PROJECT_ROOT}"
+        proc = subprocess.Popen([PYTHON_EXEC, RUNNER_SCRIPT], cwd=str(_PROJECT_ROOT), env=runner_env)
         pid = proc.pid
         logger.info("Spawned runner process [PID=%d]", pid)
 
