@@ -159,7 +159,7 @@ export const LoginPage: React.FC = () => {
           <div className="inline-flex items-center space-x-1.5 px-2.5 py-0.5 rounded-full bg-brand-surface border border-brand-border text-[9px] sm:text-[10px] font-mono font-semibold text-brand tracking-wider uppercase shadow-xs">
             <Sparkles className="w-2.5 h-2.5 text-brand" />
             <span>Self-Verifying Clinical AI</span>
-            <span className="text-[8px] opacity-75 font-mono px-1 py-0.2 rounded bg-brand/10 border border-brand/20">v1.0.0</span>
+            <span className="text-[8px] opacity-75 font-mono px-1 py-0.2 rounded bg-brand/10 border border-brand/20">v2.0.0</span>
           </div>
         </div>
 

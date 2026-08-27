@@ -261,7 +261,7 @@ export const Sidebar: React.FC = () => {
                     MedGraph<span className="text-[#0F766E] dark:text-[#14B8A6]">RAG</span>
                   </h1>
                   <span className="px-1.5 py-0.2 rounded text-[9px] font-mono font-bold bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
-                    v1.0.0
+                    v2.0.0
                   </span>
                 </div>
                 <div className="flex items-center space-x-1 text-[10px] font-mono text-slate-500 dark:text-slate-400 mt-0.5">
