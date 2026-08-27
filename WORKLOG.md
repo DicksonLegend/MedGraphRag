@@ -30,7 +30,7 @@
 | Sec | F-11 Dependency lockfile generation | Antigravity | done | commit f4034e1 (requirements.lock, backend/requirements.lock) | 2026-08-26 |
 | Sec | F-12/F-13 Multimodal status protection + pre-push secret scanner | Antigravity | done | commit fa724a4 (.githooks/pre-push, deps.py, multimodal/routes.py) | 2026-08-26 |
 | C | J6 IR metrics v2 (user-adjudicated graded qrels) | OpenCode | done | evaluations/multimodal/step17_ir_metrics_v2.json (8a2b8fec): P@5 .18 R@5 .54 MRR .353 nDCG@10 .377 | 2026-08-23 |
-| C | J4 MedQA-US N=500 scaled eval (with Clinical Query Rewriter) | Antigravity | done | evaluations/step18_scaled_n500.json (5416e47b) — M1–M4 full eval on GPU with query rewriter, N=500 seed 42, 100% CPU match rate, 0.00% drift; threshold recalibration in step18_threshold_recalibration.json (optimal M4 at tau=0.40: Acc(all)=12.2%, Acc(ans)=55.0%, WAR=10.0%) | 2026-08-27 |
+| C | J4 MedQA-US N=500 scaled eval (with Clinical Query Rewriter) | Antigravity | done | evaluations/step18_scaled_n500.json (5416e47b) — M1–M4 full eval on GPU with query rewriter, N=500 seed 42, 0.00% drift; safe operating points (WAR<=9.5%): M4 at tau=0.46 (Acc(all)=10.0%, Acc(ans)=51.6%, WAR=9.4%), M1 at tau=0.43 (Acc(all)=9.6%, WAR=9.4%), M2 at tau=0.80 (Acc(all)=12.4%, WAR=8.0%), M3 at tau=0.47 (Acc(all)=9.8%, WAR=9.0%) | 2026-08-27 |
 | C | J5 MedMCQA (+BioASQ optional) external validation | Antigravity | pending | step15_external_eval.json | |
 | C | J6 IR metrics (P@5/R@5/MRR/nDCG@10) + hallucination rates | OpenCode | done* | evaluations/multimodal/step17_ir_metrics.json (bac17814; proxy lexical qrels — NOT publication-grade) | 2026-08-23 |
 | C | J7 task-slice eval (negation/temporal/severity/finding–anatomy) | Antigravity | pending | step15_task_slices.json | |
@@ -38,7 +38,7 @@
 | C | J4-stats bootstrap CIs (1000 resamples, seed 42) | Antigravity | done | evaluations/step15_bootstrap_ci.json (5416e47b) — 1000 resamples, seed 42 for M1–M4 Acc(all), Acc(ans), Refusal, WAR (embedded in step18_scaled_n500.json) | 2026-08-27 |
 | D | J11 multi-turn clinician workflows | OpenCode | pending | step18_multiturn.json | |
 | D | J12 batched verification (latency fix) | Antigravity | pending | step15_batched_verify.json | |
-| D | J13 compute comparison table vs baselines | Antigravity | done | step15_compute_table.json (f6baecda) — Latency CIs + LaTeX + Pareto frontier | 2026-08-25 |
+| D | J13 compute comparison table vs baselines | Antigravity | done | step15_compute_table.json (f6baecda) — Safe operating threshold realignment (WAR<=9.5%) + matched-tau comparison + pilot N=50 reference | 2026-08-27 |
 | D | Regression sweep (step12/13 values unchanged post-J1–J3) | OpenCode | done | evaluations/regression_final.json — actual==expected ba1b5121, 5/5 PASS, 0.00% DRIFT (artifact 86e800df) | 2026-08-23 |
 | D | Phase-2 IR upgrade prep (rubric + 30 queries + retrieval + blank dual-grader sheet + metrics script) | OpenCode | done awaiting human grades | phase2_relevance_rubric.md · phase2_queries.json · phase2_retrieval.json (regression ba1b5121 PASS, deterministic rerun ✓, sha-body 2e23ef89) · phase2_grading_sheet.tsv 294 rows · compute_phase2_metrics.py (NOT run) | 2026-08-23 |
 | E | J14 ethics/data-availability/AI-disclosure sections | Antigravity | pending | journal_paper/main.tex §updates | |

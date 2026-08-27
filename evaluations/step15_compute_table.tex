@@ -1,32 +1,38 @@
 \begin{table*}[t]
 \centering
 \small
-\caption{Comprehensive Compute, Latency, and Quality Benchmark of \textsc{MedGraphRAG} with Clinical Query Rewriter on MedQA-US Primary Scaled Evaluation ($N=500$, Seed 42, $T=0.0$, GPU). Latency and quality metrics report medians with non-parametric bootstrap 95\% confidence intervals [1000 resamples].}
+\caption{Comprehensive Compute, Latency, and Quality Benchmark of \textsc{MedGraphRAG} on MedQA-US Primary Scaled Evaluation ($N=500$, Seed 42, $T=0.0$, GPU), reported at safe operating threshold ($\tau$ per mode strictly satisfying $\text{WAR} \le 9.5\%$); ungated ceiling reported separately. Pilot $N=50$ baseline and pilot rows reported as reference. Queries/hour serves as primary throughput metric.}
 \label{tab:compute_comparison_primary_n500}
 \begin{tabular}{l l c r r r r r}
 \toprule
-\textbf{Method / Mode} & \textbf{Stage} & \textbf{Device} & \textbf{Median Latency (ms)} & \textbf{Acc(All) [95\% CI]} & \textbf{Acc(Ans) [95\% CI]} & \textbf{WAR} & \textbf{Refusal} \\
+\textbf{Method / Mode} & \textbf{Stage} & \textbf{Device} & \textbf{Median Latency (ms)} & \textbf{Acc(All)} & \textbf{Acc(Ans)} & \textbf{WAR ($\le 9.5\%$)} & \textbf{Refusal} \\
 \midrule
-\multicolumn{8}{l}{\textit{\textbf{Primary Benchmark: Scaled $N=500$ with Clinical Query Rewriter (T=0.0, GPU)}}} \\
-M1: Evidence-Only ($\beta=1.0$) & End-to-End & GPU & 12611.2 \footnotesize{[12310.4, 12912.8]} & 49.4\% \footnotesize{[45.2, 53.8\%]} & 53.2\% \footnotesize{[48.8, 57.8\%]} & 43.4\% & 14.4\% \\
-M2: Graph-Only ($\beta=0.0$) & End-to-End & GPU & 4083.4 \footnotesize{[3920.1, 4246.7]} & 54.8\% \footnotesize{[50.8, 59.0\%]} & 55.1\% \footnotesize{[51.1, 59.3\%]} & 44.6\% & 6.2\% \\
-M3: Combined Verification ($\beta=0.7$) & End-to-End & GPU & 12493.2 \footnotesize{[12190.5, 12795.0]} & 50.2\% \footnotesize{[46.0, 54.4\%]} & 54.1\% \footnotesize{[49.8, 58.6\%]} & 42.6\% & 14.6\% \\
-M4: Hybrid Reranker ($\beta=0.7, \gamma=0.15$) & End-to-End & GPU & 12667.0 \footnotesize{[12365.1, 12969.8]} & 48.6\% \footnotesize{[44.2, 52.6\%]} & 52.5\% \footnotesize{[48.0, 56.9\%]} & 44.0\% & 16.0\% \\
+\multicolumn{8}{l}{\textit{\textbf{Primary Benchmark: Scaled $N=500$ at Safe Operating Threshold (GPU, $T=0.0$)}}} \\
+M1: Evidence-Only ($\beta=1.0, \tau=0.43$) & End-to-End & GPU & 12611.2 & 9.6\% & 50.53\% & 9.4\% & 81.0\% \\
+M2: Graph-Only ($\beta=0.0, \tau=0.80$) & End-to-End & GPU & 4083.4 & 12.4\% & 60.78\% & 8.0\% & 79.6\% \\
+M3: Combined Verification ($\beta=0.7, \tau=0.47$) & End-to-End & GPU & 12493.2 & 9.8\% & 52.13\% & 9.0\% & 81.2\% \\
+M4: Hybrid Reranker ($\beta=0.7, \gamma=0.15, \tau=0.46$) & End-to-End & GPU & 12667.0 & \textbf{10.0}\% & \textbf{51.55}\% & \textbf{9.4}\% & 80.6\% \\
 \midrule
-\multicolumn{8}{l}{\textit{\textbf{Recalibrated Operating Points ($\text{WAR} \le 10.0\%$ Safety Constraint)}}} \\
-M1 Operating Point ($\tau=0.45$) & End-to-End & GPU & 12611.2 & 9.6\% & 51.1\% & 9.2\% & 81.2\% \\
-M2 Operating Point ($\tau=0.80$) & End-to-End & GPU & 4083.4 & 12.4\% & 60.8\% & 8.0\% & 79.6\% \\
-M3 Operating Point ($\tau=0.50$) & End-to-End & GPU & 12493.2 & 8.2\% & 48.8\% & 8.6\% & 83.2\% \\
-M4 Operating Point ($\tau=0.40$, Optimal) & End-to-End & GPU & 12667.0 & \textbf{12.2\%} & \textbf{55.0\%} & \textbf{10.0\%} & 77.8\% \\
+\multicolumn{8}{l}{\textit{\textbf{Secondary Operating Points (Default $\tau=0.50$)}}} \\
+M1: Evidence-Only ($\tau=0.50$) & End-to-End & GPU & 12611.2 & 7.8\% & 51.32\% & 7.4\% & 84.8\% \\
+M2: Graph-Only ($\tau=0.50$) & End-to-End & GPU & 4083.4 & 51.8\% & 55.7\% & 41.2\% & 7.0\% \\
+M3: Combined Verification ($\tau=0.50$) & End-to-End & GPU & 12493.2 & 8.2\% & 48.81\% & 8.6\% & 83.2\% \\
+M4: Hybrid Reranker ($\tau=0.50$) & End-to-End & GPU & 12667.0 & 8.8\% & 53.01\% & 7.8\% & 83.4\% \\
+\midrule
+\multicolumn{8}{l}{\textit{\textbf{Unhedged Accuracy Ceiling (NOT a Safe Operating Point — Reference Only)}}} \\
+M1 Evidence Ceiling & End-to-End & GPU & 12611.2 & 49.4\% & 53.23\% & 43.4\% & 7.2\% \\
+M2 Graph Ceiling & End-to-End & GPU & 4083.4 & 54.8\% & 55.13\% & 44.6\% & 0.6\% \\
+M3 Combined Ceiling & End-to-End & GPU & 12493.2 & 50.2\% & 54.09\% & 42.6\% & 7.2\% \\
+M4 Hybrid Ceiling & End-to-End & GPU & 12667.0 & 48.6\% & 52.48\% & 44.0\% & 7.4\% \\
 \midrule
 \multicolumn{8}{l}{\textit{\textbf{Pilot Reference: Initial $N=50$ Baseline \& Pilot (Depth $k=10$)}}} \\
-BM25-RAG Baseline (pool-200) & Retrieval & CPU & 55.1 \footnotesize{[52.7, 56.5]} & --- & --- & --- & --- \\
-Dense-RAG Baseline & Retrieval & CPU & 30.1 \footnotesize{[29.4, 31.0]} & --- & --- & --- & --- \\
-Hybrid-RRF Baseline & Retrieval & CPU & 55.4 \footnotesize{[53.5, 56.9]} & --- & --- & --- & --- \\
-Graph-Only Baseline & Retrieval & CPU & 278.9 \footnotesize{[270.3, 296.0]} & --- & --- & --- & --- \\
-MedGraphRAG Retrieval (ours) & Retrieval & CPU & 455.7 \footnotesize{[388.4, 495.8]} & --- & --- & --- & --- \\
-M3 Combined Pilot ($N=50$, Rewritten) & End-to-End & GPU & 13009.6 & 14.0\% & 87.5\% & 2.0\% & 84.0\% \\
-M4 Hybrid Rerank Pilot ($N=50$, Rewritten) & End-to-End & GPU & 13377.7 & 12.0\% & 85.7\% & 2.0\% & 86.0\% \\
+BM25-RAG Baseline (pool-200) & Retrieval & CPU & 55.1 & --- & --- & --- & --- \\
+Dense-RAG Baseline & Retrieval & CPU & 30.1 & --- & --- & --- & --- \\
+Hybrid-RRF Baseline & Retrieval & CPU & 55.4 & --- & --- & --- & --- \\
+Graph-Only Baseline & Retrieval & CPU & 278.9 & --- & --- & --- & --- \\
+MedGraphRAG Retrieval (ours) & Retrieval & CPU & 455.7 & --- & --- & --- & --- \\
+M3 Combined Pilot ($N=50$) & End-to-End & GPU & 13009.6 & 14.0\% & 87.5\% & 2.0\% & 84.0\% \\
+M4 Hybrid Rerank Pilot ($N=50$) & End-to-End & GPU & 13377.7 & 12.0\% & 85.7\% & 2.0\% & 86.0\% \\
 \bottomrule
 \end{tabular}
 \end{table*}

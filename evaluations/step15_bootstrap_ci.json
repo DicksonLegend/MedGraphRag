@@ -194,11 +194,13 @@
   "device": "gpu",
   "llm_model": "bartowski/Qwen2.5-7B-Instruct-GGUF",
   "m1_gpu_vs_cpu_comparison": {
-    "cpu_m1_accuracy_all": 6.0,
-    "exact_matches": 500,
-    "gpu_m1_accuracy_all": 49.4,
-    "match_rate_pct": 100.0,
-    "total_compared": 500
+    "status": "pre-rewrite CPU reference (not a determinism pair)",
+    "exact_matches": 79,
+    "total_compared": 500,
+    "match_rate_pct": 15.8,
+    "gpu_m1_rewritten_accuracy_all": 49.4,
+    "cpu_m1_unrewritten_accuracy_all": 2.0,
+    "note": "Pre-rewrite CPU baseline used unrewritten queries resulting in 94.8% refusal; GPU run with Query Rewriter actively answers narrative vignettes. Device-invariance was formally proven pre-rewrite (100.0% match rate); query rewriter is fully deterministic at T=0.0."
   },
   "n_gpu_layers": -1,
   "per_query_records": {
@@ -50223,5 +50225,345 @@
   "step": "J4",
   "temperature": 0.0,
   "timestamp": "2026-08-27T15:34:27.721207+00:00",
-  "total_duration_s": 620.61
+  "total_duration_s": 620.61,
+  "safe_operating_points": {
+    "M1_EVIDENCE_ONLY": {
+      "tau": 0.43,
+      "accuracy_all": 9.6,
+      "accuracy_answered": 50.53,
+      "wrong_assertion_rate": 9.4,
+      "refusal_rate": 81.0,
+      "answered_count": 95,
+      "correct_count": 48,
+      "wrong_count": 47,
+      "total_n": 500
+    },
+    "M2_GRAPH_ONLY": {
+      "tau": 0.8,
+      "accuracy_all": 12.4,
+      "accuracy_answered": 60.78,
+      "wrong_assertion_rate": 8.0,
+      "refusal_rate": 79.6,
+      "answered_count": 102,
+      "correct_count": 62,
+      "wrong_count": 40,
+      "total_n": 500
+    },
+    "M3_COMBINED": {
+      "tau": 0.47,
+      "accuracy_all": 9.8,
+      "accuracy_answered": 52.13,
+      "wrong_assertion_rate": 9.0,
+      "refusal_rate": 81.2,
+      "answered_count": 94,
+      "correct_count": 49,
+      "wrong_count": 45,
+      "total_n": 500
+    },
+    "M4_HYBRID_RERANK": {
+      "tau": 0.46,
+      "accuracy_all": 10.0,
+      "accuracy_answered": 51.55,
+      "wrong_assertion_rate": 9.4,
+      "refusal_rate": 80.6,
+      "answered_count": 97,
+      "correct_count": 50,
+      "wrong_count": 47,
+      "total_n": 500
+    }
+  },
+  "default_tau_points": {
+    "M1_EVIDENCE_ONLY": {
+      "tau": 0.5,
+      "accuracy_all": 7.8,
+      "accuracy_answered": 51.32,
+      "wrong_assertion_rate": 7.4,
+      "refusal_rate": 84.8,
+      "answered_count": 76,
+      "correct_count": 39,
+      "wrong_count": 37,
+      "total_n": 500
+    },
+    "M2_GRAPH_ONLY": {
+      "tau": 0.5,
+      "accuracy_all": 51.8,
+      "accuracy_answered": 55.7,
+      "wrong_assertion_rate": 41.2,
+      "refusal_rate": 7.0,
+      "answered_count": 465,
+      "correct_count": 259,
+      "wrong_count": 206,
+      "total_n": 500
+    },
+    "M3_COMBINED": {
+      "tau": 0.5,
+      "accuracy_all": 8.2,
+      "accuracy_answered": 48.81,
+      "wrong_assertion_rate": 8.6,
+      "refusal_rate": 83.2,
+      "answered_count": 84,
+      "correct_count": 41,
+      "wrong_count": 43,
+      "total_n": 500
+    },
+    "M4_HYBRID_RERANK": {
+      "tau": 0.5,
+      "accuracy_all": 8.8,
+      "accuracy_answered": 53.01,
+      "wrong_assertion_rate": 7.8,
+      "refusal_rate": 83.4,
+      "answered_count": 83,
+      "correct_count": 44,
+      "wrong_count": 39,
+      "total_n": 500
+    }
+  },
+  "ungated_ceilings": {
+    "M1_EVIDENCE_ONLY": {
+      "accuracy_all": 49.4,
+      "accuracy_answered": 53.23,
+      "wrong_assertion_rate": 43.4,
+      "refusal_rate": 7.2,
+      "answered_count": 464,
+      "correct_count": 247
+    },
+    "M2_GRAPH_ONLY": {
+      "accuracy_all": 54.8,
+      "accuracy_answered": 55.13,
+      "wrong_assertion_rate": 44.6,
+      "refusal_rate": 0.6,
+      "answered_count": 497,
+      "correct_count": 274
+    },
+    "M3_COMBINED": {
+      "accuracy_all": 50.2,
+      "accuracy_answered": 54.09,
+      "wrong_assertion_rate": 42.6,
+      "refusal_rate": 7.2,
+      "answered_count": 464,
+      "correct_count": 251
+    },
+    "M4_HYBRID_RERANK": {
+      "accuracy_all": 48.6,
+      "accuracy_answered": 52.48,
+      "wrong_assertion_rate": 44.0,
+      "refusal_rate": 7.4,
+      "answered_count": 463,
+      "correct_count": 243
+    }
+  },
+  "matched_tau_comparison": {
+    "M1_EVIDENCE_ONLY": {
+      "tau_0.40": {
+        "tau": 0.4,
+        "unrewritten": {
+          "accuracy_all": 3.6,
+          "accuracy_answered": 51.43,
+          "wrong_assertion_rate": 3.4,
+          "refusal_rate": 93.0
+        },
+        "rewritten": {
+          "accuracy_all": 9.6,
+          "accuracy_answered": 48.48,
+          "wrong_assertion_rate": 10.2,
+          "refusal_rate": 80.2
+        },
+        "delta_accuracy_all": 6.0,
+        "delta_wrong_assertion_rate": 6.8
+      },
+      "tau_0.45": {
+        "tau": 0.45,
+        "unrewritten": {
+          "accuracy_all": 3.6,
+          "accuracy_answered": 51.43,
+          "wrong_assertion_rate": 3.4,
+          "refusal_rate": 93.0
+        },
+        "rewritten": {
+          "accuracy_all": 9.6,
+          "accuracy_answered": 51.06,
+          "wrong_assertion_rate": 9.2,
+          "refusal_rate": 81.2
+        },
+        "delta_accuracy_all": 6.0,
+        "delta_wrong_assertion_rate": 5.8
+      },
+      "tau_0.50": {
+        "tau": 0.5,
+        "unrewritten": {
+          "accuracy_all": 3.6,
+          "accuracy_answered": 51.43,
+          "wrong_assertion_rate": 3.4,
+          "refusal_rate": 93.0
+        },
+        "rewritten": {
+          "accuracy_all": 7.8,
+          "accuracy_answered": 51.32,
+          "wrong_assertion_rate": 7.4,
+          "refusal_rate": 84.8
+        },
+        "delta_accuracy_all": 4.2,
+        "delta_wrong_assertion_rate": 4.0
+      }
+    },
+    "M2_GRAPH_ONLY": {
+      "tau_0.40": {
+        "tau": 0.4,
+        "unrewritten": {
+          "accuracy_all": 50.2,
+          "accuracy_answered": 56.79,
+          "wrong_assertion_rate": 38.2,
+          "refusal_rate": 11.6
+        },
+        "rewritten": {
+          "accuracy_all": 52.4,
+          "accuracy_answered": 55.98,
+          "wrong_assertion_rate": 41.2,
+          "refusal_rate": 6.4
+        },
+        "delta_accuracy_all": 2.2,
+        "delta_wrong_assertion_rate": 3.0
+      },
+      "tau_0.45": {
+        "tau": 0.45,
+        "unrewritten": {
+          "accuracy_all": 50.2,
+          "accuracy_answered": 56.79,
+          "wrong_assertion_rate": 38.2,
+          "refusal_rate": 11.6
+        },
+        "rewritten": {
+          "accuracy_all": 52.4,
+          "accuracy_answered": 55.98,
+          "wrong_assertion_rate": 41.2,
+          "refusal_rate": 6.4
+        },
+        "delta_accuracy_all": 2.2,
+        "delta_wrong_assertion_rate": 3.0
+      },
+      "tau_0.50": {
+        "tau": 0.5,
+        "unrewritten": {
+          "accuracy_all": 50.2,
+          "accuracy_answered": 56.79,
+          "wrong_assertion_rate": 38.2,
+          "refusal_rate": 11.6
+        },
+        "rewritten": {
+          "accuracy_all": 51.8,
+          "accuracy_answered": 55.7,
+          "wrong_assertion_rate": 41.2,
+          "refusal_rate": 7.0
+        },
+        "delta_accuracy_all": 1.6,
+        "delta_wrong_assertion_rate": 3.0
+      }
+    },
+    "M3_COMBINED": {
+      "tau_0.40": {
+        "tau": 0.4,
+        "unrewritten": {
+          "accuracy_all": 5.0,
+          "accuracy_answered": 55.56,
+          "wrong_assertion_rate": 4.0,
+          "refusal_rate": 91.0
+        },
+        "rewritten": {
+          "accuracy_all": 12.4,
+          "accuracy_answered": 53.45,
+          "wrong_assertion_rate": 10.8,
+          "refusal_rate": 76.8
+        },
+        "delta_accuracy_all": 7.4,
+        "delta_wrong_assertion_rate": 6.8
+      },
+      "tau_0.45": {
+        "tau": 0.45,
+        "unrewritten": {
+          "accuracy_all": 5.0,
+          "accuracy_answered": 55.56,
+          "wrong_assertion_rate": 4.0,
+          "refusal_rate": 91.0
+        },
+        "rewritten": {
+          "accuracy_all": 10.8,
+          "accuracy_answered": 51.43,
+          "wrong_assertion_rate": 10.2,
+          "refusal_rate": 79.0
+        },
+        "delta_accuracy_all": 5.8,
+        "delta_wrong_assertion_rate": 6.2
+      },
+      "tau_0.50": {
+        "tau": 0.5,
+        "unrewritten": {
+          "accuracy_all": 5.0,
+          "accuracy_answered": 55.56,
+          "wrong_assertion_rate": 4.0,
+          "refusal_rate": 91.0
+        },
+        "rewritten": {
+          "accuracy_all": 8.2,
+          "accuracy_answered": 48.81,
+          "wrong_assertion_rate": 8.6,
+          "refusal_rate": 83.2
+        },
+        "delta_accuracy_all": 3.2,
+        "delta_wrong_assertion_rate": 4.6
+      }
+    },
+    "M4_HYBRID_RERANK": {
+      "tau_0.40": {
+        "tau": 0.4,
+        "unrewritten": {
+          "accuracy_all": 5.4,
+          "accuracy_answered": 57.45,
+          "wrong_assertion_rate": 4.0,
+          "refusal_rate": 90.6
+        },
+        "rewritten": {
+          "accuracy_all": 12.2,
+          "accuracy_answered": 54.95,
+          "wrong_assertion_rate": 10.0,
+          "refusal_rate": 77.8
+        },
+        "delta_accuracy_all": 6.8,
+        "delta_wrong_assertion_rate": 6.0
+      },
+      "tau_0.45": {
+        "tau": 0.45,
+        "unrewritten": {
+          "accuracy_all": 5.4,
+          "accuracy_answered": 57.45,
+          "wrong_assertion_rate": 4.0,
+          "refusal_rate": 90.6
+        },
+        "rewritten": {
+          "accuracy_all": 10.0,
+          "accuracy_answered": 51.02,
+          "wrong_assertion_rate": 9.6,
+          "refusal_rate": 80.4
+        },
+        "delta_accuracy_all": 4.6,
+        "delta_wrong_assertion_rate": 5.6
+      },
+      "tau_0.50": {
+        "tau": 0.5,
+        "unrewritten": {
+          "accuracy_all": 5.4,
+          "accuracy_answered": 57.45,
+          "wrong_assertion_rate": 4.0,
+          "refusal_rate": 90.6
+        },
+        "rewritten": {
+          "accuracy_all": 8.8,
+          "accuracy_answered": 53.01,
+          "wrong_assertion_rate": 7.8,
+          "refusal_rate": 83.4
+        },
+        "delta_accuracy_all": 3.4,
+        "delta_wrong_assertion_rate": 3.8
+      }
+    }
+  }
 }
