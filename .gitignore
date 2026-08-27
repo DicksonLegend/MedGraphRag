@@ -55,4 +55,6 @@ tmp/
 scratch/
 private_store/
 sqlite_mcp_server.db
+
+# Backup directory
 evaluations/j4_backup_pre_rewrite/
