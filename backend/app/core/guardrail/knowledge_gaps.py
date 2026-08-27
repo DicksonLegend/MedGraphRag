@@ -85,6 +85,12 @@ def map_knowledge_gaps(
     if not getattr(settings, "enable_knowledge_gap_mapper", True):
         return []
 
+    if not query or not str(query).strip():
+        return []
+
+    if retrieved_items is None and graph_checks is None and phi is None and answer_status is None:
+        return []
+
     gaps: List[KnowledgeGap] = []
     retrieved_items = retrieved_items or []
 

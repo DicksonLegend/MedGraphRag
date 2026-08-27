@@ -1,0 +1,339 @@
+{
+  "artifact_sha256": "71a4b9858255ccb737602b824249810b5d4a6773708e1335c47e3f1f99b0d52c",
+  "description": "Cross-Modal Discrepancy Guardrail (F1) & Epistemic Knowledge-Gap Mapper (F2) Evaluation Report",
+  "features": {
+    "F1_CROSS_MODAL_DISCREPANCY_GUARDRAIL": {
+      "average_latency_ms": 0.14,
+      "failed_tests": 0,
+      "feature": "F1_CROSS_MODAL_DISCREPANCY_GUARDRAIL",
+      "passed_tests": 5,
+      "test_cases": [
+        {
+          "description": "Rule A: Visual positive (0.88) vs. text negation -> HIGH severity alert",
+          "inputs": {
+            "text_evidence": [
+              {
+                "category": "radiology",
+                "snippet": "Chest radiograph demonstrates clear lungs with no pneumothorax or effusion.",
+                "source_id": "doc_rad_001"
+              }
+            ],
+            "visual_findings": [
+              {
+                "label": "pneumothorax",
+                "neg_score": 0.12,
+                "negated": false,
+                "score": 0.88
+              }
+            ]
+          },
+          "latency_ms": 0.389,
+          "output_alerts": [
+            {
+              "finding": "pneumothorax",
+              "graph_provenance": null,
+              "recommendation": "AI does not resolve this conflict \u2014 recommend manual radiologist review.",
+              "severity": "HIGH",
+              "text_evidence": {
+                "category": "radiology",
+                "cue": "clear lungs",
+                "snippet": "Chest radiograph demonstrates clear lungs with no pneumothorax or effusion.",
+                "source_id": "doc_rad_001"
+              },
+              "visual_evidence": {
+                "label": "pneumothorax",
+                "neg_score": 0.12,
+                "negated": false,
+                "score": 0.88
+              }
+            }
+          ],
+          "status": "PASSED",
+          "test_name": "test_visual_positive_vs_text_negation_pneumothorax"
+        },
+        {
+          "description": "Rule B: Visual negated (0.85) vs. text positive assertion -> HIGH severity alert",
+          "inputs": {
+            "text_evidence": [
+              {
+                "category": "radiology",
+                "snippet": "There is moderate bilateral pleural effusion with blunting of the costophrenic angles.",
+                "source_id": "doc_rad_002"
+              }
+            ],
+            "visual_findings": [
+              {
+                "label": "pleural_effusion",
+                "neg_score": 0.85,
+                "negated": true,
+                "score": 0.15
+              }
+            ]
+          },
+          "latency_ms": 0.245,
+          "output_alerts": [
+            {
+              "finding": "pleural_effusion",
+              "graph_provenance": null,
+              "recommendation": "AI does not resolve this conflict \u2014 recommend manual radiologist review.",
+              "severity": "HIGH",
+              "text_evidence": {
+                "category": "radiology",
+                "cue": "asserted_present",
+                "snippet": "There is moderate bilateral pleural effusion with blunting of the costophrenic angles.",
+                "source_id": "doc_rad_002"
+              },
+              "visual_evidence": {
+                "label": "pleural_effusion",
+                "neg_score": 0.85,
+                "negated": true,
+                "score": 0.15
+              }
+            }
+          ],
+          "status": "PASSED",
+          "test_name": "test_visual_negated_vs_text_positive_effusion"
+        },
+        {
+          "description": "Concordant visual and textual evidence produces 0 alerts",
+          "inputs": {
+            "text_evidence": [
+              {
+                "category": "radiology",
+                "snippet": "Enlarged cardiac silhouette consistent with cardiomegaly.",
+                "source_id": "doc_rad_003"
+              }
+            ],
+            "visual_findings": [
+              {
+                "label": "cardiomegaly",
+                "neg_score": 0.15,
+                "negated": false,
+                "score": 0.85
+              }
+            ]
+          },
+          "latency_ms": 0.059,
+          "output_alerts": [],
+          "status": "PASSED",
+          "test_name": "test_matching_concordant_findings_no_alert"
+        },
+        {
+          "description": "Sub-threshold visual confidence (< 0.60) does not trigger alert",
+          "inputs": {
+            "text_evidence": [
+              {
+                "category": "radiology",
+                "snippet": "No pneumothorax is identified on the current view.",
+                "source_id": "doc_rad_004"
+              }
+            ],
+            "visual_findings": [
+              {
+                "label": "pneumothorax",
+                "neg_score": 0.58,
+                "negated": false,
+                "score": 0.42
+              }
+            ]
+          },
+          "latency_ms": 0.004,
+          "output_alerts": [],
+          "status": "PASSED",
+          "test_name": "test_subthreshold_visual_finding_no_alert"
+        },
+        {
+          "description": "Fail-open behavior produces empty list without raising exceptions",
+          "inputs": {
+            "empty_lists": true,
+            "malformed_dicts": true,
+            "none_inputs": true
+          },
+          "latency_ms": 0.003,
+          "output_alerts": [],
+          "status": "PASSED",
+          "test_name": "test_fail_open_on_empty_or_invalid"
+        }
+      ],
+      "total_tests": 5
+    },
+    "F2_EPISTEMIC_KNOWLEDGE_GAP_MAPPER": {
+      "average_latency_ms": 0.072,
+      "failed_tests": 0,
+      "feature": "F2_EPISTEMIC_KNOWLEDGE_GAP_MAPPER",
+      "passed_tests": 5,
+      "test_cases": [
+        {
+          "description": "G1: Top fused score < 0.02 triggers corpus_retrieval gap with reformulations",
+          "inputs": {
+            "answer_status": "refusal",
+            "phi": 0.4,
+            "query": "What is the recommended dosage for investigational kinase inhibitor ABX-492?",
+            "retrieved_items": [
+              {
+                "chunk_id": "chunk_001",
+                "document_id": "doc_general",
+                "fused_score": 0.009
+              }
+            ]
+          },
+          "latency_ms": 0.23,
+          "output_gaps": [
+            {
+              "claim_text": "What is the recommended dosage for investigational kinase inhibitor ABX-492?",
+              "detail": "Top fused retrieval score (0.0090) is below relevance threshold (0.02). The indexed corpus lacks high-density textual evidence for 'What is the recommended dosage for inves'.",
+              "gap_type": "corpus_retrieval",
+              "suggested_queries": [
+                "clinical diagnosis and therapy for What is the recommended dosage for inves",
+                "guidelines regarding What is the recommended dosage for inves"
+              ],
+              "suggested_sources": [
+                "PubMed Central Clinical Practice Guidelines",
+                "UpToDate / DynaMed Evidence Summaries",
+                "Cochrane Systematic Reviews"
+              ]
+            },
+            {
+              "claim_text": "What is the recommended dosage for investigational kinase inhibitor ABX-492?",
+              "detail": "Retrieved evidence faithfulness score (\u03c6 = 0.40 < 0.50) indicates pipeline claims are unsupported or contradict the retrieved text.",
+              "gap_type": "evidence_faithfulness",
+              "suggested_queries": [
+                "consult primary source document 'doc_general' directly",
+                "verify 'What is the recommended dosage for inves' with authoritative specialty consensus"
+              ],
+              "suggested_sources": [
+                "Direct review of source: doc_general"
+              ]
+            }
+          ],
+          "status": "PASSED",
+          "test_name": "test_corpus_retrieval_gap_low_fused_score"
+        },
+        {
+          "description": "G2: Neutral graph check triggers graph_coverage gap with relation suggestions",
+          "inputs": {
+            "answer_status": "uncertain",
+            "graph_checks": {
+              "reason": "No direct graph assertion linking warfarin to herbal supplement via INTERACTS_WITH",
+              "verdict": "neutral"
+            },
+            "phi": 0.6,
+            "query": "Does warfarin interact with St Johns Wort in atrial fibrillation?",
+            "retrieved_items": [
+              {
+                "chunk_id": "chunk_002",
+                "document_id": "doc_warfarin",
+                "fused_score": 0.08
+              }
+            ]
+          },
+          "latency_ms": 0.081,
+          "output_gaps": [
+            {
+              "claim_text": "Does warfarin interact with St Johns Wort in atrial fibrillation?",
+              "detail": "No direct graph assertion linking warfarin to herbal supplement via INTERACTS_WITH",
+              "gap_type": "graph_coverage",
+              "suggested_queries": [
+                "mechanism of action and indications for Coumadin"
+              ],
+              "suggested_sources": [
+                "UMLS Metathesaurus Semantic Network",
+                "DrugBank Relational Graph",
+                "SNOMED CT Clinical Hierarchy"
+              ]
+            }
+          ],
+          "status": "PASSED",
+          "test_name": "test_graph_coverage_gap_neutral_check"
+        },
+        {
+          "description": "G3: Low faithfulness score (phi < 0.50) triggers evidence_faithfulness gap",
+          "inputs": {
+            "answer_status": "refusal",
+            "phi": 0.32,
+            "query": "Can metformin be safely prescribed in end-stage renal failure with eGFR < 15?",
+            "retrieved_items": [
+              {
+                "chunk_id": "chunk_003",
+                "document_id": "doc_metformin_guidelines",
+                "fused_score": 0.12
+              }
+            ]
+          },
+          "latency_ms": 0.031,
+          "output_gaps": [
+            {
+              "claim_text": "Can metformin be safely prescribed in end-stage renal failure with eGFR < 15?",
+              "detail": "Knowledge graph lacks relational assertion linking 'metformin' via NEGATES/TEMPORAL/INDICATES.",
+              "gap_type": "graph_coverage",
+              "suggested_queries": [
+                "mechanism of action and indications for Glucophage"
+              ],
+              "suggested_sources": [
+                "UMLS Metathesaurus Semantic Network",
+                "DrugBank Relational Graph",
+                "SNOMED CT Clinical Hierarchy"
+              ]
+            },
+            {
+              "claim_text": "Can metformin be safely prescribed in end-stage renal failure with eGFR < 15?",
+              "detail": "Retrieved evidence faithfulness score (\u03c6 = 0.32 < 0.50) indicates pipeline claims are unsupported or contradict the retrieved text.",
+              "gap_type": "evidence_faithfulness",
+              "suggested_queries": [
+                "consult primary source document 'doc_metformin_guidelines' directly",
+                "verify 'metformin' with authoritative specialty consensus"
+              ],
+              "suggested_sources": [
+                "Direct review of source: doc_metformin_guidelines"
+              ]
+            }
+          ],
+          "status": "PASSED",
+          "test_name": "test_evidence_faithfulness_gap_low_phi"
+        },
+        {
+          "description": "Verified, high-faithfulness query execution produces zero knowledge gaps",
+          "inputs": {
+            "answer_status": "verified",
+            "phi": 0.92,
+            "query": "warfarin INR monitoring guidelines",
+            "retrieved_items": [
+              {
+                "chunk_id": "chunk_004",
+                "document_id": "doc_inr_guideline",
+                "fused_score": 0.22
+              }
+            ]
+          },
+          "latency_ms": 0.019,
+          "output_gaps": [],
+          "status": "PASSED",
+          "test_name": "test_verified_high_confidence_produces_no_gaps"
+        },
+        {
+          "description": "Fail-open behavior safely handles None and missing arguments",
+          "inputs": {
+            "empty_query": true,
+            "none_retrieval": true
+          },
+          "latency_ms": 0.001,
+          "output_gaps": [],
+          "status": "PASSED",
+          "test_name": "test_fail_open_on_none_input"
+        }
+      ],
+      "total_tests": 5
+    }
+  },
+  "step": "Step 19",
+  "summary": {
+    "failed_test_cases": 0,
+    "pass_rate_pct": 100.0,
+    "passed_test_cases": 10,
+    "status": "ALL_TESTS_PASSED",
+    "total_test_cases": 10,
+    "total_test_suites": 2
+  },
+  "timestamp": "2026-08-27T04:39:09.284519+00:00",
+  "total_duration_s": 0.0013
+}
