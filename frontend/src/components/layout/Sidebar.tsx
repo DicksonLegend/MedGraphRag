@@ -380,7 +380,7 @@ export const Sidebar: React.FC = () => {
         >
           <div className="flex items-center space-x-2.5 min-w-0 w-full">
             {/* Avatar Pill with Online Beacon */}
-            <div className="relative shrink-0 mx-auto">
+            <div className={`relative shrink-0 ${isCollapsed ? 'mx-auto' : ''}`}>
               <div className="w-8 h-8 rounded-lg bg-teal-50 dark:bg-teal-950/60 border border-teal-200 dark:border-teal-800 text-[#0F766E] dark:text-[#14B8A6] flex items-center justify-center font-mono font-bold text-xs shadow-2xs">
                 {user_id ? user_id.substring(0, 2).toUpperCase() : 'MD'}
               </div>
