@@ -115,6 +115,68 @@ def warm_up() -> None:
         _load_store()
 
 
+def _build_private_user_snippet(user_id: str) -> str:
+    """
+    Extract structured lab values and reports from the user's private Kùzu database,
+    falling back to decrypted metadata payloads if needed.
+    """
+    user_dir = settings.private_store_dir / user_id
+    db_path = user_dir / "kuzu" / "private_kuzu_db"
+    if db_path.exists():
+        try:
+            import kuzu
+            db = kuzu.Database(str(db_path), read_only=True)
+            conn = kuzu.Connection(db)
+            try:
+                query = """
+                MATCH (r:Report)-[:HAS_LAB_VALUE]->(lv:LabValue)
+                RETURN r.id AS report_id, r.report_date AS report_date,
+                       lv.test_name AS test_name, lv.value AS value, lv.unit AS unit,
+                       lv.ref_low AS ref_low, lv.ref_high AS ref_high, lv.is_critical AS is_critical
+                ORDER BY r.report_date DESC, lv.test_name ASC
+                """
+                df = conn.execute(query).get_as_df()
+                if not df.empty:
+                    lines = [f"=== PATIENT PRIVATE DIAGNOSTIC LAB REPORTS ({user_id}) ==="]
+                    grouped = df.groupby(["report_id", "report_date"], sort=False)
+                    for (r_id, r_date), group in grouped:
+                        lines.append(f"\nReport {r_id} (Date: {r_date}):")
+                        for _, row in group.iterrows():
+                            crit = " [CRITICAL ALERT]" if row["is_critical"] else ""
+                            ref_str = f" (Ref: {row['ref_low']} - {row['ref_high']})" if row.get("ref_low") is not None and row.get("ref_high") is not None and row["ref_high"] < 9000 else ""
+                            lines.append(f"  - {row['test_name']}: {row['value']} {row['unit']}{ref_str}{crit}")
+                    return "\n".join(lines)
+            finally:
+                del conn
+                del db
+        except Exception as ke:
+            logger.debug("Error querying private Kùzu snippet for %s: %s", user_id, ke)
+
+    # Fallback to decrypted payload
+    try:
+        from app.core.report.store import load_private_decrypted_payload
+        priv_payload = load_private_decrypted_payload(user_id)
+        if priv_payload:
+            snip = priv_payload.get("raw_text_snippet", "")
+            if snip:
+                return snip
+            asms = priv_payload.get("assessments", [])
+            if asms:
+                lines = [f"=== PATIENT PRIVATE DIAGNOSTIC LAB REPORTS ({user_id}) ==="]
+                for a in asms:
+                    nlv = a.get("normalized_lab_value", {})
+                    t_name = nlv.get("canonical_test_name", "Lab Test")
+                    val = nlv.get("normalized_value", "")
+                    unit = nlv.get("normalized_unit", "")
+                    crit = " [CRITICAL ALERT]" if a.get("is_critical") else ""
+                    lines.append(f"  - {t_name}: {val} {unit}{crit}")
+                return "\n".join(lines)
+    except Exception as pe:
+        logger.debug("Error loading private decrypted payload for %s: %s", user_id, pe)
+
+    return "User private diagnostic lab report."
+
+
 def search(
     query_vector: np.ndarray,
     top_k: int,
@@ -168,9 +230,7 @@ def search(
             try:
                 priv_idx = faiss.read_index(str(priv_index_path))
                 p_scores, p_indices = priv_idx.search(query_vector, min(top_k, priv_idx.ntotal))
-                from app.core.report.store import load_private_decrypted_payload
-                priv_payload = load_private_decrypted_payload(destination)
-                snippet = priv_payload.get("raw_text_snippet", "") if priv_payload else ""
+                snippet = _build_private_user_snippet(destination)
                 for p_score in p_scores[0]:
                     results.insert(0, {
                         "faiss_id": -99,
@@ -183,7 +243,7 @@ def search(
                         "chunk_type": "body",
                         "token_count": len(snippet.split()),
                         "faiss_score": float(p_score) + 0.5,
-                        "text_snippet": snippet or "User private diagnostic lab report content.",
+                        "text_snippet": snippet,
                     })
             except Exception as pe:
                 logger.warning("Private FAISS search for user %s failed: %s", destination, pe)
