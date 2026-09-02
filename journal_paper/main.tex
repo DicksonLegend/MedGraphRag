@@ -125,7 +125,7 @@ Knowledge graphs provide a complementary symbolic representation, structuring
 clinical entities and ontological dependencies into explicit triples
 \citep{bodenreider2004umls,yasunaga2022qagnn}. Recent hybrid GraphRAG systems
 combine graph structures with textual retrieval
-\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf}. Nevertheless,
+\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf} (Note: while sharing the MedGraphRAG name, Wu et al. focus on entity-centric graph construction, whereas our architecture emphasizes hybrid retrieval fusion and dual-gated verification). Nevertheless,
 existing medical GraphRAG implementations exhibit three fundamental limitations:
 
 First, current evaluations focus almost exclusively on unconstrained accuracy (e.g.,
@@ -274,7 +274,7 @@ wall-clock), the pipeline ingested \textbf{632,931} directed relational edges:
         via chronological sequence cues (``prior to,'' ``following,'' ``within one
         hour of''), comprising 12,225 Disease~$\to$~Disease and 3,487 Drug~$\to$~Drug edges.
 \end{itemize}
-Manual auditing of 40 sampled endpoints confirmed 100.0\% directional validity.
+Manual auditing of sampled endpoints confirmed high directional validity.
 A cryptographic SHA-256 retrieval signature verified 0.00\% retrieval drift on
 baseline queries post-ingestion (Appendix~A).
 
@@ -326,17 +326,19 @@ erroneous assertions remain within the institutional safety threshold.
 Two deterministic guardrails operate at sub-millisecond latency:
 \begin{itemize}
   \item \textbf{F1: Cross-Modal Discrepancy Guardrail.} In multimodal contexts,
-        Rule~A detects conflicts when an imaging finding score $\geq 0.70$ contradicts
+        Rule~A detects conflicts when an imaging finding score $\geq 0.60$ contradicts
         a text negation cue for the same finding (e.g., visual pneumothorax detection
         of 0.88 versus report text ``clear lungs''). Rule~B detects positive textual
         assertions that contradict negated imaging observations. F1 escalates conflicts
         by issuing a high-severity alert recommending specialist review rather than
         attempting autonomous resolution.
   \item \textbf{F2: Epistemic Knowledge-Gap Mapper.} When a query is refused, F2
-        classifies the failure into three gap types: G1 (entity absent from index),
-        G2 (entity present but unsupported by retrieved passages), or G3 (passages
-        retrieved but below confidence threshold $\tau$). This categorization is
-        provided in the refusal output.
+        classifies the failure into three gap types matching the implemented taxonomy:
+        G1 (\texttt{corpus\_retrieval}, top fused retrieval score $< 0.02$),
+        G2 (\texttt{graph\_coverage}, Kùzu graph traversal returns a neutral check
+        with no direct relational assertion), or G3 (\texttt{evidence\_faithfulness},
+        verification faithfulness score $\varphi < 0.50$). This categorization is
+        provided in the structured refusal output to guide clinical follow-up.
 \end{itemize}
 
 \subsection{Offline Cryptographic Security Architecture}
@@ -527,7 +529,7 @@ Evaluating retrieval over 10 clinician-adjudicated queries (graded qrels; step17
 yielded $\text{P@5} = 0.18$, $\text{R@5} = 0.5397$, $\text{MRR} = 0.3533$, and
 $\text{nDCG@10} = 0.3769$. Recall reflects the 6 queries containing relevant items in top-10
 candidates; the remaining 4 queries had no relevant documents, reflecting specialized
-boundary gaps. Dual-assessor $\kappa$ statistics appear in Supplementary Table~S5.
+boundary gaps. Dual-assessor $\kappa$ statistics are pending Phase-2 clinician grading (placeholder in Supplementary Table~S5).
 
 \subsection{Latency and Computational Efficiency}
 \label{sec:latency}
@@ -552,9 +554,9 @@ Hybrid-RRF (baseline fusion)    &    55.4 & [53.5,\phantom{0}56.9] & Fused searc
 \textbf{Hybrid Retrieval (Ours, Stages 1--2)} &
 \textbf{455.7} & \textbf{[388.4, 495.8]} & \textbf{Rewriting + Hybrid Retrieval} \\
 \midrule
-M2: Graph-Only Pipeline (E2E)   &  4,083.4 & [3,912, 4,295] & Full End-to-End Pipeline \\
-M1/M3: Combined Hybrid (E2E)    & 12,493.2 & [12,180, 12,840] & Full End-to-End Pipeline \\
-M4: Hybrid + Reranker (E2E)     & 12,667.0 & [12,340, 13,010] & Full End-to-End Pipeline \\
+M2: Graph-Only Pipeline (E2E)   &  4,083.4 & --- & Full End-to-End Pipeline \\
+M1/M3: Combined Hybrid (E2E)    & 12,493.2 & --- & Full End-to-End Pipeline \\
+M4: Hybrid + Reranker (E2E)     & 12,667.0 & --- & Full End-to-End Pipeline \\
 \midrule
 One-Time System Cold Start      & \multicolumn{2}{c}{18.66\,s} & Model + Index Initialization \\
 \bottomrule
@@ -634,7 +636,7 @@ This study has several limitations:
 MedGraphRAG reconciles safety and utility in offline clinical decision support. By
 enforcing a bounded error constraint ($\text{WAR} \leq 10\%$), ingesting 632,931 negation
 and temporal relational edges into Kuzu, applying deterministic query rewriting, and
-enforcing beta-gated verification, the system resolves the catastrophic 44\% hallucination
+enforcing beta-gated verification, the system bounds the catastrophic 44\% hallucination
 rate of ungated models. Executing locally on consumer hardware in 4.08\,s with 455.7\,ms
 hybrid retrieval, MedGraphRAG provides a practical, open-source foundation for safe,
 privacy-compliant clinical AI.
@@ -674,9 +676,9 @@ This research did not receive any specific grant from funding agencies in the pu
 commercial, or not-for-profit sectors.
 
 \section*{Generative AI Disclosure}
-During preparation, the authors utilized Antigravity (Google DeepMind) as an assistive
-coding and refactoring agent under direct author supervision. All generated code,
-experimental designs, and outputs were independently verified. The authors authored
+During preparation, the authors utilized Antigravity (Google's agentic coding assistant)
+for code generation and Overleaf's Bibby AI for reference discovery, under direct author
+supervision. All generated code and outputs were independently verified. The authors authored
 all manuscript text.
 
 %%=============================================================================
@@ -699,7 +701,7 @@ all manuscript text.
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=0.85\linewidth]{figures/fig_pareto.pdf}
-  \caption{Empirical Pareto frontier of answered accuracy $\text{Acc}(\text{all})$
+  \caption{Empirical Pareto frontier of overall accuracy $\text{Acc}(\text{all})$
            versus wrong-assertion rate ($\text{WAR}$) for Graph-Only mode (M2) across
            15 refusal thresholds ($\tau \in [0.10, 0.80]$, $N=500$). The green shaded
            region marks the clinical safety zone ($\text{WAR} \leq 10\%$). The optimal
@@ -746,7 +748,7 @@ all manuscript text.
 \section{Hyperparameters, Edge Weights, and System Configuration}
 \label{app:hyperparams}
 
-\noindent\textbf{System Hyperparameters and Execution Environment.}
+\noindent\textbf{System Hyperparameters and Execution Environment (Supplementary Table~S8).}
 Table~A.1 enumerates the complete hyperparameter configuration and hardware
 specifications governing all reported experiments.
 
@@ -797,7 +799,7 @@ Machine Learning Framework & PyTorch 2.6.0+cu124 & MedCPT encoder inference runt
 
 \vspace{0.4cm}
 \noindent\textbf{Retrieval Drift Invariance Signature.}
-To guarantee that the relational ingestion pipeline ($scripts/j1/build\_negation\_temporal\_edges.py$)
+To guarantee that the relational ingestion pipeline (\texttt{scripts/j1/build\_negation\_temporal\_edges.py})
 did not alter dense vector retrieval behavior, we computed the SHA-256 hash of the
 retrieved passage identifiers and scores across golden benchmark queries P01--P05:
 \begin{itemize}
