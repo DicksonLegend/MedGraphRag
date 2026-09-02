@@ -379,7 +379,7 @@ Graph-Only mode (M2) attains the highest precision-on-answered at its optimal op
 threshold $\tau^*=0.80$, achieving $\text{Acc}(\text{ans}) = 60.8\%$ with $\text{WAR} = 8.0\%$
 and a refusal rate of 79.6\% (102 queries answered out of 500). Full Hybrid Rerank mode
 (M4) reaches its safe operating frontier at $\tau^*=0.46$, delivering $\text{Acc}(\text{all}) = 10.0\%$,
-$\text{Acc}(\text{ans}) = 51.6\%$, and $\text{WAR} = 9.4\%$ across 97 answered inquiries.
+$\text{Acc}(\text{ans}) = 51.5\%$, and $\text{WAR} = 9.4\%$ across 97 answered inquiries.
 Similarly, Combined mode (M3) operates safely at $\tau^*=0.47$ with $\text{Acc}(\text{ans}) = 52.1\%$
 and $\text{WAR} = 9.0\%$, while Evidence-Only mode (M1) satisfies the constraint at $\tau^*=0.43$
 with $\text{Acc}(\text{ans}) = 50.5\%$ and $\text{WAR} = 9.4\%$.
@@ -397,7 +397,7 @@ Evaluation Mode & $\tau^*$ & Acc(all)\% & Acc(ans)\% & WAR\% & Refusal\% & Answe
 M1: Evidence-Only  & 0.43 &  9.6 & 50.5 &  9.4 & 81.0 &  95/500 \\
 M2: Graph-Only     & 0.80 & 12.4 & 60.8 &  8.0 & 79.6 & 102/500 \\
 M3: Combined       & 0.47 &  9.8 & 52.1 &  9.0 & 81.2 &  94/500 \\
-M4: Hybrid Rerank  & 0.46 & 10.0 & 51.6 &  9.4 & 80.6 &  97/500 \\
+M4: Hybrid Rerank  & 0.46 & 10.0 & 51.5 &  9.4 & 80.6 &  97/500 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -440,8 +440,10 @@ Table~\ref{tab:matched_tau} evaluates Stage~1 deterministic query rewriting agai
 unrewritten vignettes at matched threshold $\tau=0.50$ ($N=500$). For Hybrid Rerank mode
 (M4), rewriting increases $\text{Acc}(\text{all})$ from 5.4\% to 8.8\% ($+3.4$\,pp)
 and lowers refusal from 90.6\% to 83.4\%, while WAR remains within tolerance (7.8\% vs.\ 4.0\%).
-Similarly, Combined mode M3 gains $+3.2$\,pp in $\text{Acc}(\text{all})$ (5.0\% to 8.2\%).
-Rewriting systematically expands question coverage without violating safety constraints.
+Similarly, Combined mode M3 gains $+3.2$\,pp in $\text{Acc}(\text{all})$ (5.0\% to 8.2\%),
+yielding $+3.2$--$3.4$\,pp across hybrid modes M3/M4 (+4.2\,pp on Evidence-Only M1;
+Supplementary Table~S2). Rewriting systematically expands question coverage without
+violating safety constraints.
 
 \begin{table}[!ht]
 \centering
@@ -566,8 +568,8 @@ One-Time System Cold Start      & \multicolumn{2}{c}{18.66\,s} & Model + Index I
 Stages~1--2 (Rewriting, BM25, Dense Search, RRF) complete in \textbf{455.7\,ms} median
 (95\%~CI:~[388.4, 495.8]\,ms). End-to-end latency with Qwen2.5-7B generation is
 \textbf{4,083.4\,ms} in Graph-Only mode (M2) and \textbf{12,667.0\,ms} in Hybrid Rerank
-mode (M4). Throughput is mode-dependent: M2 sustains \textbf{14.7 queries/min} (419.0 q/hr),
-while M4 processes \textbf{4.7 queries/min} (236.1 q/hr). Cold start requires 18.66\,s,
+mode (M4). Throughput is mode-dependent: M2 sustains \textbf{14.7 queries/min} (approximately 882 queries/hour),
+while M4 processes \textbf{4.7 queries/min} (approximately 284 queries/hour). Cold start requires 18.66\,s,
 with zero steady-state penalty. Peak memory reached 8,950\,MB RAM and 4,710\,MB VRAM.
 
 %%=============================================================================
