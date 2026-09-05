@@ -2,8 +2,8 @@
 
 **Target Manuscript:** `journal_paper/main.tex`  
 **Supplementary Material:** `journal_paper/supplementary/extended_tables.md`  
-**Audit Date:** 2026-09-02  
-**Audit Scope:** Read-Only Value Provenance & Verification against Canonical Artifacts  
+**Audit Date:** 2026-09-05  
+**Audit Scope:** Full Value Provenance & Verification against Canonical Artifacts (Post-Humanization)  
 
 ---
 
@@ -12,9 +12,9 @@
 A comprehensive value-provenance audit was conducted to verify that every quantitative and factual claim in the revised MedGraphRAG manuscript traces directly to an authoritative evaluation artifact, with zero hallucinated figures, zero deprecated pre-rewrite numbers, and complete mathematical consistency.
 
 - **Total Claims Audited:** 84
-- **NEW-OK (Current Artifacts, mtime ≥ de48486):** 60 claims (71.4%)
+- **NEW-OK (Current Artifacts, mtime ≥ de48486):** 62 claims (73.8%)
 - **LEGIT-LEGACY-OK (Unchanged Subsystem Artifacts):** 22 claims (26.2%)
-- **ERROR-OLD (Legacy Discrepancies Requiring Fix):** 2 claims (2.4%)
+- **ERROR-OLD (Legacy Discrepancies Requiring Fix):** 0 claims (0.0%) — All previous minor discrepancies resolved.
 - **HALLUCINATED (Unsubstantiated Numbers):** 0 claims (0.0%)
 
 ---
@@ -207,21 +207,18 @@ Verified recent commits and working-tree diffs against ground-truth git tree sta
 
 ---
 
-## REQUIRED-FIXES List (For Subsequent Edit Phase)
+## REQUIRED-FIXES List & Implementation Verification
 
-Per the read-only mandate of this task, the following two minor adjustments are catalogued for the subsequent edit phase:
+All three minor adjustments catalogued during previous audit passes have been verified as fully implemented in `main.tex`:
 
 1. **Throughput Hourly Value Reconciliation (§3.5):**
-   - **Current:** `M2 sustains approximately 14.7 queries per minute (419.0 queries/hour), whereas M4 processes 4.7 queries per minute (236.1 queries/hour).`
-   - **Correction:** `M2 sustains approximately 14.7 queries per minute (approximately 882 queries/hour), whereas M4 processes 4.7 queries per minute (approximately 284 queries/hour).`
-   - **Rationale:** Aligns hourly throughput with the median latency calculation ($60,000 / \text{ms} \times 60$).
+   - **Verification:** Line 570 of `main.tex` reports: `M2 sustains \textbf{14.7 queries/min} (approximately 882 queries/hour), while M4 processes \textbf{4.7 queries/min} (approximately 284 queries/hour).`
+   - **Status:** **RESOLVED & VERIFIED**. Aligns with median latency dimensional identity ($60,000 / \text{ms} \times 60$).
 
 2. **Table 1 M4 Acc(ans) Precision Rounding:**
-   - **Current:** `51.6%`
-   - **Correction:** `51.5%` (or note $50/97 = 51.546\%$)
-   - **Rationale:** Strict 1-decimal rounding of $50/97 = 51.54639\%$ produces $51.5\%$, eliminating pre-rounding artifact.
+   - **Verification:** Line 381 and Table 1 report: $\text{Acc}(\text{ans}) = 51.5\%$, matching single-decimal rounding of $50/97 = 51.54639\%$.
+   - **Status:** **RESOLVED & VERIFIED**.
 
 3. **Rewriting Delta Scope Clarification (§3.2):**
-   - **Current:** `Rewriting expands coverage by +3.2--3.4 pp while maintaining WAR <= 10%.`
-   - **Correction:** `Rewriting expands coverage by +3.2--3.4 pp across hybrid modes (+4.2 pp on Evidence-Only; Supplementary Table S2) while maintaining WAR <= 10%.`
-   - **Rationale:** Harmonizes the $+3.2\text{--}3.4\,\text{pp}$ range in `main.tex` with the $+3.2\text{--}4.2\,\text{pp}$ range in `extended_tables.md`.
+   - **Verification:** Line 468 of `main.tex` reports: `Stage~1 deterministic query rewriting expands answered question coverage by 3.2--3.4~pp across hybrid modes (+4.2~pp on Evidence-Only; Supplementary Table~S2) without inflating wrong assertions.`
+   - **Status:** **RESOLVED & VERIFIED**. Perfectly harmonizes with `extended_tables.md` Table S2.

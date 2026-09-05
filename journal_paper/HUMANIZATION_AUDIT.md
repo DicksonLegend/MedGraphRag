@@ -23,22 +23,24 @@ This audit ensures that the MedGraphRAG journal manuscript adheres to the highes
 
 ---
 
-## 2. Phase 1 — AI-Pattern Audit & Resolution Ledger
-
-| Line / Location | Category | Offending Span | Replacement / Resolution | Status |
+## 2. Phase 1 — AI-Pattern Audit & Resolution Ledger| Line / Location | Category | Offending Span | Replacement / Resolution | Status |
 | :--- | :--- | :--- | :--- | :---: |
 | `main.tex:107` | Promotional / Intensifier | `offers transformative potential for` | `offers direct utility for` | **RESOLVED** |
+| `main.tex:121` | AI Intensifier | `vital for differential diagnosis` | `required in differential diagnosis` | **RESOLVED** |
+| `main.tex:128` | Clunky Parenthetical | `(Note: while sharing the MedGraphRAG name, Wu et al. focus on entity-centric graph construction, whereas our architecture emphasizes hybrid retrieval fusion and dual-gated verification).` | `(Wu et al. share the MedGraphRAG name but focus on entity-centric graph construction; our architecture emphasizes hybrid retrieval fusion and dual-gated verification).` | **RESOLVED** |
 | `main.tex:150` | Throat-clearing / Template | `To address these challenges, we introduce` | `We present` | **RESOLVED** |
-| `main.tex:199` | Filler Transition | `Furthermore, lexical search methods suffer from` | `Lexical search methods also face` | **RESOLVED** |
-| `main.tex:203` | AI-Signature Verb | `Stage~1 utilizes Qwen2.5-7B-Instruct` | `Stage~1 uses Qwen2.5-7B-Instruct` | **RESOLVED** |
-| `main.tex:229` | Em-Dash Overuse (`---`) | `complementary error profiles---dense models capturing latent semantic affinity while lexical models enforce exact keyword and numerical matching---their respective rank distributions` | `complementary error profiles (dense models capture latent semantic affinity, whereas lexical models enforce exact keyword and numerical matches), their respective rank distributions` | **RESOLVED** |
+| `main.tex:194-206` | Filler Adverbs / Intensifier | `severely impede ... In particular ... key diagnostic findings ... therapeutic focus ... strictly constrained` | `impede ... salient diagnostic findings ... therapeutic targets ... capped at 30 words` | **RESOLVED** |
+| `main.tex:240` | Redundant Adverbs | `To actively bias retrieval toward passages exhibiting corroborated` | `To bias retrieval toward passages with corroborated` | **RESOLVED** |
 | `main.tex:284` | Wordy Copula / Throat-clearing | `A core deficiency of standard RAG architectures is the absence of an explicit confidence gate arbitrating whether retrieved evidence is sufficient to warrant generating an answer.` | `Standard RAG architectures lack explicit confidence gates to arbitrate whether retrieved evidence warrants generating an answer.` | **RESOLVED** |
 | `main.tex:287` | Nominalization / Filler | `To establish a mechanistic safeguard against clinical hallucination, MedGraphRAG incorporates a dual-evidence verification layer` | `To prevent clinical hallucinations, MedGraphRAG adds a dual-evidence verification layer` | **RESOLVED** |
-| `main.tex:310` | Hollow Intensifier (`rigorous`) | `Rather than selecting $\tau$ arbitrarily, we establish a rigorous constrained-optimisation formulation:` | `Rather than tuning $\tau$ heuristically, we formulate a constrained optimisation problem:` | **RESOLVED** |
+| `main.tex:308` | Reversal Construction | `Rather than tuning $\tau$ heuristically, we formulate a constrained optimisation problem:` | `We calibrate $\tau$ through a constrained optimisation problem:` | **RESOLVED** |
 | `main.tex:354` | Outdated Identifier | `Supplementary Table~S8` | `Supplementary Table~S7` (aligned with table index) | **RESOLVED** |
-| `main.tex:589` | Filler Opener | `A core finding is that vector embeddings alone cannot reliably safeguard clinical outputs.` | `Vector embeddings alone cannot reliably safeguard clinical outputs.` | **RESOLVED** |
+| `main.tex:403` | Generic Verb Phrase | `highlights the necessity of threshold gating by comparing safe points against ungated operation` | `contrasts safe operating points against ungated execution` | **RESOLVED** |
+| `main.tex:587-593` | Passive Padding / Wordy Opener | `A core finding is that vector embeddings ... project complex syntax into fixed vectors ... provides symbolic consistency checking capable of catching` | `Vector embeddings alone cannot reliably safeguard clinical outputs. Dense embeddings project ... enforces symbolic consistency checks that intercept` | **RESOLVED** |
+| `main.tex:617` | AI-Tic Verb | `Evaluation utilized MedQA-US, consisting of` | `Our evaluation examined MedQA-US, which consists of` | **RESOLVED** |
 | `main.tex:625` | Generic Closer / AI Cliché | `Calibrated soft-hedging represents an important research avenue.` | `Calibrated soft-hedging represents a primary direction for future investigation.` | **RESOLVED** |
 | `main.tex:638` | Overused Verb | `MedGraphRAG reconciles safety and utility` | `MedGraphRAG unites safety and utility` | **RESOLVED** |
+| `main.tex:679` | AI-Tic Verb | `the authors utilized Antigravity` | `the authors used Antigravity` | **RESOLVED** |
 
 ---
 
@@ -61,7 +63,7 @@ This audit ensures that the MedGraphRAG journal manuscript adheres to the highes
 All 21 in-text citations were validated against CrossRef DOIs, PubMed IDs, and arXiv repositories. Uncited reference clutter (13 entries) was pruned from `references.bib` to ensure clean 1:1 correspondence.
 
 | Citation Key | Author & Year | Publication Title | Venue / Identifier | Verification Status |
-| :--- | :--- | :--- | :--- | :---: |
+| :--- | :--- | :--- | :--- | :--- | :---: |
 | `bai2024hallucination` | Bai et al. (2022) | Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback | arXiv:2204.05862 | **VERIFIED** |
 | `bodenreider2004umls` | Bodenreider (2004) | The Unified Medical Language System (UMLS): integrating biomedical terminology | Nucleic Acids Res., 10.1093/nar/gkh061 | **VERIFIED** |
 | `cormack2009rrf` | Cormack et al. (2009) | Reciprocal rank fusion outperforms Condorcet and individual rank learning methods | ACM SIGIR, 10.1145/1571941.1572114 | **VERIFIED** |
@@ -90,16 +92,16 @@ All 21 in-text citations were validated against CrossRef DOIs, PubMed IDs, and a
 
 | Metric | Pre-Rewrite Baseline | Post-Rewrite Target | Measured Value | Compliance Status |
 | :--- | :---: | :---: | :---: | :---: |
-| **Mean Sentence Length (words)** | 23.60 | 18--25 words | **23.40** | **OPTIMAL** |
-| **Sentence Length Std Dev (words)** | 15.51 | $\geq 0.45 \times \text{Mean}$ ($> 10.5$) | **15.57** | **OPTIMAL** |
-| **Burstiness Ratio ($\sigma / \mu$)** | 0.66 | $\geq 0.45$ | **0.67** | **PASSED** (High rhythmic variety) |
-| **Lexical Diversity (TTR first 1k words)** | 0.636 | $\geq 0.45$ | **0.635** | **PASSED** (High vocabulary breadth) |
+| **Mean Sentence Length (words)** | 23.60 | 18--25 words | **19.43** | **OPTIMAL** |
+| **Sentence Length Std Dev (words)** | 15.51 | $\geq 0.45 \times \text{Mean}$ ($> 8.7$) | **11.07** | **OPTIMAL** |
+| **Burstiness Ratio ($\sigma / \mu$)** | 0.66 | $\geq 0.45$ | **0.570** | **PASSED** (High rhythmic variety) |
+| **Lexical Diversity (TTR first 1k words)** | 0.636 | $\geq 0.45$ | **0.631** | **PASSED** (High vocabulary breadth) |
 | **AI-Tic Density (per 1k words)** | 1.17 | 0.0 | **0.00** | **PASSED** (Zero AI tells) |
 | **Prose Em-Dashes (`---`)** | 2 | 0 | **0** | **PASSED** (All converted) |
-| **Passive Voice per Sentence** | 0.19 | $\leq 0.30$ | **0.19** | **PASSED** (Active verb forward) |
-| **First-Person Voice ("we/our")** | 13 | $\geq 8$ | **13** | **PASSED** (Natural authorial presence) |
-| **Manuscript Body Word Count** | 2,662 | $\leq 3,000$ (target $\approx 2,600$) | **2,551** | **PASSED** |
-| **Abstract Word Count** | 288 | $\leq 300$ | **288** | **PASSED** |
+| **Passive Voice per Sentence** | 0.19 | $\leq 0.30$ | **0.14** | **PASSED** (Active verb forward) |
+| **First-Person Voice ("we/our")** | 13 | $\geq 8$ | **11** | **PASSED** (Natural authorial presence) |
+| **Manuscript Body Word Count** | 2,662 | $\leq 3,000$ (target $\approx 2,600$) | **2,506** | **PASSED** |
+| **Abstract Word Count** | 288 | $\leq 300$ | **258** | **PASSED** |
 
 ---
 

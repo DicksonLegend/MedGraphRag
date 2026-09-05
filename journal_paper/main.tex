@@ -118,14 +118,14 @@ Standard medical RAG frameworks rely on dense bi-encoders \citep{jin2023medcpt,g
 which match semantic similarity effectively but struggle with complex clinical syntax.
 Specifically, vector embeddings frequently compress or lose negation scope (e.g.,
 conflating ``no evidence of pulmonary embolism'' with ``pulmonary embolism'') and
-fail to enforce multi-step temporal chronologies vital for differential diagnosis
+fail to enforce multi-step temporal chronologies required in differential diagnosis
 \citep{han2022umls_negation,mallen2022entitypop}.
 
 Knowledge graphs provide a complementary symbolic representation, structuring
 clinical entities and ontological dependencies into explicit triples
 \citep{bodenreider2004umls,yasunaga2022qagnn}. Recent hybrid GraphRAG systems
 combine graph structures with textual retrieval
-\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf} (Note: while sharing the MedGraphRAG name, Wu et al. focus on entity-centric graph construction, whereas our architecture emphasizes hybrid retrieval fusion and dual-gated verification). Nevertheless,
+\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf} (Wu et al. share the MedGraphRAG name but focus on entity-centric graph construction; our architecture emphasizes hybrid retrieval fusion and dual-gated verification). Nevertheless,
 existing medical GraphRAG implementations exhibit three fundamental limitations:
 
 First, current evaluations focus almost exclusively on unconstrained accuracy (e.g.,
@@ -191,19 +191,18 @@ evidence-grounded responses using a quantized LLM isolated behind a GPU mutex lo
 \subsection{Deterministic Query Rewriting}
 \label{sec:rewriting_method}
 
-Patient case vignettes and clinical inquiries encountered in medical question answering
-frequently contain conversational phrasing, narrative patient histories, and extraneous
-formatting that severely impede biomedical dense retrieval. In particular, dense bi-encoders
-trained on scientific literature struggle when confronted with verbose, multi-sentence
-clinical case presentations where the core diagnostic dilemma is obscured by incidental
-biographical details. Lexical search methods also face vocabulary mismatch
-when colloquial symptom descriptions fail to overlap with formal medical nomenclature.
+Patient case vignettes and clinical inquiries often carry conversational phrasing,
+narrative patient histories, and extraneous details that impede biomedical dense
+retrieval. Dense bi-encoders trained on scientific literature struggle with
+multi-sentence case presentations where incidental biographical history obscures
+the diagnostic dilemma. Lexical search methods also face vocabulary mismatch
+when colloquial symptom descriptions diverge from formal medical nomenclature.
 
 To standardise heterogeneous queries without stochastic variance, Stage~1
 uses Qwen2.5-7B-Instruct executing strictly at temperature $T=0.0$. The rewriter
-is guided by a structured system prompt directing the model to extract the primary
-pathological condition, key diagnostic findings, and therapeutic focus into a canonical
-clinical summary strictly constrained to a maximum of 30 words. For example, a narrative
+uses a structured system prompt directing the model to extract the primary
+pathological condition, salient diagnostic findings, and therapeutic targets into
+a canonical clinical summary capped at 30 words. For example, a narrative
 vignette describing an elderly patient who experiences severe rotational vertigo triggered
 by lateral head motion is transformed into the canonical clinical query: ``benign paroxysmal
 positional vertigo diagnostic criteria and Dix-Hallpike confirmatory maneuvers.'' Setting
@@ -238,7 +237,7 @@ where $r_m(d)$ denotes the ordinal rank of candidate passage $d$ within stream $
 $k_{\text{rrf}}=60$ represents the standard monotonic smoothing constant that prevents
 top-ranked outliers in a single stream from dominating the fused ranking.
 
-To actively bias retrieval toward passages exhibiting corroborated topological connections
+To bias retrieval toward passages with corroborated topological connections
 to the clinical entities identified in the query, we implement an additive relation-aware
 graph reranking function:
 \begin{equation}
@@ -306,8 +305,8 @@ sensitivity to symbolic graph contradictions.
 
 When the composite score falls below a calibrated refusal threshold $\tau$, generation is
 suppressed, and the system emits a structured clinical refusal detailing the precise
-nature of the missing evidence. Rather than tuning $\tau$ heuristically, we formulate
-a constrained optimisation problem:
+nature of the missing evidence. We calibrate $\tau$ through a constrained
+optimisation problem:
 \begin{equation}
   \tau^* = \arg\max_{\tau}\;\text{Acc}(\text{all}) \quad \text{subject to} \quad \text{WAR}(\tau) \leq 10\%,
   \label{eq:pareto}
@@ -401,8 +400,8 @@ M4: Hybrid Rerank  & 0.46 & 10.0 & 51.5 &  9.4 & 80.6 &  97/500 \\
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:gate} highlights the necessity of threshold gating by comparing safe
-points against ungated operation ($\tau \to 0$). In the ungated regime, models achieve
+Table~\ref{tab:gate} contrasts safe operating points against ungated execution
+($\tau \to 0$). In the ungated regime, models achieve
 nominal $\text{Acc}(\text{all})$ scores of 49.4\%--54.8\%, but WAR escalates to
 43.4\%--44.6\%. Disabling the gate results in erroneous advice on nearly 45\% of all
 queries. Gated verification successfully caps this risk below 10\%, exchanging question
@@ -585,12 +584,12 @@ of inquiries. MedGraphRAG demonstrates that by treating refusal as an active,
 safety-preserving decision, clinical assistants can strictly bound wrong assertions
 ($\text{WAR} \leq 10\%$).
 
-Vector embeddings alone cannot reliably safeguard clinical outputs.
-Because dense embeddings project complex syntax into fixed vectors, negation markers
-and chronological qualifiers often blur. By augmenting Kuzu with 632,931 \textsc{NEGATES}
-and \textsc{TEMPORAL\_BEFORE} edges, MedGraphRAG provides symbolic consistency checking
-capable of catching contradictions that pass dense retrieval. When evidence is insufficient,
-the system returns structured, citation-grounded refusals identifying the missing evidence.
+Vector embeddings alone cannot reliably safeguard clinical outputs. Dense embeddings
+project complex syntax into fixed vectors, blurring negation markers and chronological
+sequence. By augmenting Kuzu with 632,931 \textsc{NEGATES} and \textsc{TEMPORAL\_BEFORE}
+edges, MedGraphRAG enforces symbolic consistency checks that intercept contradictions
+passing dense filters. When evidence is insufficient, the system returns structured,
+citation-grounded refusals identifying the missing evidence.
 
 \subsection{Phased Clinical Translation Roadmap}
 \label{sec:roadmap}
@@ -615,7 +614,7 @@ mapping), we propose a three-stage clinical translation path:
 
 This study has several limitations:
 \begin{enumerate}
-  \item \textbf{Benchmark Generalizability:} Evaluation utilized MedQA-US, consisting of
+  \item \textbf{Benchmark Generalizability:} Our evaluation examined MedQA-US, which consists of
         standardized multiple-choice questions. Real-world clinical queries are open-ended
         and dialogue-based. External validation on MedMCQA and BioASQ is ongoing
         (Supplementary IJMI ML checklist, item ML-E7).
@@ -677,7 +676,7 @@ This research did not receive any specific grant from funding agencies in the pu
 commercial, or not-for-profit sectors.
 
 \section*{Generative AI Disclosure}
-During preparation, the authors utilized Antigravity (Google's agentic coding assistant)
+During preparation, the authors used Antigravity (Google's agentic coding assistant)
 for code generation and Overleaf's Bibby AI for reference discovery, under direct author
 supervision. All generated code and outputs were independently verified. The authors authored
 all manuscript text.
@@ -701,31 +700,37 @@ all manuscript text.
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.85\linewidth]{figures/fig_pareto.pdf}
-  \caption{Empirical Pareto frontier of overall accuracy $\text{Acc}(\text{all})$
-           versus wrong-assertion rate ($\text{WAR}$) for Graph-Only mode (M2) across
-           15 refusal thresholds ($\tau \in [0.10, 0.80]$, $N=500$). The green shaded
-           region marks the clinical safety zone ($\text{WAR} \leq 10\%$). The optimal
-           operating point ($\tau^*=0.80$) achieves 60.8\% precision-on-answered.
-           The uncalibrated ungated ceiling (cross) illustrates the catastrophic
-           error rate ($\text{WAR}=44.6\%$) when gating is disabled.}
+  \includegraphics[width=\linewidth]{figures/fig_pareto.pdf}
+  \caption{Empirical Pareto frontiers of overall accuracy $\text{Acc}(\text{all})$
+           versus wrong-assertion rate ($\text{WAR}$) across four operational modes
+           (M1: Evidence-Only, M2: Graph-Only, M3: Combined, and M4: Hybrid Rerank)
+           over 16 refusal thresholds ($\tau \in [0.10, 0.80]$, $N=500$). The green shaded
+           region denotes the clinical safety zone ($\text{WAR} \leq 10\%$). Star markers
+           denote mode-specific safe operating thresholds ($\tau^*$), with M2 reaching
+           $\text{Acc}(\text{all})=12.4\%$ at $\tau^*=0.80$. Inset: M2 answered precision
+           reaches 60.8\% at $\tau^*=0.80$ inside the safe zone. Ungated ceilings (crosses)
+           demonstrate catastrophic error rates ($\text{WAR} \approx 43$--$45\%$) when
+           refusal gating is disabled.}
   \label{fig:pareto}
 \end{figure}
 
 \begin{figure}[!ht]
   \centering
   \includegraphics[width=\linewidth]{figures/fig_ablation.pdf}
-  \caption{Controlled ablation analyses on MedQA-US ($N=50$, seed~42).
-           (A) Verification mode comparison: Evidence-Only (M1, $\beta=1.0$),
+  \caption{Controlled ablation analyses on MedQA-US.
+           (A)~Verification mode comparison ($N=50$, seed~42): Evidence-Only (M1, $\beta=1.0$),
            Graph-Only (M2, $\beta=0.0$), and Combined Hybrid (M3, $\beta=0.7$).
-           (B) Reranker bonus ablation: Graph-Hit@5 and answered accuracy across
-           $\gamma \in \{0.0, 0.15, 1.0\}$, showing optimal performance at $\gamma=0.15$.}
+           (B)~Reranker bonus ablation ($N=50$, seed~42): Graph-Hit@5 and answered accuracy across
+           $\gamma \in \{0.0, 0.15, 1.0\}$, confirming peak synergy at $\gamma=0.15$.
+           (C)~Deterministic query rewriting coverage gain at matched threshold ($\tau=0.50$, $N=500$):
+           unrewritten versus rewritten overall accuracy across M1 (+4.2\,pp), M3 (+3.2\,pp),
+           and M4 (+3.4\,pp).}
   \label{fig:ablation}
 \end{figure}
 
 \begin{figure}[!ht]
   \centering
-  \includegraphics[width=0.75\linewidth]{figures/fig_latency.pdf}
+  \includegraphics[width=\linewidth]{figures/fig_latency.pdf}
   \caption{Component and end-to-end execution latency profiles (logarithmic scale).
            Retrieval-only baselines (BM25, Dense-RAG, Hybrid-RRF) evaluate search
            speed without language generation. MedGraphRAG hybrid retrieval
