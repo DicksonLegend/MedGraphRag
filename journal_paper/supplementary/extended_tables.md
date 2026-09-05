@@ -117,7 +117,7 @@ Source artifact file paths and cryptographic SHA-256 signatures are documented f
 | **Precision@5 (P@5)** | 0.1800 | Full cohort ($N=10$ clinical queries) |
 | **Recall@5 (R@5)** | 0.5397 | Evaluated across 6 queries with $\geq 1$ relevant document in top-10 |
 | **Mean Reciprocal Rank (MRR)** | 0.3533 | Full cohort ($N=10$ clinical queries) |
-| **Normalized Discounted Cumulative Gain (nDCG@10)** | 0.3769 | Full cohort ($N=10$ clinical queries) |
+| **Normalised Discounted Cumulative Gain (nDCG@10)** | 0.3769 | Full cohort ($N=10$ clinical queries) |
 | **Dual-Assessor Cohen's $\kappa$ Agreement** | *Pending* | Pre-registered placeholder; formal dual-assessor scoring scheduled for Phase-2 clinical pilot |
 
 ---
@@ -130,7 +130,7 @@ Source artifact file paths and cryptographic SHA-256 signatures are documented f
 | Feature Identifier | Target Clinical Functionality | Test Cases Passed | Failure Count | Mean Latency (ms) |
 | :--- | :--- | :---: | :---: | :---: |
 | **F1: Cross-Modal Discrepancy** | Detects contradiction between imaging findings ($\geq 0.60$) and clinical report text negation | 5/5 | 0 | 0.14 |
-| **F2: Knowledge-Gap Mapper** | Categorizes unanswerable inquiries into G1 (`corpus_retrieval`), G2 (`graph_coverage`), or G3 (`evidence_faithfulness`) | 5/5 | 0 | 0.06 |
+| **F2: Knowledge-Gap Mapper** | Categorises unanswerable inquiries into G1 (`corpus_retrieval`), G2 (`graph_coverage`), or G3 (`evidence_faithfulness`) | 5/5 | 0 | 0.06 |
 | **Overall Guardrail Suite** | Real-time automated deterministic clinical safety checks | **10/10** | **0** | **0.10** |
 
 ---
@@ -138,20 +138,20 @@ Source artifact file paths and cryptographic SHA-256 signatures are documented f
 ## Table S7. Comprehensive Security Audit Findings, Risk Classifications, and Remediation Status
 
 **Source Document:** `SECURITY_AUDIT.md`  
-**Audit Scope:** Ingestion, database storage, cryptographic boundaries, API authorization, and frontend telemetry
+**Audit Scope:** Ingestion, database storage, cryptographic boundaries, API authorisation, and frontend telemetry
 
 | Finding ID | Severity | Vulnerability Category | Description and Remediation Mechanism | Remediation Status |
 | :--- | :---: | :--- | :--- | :---: |
-| **F-01** | **HIGH** | Cypher Injection | Unsanitized dynamic Cypher query concatenation; resolved via parameterized openCypher statements | ✅ Resolved |
+| **F-01** | **HIGH** | Cypher Injection | Unsanitised dynamic Cypher query concatenation; resolved via parameterised openCypher statements | ✅ Resolved |
 | **F-02** | **HIGH** | Cryptography | Plaintext encryption key exposure; resolved via HKDF-SHA-256 key derivation with per-user salt | ✅ Resolved |
 | **F-03** | **MEDIUM** | Authentication | Unsalted SHA-256 password hashing; hardened with bcrypt password hashing and IP rate limiting | ✅ Resolved |
-| **F-04** | **MEDIUM** | Authorization | Cross-user report existence oracle; resolved with constant-time lookup and strict user ownership checks | ✅ Resolved |
+| **F-04** | **MEDIUM** | Authorisation | Cross-user report existence oracle; resolved with constant-time lookup and strict user ownership checks | ✅ Resolved |
 | **F-05** | **MEDIUM** | Path Traversal | Directory traversal via unvalidated image identifier; resolved via strict regex filename validation | ✅ Resolved |
 | **F-06** | **MEDIUM** | File Upload | Missing MIME type validation; resolved via magic-byte sniffing enforcing valid JPEG/PNG formats | ✅ Resolved |
 | **F-07** | **LOW** | Cryptography | Fallback pseudo-random JWT secret; replaced with cryptographically secure 256-bit OS entropy | ✅ Resolved |
 | **F-08** | **LOW** | Information Exposure | Interactive Swagger API docs enabled in production; disabled for non-development environments | ✅ Resolved |
-| **F-09** | **LOW** | Privacy / Telemetry | Potential PHI fragments in server logs; sanitized log outputs removing raw clinical text payloads | ✅ Resolved |
-| **F-10** | **LOW** | Frontend Storage | Session token in `sessionStorage`; scoped to active browser tab with XSS-sanitized markdown rendering | Deferred |
+| **F-09** | **LOW** | Privacy / Telemetry | Potential PHI fragments in server logs; sanitised log outputs removing raw clinical text payloads | ✅ Resolved |
+| **F-10** | **LOW** | Frontend Storage | Session token in `sessionStorage`; scoped to active browser tab with XSS-sanitised markdown rendering | Deferred |
 | **F-11** | **LOW** | Dependency Hygiene | Missing strict dependency lockfile; generated deterministic `requirements.lock` specification | ✅ Resolved |
 | **F-12** | **INFO** | Attack Surface | Verbose health check exposing internal paths; reduced to minimal binary status indicator | ✅ Resolved |
 | **F-13** | **INFO** | Credential Hygiene | Pre-push git hook verification scanning repository for accidental API key or secret leakage | ✅ Resolved |
@@ -175,5 +175,5 @@ Source artifact file paths and cryptographic SHA-256 signatures are documented f
 | Graph Edge Weight: \textsc{IS\_A} / \textsc{RELATED\_TO} | 0.30 | Broad taxonomic ontological classification weighting |
 | Candidate Pool Size ($k$) | 200 | Initial candidate pool size for BM25 and FAISS dense retrieval streams |
 | Reciprocal Rank Fusion Constant ($k_{\text{rrf}}$) | 60 | Standard rank-smoothing divisor |
-| Graph Traversal Radius | $\leq 2$ hops | Multi-hop openCypher neighborhood radius inside Kuzu property graph |
+| Graph Traversal Radius | $\leq 2$ hops | Multi-hop openCypher neighbourhood radius inside Kuzu property graph |
 | SHA-256 Retrieval Invariance Hash | `ba1b5121...` | Invariant hash verifying 0.00% retrieval drift following graph edge ingestion |

@@ -135,7 +135,7 @@ clinical entities and ontological dependencies into explicit triples
 combine graph structures with textual retrieval
 \citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf}
 (Wu et al.\ share the MedGraphRAG name but focus on entity-centric graph
-construction; our architecture emphasizes hybrid retrieval fusion and
+construction; our architecture emphasises hybrid retrieval fusion and
 dual-gated verification). Nevertheless, existing medical GraphRAG
 implementations exhibit three fundamental limitations:
 
@@ -198,7 +198,7 @@ dual-stream dense and lexical retrieval, combining candidates via Reciprocal Ran
 Fusion and relation-aware graph reranking. Stage~3 expands clinical entities within
 the embedded Kuzu graph. Stage~4 computes composite beta-gated verification scores,
 triggering structured refusals for low-confidence queries. Stage~5 generates
-evidence-grounded responses using a quantized LLM isolated behind a GPU mutex lock.
+evidence-grounded responses using a quantised LLM isolated behind a GPU mutex lock.
 
 \begin{figure}[H]
   \centering
@@ -208,7 +208,7 @@ evidence-grounded responses using a quantized LLM isolated behind a GPU mutex lo
            Stage~2 merges FAISS dense and BM25 lexical candidates via Reciprocal Rank
            Fusion (RRF) and relation-aware graph reranking ($\gamma=0.15$). Stage~3
            traverses the Kuzu property graph. Stage~4 applies beta-gated verification
-           ($\beta=0.7$) enforcing $\text{WAR} \leq 10\%$. Stage~5 serializes LLM
+           ($\beta=0.7$) enforcing $\text{WAR} \leq 10\%$. Stage~5 serialises LLM
            generation behind a hardware mutex lock.}
   \label{fig:arch}
 \end{figure}
@@ -242,7 +242,7 @@ support software.
 Retrieval operates over an extensive clinical reference corpus partitioned into coherent
 passages of approximately 512 tokens. The dense retrieval stream encodes passages using
 the MedCPT query and article bi-encoder architecture \citep{jin2023medcpt}, which was
-pre-trained on hundreds of millions of PubMed search query-article click logs to optimize
+pre-trained on hundreds of millions of PubMed search query-article click logs to optimise
 zero-shot biomedical retrieval. Chunk vectors are indexed and searched using FAISS IVF-PQ
 (Inverted File with Product Quantisation; \citealp{johnson2024faiss}), partitioning the
 vector space into coarse Voronoi centroids to achieve sub-linear retrieval speed.
@@ -272,7 +272,7 @@ graph reranking function:
 where $r_{\text{rel}}(d) = \sum_{e \in \mathcal{E}(d)} w(\text{type}(e))$ aggregates the
 domain-weighted edge counts connecting entities cited within candidate passage $d$ to
 the query seed entities within the property graph. The relative importance of edge categories
-is parameterized by clinical specificity weights (e.g., pharmacological treatments and
+is parameterised by clinical specificity weights (e.g., pharmacological treatments and
 adverse effects receive weight 1.0, diagnostic lab associations and negation edges receive
 0.8, temporal sequences receive 0.6, and broad taxonomic hierarchies receive 0.3; Appendix~A).
 The global multiplier $\gamma=0.15$ balances semantic similarity with structural graph
@@ -283,7 +283,7 @@ reinforcement, calibrated empirically via controlled ablations (Section~\ref{sec
 
 Structured relations are stored in Kuzu \citep{nakamura2022kuzu}, an embeddable,
 disk-backed graph database supporting openCypher queries. While standard medical graphs
-capture static disease-symptom linkages, clinical decision support requires modeling
+capture static disease-symptom linkages, clinical decision support requires modelling
 negation and temporal order.
 
 We processed 2,294,038 text chunks using rule-guided linguistic parsing grounded in
@@ -323,7 +323,7 @@ of semantic entailment between the generated assertion and the retrieved referen
 proxy when an independent cross-encoder NLI judge is omitted), and $S_g \in [0, 1]$ denotes
 the structural graph consistency score. The graph consistency metric $S_g$ evaluates the
 ratio of asserted clinical entity triples that are corroborated by non-negated multi-hop
-paths within a 2-hop radius in Kuzu, while applying an immediate penalizing discount
+paths within a 2-hop radius in Kuzu, while applying an immediate penalising discount
 whenever an asserted entity matches a \textsc{NEGATES} edge. The balance hyperparameter
 $\beta=0.70$ allocates primary decision weight to passage evidence while preserving strong
 sensitivity to symbolic graph contradictions.
@@ -360,7 +360,7 @@ Two deterministic guardrails operate at sub-millisecond latency:
         G1 (\texttt{corpus\_retrieval}, top fused retrieval score $< 0.02$),
         G2 (\texttt{graph\_coverage}, Kùzu graph traversal returns a neutral check
         with no direct relational assertion), or G3 (\texttt{evidence\_faithfulness},
-        verification faithfulness score $\varphi < 0.50$). This categorization is
+        verification faithfulness score $\varphi < 0.50$). This categorisation is
         provided in the structured refusal output to guide clinical follow-up.
 \end{itemize}
 
@@ -372,7 +372,7 @@ records are isolated in per-user directories. Payloads are encrypted at rest wit
 AES-256-GCM using unique 12-byte nonces. Keys are derived dynamically via HKDF-SHA-256
 \citep{krawczyk2010hkdf} combining a server secret, user ID, and document ID. File
 permissions are set to \texttt{0700} (directories) and \texttt{0600} (files). All Kuzu
-queries use parameterized openCypher statements to eliminate Cypher injection. A
+queries use parameterised openCypher statements to eliminate Cypher injection. A
 13-point security audit resolved all vulnerabilities prior to release (Supplementary
 Table~S7).
 
@@ -396,7 +396,7 @@ bootstrap 95\% confidence intervals were calculated using 1,000 resamples.
 \subsection{Safe Operating Points and WAR Constraint}
 \label{sec:safety}
 
-Table~\ref{tab:safety} summarizes the optimal operating parameters established across the
+Table~\ref{tab:safety} summarises the optimal operating parameters established across the
 four evaluation modes under the institutional safety constraint $\text{WAR} \leq 10.0\%$.
 Graph-Only mode (M2) attains the highest precision-on-answered at its optimal operating
 threshold $\tau^*=0.80$, achieving $\text{Acc}(\text{ans}) = 60.8\%$ with $\text{WAR} = 8.0\%$
@@ -520,7 +520,7 @@ M4: Hybrid Rerank & Rewritten   & 8.8 & 7.8 & 83.4 & $+$3.4\,pp \\
 \subsection{Ablation Studies: Verification Modes and Reranking}
 \label{sec:ablation}
 
-Table~\ref{tab:ablation} and Figure~\ref{fig:ablation} summarize ablations over verification and reranker weighting
+Table~\ref{tab:ablation} and Figure~\ref{fig:ablation} summarise ablations over verification and reranker weighting
 ($N=50$, seed~42).
 
 \textbf{Verification Mode Ablation (Table~\ref{tab:ablation}A):} Evidence-Only (M1,
@@ -603,7 +603,7 @@ with mean latencies of 0.14\,ms (F1) and 0.06\,ms (F2), confirming microsecond o
 Evaluating retrieval over 10 clinician-adjudicated queries (graded qrels; step17 artifact)
 yielded $\text{P@5} = 0.18$, $\text{R@5} = 0.5397$, $\text{MRR} = 0.3533$, and
 $\text{nDCG@10} = 0.3769$. Recall reflects the 6 queries containing relevant items in top-10
-candidates; the remaining 4 queries had no relevant documents, reflecting specialized
+candidates; the remaining 4 queries had no relevant documents, reflecting specialised
 boundary gaps. Dual-assessor $\kappa$ statistics are pending Phase-2 clinician grading (placeholder in Supplementary Table~S5).
 
 \subsection{Latency and Computational Efficiency}
@@ -697,7 +697,7 @@ mapping), we propose a three-stage clinical translation path:
         EHR integration via read-only FHIR~R4 endpoints, with AES-256-GCM record
         encryption and an approved IRB protocol. Primary endpoint: maintaining
         $\text{WAR} \leq 5\%$ on institutional queries.
-  \item \textbf{Phase~3: Multi-Site Randomized Trial:} Federated offline deployment
+  \item \textbf{Phase~3: Multi-Site Randomised Trial:} Federated offline deployment
         across hospital networks evaluating diagnostic accuracy and decision speed
         versus standard care, powered for 90\% power at $\alpha=0.05$.
 \end{enumerate}
@@ -707,8 +707,8 @@ mapping), we propose a three-stage clinical translation path:
 
 This study has several limitations:
 \begin{enumerate}
-  \item \textbf{Benchmark Generalizability:} Our evaluation examined MedQA-US, which consists of
-        standardized multiple-choice questions. Real-world clinical queries are open-ended
+  \item \textbf{Benchmark Generalisability:} Our evaluation examined MedQA-US, which consists of
+        standardised multiple-choice questions. Real-world clinical queries are open-ended
         and dialogue-based. External validation on MedMCQA and BioASQ is ongoing
         (Supplementary IJMI ML checklist, item ML-E7).
   \item \textbf{High Refusal Rate:} At $\tau^*=0.80$, the refusal rate reaches 79.6\%.
@@ -740,16 +740,16 @@ privacy-compliant clinical AI.
 %%=============================================================================
 
 \section*{CRediT Authorship Contribution Statement}
-\textbf{Dickson E}: Conceptualization, Methodology, Software (core pipeline,
+\textbf{Dickson E}: Conceptualisation, Methodology, Software (core pipeline,
 ablation suite, cryptographic security, graph enrichment), Formal analysis,
 Investigation, Writing -- original draft, Writing -- review \& editing,
-Visualization.
+Visualisation.
 \textbf{Antony Taurshia}: Supervision, Software (frontend interface, report drawer
 components, telemetry capture), Data curation, Clinical validation, Medical
 knowledge curation, Writing -- review \& editing.
 
 \section*{Ethics Approval and Consent to Participate}
-This study was performed using publicly available, anonymized benchmark datasets
+This study was performed using publicly available, anonymised benchmark datasets
 (MedQA-US, OpenI, VQA-RAD). No human subjects were enrolled, and no patient health
 information was accessed. Formal IRB ethics approval was not required.
 
@@ -795,7 +795,8 @@ specifications governing all reported experiments.
 
 \vspace{0.3cm}
 \noindent\textbf{Table A.1.} Configuration parameters and computational execution environment.
-\begin{center}
+\begingroup
+\centering
 \small
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{lll}
@@ -837,13 +838,14 @@ Vector Search Engine & FAISS 1.15.0 & IVF-PQ quantized vector similarity indexin
 Machine Learning Framework & PyTorch 2.6.0+cu124 & MedCPT encoder inference runtime \\
 \bottomrule
 \end{tabular}%
-}
-\end{center}
+}%
+\par
+\endgroup
 
 \vspace{0.4cm}
 \noindent\textbf{Retrieval Drift Invariance Signature.}
 To guarantee that the relational ingestion pipeline (\texttt{scripts/j1/build\_negation\_temporal\_edges.py})
-did not alter dense vector retrieval behavior, we computed the SHA-256 hash of the
+did not alter dense vector retrieval behaviour, we computed the SHA-256 hash of the
 retrieved passage identifiers and scores across golden benchmark queries P01--P05:
 \begin{itemize}
   \item \textbf{Pre-Ingestion Signature:}\\
