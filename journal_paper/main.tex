@@ -20,18 +20,24 @@
 \usepackage{booktabs}
 \usepackage{array}
 \usepackage{xcolor}
-\usepackage{hyperref}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
 \usepackage{lineno}
 \usepackage{setspace}
 \usepackage{microtype}
 \usepackage{multirow}
 \usepackage[T1]{fontenc}
 
-\doublespacing
+\setlength{\emergencystretch}{3em}
+
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.70}
 
 \begin{document}
-
-\linenumbers   % continuous line numbering for peer review
 
 \begin{frontmatter}
 
@@ -39,19 +45,17 @@
 \title{MedGraphRAG: A Safety-First Hybrid Graph Retrieval-Augmented Generation
        System for Offline Clinical Decision Support}
 
-%% ── Authors (real identities withheld for blind review) ─────────────────────
-\author[aff1]{Author A\corref{cor1}}
-\ead{author.a@institution.edu}
-\author[aff1]{Author B}
-\author[aff2]{Author C}
+%% ── Authors ──────────────────────────────────────────────────────────────────
+\author[aff1]{Dickson E\corref{cor1}}
+\ead{dicksone@karunya.edu.in}
+\author[aff1]{Antony Taurshia}
+\ead{antonytaurshia@karunya.edu}
 
 \cortext[cor1]{Corresponding author}
-\address[aff1]{Department of Computer Science, [Institution A], [City, Country]}
-\address[aff2]{Department of Medicine, [Institution B], [City, Country]}
+\address[aff1]{Department of Data Science and Cyber Security, Karunya Institute of Technology and Sciences, Coimbatore, India}
 
 %% ── Abstract (structured; <= 300 words) ───────────────────────────────────────
 \begin{abstract}
-
 \textbf{Background and Objective.}
 Large language models (LLMs) deployed in clinical decision support face a
 safety-utility trade-off: unconstrained answering yields unacceptable rates
@@ -60,7 +64,7 @@ retrieval-augmented generation (RAG) frameworks lack mechanistic, bounded safety
 controls deployable on institutional hardware. We present MedGraphRAG, an offline
 hybrid GraphRAG system that reframes clinical AI evaluation from unconstrained
 accuracy maximisation to bounded wrong-assertion rate (WAR).
-
+\par\smallskip
 \textbf{Methods.}
 MedGraphRAG couples dense vector retrieval (FAISS IVF-PQ with MedCPT embeddings)
 and lexical retrieval (BM25) with an embedded property graph (Kuzu) enriched
@@ -73,7 +77,7 @@ $V = \beta\varphi + (1-\beta)S_g$. The system executes entirely offline on a
 commodity laptop (Ryzen~7~7840HS / RTX~3050~6\,GB) using Qwen2.5-7B-Instruct
 Q4\_K\_M. Private health data are encrypted with AES-256-GCM and HKDF-derived keys.
 Retrospective evaluation was performed on MedQA-US ($N=500$, seed~42, $T=0.0$).
-
+\par\smallskip
 \textbf{Results.}
 At the calibrated safe threshold ($\tau^*=0.80$), Graph-Only mode (M2) achieves
 60.8\% precision-on-answered with $\text{WAR} = 8.0\%$ (79.6\% refusal). Disabling
@@ -81,12 +85,11 @@ the gate drives WAR to 44.6\% across all 500 queries. Deterministic query
 rewriting expands answered coverage by 3.2--3.4~pp while maintaining bounded error.
 Hybrid retrieval completes in 455.7\,ms (95\%~CI:~[388.4, 495.8]\,ms); full
 end-to-end pipeline latency is 4,083\,ms (M2) to 12,667\,ms (M4).
-
+\par\smallskip
 \textbf{Conclusion.}
 MedGraphRAG demonstrates that bounded clinical error and interpretable offline
 decision support are jointly achievable on consumer hardware without cloud
 dependencies or GPU clusters.
-
 \end{abstract}
 
 %% ── Keywords (1–7; no multi-word) ───────────────────────────────────────────
@@ -97,6 +100,9 @@ decision-support \sep safety
 \end{keyword}
 
 \end{frontmatter}
+
+\doublespacing
+\linenumbers   % continuous line numbering for peer review
 
 %%=============================================================================
 \section{Introduction}
@@ -116,17 +122,20 @@ To mitigate hallucinations, retrieval-augmented generation (RAG) grounds languag
 generation on passages retrieved from external corpora \citep{lewis2020rag,gu2021domain}.
 Standard medical RAG frameworks rely on dense bi-encoders \citep{jin2023medcpt,gao2024agentic},
 which match semantic similarity effectively but struggle with complex clinical syntax.
-Specifically, vector embeddings frequently compress or lose negation scope (e.g.,
-conflating ``no evidence of pulmonary embolism'' with ``pulmonary embolism'') and
-fail to enforce multi-step temporal chronologies required in differential diagnosis
-\citep{han2022umls_negation,mallen2022entitypop}.
+Specifically, vector embeddings frequently compress or lose negation scope
+(e.g., conflating ``no evidence of pulmonary embolism'' with ``pulmonary embolism'')
+and fail to enforce multi-step temporal chronologies required in differential
+diagnosis \citep{han2022umls_negation,mallen2022entitypop}.
 
 Knowledge graphs provide a complementary symbolic representation, structuring
 clinical entities and ontological dependencies into explicit triples
 \citep{bodenreider2004umls,yasunaga2022qagnn}. Recent hybrid GraphRAG systems
 combine graph structures with textual retrieval
-\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf} (Wu et al. share the MedGraphRAG name but focus on entity-centric graph construction; our architecture emphasizes hybrid retrieval fusion and dual-gated verification). Nevertheless,
-existing medical GraphRAG implementations exhibit three fundamental limitations:
+\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf}
+(Wu et al.\ share the MedGraphRAG name but focus on entity-centric graph
+construction; our architecture emphasizes hybrid retrieval fusion and
+dual-gated verification). Nevertheless, existing medical GraphRAG
+implementations exhibit three fundamental limitations:
 
 First, current evaluations focus almost exclusively on unconstrained accuracy (e.g.,
 aggregate multiple-choice scores), omitting explicit bounds on incorrect statements.
@@ -159,7 +168,8 @@ contributions are:
         temporal relational edges into an embedded Kuzu graph, demonstrating
         mechanistically how symbolic consistency checks overturn hallucinations
         bypassing dense retrieval.
-  \item \textbf{Deterministic Query Rewriting and Relation Reranking:} A
+  \item \textbf{Deterministic Query Rewriting and}\\
+        \textbf{Relation Reranking:} A
         temperature-zero query normaliser improving answered coverage by 3.2--3.4~pp
         at matched thresholds, combined with a relation-aware reranker boosting
         Graph-Hit@5 by 13.6~pp.
@@ -187,6 +197,19 @@ Fusion and relation-aware graph reranking. Stage~3 expands clinical entities wit
 the embedded Kuzu graph. Stage~4 computes composite beta-gated verification scores,
 triggering structured refusals for low-confidence queries. Stage~5 generates
 evidence-grounded responses using a quantized LLM isolated behind a GPU mutex lock.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_arch.pdf}
+  \caption{MedGraphRAG five-stage offline pipeline architecture.
+           Stage~1 executes deterministic query rewriting ($T=0.0, \leq 30$ words).
+           Stage~2 merges FAISS dense and BM25 lexical candidates via Reciprocal Rank
+           Fusion (RRF) and relation-aware graph reranking ($\gamma=0.15$). Stage~3
+           traverses the Kuzu property graph. Stage~4 applies beta-gated verification
+           ($\beta=0.7$) enforcing $\text{WAR} \leq 10\%$. Stage~5 serializes LLM
+           generation behind a hardware mutex lock.}
+  \label{fig:arch}
+\end{figure}
 
 \subsection{Deterministic Query Rewriting}
 \label{sec:rewriting_method}
@@ -382,12 +405,15 @@ Similarly, Combined mode (M3) operates safely at $\tau^*=0.47$ with $\text{Acc}(
 and $\text{WAR} = 9.0\%$, while Evidence-Only mode (M1) satisfies the constraint at $\tau^*=0.43$
 with $\text{Acc}(\text{ans}) = 50.5\%$ and $\text{WAR} = 9.4\%$.
 
-\begin{table}[!ht]
+\begin{table}[H]
 \centering
+\small
+\setlength{\tabcolsep}{5pt}
 \caption{Safe operating points on MedQA-US ($N=500$, seed~42, $T=0.0$).
          Threshold $\tau^*$ maximises Acc(all) subject to $\text{WAR} \leq 10\%$.
          Source: \texttt{step18\_scaled\_n500.json} $\to$ \texttt{safe\_operating\_points}.}
 \label{tab:safety}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lcccccc}
 \toprule
 Evaluation Mode & $\tau^*$ & Acc(all)\% & Acc(ans)\% & WAR\% & Refusal\% & Answered \\
@@ -397,7 +423,8 @@ M2: Graph-Only     & 0.80 & 12.4 & 60.8 &  8.0 & 79.6 & 102/500 \\
 M3: Combined       & 0.47 &  9.8 & 52.1 &  9.0 & 81.2 &  94/500 \\
 M4: Hybrid Rerank  & 0.46 & 10.0 & 51.5 &  9.4 & 80.6 &  97/500 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 Table~\ref{tab:gate} contrasts safe operating points against ungated execution
@@ -407,12 +434,15 @@ nominal $\text{Acc}(\text{all})$ scores of 49.4\%--54.8\%, but WAR escalates to
 queries. Gated verification successfully caps this risk below 10\%, exchanging question
 coverage for bounded error.
 
-\begin{table}[!ht]
+\begin{table}[H]
 \centering
+\small
+\setlength{\tabcolsep}{5pt}
 \caption{Gated versus ungated performance across boundary modes ($N=500$).
          Ungated execution generates wrong assertions on ~44\% of all queries.
          Source: \texttt{step18\_scaled\_n500.json} $\to$ \texttt{ungated\_ceilings}.}
 \label{tab:gate}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llcccc}
 \toprule
 Mode & Condition & Acc(all)\% & Acc(ans)\% & WAR\% & Refusal\% \\
@@ -423,13 +453,30 @@ M1: Evidence-Only & Ungated ($\tau \to 0$) & 49.4 & 53.2 & 43.4 &  7.2 \\
 M2: Graph-Only    & Gated ($\tau^*=0.80$)  & 12.4 & 60.8 &  8.0 & 79.6 \\
 M2: Graph-Only    & Ungated ($\tau \to 0$) & 54.8 & 55.1 & 44.6 &  0.6 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 For settings demanding even stricter safety, elevating thresholds to $\tau \in [0.70, 0.75]$
 in M1 produces a high-precision regime with $\text{Acc}(\text{ans}) = 59.3\%$--$62.5\%$
 and $\text{WAR} = 1.8\%$--$2.2\%$ (refusal rates 94.6\%--95.2\%; Supplementary Table~S1).
 Figure~\ref{fig:pareto} shows the complete 15-point Pareto trajectory for M2.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_pareto.pdf}
+  \caption{Empirical Pareto frontiers of overall accuracy $\text{Acc}(\text{all})$
+           versus wrong-assertion rate ($\text{WAR}$) across four operational modes
+           (M1: Evidence-Only, M2: Graph-Only, M3: Combined, and M4: Hybrid Rerank)
+           over 16 refusal thresholds ($\tau \in [0.10, 0.80]$, $N=500$). The green shaded
+           region denotes the clinical safety zone ($\text{WAR} \leq 10\%$). Star markers
+           denote mode-specific safe operating thresholds ($\tau^*$), with M2 reaching
+           $\text{Acc}(\text{all})=12.4\%$ at $\tau^*=0.80$. Inset: M2 answered precision
+           reaches 60.8\% at $\tau^*=0.80$ inside the safe zone. Ungated ceilings (crosses)
+           demonstrate catastrophic error rates ($\text{WAR} \approx 43$--$45\%$) when
+           refusal gating is disabled.}
+  \label{fig:pareto}
+\end{figure}
 
 \subsection{Efficacy of Deterministic Query Rewriting}
 \label{sec:rewriting_results}
@@ -443,13 +490,17 @@ yielding $+3.2$--$3.4$\,pp across hybrid modes M3/M4 (+4.2\,pp on Evidence-Only 
 Supplementary Table~S2). Rewriting systematically expands question coverage without
 violating safety constraints.
 
-\begin{table}[!ht]
+\begin{table}[!htbp]
+\singlespacing
 \centering
+\small
+\setlength{\tabcolsep}{5pt}
 \caption{Matched-threshold ($\tau=0.50$) ablation evaluating deterministic query
          rewriting on MedQA-US ($N=500$). Rewriting expands coverage by +3.2--3.4 pp
          while maintaining $\text{WAR} \leq 10\%$.
          Source: \texttt{step18\_scaled\_n500.json} $\to$ \texttt{matched\_tau\_comparison}.}
 \label{tab:matched_tau}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llcccr}
 \toprule
 Evaluation Mode & Vignette Format & Acc(all)\% & WAR\% & Refusal\% & $\Delta$Acc(all) \\
@@ -460,13 +511,14 @@ M3: Combined      & Rewritten   & 8.2 & 8.6 & 83.2 & $+$3.2\,pp \\
 M4: Hybrid Rerank & Unrewritten & 5.4 & 4.0 & 90.6 & --- \\
 M4: Hybrid Rerank & Rewritten   & 8.8 & 7.8 & 83.4 & $+$3.4\,pp \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \subsection{Ablation Studies: Verification Modes and Reranking}
 \label{sec:ablation}
 
-Table~\ref{tab:ablation} summarizes ablations over verification and reranker weighting
+Table~\ref{tab:ablation} and Figure~\ref{fig:ablation} summarize ablations over verification and reranker weighting
 ($N=50$, seed~42).
 
 \textbf{Verification Mode Ablation (Table~\ref{tab:ablation}A):} Evidence-Only (M1,
@@ -474,13 +526,17 @@ $\beta=1.0$) refuses 98.0\% of queries ($\text{WAR}=2.0\%$). Graph-Only (M2, $\b
 answers 96.0\% but incurs $\text{WAR}=42.0\%$. Combined Hybrid (M3, $\beta=0.7$) balances
 safety and utility, achieving $\text{WAR}=4.0\%$ while quadrupling answered throughput over M1.
 
-\begin{table}[!ht]
+\begin{table}[!htbp]
+\singlespacing
 \centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
 \caption{Ablation experiments on MedQA-US ($N=50$, seed~42).
          (A) Verification mode comparison varying evidence weight $\beta$.
          (B) Reranker ablation varying relational bonus multiplier $\gamma$.
          Sources: \texttt{step15\_verification\_ablation.json}, \texttt{step15\_rerank\_ablation.json}.}
 \label{tab:ablation}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llccccc}
 \toprule
 \multicolumn{7}{c}{\emph{(A) Verification Mode Ablation ($\gamma=0.0$)}} \\
@@ -499,25 +555,42 @@ RRF Control  & 0.00 & 23.6 & 50.0 &  8.0 & 4.0 & \\
 Relational   & 1.00 & 35.6 & 42.9 & 14.0 & 8.0 & \\
 Hybrid       & 0.15 & 37.2 & 60.0 & 10.0 & 4.0 & \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 \textbf{Contradiction Case Studies:} Qualitative inspection confirmed that Kuzu
 \textsc{NEGATES} edges actively overturned hallucinations that bypassed text filters:
 \begin{enumerate}
-  \item \emph{Acute Myocardial Infarction:} The model asserted acute MI; Kuzu graph
-        traversal matched a \textsc{NEGATES} edge (\texttt{'no evidence of'}) in
-        \texttt{PMID\_38823454}, successfully triggering refusal.
-  \item \emph{Deep Vein Thrombosis:} An unhedged recommendation for full anticoagulation
-        was overridden by a \textsc{NEGATES} edge (\texttt{'ruled out'}) in \texttt{PMID\_37058421}.
-  \item \emph{Metformin Contraindication:} An erroneous recommendation to prescribe
-        metformin in severe renal impairment was rejected by a NICE guideline
-        \textsc{NEGATES} edge (\texttt{'contraindicated in'} with eGFR~$<$~25\,mL/min).
+  \item \emph{Acute Myocardial Infarction:} The model asserted acute MI; Kuzu
+        graph traversal matched a \textsc{NEGATES} edge (\texttt{'no evidence of'})
+        in \texttt{PMID\-\_38823454}, successfully triggering refusal.
+  \item \emph{Deep Vein Thrombosis:} An unhedged recommendation for full
+        anticoagulation was overridden by a \textsc{NEGATES} edge (\texttt{'ruled out'})
+        in \texttt{PMID\-\_37058421}.
+  \item \emph{Metformin Contraindication:} An erroneous recommendation to
+        prescribe metformin in severe renal impairment was rejected by a
+        NICE guideline \textsc{NEGATES} edge (\texttt{'contraindicated in'}
+        with $\text{eGFR} < 25$\,mL/min).
 \end{enumerate}
 
 \textbf{Reranker Ablation (Table~\ref{tab:ablation}B):} Calibrating $\gamma=0.15$ increases
 Graph-Hit@5 from 23.6\% to 37.2\% ($+13.6$\,pp) and elevates answered precision from 50.0\%
-to 60.0\% ($+10.0$\,pp) at matched $\text{WAR}=4.0\%$.
+to 60.0\% ($+10.0$\,pp) at matched $\text{WAR}=4.0\%$ (Figure~\ref{fig:ablation}).
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_ablation.pdf}
+  \caption{Controlled ablation analyses on MedQA-US.
+           (A)~Verification mode comparison ($N=50$, seed~42): Evidence-Only (M1, $\beta=1.0$),
+           Graph-Only (M2, $\beta=0.0$), and Combined Hybrid (M3, $\beta=0.7$).
+           (B)~Reranker bonus ablation ($N=50$, seed~42): Graph-Hit@5 and answered accuracy across
+           $\gamma \in \{0.0, 0.15, 1.0\}$, confirming peak synergy at $\gamma=0.15$.
+           (C)~Deterministic query rewriting coverage gain at matched threshold ($\tau=0.50$, $N=500$):
+           unrewritten versus rewritten overall accuracy across M1 (+4.2\,pp), M3 (+3.2\,pp),
+           and M4 (+3.4\,pp).}
+  \label{fig:ablation}
+\end{figure}
 
 \textbf{Guardrail Verification:} Guardrails F1 and F2 passed 100\% of test cases (10/10)
 with mean latencies of 0.14\,ms (F1) and 0.06\,ms (F2), confirming microsecond overhead.
@@ -537,13 +610,17 @@ boundary gaps. Dual-assessor $\kappa$ statistics are pending Phase-2 clinician g
 Table~\ref{tab:latency} details execution timings on an AMD Ryzen~7~7840HS CPU and
 NVIDIA RTX~3050 Laptop GPU (6\,GB VRAM).
 
-\begin{table}[!ht]
+\begin{table}[!htbp]
+\singlespacing
 \centering
+\small
+\setlength{\tabcolsep}{5pt}
 \caption{System latency and throughput comparison by pipeline stage (bootstrap 95\% CI,
          $N=50$). Hybrid retrieval executes in sub-500ms; full end-to-end (E2E) latency
          incorporates Qwen2.5-7B generation.
          Sources: \texttt{step15\_compute\_table.json}, \texttt{step18\_scaled\_n500.json}.}
 \label{tab:latency}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lrrl}
 \toprule
 System / Pipeline Stage & Median (ms) & 95\% CI (ms) & Processing Stage \\
@@ -560,7 +637,8 @@ M4: Hybrid + Reranker (E2E)     & 12,667.0 & --- & Full End-to-End Pipeline \\
 \midrule
 One-Time System Cold Start      & \multicolumn{2}{c}{18.66\,s} & Model + Index Initialization \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
 
 Stages~1--2 (Rewriting, BM25, Dense Search, RRF) complete in \textbf{455.7\,ms} median
@@ -568,7 +646,19 @@ Stages~1--2 (Rewriting, BM25, Dense Search, RRF) complete in \textbf{455.7\,ms} 
 \textbf{4,083.4\,ms} in Graph-Only mode (M2) and \textbf{12,667.0\,ms} in Hybrid Rerank
 mode (M4). Throughput is mode-dependent: M2 sustains \textbf{14.7 queries/min} (approximately 882 queries/hour),
 while M4 processes \textbf{4.7 queries/min} (approximately 284 queries/hour). Cold start requires 18.66\,s,
-with zero steady-state penalty. Peak memory reached 8,950\,MB RAM and 4,710\,MB VRAM.
+with zero steady-state penalty. Peak memory reached 8,950\,MB RAM and 4,710\,MB VRAM (Figure~\ref{fig:latency}).
+
+\begin{figure}[!htbp]
+  \centering
+  \includegraphics[width=\linewidth]{figures/fig_latency.pdf}
+  \caption{Component and end-to-end execution latency profiles (logarithmic scale).
+           Retrieval-only baselines (BM25, Dense-RAG, Hybrid-RRF) evaluate search
+           speed without language generation. MedGraphRAG hybrid retrieval
+           (Stages~1--2) completes in 455.7\,ms (95\%~CI:~[388.4, 495.8]\,ms). Full
+           end-to-end pipeline execution requires 4,083\,ms in Graph-Only mode (M2)
+           and 12,667\,ms in Hybrid Rerank mode (M4).}
+  \label{fig:latency}
+\end{figure}
 
 %%=============================================================================
 \section{Discussion}
@@ -600,7 +690,8 @@ mapping), we propose a three-stage clinical translation path:
   \item \textbf{Phase~1: Institutional Shadow Assistant ($n=1$ Clinician):} Local
         deployment in read-only mode on a secure workstation. Generated answers cite
         evidence keys [E\#], and clinician disagreements are logged as refusal audit events.
-  \item \textbf{Phase~2: Controlled Clinical Pilot ($n=50$ Clinicians, 6 Months):}
+  \item \textbf{Phase~2: Controlled Clinical Pilot}\\
+        \textbf{($n=50$ Clinicians, 6~Months):}
         EHR integration via read-only FHIR~R4 endpoints, with AES-256-GCM record
         encryption and an approved IRB protocol. Primary endpoint: maintaining
         $\text{WAR} \leq 5\%$ on institutional queries.
@@ -641,19 +732,19 @@ rate of ungated models. Executing locally on consumer hardware in 4.08\,s with 4
 hybrid retrieval, MedGraphRAG provides a practical, open-source foundation for safe,
 privacy-compliant clinical AI.
 
+\FloatBarrier
 %%=============================================================================
 %% Declarations
 %%=============================================================================
 
 \section*{CRediT Authorship Contribution Statement}
-\textbf{Author A}: Conceptualization, Methodology, Software (core pipeline,
+\textbf{Dickson E}: Conceptualization, Methodology, Software (core pipeline,
 ablation suite, cryptographic security, graph enrichment), Formal analysis,
 Investigation, Writing -- original draft, Writing -- review \& editing,
 Visualization.
-\textbf{Author B}: Software (frontend interface, report drawer components,
-telemetry capture), Data curation, Writing -- review \& editing.
-\textbf{Author C}: Clinical validation, Medical knowledge curation, Clinical
-protocol design, Writing -- review \& editing.
+\textbf{Antony Taurshia}: Supervision, Software (frontend interface, report drawer
+components, telemetry capture), Data curation, Clinical validation, Medical
+knowledge curation, Writing -- review \& editing.
 
 \section*{Ethics Approval and Consent to Participate}
 This study was performed using publicly available, anonymized benchmark datasets
@@ -681,65 +772,7 @@ for code generation and Overleaf's Bibby AI for reference discovery, under direc
 supervision. All generated code and outputs were independently verified. The authors authored
 all manuscript text.
 
-%%=============================================================================
-%% Figures
-%%=============================================================================
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_arch.pdf}
-  \caption{MedGraphRAG five-stage offline pipeline architecture.
-           Stage~1 executes deterministic query rewriting ($T=0.0, \leq 30$ words).
-           Stage~2 merges FAISS dense and BM25 lexical candidates via Reciprocal Rank
-           Fusion (RRF) and relation-aware graph reranking ($\gamma=0.15$). Stage~3
-           traverses the Kuzu property graph. Stage~4 applies beta-gated verification
-           ($\beta=0.7$) enforcing $\text{WAR} \leq 10\%$. Stage~5 serializes LLM
-           generation behind a hardware mutex lock.}
-  \label{fig:arch}
-\end{figure}
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_pareto.pdf}
-  \caption{Empirical Pareto frontiers of overall accuracy $\text{Acc}(\text{all})$
-           versus wrong-assertion rate ($\text{WAR}$) across four operational modes
-           (M1: Evidence-Only, M2: Graph-Only, M3: Combined, and M4: Hybrid Rerank)
-           over 16 refusal thresholds ($\tau \in [0.10, 0.80]$, $N=500$). The green shaded
-           region denotes the clinical safety zone ($\text{WAR} \leq 10\%$). Star markers
-           denote mode-specific safe operating thresholds ($\tau^*$), with M2 reaching
-           $\text{Acc}(\text{all})=12.4\%$ at $\tau^*=0.80$. Inset: M2 answered precision
-           reaches 60.8\% at $\tau^*=0.80$ inside the safe zone. Ungated ceilings (crosses)
-           demonstrate catastrophic error rates ($\text{WAR} \approx 43$--$45\%$) when
-           refusal gating is disabled.}
-  \label{fig:pareto}
-\end{figure}
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_ablation.pdf}
-  \caption{Controlled ablation analyses on MedQA-US.
-           (A)~Verification mode comparison ($N=50$, seed~42): Evidence-Only (M1, $\beta=1.0$),
-           Graph-Only (M2, $\beta=0.0$), and Combined Hybrid (M3, $\beta=0.7$).
-           (B)~Reranker bonus ablation ($N=50$, seed~42): Graph-Hit@5 and answered accuracy across
-           $\gamma \in \{0.0, 0.15, 1.0\}$, confirming peak synergy at $\gamma=0.15$.
-           (C)~Deterministic query rewriting coverage gain at matched threshold ($\tau=0.50$, $N=500$):
-           unrewritten versus rewritten overall accuracy across M1 (+4.2\,pp), M3 (+3.2\,pp),
-           and M4 (+3.4\,pp).}
-  \label{fig:ablation}
-\end{figure}
-
-\begin{figure}[!ht]
-  \centering
-  \includegraphics[width=\linewidth]{figures/fig_latency.pdf}
-  \caption{Component and end-to-end execution latency profiles (logarithmic scale).
-           Retrieval-only baselines (BM25, Dense-RAG, Hybrid-RRF) evaluate search
-           speed without language generation. MedGraphRAG hybrid retrieval
-           (Stages~1--2) completes in 455.7\,ms (95\%~CI:~[388.4, 495.8]\,ms). Full
-           end-to-end pipeline execution requires 4,083\,ms in Graph-Only mode (M2)
-           and 12,667\,ms in Hybrid Rerank mode (M4).}
-  \label{fig:latency}
-\end{figure}
-
+\FloatBarrier
 %%=============================================================================
 %% Bibliography
 %%=============================================================================
@@ -762,6 +795,7 @@ specifications governing all reported experiments.
 \noindent\textbf{Table A.1.} Configuration parameters and computational execution environment.
 \begin{center}
 \small
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{lll}
 \toprule
 Parameter / Component & Value / Setting & Description / Function \\
@@ -800,7 +834,8 @@ Graph Database Engine & Kuzu 0.11.3 & In-process property graph database \\
 Vector Search Engine & FAISS 1.15.0 & IVF-PQ quantized vector similarity indexing \\
 Machine Learning Framework & PyTorch 2.6.0+cu124 & MedCPT encoder inference runtime \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{center}
 
 \vspace{0.4cm}
@@ -809,8 +844,10 @@ To guarantee that the relational ingestion pipeline (\texttt{scripts/j1/build\_n
 did not alter dense vector retrieval behavior, we computed the SHA-256 hash of the
 retrieved passage identifiers and scores across golden benchmark queries P01--P05:
 \begin{itemize}
-  \item \textbf{Pre-Ingestion Signature:} \texttt{ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac}
-  \item \textbf{Post-Ingestion Signature:} \texttt{ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac}
+  \item \textbf{Pre-Ingestion Signature:}\\
+        {\footnotesize\texttt{ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac}}
+  \item \textbf{Post-Ingestion Signature:}\\
+        {\footnotesize\texttt{ba1b512168fc4a949d12b0547e6992c4dddae63ca30b2294b13e47c9c0d18eac}}
 \end{itemize}
 The exact equality of these cryptographic signatures confirms 0.00\% retrieval drift
 (100.0\% byte-identical retrieval preservation) following graph enrichment.
