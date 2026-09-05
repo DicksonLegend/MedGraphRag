@@ -104,7 +104,7 @@ decision-support \sep safety
 %%=============================================================================
 
 Deploying large language models (LLMs) as point-of-care clinical assistants offers
-transformative potential for diagnostic and therapeutic workflows
+direct utility for diagnostic and therapeutic workflows
 \citep{singhal2023med,thirunavukarasu2023llms}. However, the tendency of ungrounded
 parametric architectures to hallucinate plausible yet factually incorrect assertions
 poses direct patient-safety hazards \citep{bai2024hallucination}. In high-stakes
@@ -147,9 +147,9 @@ HIPAA, GDPR) that prohibit transmitting protected health information (PHI) beyon
 institutional boundaries. Practical point-of-care deployment requires secure,
 sub-second hybrid retrieval and inference executing locally on commodity hardware.
 
-To address these challenges, we introduce \textbf{MedGraphRAG}, an offline hybrid
+We present \textbf{MedGraphRAG}, an offline hybrid
 GraphRAG system designed for point-of-care clinical decision support. Our primary
-contributions include:
+contributions are:
 \begin{enumerate}
   \item \textbf{Safety-Constrained Pareto Calibration:} A verification framework
         optimising answered accuracy subject to $\text{WAR} \leq 10\%$. Across 15
@@ -196,11 +196,11 @@ frequently contain conversational phrasing, narrative patient histories, and ext
 formatting that severely impede biomedical dense retrieval. In particular, dense bi-encoders
 trained on scientific literature struggle when confronted with verbose, multi-sentence
 clinical case presentations where the core diagnostic dilemma is obscured by incidental
-biographical details. Furthermore, lexical search methods suffer from vocabulary mismatch
+biographical details. Lexical search methods also face vocabulary mismatch
 when colloquial symptom descriptions fail to overlap with formal medical nomenclature.
 
-To standardise heterogeneous queries without introducing stochastic variance, Stage~1
-utilizes Qwen2.5-7B-Instruct executing strictly at temperature $T=0.0$. The rewriter
+To standardise heterogeneous queries without stochastic variance, Stage~1
+uses Qwen2.5-7B-Instruct executing strictly at temperature $T=0.0$. The rewriter
 is guided by a structured system prompt directing the model to extract the primary
 pathological condition, key diagnostic findings, and therapeutic focus into a canonical
 clinical summary strictly constrained to a maximum of 30 words. For example, a narrative
@@ -226,9 +226,9 @@ Concurrently, a parallel lexical stream evaluates candidate documents using the 
 BM25 probabilistic relevance framework \citep{robertson2009bm25}, operating over a dense
 candidate pool of 200 retrieved documents.
 
-Because dense and lexical retrievers exhibit complementary error profiles---dense models
-capturing latent semantic affinity while lexical models enforce exact keyword and numerical
-matching---their respective rank distributions $R_{\text{dense}}$ and $R_{\text{lex}}$
+Because dense and lexical retrievers exhibit complementary error profiles (dense models
+capture latent semantic affinity, whereas lexical models enforce exact keyword and numerical
+matches), their respective rank distributions $R_{\text{dense}}$ and $R_{\text{lex}}$
 are integrated via Reciprocal Rank Fusion (RRF; \citealp{cormack2009rrf}):
 \begin{equation}
   s_{\text{fused}}(d) = \sum_{m \in \{\text{dense}, \text{lex}\}} \frac{1}{k_{\text{rrf}} + r_m(d)},
@@ -281,12 +281,11 @@ baseline queries post-ingestion (Appendix~A).
 \subsection{Beta-Gated Verification and Pareto Threshold Calibration}
 \label{sec:verification}
 
-A core deficiency of standard RAG architectures is the absence of an explicit confidence
-gate arbitrating whether retrieved evidence is sufficient to warrant generating an answer.
-Unhedged language models produce fluent assertions even when underlying evidence is tenuous,
-contradictory, or absent. To establish a mechanistic safeguard against clinical hallucination,
-MedGraphRAG incorporates a dual-evidence verification layer that evaluates candidate response
-fidelity prior to releasing output.
+Standard RAG architectures lack explicit confidence gates to arbitrate whether retrieved
+evidence warrants generating an answer. Unhedged language models produce fluent assertions
+even when underlying evidence is tenuous, contradictory, or absent. To prevent clinical
+hallucinations, MedGraphRAG adds a dual-evidence verification layer that evaluates candidate
+response fidelity prior to releasing output.
 
 For each candidate assertion, the verification module evaluates a composite verification
 metric $V \in [0, 1]$ that combines passage-level entailment with symbolic graph consistency:
@@ -307,8 +306,8 @@ sensitivity to symbolic graph contradictions.
 
 When the composite score falls below a calibrated refusal threshold $\tau$, generation is
 suppressed, and the system emits a structured clinical refusal detailing the precise
-nature of the missing evidence. Rather than selecting $\tau$ arbitrarily, we establish
-a rigorous constrained-optimisation formulation:
+nature of the missing evidence. Rather than tuning $\tau$ heuristically, we formulate
+a constrained optimisation problem:
 \begin{equation}
   \tau^* = \arg\max_{\tau}\;\text{Acc}(\text{all}) \quad \text{subject to} \quad \text{WAR}(\tau) \leq 10\%,
   \label{eq:pareto}
@@ -351,7 +350,7 @@ AES-256-GCM using unique 12-byte nonces. Keys are derived dynamically via HKDF-S
 permissions are set to \texttt{0700} (directories) and \texttt{0600} (files). All Kuzu
 queries use parameterized openCypher statements to eliminate Cypher injection. A
 13-point security audit resolved all vulnerabilities prior to release (Supplementary
-Table~S8).
+Table~S7).
 
 \subsection{Evaluation Protocol and Metrics}
 \label{sec:eval}
@@ -586,7 +585,7 @@ of inquiries. MedGraphRAG demonstrates that by treating refusal as an active,
 safety-preserving decision, clinical assistants can strictly bound wrong assertions
 ($\text{WAR} \leq 10\%$).
 
-A core finding is that vector embeddings alone cannot reliably safeguard clinical outputs.
+Vector embeddings alone cannot reliably safeguard clinical outputs.
 Because dense embeddings project complex syntax into fixed vectors, negation markers
 and chronological qualifiers often blur. By augmenting Kuzu with 632,931 \textsc{NEGATES}
 and \textsc{TEMPORAL\_BEFORE} edges, MedGraphRAG provides symbolic consistency checking
@@ -622,8 +621,8 @@ This study has several limitations:
         (Supplementary IJMI ML checklist, item ML-E7).
   \item \textbf{High Refusal Rate:} At $\tau^*=0.80$, the refusal rate reaches 79.6\%.
         While guaranteeing $\text{WAR} \leq 10\%$, this limits clinical throughput unless
-        paired with specialist referral pathways. Calibrated soft-hedging represents an
-        important research avenue.
+        paired with specialist referral pathways. Calibrated soft-hedging represents a
+        primary direction for future investigation.
   \item \textbf{Quantisation Trade-offs:} Executing within 6\,GB VRAM necessitated 4-bit
         quantisation (Q4\_K\_M), introducing minor precision loss relative to FP16.
   \item \textbf{Single-Assessor Retrieval Grading:} Human relevance qrels were judged by a
@@ -635,7 +634,7 @@ This study has several limitations:
 \label{sec:conclusion}
 %%=============================================================================
 
-MedGraphRAG reconciles safety and utility in offline clinical decision support. By
+MedGraphRAG unites safety and utility in offline clinical decision support. By
 enforcing a bounded error constraint ($\text{WAR} \leq 10\%$), ingesting 632,931 negation
 and temporal relational edges into Kuzu, applying deterministic query rewriting, and
 enforcing beta-gated verification, the system bounds the catastrophic 44\% hallucination

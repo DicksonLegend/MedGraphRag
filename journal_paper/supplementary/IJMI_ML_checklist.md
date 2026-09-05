@@ -38,7 +38,7 @@
 |------|-------------|--------|----------|
 | ML-E1 | Primary metric clearly defined | ✅ Complete | WAR ≤ 10% (safety constraint); Acc(all), Acc(ans) as primary efficacy metrics |
 | ML-E2 | Statistical uncertainty reported | ✅ Complete | Bootstrap 95% CI (1000 resamples, seed 42) for all latency metrics |
-| ML-E3 | Confidence intervals on main results | ⚠️ Partial | CI on latency (Table 4); CI on accuracy metrics pending bootstrap completion |
+| ML-E3 | Confidence intervals on main results | ✅ Complete | Bootstrap 95% CI (1000 resamples, seed 42) for latency AND all primary accuracy/WAR metrics (step18_scaled_n500.json) |
 | ML-E4 | Ablation study | ✅ Complete | 3-way verification ablation (Table 3); 3-way reranker ablation (Table 4) |
 | ML-E5 | Baseline comparisons | ✅ Complete | BM25-RAG, Dense-RAG, Hybrid-RRF compared in Table 4; step17_baselines.json |
 | ML-E6 | Test set not used for model selection | ✅ Complete | Threshold τ* calibrated on same N=500 split; no separate held-out test; this is a limitation acknowledged in §4.3 |
@@ -65,13 +65,12 @@
 |----------|-------|----------|-----------------|
 | Data     | 5     | 5        | 0               |
 | Model    | 6     | 6        | 0               |
-| Evaluation | 8  | 6        | 2               |
+| Evaluation | 8  | 7        | 1               |
 | Safety   | 5     | 4        | 1               |
-| **Total** | **24** | **21** | **3**          |
+| **Total** | **24** | **22** | **2**          |
 
-**Completion rate: 87.5%** (21/24 items fully addressed)
+**Completion rate: 91.7%** (22/24 items fully addressed)
 
 **Pending items and mitigations:**
-- ML-E3 (accuracy CIs): Bootstrap script available; run pending completion of N=500 eval.
 - ML-E7 (external validation): MedMCQA run planned; not blocking for IJMI submission.
 - ML-S2 (fairness): Demographic subgroup analysis deferred to Phase 2 clinical pilot.
