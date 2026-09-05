@@ -11,6 +11,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 from matplotlib.ticker import FuncFormatter
 import numpy as np
 
@@ -69,8 +70,21 @@ MODE_CONFIG = {
     },
 }
 
-EVAL_DIR = Path("evaluations")
-FIG_DIR = Path("journal_paper/figures")
+SCRIPT_DIR = Path(__file__).resolve().parent
+JOURNAL_DIR = SCRIPT_DIR.parent
+REPO_ROOT = JOURNAL_DIR.parent
+
+# Robust evaluation directory resolution
+if (REPO_ROOT / "evaluations").exists():
+    EVAL_DIR = REPO_ROOT / "evaluations"
+elif (JOURNAL_DIR / "evaluations").exists():
+    EVAL_DIR = JOURNAL_DIR / "evaluations"
+elif Path("evaluations").exists():
+    EVAL_DIR = Path("evaluations").resolve()
+else:
+    EVAL_DIR = Path("../evaluations").resolve()
+
+FIG_DIR = SCRIPT_DIR
 
 def load_data():
     with open(EVAL_DIR / "step18_threshold_recalibration.json") as f:
@@ -132,7 +146,7 @@ def verify_and_print_assertions(calib, s500, v_abl, r_abl, comp):
 
 
 def generate_fig_pareto(calib, s500):
-    """Fig 2 (fig_pareto.pdf) — Safety-Accuracy Frontier across 4 modes with inset."""
+    """Fig 2 (fig_pareto.pdf) — Safety-Accuracy Frontier across 4 modes with inset in empty region."""
     fig, ax = plt.subplots(figsize=(7.2, 3.4))
 
     # Shaded clinical safety zone (WAR <= 10%)
@@ -162,18 +176,34 @@ def generate_fig_pareto(calib, s500):
         ax.scatter(p_ug["wrong_assertion_rate"], p_ug["accuracy_all"],
                    marker="X", s=85, color=cfg["color"], edgecolors="#222222", linewidths=0.8, zorder=7)
 
-    # Safe operating point labels - isolated, zero collisions
-    star_annotations = [
-        ("M2_GRAPH_ONLY", (8.0, 12.4), (3.5, 18.0), r"$\mathbf{M2:\;\tau^*=0.80}$", "center"),
-        ("M3_COMBINED", (9.0, 9.8), (2.5, 4.0), r"$\mathbf{M3:\;\tau^*=0.47}$", "left"),
-        ("M1_EVIDENCE_ONLY", (9.4, 9.6), (13.5, 4.5), r"$\mathbf{M1:\;\tau^*=0.43}$", "left"),
-        ("M4_HYBRID_RERANK", (9.4, 10.0), (13.5, 9.0), r"$\mathbf{M4:\;\tau^*=0.46}$", "left"),
+    # Decluttered tau* labels:
+    # 1. M2 label alone: isolated with clean leader pointing to (8.0, 12.4)
+    ax.annotate(r"$\mathbf{M2:\;\tau^*=0.80}$", xy=(8.0, 12.4), xytext=(4.0, 19.5),
+                arrowprops=dict(arrowstyle="->", color=MODE_CONFIG["M2_GRAPH_ONLY"]["color"], lw=0.85, shrinkA=2, shrinkB=4),
+                fontsize=7.2, color=MODE_CONFIG["M2_GRAPH_ONLY"]["color"], ha="center", va="center", zorder=8)
+
+    # 2. M1/M3/M4 as one stacked offset annotation block with thin non-crossing leaders
+    box_x = 12.8
+    box_y = 4.2
+    box_w = 6.6
+    box_h = 6.4
+
+    items = [
+        ("M4_HYBRID_RERANK", (9.4, 10.0), 9.6, r"$\mathbf{M4:\;\tau^*=0.46}$"),
+        ("M3_COMBINED",      (9.0, 9.8),  7.4, r"$\mathbf{M3:\;\tau^*=0.47}$"),
+        ("M1_EVIDENCE_ONLY", (9.4, 9.6),  5.2, r"$\mathbf{M1:\;\tau^*=0.43}$"),
     ]
-    for mkey, xy, xytext, text, ha in star_annotations:
+
+    bbox = mpatches.FancyBboxPatch((box_x, box_y), box_w, box_h, boxstyle="round,pad=0.25",
+                                  facecolor="#FFFFFF", edgecolor="#B0BEC5", linewidth=0.7, alpha=0.96, zorder=7)
+    ax.add_patch(bbox)
+
+    for mkey, star_xy, y_text, txt in items:
         col = MODE_CONFIG[mkey]["color"]
-        ax.annotate(text, xy=xy, xytext=xytext,
-                    arrowprops=dict(arrowstyle="->", color=col, lw=0.9, shrinkA=2, shrinkB=4),
-                    fontsize=7.2, color=col, ha=ha, va="center", zorder=8)
+        ax.annotate("", xy=star_xy, xytext=(box_x, y_text),
+                    arrowprops=dict(arrowstyle="->", color=col, lw=0.75, shrinkA=0, shrinkB=4),
+                    zorder=8)
+        ax.text(box_x + 0.45, y_text, txt, fontsize=7.2, color=col, ha="left", va="center", zorder=9)
 
     # Ungated ceiling label
     ax.text(44.0, 62.5, "Ungated ceilings\n(WAR ≈ 43–45%)",
@@ -188,15 +218,18 @@ def generate_fig_pareto(calib, s500):
                 bbox=dict(boxstyle="round,pad=0.35", facecolor="#FFFFFF", edgecolor="#B0BEC5", linewidth=0.8),
                 zorder=8)
 
-    # Small inset: M2 answered precision Acc(ans)% vs. tau in open whitespace
-    ax_ins = ax.inset_axes([0.22, 0.49, 0.28, 0.36])
+    # M2-precision inset moved to empty region: x in [24, 38] WAR, y in [7, 24] Acc(all)
+    ax_ins = ax.inset_axes([0.47, 0.10, 0.27, 0.23])
+    ax_ins.patch.set_facecolor("#FFFFFF")
+    ax_ins.patch.set_alpha(0.96)
+
     m2_pts = sorted(calib["frontiers"]["M2_GRAPH_ONLY"], key=lambda p: p["threshold"])
     m2_taus = [p["threshold"] for p in m2_pts]
     m2_ans  = [p["accuracy_answered"] for p in m2_pts]
 
     ax_ins.axvspan(0.77, 0.83, color=OKABE_ITO["safe_green"], alpha=0.8, zorder=1)
     ax_ins.axvline(0.77, color=OKABE_ITO["bluish_green"], linestyle="--", linewidth=0.8, alpha=0.9, zorder=2)
-    ax_ins.text(0.775, 54.5, "Safe", fontsize=6.2, color="#005A36", fontweight="bold", zorder=3)
+    ax_ins.text(0.775, 54.8, "Safe", fontsize=6.2, color="#005A36", fontweight="bold", zorder=3)
 
     ax_ins.plot(m2_taus, m2_ans, color=OKABE_ITO["orange"], linewidth=1.2, zorder=3)
     ax_ins.scatter(m2_taus, m2_ans, color=OKABE_ITO["orange"], marker="s", s=14,
@@ -210,10 +243,11 @@ def generate_fig_pareto(calib, s500):
 
     ax_ins.set_xlim(0.08, 0.84)
     ax_ins.set_ylim(53.5, 63.0)
-    ax_ins.set_title(r"$\mathbf{M2\;Answered\;Precision\;vs.\;\tau}$", fontsize=7.0, pad=3)
-    ax_ins.set_xlabel(r"Refusal Threshold $\tau$", fontsize=6.5, labelpad=1)
-    ax_ins.set_ylabel("Acc(ans) (%)", fontsize=6.5, labelpad=1)
-    ax_ins.tick_params(axis="both", labelsize=6.0, pad=1)
+    ax_ins.set_title(r"$\mathbf{M2\;Answered\;Precision\;vs.\;\tau}$", fontsize=6.8, pad=3)
+    ax_ins.set_xlabel(r"Refusal Threshold $\tau$", fontsize=6.2, labelpad=1)
+    ylabel = ax_ins.set_ylabel("Acc(ans) (%)", fontsize=6.2, labelpad=1)
+    ylabel.set_clip_on(False)
+    ax_ins.tick_params(axis="both", labelsize=5.8, pad=1)
     ax_ins.spines["top"].set_visible(False)
     ax_ins.spines["right"].set_visible(False)
     ax_ins.grid(axis="y", color="#D0D0D0", linestyle=":", linewidth=0.5, alpha=0.6)
@@ -228,13 +262,14 @@ def generate_fig_pareto(calib, s500):
     ax.spines["right"].set_visible(False)
     ax.grid(axis="y", color="#CCCCCC", linestyle=":", linewidth=0.6, alpha=0.6)
 
+    # Legend in open upper-left region (whitespace where inset previously was)
     handles, labels = ax.get_legend_handles_labels()
     star_proxy = plt.Line2D([0], [0], marker="*", color="w", markerfacecolor="#444444",
                             markeredgecolor="#222222", markersize=9, label=r"Safe operating point ($\tau^*$)")
     cross_proxy = plt.Line2D([0], [0], marker="X", color="w", markerfacecolor="#444444",
                              markeredgecolor="#222222", markersize=7, label="Ungated ceiling")
-    ax.legend(handles=handles + [star_proxy, cross_proxy], loc="lower right",
-              bbox_to_anchor=(0.99, 0.02), fontsize=7.0, framealpha=0.96,
+    ax.legend(handles=handles + [star_proxy, cross_proxy], loc="upper left",
+              bbox_to_anchor=(0.21, 0.98), fontsize=7.0, framealpha=0.96,
               edgecolor="#CCCCCC", labelspacing=0.3)
 
     out_path = FIG_DIR / "fig_pareto.pdf"
@@ -249,7 +284,7 @@ def generate_fig_ablation(v_abl, r_abl, s500):
 
     # ── PANEL A: Verification Ablation (N=50) ──
     v_m = v_abl["ablation_metrics"]
-    v_labels = ["M1\nEvid-Only", "M2\nGraph-Only", "M3\nCombined*"]
+    v_labels = ["Evidence", "Graph", "Combined*"]
     x_a = np.arange(3)
     w_a = 0.36
 
@@ -278,7 +313,7 @@ def generate_fig_ablation(v_abl, r_abl, s500):
                  ha="center", va="bottom", fontsize=7.2)
 
     ax1.set_xticks(x_a)
-    ax1.set_xticklabels(v_labels, fontsize=7.5)
+    ax1.set_xticklabels(v_labels, fontsize=7.8)
     ax1.set_ylim(0, 82)
     ax1.set_ylabel("Rate (%)", fontsize=8.5)
     ax1.set_title(r"$\mathbf{(A)\;Verification\;(N=50)}$", fontsize=9.0, pad=6)
@@ -434,20 +469,26 @@ def generate_fig_latency(comp):
                 text_str = f"{med:.1f} ms  [95% CI: {ci[0]:.1f}–{ci[1]:.1f}]"
             else:
                 text_str = f"{med:.1f} ms"
-            ax.text(med * 1.12, y, text_str, va="center", ha="left", fontsize=7.2, color="#222222")
+            # Offset text cleanly past the error-bar cap (or bar edge) by +6 points (+0.8em > +0.5em)
+            ref_x = ci[1] if ci is not None else med
+            ax.annotate(text_str, xy=(ref_x, y), xytext=(6, 0),
+                        textcoords="offset points", va="center", ha="left",
+                        fontsize=7.2, color="#222222")
         else:
             if tp is not None:
                 text_str = f"{int(round(med)):,} ms  ({tp})"
             else:
                 text_str = f"{int(round(med)):,} ms"
-            ax.text(med * 1.08, y, text_str, va="center", ha="left", fontsize=7.2, color="#222222")
+            ax.annotate(text_str, xy=(med, y), xytext=(6, 0),
+                        textcoords="offset points", va="center", ha="left",
+                        fontsize=7.2, color="#222222")
 
     # Clean divider and headers
     ax.axhline(2.8, color="#B0BEC5", linestyle="--", linewidth=0.8, alpha=0.7)
     ax.text(12, 6.55, "Retrieval-Only Stages (CPU, 95% Bootstrap CIs)",
-            fontsize=7.8, fontweight="bold", color="#455A64", va="bottom")
+        fontsize=7.8, fontweight="bold", color="#455A64", va="bottom")
     ax.text(12, 2.45, "Full Pipeline End-to-End (GPU+CPU, Medians, LLM Generation Included)",
-            fontsize=7.8, fontweight="bold", color="#455A64", va="bottom")
+        fontsize=7.8, fontweight="bold", color="#455A64", va="bottom")
 
     # Deployment Footprint card in whitespace at top right
     info_text = (
