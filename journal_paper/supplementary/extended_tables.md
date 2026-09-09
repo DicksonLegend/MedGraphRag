@@ -1,4 +1,4 @@
-# Extended Tables — MedGraphRAG IJMI Supplementary Materials
+# Extended Tables — MedGateRAG IJMI Supplementary Materials
 
 All quantitative values are directly derived from canonical evaluation JSON artifacts.
 Source artifact file paths and cryptographic SHA-256 signatures are documented for each table.

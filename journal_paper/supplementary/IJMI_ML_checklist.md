@@ -1,8 +1,8 @@
-# IJMI Machine Learning Checklist — MedGraphRAG
+# IJMI Machine Learning Checklist — MedGateRAG
 
 **Journal:** International Journal of Medical Informatics (Elsevier)
 **Checklist version:** IJMI Editorial ML Guidelines (2024)
-**System:** MedGraphRAG v2.0.0
+**System:** MedGateRAG v2.0.0
 **Date:** 2026-09-02
 
 ---
@@ -43,7 +43,7 @@
 | ML-E5 | Baseline comparisons | ✅ Complete | BM25-RAG, Dense-RAG, Hybrid-RRF compared in Table 4; step17_baselines.json |
 | ML-E6 | Test set not used for model selection | ✅ Complete | Threshold τ* calibrated on same N=500 split; no separate held-out test; this is a limitation acknowledged in §4.3 |
 | ML-E7 | External validation | ⚠️ Pending | MedMCQA/BioASQ external validation planned (WORKLOG.md J5) |
-| ML-E8 | Reproducibility / code availability | ✅ Complete | Full code + evaluation scripts in repository (github.com/DicksonLegend/MedGraphRag) and archived on Zenodo; artifact SHA-256 hashes documented throughout |
+| ML-E8 | Reproducibility / code availability | ✅ Complete | Full code + evaluation scripts in repository (github.com/DicksonLegend/MedGateRAG) and archived on Zenodo; artifact SHA-256 hashes documented throughout |
 
 ---
 

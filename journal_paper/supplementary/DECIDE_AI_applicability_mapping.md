@@ -1,12 +1,12 @@
-# DECIDE-AI Applicability Mapping — MedGraphRAG
+# DECIDE-AI Applicability Mapping — MedGateRAG
 
 **Reference:** Vasey et al. (2022). *DECIDE-AI: New reporting guidance for
 clinical trials evaluating artificial intelligence interventions.*
 Nature Medicine 28, 924–933. doi:10.1038/s41591-022-01772-9
 
 **Assessment date:** 2026-09-02
-**Assessors:** MedGraphRAG development team
-**System:** MedGraphRAG v2.0.0 — offline hybrid GraphRAG clinical decision support
+**Assessors:** MedGateRAG development team
+**System:** MedGateRAG v2.0.0 — offline hybrid GraphRAG clinical decision support
 
 ---
 
@@ -37,7 +37,7 @@ rationale.
 
 ## Summary Judgement
 
-MedGraphRAG is **pre-deployment** and does not yet meet DECIDE-AI requirements
+MedGateRAG is **pre-deployment** and does not yet meet DECIDE-AI requirements
 for a full prospective reporting statement. The items above mark where the
 system is ready (D1, D6, D12, D13) and where gaps must be addressed before
 clinical trial registration (D2, D3, D7, D10).

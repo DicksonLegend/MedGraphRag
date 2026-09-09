@@ -1,4 +1,4 @@
-%% main.tex — MedGraphRAG: IJMI Journal Submission (Revision 2)
+%% main.tex — MedGateRAG: IJMI Journal Submission (Revision 2)
 %% Venue: International Journal of Medical Informatics (Elsevier)
 %% Format: elsarticle preprint, 12pt, numbers, double-spaced, line-numbered
 %%
@@ -45,8 +45,9 @@
 \begin{frontmatter}
 
 %% ── Title ────────────────────────────────────────────────────────────────────
-\title{MedGraphRAG: A Safety-First Hybrid Graph Retrieval-Augmented Generation
-       System for Offline Clinical Decision Support}
+\title{MedGateRAG: A Safety-First Hybrid Graph Retrieval-Augmented Generation
+       System with Bounded Wrong-Assertion Rates for Offline Clinical Decision
+       Support}
 
 %% ── Authors ──────────────────────────────────────────────────────────────────
 \author[aff1]{Dickson E\texorpdfstring{\corref{cor1}}{}}
@@ -64,12 +65,12 @@ Large language models (LLMs) deployed in clinical decision support face a
 safety-utility trade-off: unconstrained answering yields unacceptable rates
 of wrong assertions, whereas excessive refusal renders systems inert. Existing
 retrieval-augmented generation (RAG) frameworks lack mechanistic, bounded safety
-controls deployable on institutional hardware. We present MedGraphRAG, an offline
+controls deployable on institutional hardware. We present MedGateRAG, an offline
 hybrid GraphRAG system that reframes clinical AI evaluation from unconstrained
 accuracy maximisation to bounded wrong-assertion rate (WAR).
 \par\smallskip
 \textbf{Methods.}
-MedGraphRAG couples dense vector retrieval (FAISS IVF-PQ with MedCPT embeddings)
+MedGateRAG couples dense vector retrieval (FAISS IVF-PQ with MedCPT embeddings)
 and lexical retrieval (BM25) with an embedded property graph (Kuzu) enriched
 with 632,931 relational edges (617,219 \textsc{NEGATES} and 15,712
 \textsc{TEMPORAL\_BEFORE}). Dual candidate streams are merged via Reciprocal
@@ -90,7 +91,7 @@ Hybrid retrieval completes in 455.7\,ms (95\%~CI:~[388.4, 495.8]\,ms); full
 end-to-end pipeline latency is 4,083\,ms (M2) to 12,667\,ms (M4).
 \par\smallskip
 \textbf{Conclusion.}
-MedGraphRAG demonstrates that bounded clinical error and interpretable offline
+MedGateRAG demonstrates that bounded clinical error and interpretable offline
 decision support are jointly achievable on consumer hardware without cloud
 dependencies or GPU clusters.
 \end{abstract}
@@ -132,10 +133,7 @@ Knowledge graphs provide a complementary symbolic representation, structuring
 clinical entities and ontological dependencies into explicit triples
 \citep{bodenreider2004umls,yasunaga2022qagnn}. Recent hybrid GraphRAG systems
 combine graph structures with textual retrieval
-\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf}
-(Wu et al.\ share the MedGraphRAG name but focus on entity-centric graph
-construction; our architecture emphasises hybrid retrieval fusion and
-dual-gated verification). Nevertheless, existing medical GraphRAG
+\citep{edge2024graphrag,he2022rethinking,sun2024medgraphrag_conf} (Wu et al.'s independently developed MedGraphRAG focuses on entity-centric graph construction; MedGateRAG instead emphasises hybrid retrieval fusion and dual-gated verification). Nevertheless, existing medical GraphRAG
 implementations exhibit three fundamental limitations:
 
 First, current evaluations focus almost exclusively on unconstrained accuracy (e.g.,
@@ -157,7 +155,7 @@ HIPAA, GDPR) that prohibit transmitting protected health information (PHI) beyon
 institutional boundaries. Practical point-of-care deployment requires secure,
 sub-second hybrid retrieval and inference executing locally on commodity hardware.
 
-We present \textbf{MedGraphRAG}, an offline hybrid
+We present \textbf{MedGateRAG}, an offline hybrid
 GraphRAG system designed for point-of-care clinical decision support. Our primary
 contributions are:
 \begin{enumerate}
@@ -191,7 +189,7 @@ checklist, and extended tables; configuration details appear in Appendix~A.
 \subsection{System Architecture}
 \label{sec:arch}
 
-Figure~\ref{fig:arch} shows the MedGraphRAG inference pipeline. Stage~1
+Figure~\ref{fig:arch} shows the MedGateRAG inference pipeline. Stage~1
 deterministically standardises input queries into clinical phrasing. Stage~2 executes
 dual-stream dense and lexical retrieval, combining candidates via Reciprocal Rank
 Fusion and relation-aware graph reranking. Stage~3 expands clinical entities within
@@ -202,7 +200,7 @@ evidence-grounded responses using a quantised LLM isolated behind a GPU mutex lo
 \begin{figure}[H]
   \centering
   \includegraphics[width=\linewidth]{figures/fig_arch.pdf}
-  \caption{MedGraphRAG five-stage offline pipeline architecture.
+  \caption{MedGateRAG five-stage offline pipeline architecture.
            Stage~1 executes deterministic query rewriting ($T=0.0, \leq 30$ words).
            Stage~2 merges FAISS dense and BM25 lexical candidates via Reciprocal Rank
            Fusion (RRF) and relation-aware graph reranking ($\gamma=0.15$). Stage~3
@@ -307,7 +305,7 @@ baseline queries post-ingestion (Appendix~A).
 Standard RAG architectures lack explicit confidence gates to arbitrate whether retrieved
 evidence warrants generating an answer. Unhedged language models produce fluent assertions
 even when underlying evidence is tenuous, contradictory, or absent. To prevent clinical
-hallucinations, MedGraphRAG adds a dual-evidence verification layer that evaluates candidate
+hallucinations, MedGateRAG adds a dual-evidence verification layer that evaluates candidate
 response fidelity prior to releasing output.
 
 For each candidate assertion, the verification module evaluates a composite verification
@@ -654,7 +652,7 @@ with zero steady-state penalty. Peak memory reached 8,950\,MB RAM and 4,710\,MB 
   \includegraphics[width=\linewidth]{figures/fig_latency.pdf}
   \caption{Component and end-to-end execution latency profiles (logarithmic scale).
            Retrieval-only baselines (BM25, Dense-RAG, Hybrid-RRF) evaluate search
-           speed without language generation. MedGraphRAG hybrid retrieval
+           speed without language generation. MedGateRAG hybrid retrieval
            (Stages~1--2) completes in 455.7\,ms (95\%~CI:~[388.4, 495.8]\,ms). Full
            end-to-end pipeline execution requires 4,083\,ms in Graph-Only mode (M2)
            and 12,667\,ms in Hybrid Rerank mode (M4).}
@@ -671,14 +669,14 @@ with zero steady-state penalty. Peak memory reached 8,950\,MB RAM and 4,710\,MB 
 
 Evaluating clinical language models on unconstrained accuracy introduces substantial
 hazards: when operating ungated, models generate incorrect clinical statements on ~44\%
-of inquiries. MedGraphRAG demonstrates that by treating refusal as an active,
+of inquiries. MedGateRAG demonstrates that by treating refusal as an active,
 safety-preserving decision, clinical assistants can strictly bound wrong assertions
 ($\text{WAR} \leq 10\%$).
 
 Vector embeddings alone cannot reliably safeguard clinical outputs. Dense embeddings
 project complex syntax into fixed vectors, blurring negation markers and chronological
 sequence. By augmenting Kuzu with 632,931 \textsc{NEGATES} and \textsc{TEMPORAL\_BEFORE}
-edges, MedGraphRAG enforces symbolic consistency checks that intercept contradictions
+edges, MedGateRAG enforces symbolic consistency checks that intercept contradictions
 passing dense filters. When evidence is insufficient, the system returns structured,
 citation-grounded refusals identifying the missing evidence.
 
@@ -725,12 +723,12 @@ This study has several limitations:
 \label{sec:conclusion}
 %%=============================================================================
 
-MedGraphRAG unites safety and utility in offline clinical decision support. By
+MedGateRAG unites safety and utility in offline clinical decision support. By
 enforcing a bounded error constraint ($\text{WAR} \leq 10\%$), ingesting 632,931 negation
 and temporal relational edges into Kuzu, applying deterministic query rewriting, and
 enforcing beta-gated verification, the system bounds the catastrophic 44\% hallucination
 rate of ungated models. Executing locally on consumer hardware in 4.08\,s with 455.7\,ms
-hybrid retrieval, MedGraphRAG provides a practical, open-source foundation for safe,
+hybrid retrieval, MedGateRAG provides a practical, open-source foundation for safe,
 privacy-compliant clinical AI.
 
 \FloatBarrier
@@ -757,7 +755,7 @@ Evaluation benchmarks are publicly accessible: MedQA-US (\url{https://github.com
 OpenI (\url{https://openi.nlm.nih.gov}), and VQA-RAD (\url{https://osf.io/89kps/}).
 The complete codebase, pipeline scripts, evaluation artifacts, and security reports
 are available in the project repository
-(\url{https://github.com/DicksonLegend/MedGraphRag})
+(\url{https://github.com/DicksonLegend/MedGateRAG})
 and will be archived on Zenodo with a persistent DOI upon acceptance.
 
 \section*{Declaration of Competing Interests}
