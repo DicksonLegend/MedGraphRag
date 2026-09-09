@@ -1,6 +1,6 @@
 %% main.tex — MedGraphRAG: IJMI Journal Submission (Revision 2)
 %% Venue: International Journal of Medical Informatics (Elsevier)
-%% Format: elsarticle preprint, 12pt, authoryear, double-spaced, line-numbered
+%% Format: elsarticle preprint, 12pt, numbers, double-spaced, line-numbered
 %%
 %% Word-count target: body <= 3000 words (target ~2600 after additions)
 %% Run: texcount -sum -1 main.tex
@@ -9,11 +9,11 @@
 %% • Safety-first hybrid GraphRAG bounds wrong assertions to <=10% via beta-gate
 %% • 632,931 negation/temporal Kùzu edges prevent diagnostic hallucinations
 %% • M2 Graph-Only achieves 60.8% precision@answered on MedQA-US N=500
-%% • AES-256-GCM + HKDF key derivation protects private PHI at rest
 %% • Sub-500ms hybrid retrieval; full end-to-end M2 4,083ms on consumer GPU
 %% ──────────────────────────────────────────────────────────────────────────────
 
-\documentclass[preprint,12pt,authoryear]{elsarticle}
+\documentclass[preprint,12pt,a4paper]{elsarticle}
+\biboptions{numbers,sort&compress}
 
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
@@ -26,8 +26,8 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage{lineno}
 \usepackage{setspace}
-\doublespacing
-\usepackage{microtype}
+\usepackage{lmodern}
+\usepackage[nopatch=footnote]{microtype}
 \usepackage{multirow}
 \usepackage[T1]{fontenc}
 
@@ -49,7 +49,7 @@
        System for Offline Clinical Decision Support}
 
 %% ── Authors ──────────────────────────────────────────────────────────────────
-\author[aff1]{Dickson E\corref{cor1}}
+\author[aff1]{Dickson E\texorpdfstring{\corref{cor1}}{}}
 \ead{dicksone@karunya.edu.in}
 \author[aff1]{Antony Taurshia}
 \ead{antonytaurshia@karunya.edu}
@@ -97,13 +97,12 @@ dependencies or GPU clusters.
 
 %% ── Keywords (1–7; no multi-word) ───────────────────────────────────────────
 \begin{keyword}
-GraphRAG \sep clinical-NLP \sep hallucination-mitigation \sep
-knowledge-graph \sep retrieval-augmented-generation \sep
-decision-support \sep safety
+GraphRAG \sep clinical NLP \sep hallucination mitigation \sep knowledge graph \sep retrieval augmented generation \sep decision support \sep safety
 \end{keyword}
 
 \end{frontmatter}
 
+\doublespacing
 \linenumbers   % continuous line numbering for peer review
 
 %%=============================================================================
@@ -290,11 +289,11 @@ We processed 2,294,038 text chunks using rule-guided linguistic parsing grounded
 UMLS \citep{bodenreider2004umls}. Operating at 0.2329\,ms per chunk (534.45\,s total
 wall-clock), the pipeline ingested \textbf{632,931} directed relational edges:
 \begin{itemize}
-  \item \textbf{\textsc{NEGATES} Edges (617,219):} Linking text chunks to entities
+  \item \textbf{NEGATES Edges (617,219):} Linking text chunks to entities
         bearing explicit negation cues (``no evidence of,'' ``ruled out,''
         ``contraindicated in''), comprising 111,720 Chunk~$\to$~Disease, 21,001
         Chunk~$\to$~Drug, and 484,498 Chunk~$\to$~OntologyTerm edges.
-  \item \textbf{\textsc{TEMPORAL\_BEFORE} Edges (15,712):} Linking clinical concepts
+  \item \textbf{TEMPORAL\_BEFORE Edges (15,712):} Linking clinical concepts
         via chronological sequence cues (``prior to,'' ``following,'' ``within one
         hour of''), comprising 12,225 Disease~$\to$~Disease and 3,487 Drug~$\to$~Drug edges.
 \end{itemize}
@@ -441,8 +440,8 @@ coverage for bounded error.
 \small
 \setlength{\tabcolsep}{5pt}
 \caption{Gated versus ungated performance across boundary modes ($N=500$).
-         Ungated execution generates wrong assertions on ~44\% of all queries.
-         Source: \texttt{step18\_scaled\_n500.json} $\to$ \texttt{ungated\_ceilings}.}
+         Ungated execution generates wrong assertions on $\approx$44\% of all queries.
+         Source: \texttt{step18\_scaled\_n500.json} $\to$ \allowbreak\texttt{ungated\_ceilings}.}
 \label{tab:gate}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llcccc}
@@ -595,12 +594,12 @@ to 60.0\% ($+10.0$\,pp) at matched $\text{WAR}=4.0\%$ (Figure~\ref{fig:ablation}
 \end{figure}
 
 \textbf{Guardrail Verification:} Guardrails F1 and F2 passed 100\% of test cases (10/10)
-with mean latencies of 0.14\,ms (F1) and 0.06\,ms (F2), confirming microsecond overhead.
+with mean latencies of 0.14\,ms (F1) and 0.06\,ms (F2), confirming sub-millisecond overhead.
 
 \subsection{Information Retrieval Performance}
 \label{sec:retrieval_eval}
 
-Evaluating retrieval over 10 clinician-adjudicated queries (graded qrels; step17 artifact)
+Evaluating retrieval over 10 clinician-adjudicated queries (graded qrels; Supplementary Table S5)
 yielded $\text{P@5} = 0.18$, $\text{R@5} = 0.5397$, $\text{MRR} = 0.3533$, and
 $\text{nDCG@10} = 0.3769$. Recall reflects the 6 queries containing relevant items in top-10
 candidates; the remaining 4 queries had no relevant documents, reflecting specialised
@@ -757,8 +756,9 @@ information was accessed. Formal IRB ethics approval was not required.
 Evaluation benchmarks are publicly accessible: MedQA-US (\url{https://github.com/jind11/MedQA}),
 OpenI (\url{https://openi.nlm.nih.gov}), and VQA-RAD (\url{https://osf.io/89kps/}).
 The complete codebase, pipeline scripts, evaluation artifacts, and security reports
-are available in the project repository (\url{https://github.com/DicksonLegend/MedGraphRag})
-and are archived on Zenodo (DOI: \url{https://doi.org/10.5281/zenodo.REAL_NUMBER_HERE}).
+are available in the project repository
+(\url{https://github.com/DicksonLegend/MedGraphRag})
+and will be archived on Zenodo with a persistent DOI upon acceptance.
 
 \section*{Declaration of Competing Interests}
 The authors declare that they have no known competing financial interests or personal
@@ -770,16 +770,19 @@ commercial, or not-for-profit sectors.
 
 \section*{Generative AI Disclosure}
 During preparation, the authors used Antigravity (Google's agentic coding assistant)
-for code generation and Overleaf's Bibby AI for reference discovery, under direct author
+for code generation and iterative debugging, under direct author
 supervision. All generated code and outputs were independently verified. The authors authored
 all manuscript text.
+
+\section*{Acknowledgements}
+The authors thank the clinical assessors who contributed to the adjudicated information retrieval qrels and the Phase-2 pilot planning.
 
 \FloatBarrier
 %%=============================================================================
 %% Bibliography
 %%=============================================================================
 
-\bibliographystyle{elsarticle-harv}
+\bibliographystyle{elsarticle-num}
 \bibliography{references}
 
 %%=============================================================================
